@@ -54,14 +54,18 @@
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
             border-image: var(--isis-gradient) 1;
+            /* HAUTEUR FIXE POUR ÉVITER LES CHANGEMENTS */
+            min-height: 80px;
         }
 
         .navbar-isis.scrolled {
             box-shadow: var(--shadow-hover);
             padding: 8px 0;
+            /* HAUTEUR FIXE MÊME EN SCROLL */
+            min-height: 70px;
         }
 
-        /* Logo et brand */
+        /* Logo et brand - CONTENEUR AVEC HAUTEUR FIXE */
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -72,6 +76,9 @@
             transition: all 0.3s ease;
             position: relative;
             max-width: 70%;
+            /* HAUTEUR FIXE POUR LE CONTENEUR DU BRAND */
+            height: 60px;
+            overflow: visible; /* Permet au logo de dépasser si nécessaire */
         }
 
         .navbar-brand:hover {
@@ -79,12 +86,20 @@
             transform: scale(1.02);
         }
 
+        /* LOGO AVEC DIMENSIONS CONTRÔLÉES */
         .brand-logo-img {
-            width: 60px;
-            height: 60px;
+            /* MODIFIEZ CES VALEURS POUR AJUSTER LA TAILLE DU LOGO */
+            width: 120px;  /* Augmentez cette valeur pour un logo plus grand */
+            height: 120px; /* Augmentez cette valeur pour un logo plus grand */
+            
             object-fit: contain;
             margin-right: 15px;
             transition: all 0.3s ease;
+            /* POSITIONNEMENT ABSOLU POUR NE PAS AFFECTER LA HAUTEUR DE LA NAVBAR */
+            position: relative;
+            z-index: 10;
+            /* CENTRAGE VERTICAL */
+            align-self: center;
         }
 
         .navbar-brand:hover .brand-logo-img {
@@ -100,23 +115,43 @@
             letter-spacing: -0.3px;
             line-height: 1.3;
             flex: 1;
+            /* HAUTEUR FIXE POUR LE TEXTE */
+            display: flex;
+            align-items: center;
+            height: 60px;
         }
 
-        /* Navigation links */
+        /* Navigation links - HAUTEUR FIXE */
         .navbar-nav {
             margin-left: auto;
+            /* HAUTEUR FIXE POUR LA NAVIGATION */
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav .nav-item {
+            /* HAUTEUR FIXE POUR CHAQUE ITEM */
+            height: 50px;
+            display: flex;
+            align-items: center;
         }
 
         .nav-link {
             color: var(--text-dark) !important;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 16px !important; /* TAILLE FIXE */
             padding: 12px 20px !important;
             margin: 0 5px;
             border-radius: 25px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            /* HAUTEUR ET AFFICHAGE FIXES */
+            height: 45px !important;
+            display: flex !important;
+            align-items: center !important;
+            white-space: nowrap;
         }
 
         .nav-link::before {
@@ -153,10 +188,11 @@
             background: var(--isis-light-purple);
             border: 2px solid var(--isis-purple);
             border-radius: 25px;
-            padding: 8px 16px;
+            padding: 8px 16px !important;
             color: var(--isis-purple);
             font-weight: 600;
             transition: all 0.3s ease;
+            height: 45px !important;
         }
 
         .user-dropdown:hover {
@@ -192,6 +228,10 @@
             border-radius: 12px;
             padding: 8px 12px;
             transition: all 0.3s ease;
+            /* HAUTEUR FIXE */
+            height: 45px;
+            display: flex;
+            align-items: center;
         }
 
         .navbar-toggler:focus {
@@ -351,8 +391,8 @@
             }
             
             .brand-logo-img {
-                width: 55px;
-                height: 55px;
+                width: 80px;  /* Taille réduite sur tablette */
+                height: 80px;
             }
         }
 
@@ -363,14 +403,15 @@
             }
             
             .brand-logo-img {
-                width: 50px;
-                height: 50px;
+                width: 60px;  /* Taille réduite sur mobile */
+                height: 60px;
             }
             
             .nav-link {
                 padding: 10px 15px !important;
                 margin: 2px 0;
                 text-align: center;
+                font-size: 14px !important;
             }
             
             .navbar-collapse {
@@ -395,8 +436,8 @@
             }
             
             .brand-logo-img {
-                width: 45px;
-                height: 45px;
+                width: 50px;  /* Taille très réduite sur petit mobile */
+                height: 50px;
             }
             
             .brand-text {
@@ -574,12 +615,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <i class="fas fa-graduation-cap mr-2"></i>
-                    AppISIS © 2025
+                    <i class="fas fa-university mr-2"></i>
+                    ISIS - École d'ingénieurs ISIS - Informatique et Systèmes d'Information pour la Santé © 2025
                 </div>
                 <div class="footer-links">
-                    <a href="{% url 'home' %}">Accueil</a>
-                    <a href="#">À propos</a>
                     <a href="#">Contact</a>
                     <a href="#">Aide</a>
                 </div>
