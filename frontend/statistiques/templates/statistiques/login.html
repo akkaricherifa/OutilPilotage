@@ -3,60 +3,527 @@
 {% block title %}Connexion - AppISIS{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                    <i class="fas fa-sign-in-alt mr-2"></i>Connexion à AppISIS
-                </h4>
-            </div>
-            <div class="card-body">
-                <!-- Indicateur de statut API -->
-                <div id="api-status" class="alert" style="display: none;"></div>
+<style>
+    :root {
+        /* Couleurs du logo ISIS */
+        --isis-purple: #8B5FBF;
+        --isis-coral: #FF6B6B;
+        --isis-gradient: linear-gradient(135deg, #FF6B6B 0%, #8B5FBF 100%);
+        --isis-light-purple: rgba(139, 95, 191, 0.1);
+        --isis-light-coral: rgba(255, 107, 107, 0.1);
+        --text-dark: #333;
+        --white: #ffffff;
+        --light-bg: #f8f9ff;
+        --shadow: 0 15px 35px rgba(139, 95, 191, 0.15);
+        --shadow-hover: 0 20px 40px rgba(139, 95, 191, 0.25);
+    }
+
+    /* Suppression du scroll et fixation de l'interface */
+    html, body {
+        height: 100vh;
+        overflow: hidden;  /* Empêche le scroll */
+        margin: 0;
+        padding: 0;
+        background: var(--light-bg);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    /* Conteneur principal prenant toute la hauteur */
+    .container-fluid {
+        height: 100vh;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    /* Formes animées en arrière-plan - Fixées */
+    .bg-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.6;
+    }
+
+    .shape-1 {
+        top: 15%;
+        left: 10%;
+        width: 280px;
+        height: 280px;
+        background: var(--isis-light-coral);
+        animation: float1 20s infinite linear;
+    }
+
+    .shape-2 {
+        bottom: 15%;
+        right: 8%;
+        width: 350px;
+        height: 350px;
+        background: var(--isis-light-purple);
+        animation: float2 25s infinite linear;
+    }
+
+    .shape-3 {
+        top: 45%;
+        left: 65%;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--isis-light-coral), var(--isis-light-purple));
+        animation: float3 15s infinite linear;
+    }
+
+    @keyframes float1 {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(-30px, 20px) rotate(180deg); }
+    }
+
+    @keyframes float2 {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(20px, -30px) rotate(-180deg); }
+    }
+
+    @keyframes float3 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-20px, 15px) scale(1.05); }
+    }
+
+    /* Conteneur de connexion - Fixe et centré */
+    .login-container {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        z-index: 10;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 420px;
+        max-height: 90vh;  /* Limite la hauteur maximale */
+        background: var(--white);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.4s ease;
+        position: relative;
+        animation: fadeInUp 0.8s ease-out;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-card:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-3px);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* En-tête de la carte - Taille réduite */
+    .card-header {
+        background: var(--isis-gradient);
+        padding: 25px 25px 20px;
+        text-align: center;
+        color: var(--white);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;  /* Empêche la compression */
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .card-header h4 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Corps de la carte - Optimisé pour l'espace */
+    .card-body {
+        padding: 25px 30px;
+        flex: 1;
+        overflow-y: auto;  /* Scroll uniquement si nécessaire dans le corps */
+        max-height: calc(90vh - 120px);  /* Ajustement dynamique */
+    }
+
+    /* Indicateur API - Compact */
+    #api-status {
+        border-radius: 12px;
+        border: none;
+        font-weight: 500;
+        animation: slideDown 0.5s ease-out;
+        padding: 8px 15px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Groupes de formulaire - Espacement optimisé */
+    .form-group {
+        margin-bottom: 18px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        color: var(--text-dark);
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 18px;
+        border: 2px solid #e8ecf4;
+        border-radius: 12px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafbfc;
+        position: relative;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--isis-purple);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-control:hover {
+        border-color: var(--isis-coral);
+        background: var(--white);
+    }
+
+    /* Boutons - Taille adaptée */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: var(--isis-gradient);
+        color: var(--white);
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-login::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: 0.6s;
+    }
+
+    .btn-login:hover::before {
+        left: 100%;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(139, 95, 191, 0.4);
+    }
+
+    .btn-login:active {
+        transform: translateY(-1px);
+        animation: pulse 0.6s;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(139, 95, 191, 0.4); }
+        70% { box-shadow: 0 0 0 12px rgba(139, 95, 191, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(139, 95, 191, 0); }
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid var(--isis-purple);
+        color: var(--isis-purple);
+        background: transparent;
+        transition: all 0.3s ease;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--isis-purple);
+        color: var(--white);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(139, 95, 191, 0.3);
+    }
+
+    /* Section liens - Compact */
+    .border-top {
+        border-top: 1px solid #e8ecf4 !important;
+        padding-top: 15px;
+        margin-top: 18px;
+    }
+
+    .border-top a {
+        color: var(--isis-purple);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .border-top a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--isis-gradient);
+        transition: width 0.3s ease;
+    }
+
+    .border-top a:hover::after {
+        width: 100%;
+    }
+
+    .border-top a:hover {
+        color: var(--isis-coral);
+    }
+
+    /* Icônes */
+    .fas {
+        color: var(--isis-purple);
+        transition: all 0.3s ease;
+    }
+
+    .form-group:hover .fas,
+    .btn:hover .fas {
+        color: var(--isis-coral);
+        transform: scale(1.05);
+    }
+
+    /* Animation de chargement */
+    .loading {
+        position: relative;
+    }
+
+    .loading::after {
+        content: '';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        border: 2px solid transparent;
+        border-top: 2px solid var(--white);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: translateY(-50%) rotate(0deg); }
+        100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Responsive - Adaptation pour petits écrans */
+    @media (max-height: 600px) {
+        .card-header {
+            padding: 15px 20px 10px;
+        }
+        
+        .card-header h4 {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .card-header p {
+            font-size: 12px;
+        }
+        
+        .card-body {
+            padding: 15px 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-control {
+            padding: 10px 15px;
+        }
+        
+        .btn-login {
+            padding: 12px;
+            font-size: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .login-card {
+            max-width: 95%;
+            margin: 0 10px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .shape-1, .shape-2, .shape-3 {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    /* Assurer que le contenu ne déborde jamais */
+    * {
+        box-sizing: border-box;
+    }
+
+    .row, .col-md-6, .col-lg-5 {
+        margin: 0;
+        padding: 0;
+        height: auto;
+    }
+</style>
+<!-- Formes animées en arrière-plan -->
+<div class="bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+</div>
+
+
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="card-header">
+            <h4 class="mb-0">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                Connexion à AppISIS
+            </h4>
+            <p>Entrez vos identifiants pour accéder à votre espace</p>
+        </div>
+        
+        <div class="card-body">
+            <!-- Indicateur de statut API -->
+            <div id="api-status" class="alert" style="display: none;"></div>
+            
+            <form method="POST" id="login-form">
+                {% csrf_token %}
                 
-                <form method="POST" id="login-form">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="username">
-                            <i class="fas fa-user mr-1"></i>Nom d'utilisateur
-                        </label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">
-                            <i class="fas fa-lock mr-1"></i>Mot de passe
-                        </label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit" id="login-btn">
-                            <i class="fas fa-sign-in-alt mr-1"></i>Se connecter
-                        </button>
-                        <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
-                            <i class="fas fa-arrow-left mr-1"></i>Retour à l'accueil
-                        </a>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user mr-2"></i>Nom d'utilisateur
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="username" 
+                           name="username" 
+                           placeholder="Entrez votre nom d'utilisateur"
+                           required 
+                           autocomplete="username">
+                </div>
                 
-                <div class="border-top pt-3">
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock mr-2"></i>Mot de passe
+                    </label>
+                    <input type="password" 
+                           class="form-control" 
+                           id="password" 
+                           name="password" 
+                           placeholder="Entrez votre mot de passe"
+                           required 
+                           autocomplete="current-password">
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-login" type="submit" id="login-btn">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Se connecter
+                    </button>
+                    <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Retour à l'accueil
+                    </a>
+                </div>
+            </form>
+            
+            <div class="border-top pt-3">
+                <div class="text-center">
                     <small class="text-muted">
                         Vous n'avez pas de compte? 
                         <a class="ml-2" href="{% url 'register' %}">
                             <i class="fas fa-user-plus mr-1"></i>S'inscrire
                         </a>
-                    </small>
-                </div>
-                
-                <!-- Comptes de test (à retirer en production) -->
-                <div class="mt-3 p-2 bg-light rounded">
-                    <small class="text-muted">
-                        <strong>Comptes de test:</strong><br>
-                        Admin: admin / admin123<br>
-                        Recherche: responsable_recherche / test123<br>
-                        Secrétaire: secretaire / test123
                     </small>
                 </div>
             </div>
@@ -71,15 +538,34 @@ $(document).ready(function() {
     // Vérifier le statut de l'API au chargement
     checkApiStatus();
     
-    // Gestionnaire du formulaire
+    // Gestionnaire du formulaire avec animation
     $('#login-form').on('submit', function(e) {
         const btn = $('#login-btn');
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i>Connexion...');
+        const originalText = btn.html();
         
-        // Le formulaire sera soumis normalement via Django
-        // Le JavaScript sert juste à améliorer l'UX
+        // Animation de chargement
+        btn.prop('disabled', true)
+           .addClass('loading')
+           .html('<i class="fas fa-spinner fa-spin mr-2"></i>Connexion en cours...');
+        
+        // Si erreur, restaurer le bouton après 5 secondes
+        setTimeout(() => {
+            if (btn.prop('disabled')) {
+                btn.prop('disabled', false)
+                   .removeClass('loading')
+                   .html(originalText);
+            }
+        }, 5000);
     });
     
+    // Animation d'entrée pour les champs
+    $('.form-control').on('focus', function() {
+        $(this).parent().addClass('focused');
+    }).on('blur', function() {
+        $(this).parent().removeClass('focused');
+    });
+    
+    // Fonction de vérification du statut API
     function checkApiStatus() {
         $.ajax({
             url: '{% url "api_status" %}',
@@ -90,7 +576,7 @@ $(document).ready(function() {
                     $('#api-status')
                         .removeClass('alert-danger alert-warning')
                         .addClass('alert-success')
-                        .html('<i class="fas fa-check-circle mr-1"></i>API connectée')
+                        .html('<i class="fas fa-check-circle mr-2"></i>API connectée')
                         .show();
                 } else {
                     showApiError('API non accessible');
@@ -106,9 +592,27 @@ $(document).ready(function() {
         $('#api-status')
             .removeClass('alert-success alert-warning')
             .addClass('alert-danger')
-            .html('<i class="fas fa-exclamation-triangle mr-1"></i>' + message)
+            .html('<i class="fas fa-exclamation-triangle mr-2"></i>' + message)
             .show();
     }
+    
+    // Effet de parallaxe léger sur les formes d'arrière-plan
+    $(window).on('mousemove', function(e) {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        $('.shape-1').css('transform', `translate(${x * 15}px, ${y * 15}px)`);
+        $('.shape-2').css('transform', `translate(${x * -10}px, ${y * -10}px)`);
+        $('.shape-3').css('transform', `translate(${x * 8}px, ${y * -8}px)`);
+    });
+    
+    // Empêcher le scroll de la page
+    $('body').css('overflow', 'hidden');
+    $(window).on('scroll touchmove mousewheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
 });
 </script>
 {% endblock %}

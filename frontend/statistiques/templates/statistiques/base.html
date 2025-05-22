@@ -3,49 +3,655 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AppISIS{% endblock %}</title>
+    <title>{% block title %}AppISIS - Outil de Pilotage{% endblock %}</title>
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    
+    <!-- Django Static Files -->
+    {% load static %}
+    
+    <style>
+        :root {
+            /* Couleurs du logo ISIS */
+            --isis-purple: #8B5FBF;
+            --isis-coral: #FF6B6B;
+            --isis-gradient: linear-gradient(135deg, #FF6B6B 0%, #8B5FBF 100%);
+            --isis-gradient-reverse: linear-gradient(135deg, #8B5FBF 0%, #FF6B6B 100%);
+            --isis-light-purple: rgba(139, 95, 191, 0.1);
+            --isis-light-coral: rgba(255, 107, 107, 0.1);
+            --isis-purple-hover: #7a4fb5;
+            --isis-coral-hover: #ff5252;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --white: #ffffff;
+            --light-bg: #f8f9ff;
+            --shadow: 0 4px 15px rgba(139, 95, 191, 0.15);
+            --shadow-hover: 0 8px 25px rgba(139, 95, 191, 0.25);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR MODERNE ET CONVIVIALE */
+        .navbar-isis {
+            background: var(--white);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            border-image: var(--isis-gradient) 1;
+        }
+
+        .navbar-isis.scrolled {
+            box-shadow: var(--shadow-hover);
+            padding: 8px 0;
+        }
+
+        /* Logo et brand */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--isis-purple) !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            position: relative;
+            max-width: 70%;
+        }
+
+        .navbar-brand:hover {
+            color: var(--isis-coral) !important;
+            transform: scale(1.02);
+        }
+
+        .brand-logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover .brand-logo-img {
+            transform: scale(1.05);
+        }
+
+        .brand-text {
+            background: var(--isis-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        /* Navigation links */
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 12px 20px !important;
+            margin: 0 5px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--isis-gradient);
+            transition: left 0.4s ease;
+            z-index: -1;
+            border-radius: 25px;
+        }
+
+        .nav-link:hover {
+            color: var(--white) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 95, 191, 0.3);
+        }
+
+        .nav-link:hover::before {
+            left: 0;
+        }
+
+        .nav-link.active {
+            background: var(--isis-gradient);
+            color: var(--white) !important;
+            box-shadow: 0 4px 15px rgba(139, 95, 191, 0.3);
+        }
+
+        /* Dropdown pour utilisateur connecté */
+        .user-dropdown {
+            background: var(--isis-light-purple);
+            border: 2px solid var(--isis-purple);
+            border-radius: 25px;
+            padding: 8px 16px;
+            color: var(--isis-purple);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown:hover {
+            background: var(--isis-gradient);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-menu {
+            border: none;
+            border-radius: 15px;
+            box-shadow: var(--shadow-hover);
+            padding: 15px 0;
+            margin-top: 8px;
+        }
+
+        .dropdown-item {
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--isis-light-purple);
+            color: var(--isis-purple);
+            transform: translateX(5px);
+        }
+
+        /* Toggle button pour mobile */
+        .navbar-toggler {
+            border: 2px solid var(--isis-purple);
+            border-radius: 12px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.25);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23" + encodeURIComponent("#8B5FBF") + "' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* MESSAGES DJANGO STYLISÉS */
+        .alert {
+            border: none;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: currentColor;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .alert-dismissible .close {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            font-weight: 300;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .alert-dismissible .close:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .main-container {
+            padding-top: 30px;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* SIDEBAR POUR PAGES AVEC MENU */
+        .sidebar {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 25px 0;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 12px 25px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: var(--isis-light-purple);
+            color: var(--isis-purple);
+            border-left-color: var(--isis-purple);
+            text-decoration: none;
+            transform: translateX(5px);
+        }
+
+        .sidebar-link.active {
+            background: var(--isis-gradient);
+            color: var(--white);
+            border-left-color: var(--isis-coral);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--white);
+            border-top: 3px solid;
+            border-image: var(--isis-gradient) 1;
+            padding: 30px 0;
+            margin-top: 50px;
+            box-shadow: 0 -4px 15px rgba(139, 95, 191, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            font-weight: 700;
+            color: var(--isis-purple);
+            font-size: 18px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--isis-coral);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .navbar-brand {
+                font-size: 14px;
+                max-width: 85%;
+            }
+            
+            .brand-logo-img {
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 12px;
+                max-width: 95%;
+            }
+            
+            .brand-logo-img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .nav-link {
+                padding: 10px 15px !important;
+                margin: 2px 0;
+                text-align: center;
+            }
+            
+            .navbar-collapse {
+                background: var(--white);
+                border-radius: 15px;
+                padding: 15px;
+                margin-top: 10px;
+                box-shadow: var(--shadow);
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 11px;
+                max-width: 100%;
+            }
+            
+            .brand-logo-img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .brand-text {
+                line-height: 1.2;
+            }
+        }
+
+        /* ANIMATIONS GLOBALES */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* SCROLLBAR PERSONNALISÉE */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--isis-gradient);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--isis-gradient-reverse);
+        }
+
+        /* LOADER GLOBAL */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar simple -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- NAVBAR MODERNE ISIS -->
+    <nav class="navbar navbar-expand-lg navbar-isis" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-graduation-cap mr-2"></i>AppISIS
+            <!-- Brand/Logo -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/isis.png' %}" alt="Logo ISIS" class="brand-logo-img">
+                <span class="brand-text">École d'ingénieurs ISIS - Informatique et Systèmes d'Information pour la Santé</span>
             </a>
-            <div class="navbar-nav ml-auto">
-                <a class="nav-link" href="/">Accueil</a>
-                <a class="nav-link" href="/login/">Connexion</a>
-                <a class="nav-link" href="/register/">Inscription</a>
+
+            <!-- Toggle button pour mobile -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                           href="{% url 'home' %}">
+                            <i class="fas fa-home mr-2"></i>Accueil
+                        </a>
+                    </li>
+                    
+                    {% if request.session.api_token %}
+                        <!-- Utilisateur connecté -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+                               href="{% url 'dashboard' %}">
+                                <i class="fas fa-tachometer-alt mr-2"></i>Tableau de bord
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" 
+                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user-circle mr-2"></i>
+                                {{ request.session.user_info.username|default:"Utilisateur" }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <h6 class="dropdown-header">
+                                    <i class="fas fa-id-badge mr-1"></i>
+                                    {{ request.session.user_info.role|capfirst|default:"Utilisateur" }}
+                                </h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'dashboard' %}">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>Tableau de bord
+                                </a>
+                                <a class="dropdown-item" href="{% url 'view_data' %}">
+                                    <i class="fas fa-table mr-2"></i>Mes données
+                                </a>
+                                {% if request.session.user_info.role == 'admin' %}
+                                    <a class="dropdown-item" href="{% url 'admin_users' %}">
+                                        <i class="fas fa-users-cog mr-2"></i>Gestion utilisateurs
+                                    </a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                                </a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <!-- Utilisateur non connecté -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" 
+                               href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Connexion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" 
+                               href="{% url 'register' %}">
+                                <i class="fas fa-user-plus mr-2"></i>Inscription
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Contenu principal -->
-    <div class="container mt-4">
-        <!-- Messages Django -->
+    <!-- CONTENU PRINCIPAL -->
+    <div class="container main-container">
+        <!-- Messages Django avec style ISIS -->
         {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span>&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
+            <div class="fade-in">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle mr-2"></i>
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle mr-2"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
         
         <!-- Contenu de la page -->
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-graduation-cap mr-2"></i>
+                    AppISIS © 2025
+                </div>
+                <div class="footer-links">
+                    <a href="{% url 'home' %}">Accueil</a>
+                    <a href="#">À propos</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Aide</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Script global ISIS -->
+    <script>
+        $(document).ready(function() {
+            // Animation de la navbar au scroll
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 50) {
+                    $('#mainNavbar').addClass('scrolled');
+                } else {
+                    $('#mainNavbar').removeClass('scrolled');
+                }
+            });
+            
+            // Animation des éléments au scroll
+            function animateOnScroll() {
+                $('.fade-in').each(function() {
+                    if ($(this).offset().top < $(window).scrollTop() + $(window).height() - 100) {
+                        $(this).addClass('animate');
+                    }
+                });
+            }
+            
+            $(window).scroll(animateOnScroll);
+            animateOnScroll(); // Exécuter une fois au chargement
+            
+            // Fermeture automatique des messages après 5 secondes
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+            
+            // Effet de ripple sur les boutons
+            $('.btn, .nav-link').on('click', function(e) {
+                var ripple = $('<span class="ripple"></span>');
+                var rect = this.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+                
+                ripple.css({
+                    position: 'absolute',
+                    background: 'rgba(255, 255, 255, 0.3)',
+                    borderRadius: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    pointerEvents: 'none',
+                    left: x + 'px',
+                    top: y + 'px',
+                    width: '0',
+                    height: '0'
+                });
+                
+                $(this).css('position', 'relative').append(ripple);
+                
+                ripple.animate({
+                    width: '200px',
+                    height: '200px',
+                    opacity: 0
+                }, 600, function() {
+                    ripple.remove();
+                });
+            });
+        });
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>
