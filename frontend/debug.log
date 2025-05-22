@@ -1119,3 +1119,14 @@ Traceback (most recent call last):
     raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
 django.template.exceptions.TemplateSyntaxError: Invalid filter: 'multiply'
 "GET /dashboard/ HTTP/1.1" 500 249520
+"GET /dashboard/ HTTP/1.1" 200 7466
+"GET /register/ HTTP/1.1" 200 5535
+"GET /login/ HTTP/1.1" 200 5702
+"GET /register/ HTTP/1.1" 200 5535
+"GET /login/ HTTP/1.1" 200 5702
+"GET /api/status/ HTTP/1.1" 200 49
+"GET /api/status/ HTTP/1.1" 200 49
+"POST /login/ HTTP/1.1" 200 6047
+"GET /api/status/ HTTP/1.1" 200 49
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 6836
