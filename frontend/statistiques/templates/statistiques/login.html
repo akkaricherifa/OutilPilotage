@@ -21,7 +21,7 @@
     /* Suppression du scroll et fixation de l'interface */
     html, body {
         height: 100vh;
-        overflow: hidden;  /* Empêche le scroll */
+        overflow: hidden;
         margin: 0;
         padding: 0;
         background: var(--light-bg);
@@ -38,7 +38,7 @@
         padding: 0;
     }
 
-    /* Formes animées en arrière-plan - Fixées */
+    /* Background avec bulles flottantes style moderne */
     .bg-shapes {
         position: fixed;
         top: 0;
@@ -47,75 +47,183 @@
         height: 100vh;
         z-index: -1;
         overflow: hidden;
+        background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
     }
 
     .shape {
         position: absolute;
         border-radius: 50%;
-        filter: blur(40px);
-        opacity: 0.6;
+        opacity: 0.7;
     }
 
+    /* Grandes bulles avec dégradé */
     .shape-1 {
-        top: 15%;
-        left: 10%;
-        width: 280px;
-        height: 280px;
-        background: var(--isis-light-coral);
-        animation: float1 20s infinite linear;
+        top: 10%;
+        left: 5%;
+        width: 380px;
+        height: 380px;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.1));
+        filter: blur(60px);
+        animation: float1 25s infinite ease-in-out;
     }
 
     .shape-2 {
-        bottom: 15%;
-        right: 8%;
-        width: 350px;
-        height: 350px;
-        background: var(--isis-light-purple);
-        animation: float2 25s infinite linear;
+        bottom: 8%;
+        right: 10%;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle at 70% 70%, rgba(139, 95, 191, 0.3), rgba(139, 95, 191, 0.1));
+        filter: blur(50px);
+        animation: float2 30s infinite ease-in-out;
     }
 
+    /* Bulles moyennes */
     .shape-3 {
-        top: 45%;
-        left: 65%;
-        width: 200px;
-        height: 200px;
-        background: linear-gradient(45deg, var(--isis-light-coral), var(--isis-light-purple));
-        animation: float3 15s infinite linear;
+        top: 40%;
+        right: 15%;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.25), rgba(139, 95, 191, 0.15));
+        filter: blur(30px);
+        animation: float3 20s infinite ease-in-out;
     }
 
+    .shape-4 {
+        bottom: 45%;
+        left: 8%;
+        width: 160px;
+        height: 160px;
+        background: radial-gradient(circle at 40% 60%, rgba(139, 95, 191, 0.25), rgba(255, 107, 107, 0.15));
+        filter: blur(40px);
+        animation: float4 22s infinite ease-in-out;
+    }
+
+    /* Petites bulles d'accent */
+    .shape-5 {
+        top: 25%;
+        right: 40%;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 107, 107, 0.4), transparent);
+        filter: blur(20px);
+        animation: float5 15s infinite ease-in-out;
+    }
+
+    .shape-6 {
+        bottom: 30%;
+        left: 50%;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle at 70% 30%, rgba(139, 95, 191, 0.4), transparent);
+        filter: blur(25px);
+        animation: float6 18s infinite ease-in-out;
+    }
+
+    /* Animations fluides et organiques */
     @keyframes float1 {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        50% { transform: translate(-30px, 20px) rotate(180deg); }
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.7;
+        }
+        33% { 
+            transform: translate(-50px, -30px) scale(1.1);
+            opacity: 0.5;
+        }
+        66% { 
+            transform: translate(30px, 50px) scale(0.9);
+            opacity: 0.8;
+        }
     }
 
     @keyframes float2 {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        50% { transform: translate(20px, -30px) rotate(-180deg); }
+        0%, 100% { 
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        25% { 
+            transform: translate(40px, -50px) scale(1.2) rotate(90deg);
+            opacity: 0.4;
+        }
+        50% { 
+            transform: translate(-20px, -40px) scale(0.8) rotate(180deg);
+            opacity: 0.7;
+        }
+        75% { 
+            transform: translate(50px, 20px) scale(1.1) rotate(270deg);
+            opacity: 0.5;
+        }
     }
 
     @keyframes float3 {
-        0%, 100% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(-20px, 15px) scale(1.05); }
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: translate(-30px, 25px) scale(1.3);
+            opacity: 0.4;
+        }
     }
 
-    /* Conteneur de connexion - Fixe et centré */
+    @keyframes float4 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.5;
+        }
+        40% { 
+            transform: translate(20px, -30px) scale(1.2);
+            opacity: 0.7;
+        }
+        80% { 
+            transform: translate(-25px, 20px) scale(0.9);
+            opacity: 0.6;
+        }
+    }
+
+    @keyframes float5 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.8;
+        }
+        50% { 
+            transform: translate(15px, -20px) scale(1.4);
+            opacity: 0.3;
+        }
+    }
+
+    @keyframes float6 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            opacity: 0.7;
+        }
+        33% { 
+            transform: translate(-10px, 15px) scale(1.1) rotate(120deg);
+            opacity: 0.5;
+        }
+        66% { 
+            transform: translate(20px, -10px) scale(0.8) rotate(240deg);
+            opacity: 0.6;
+        }
+    }
+
+    /* Conteneur de connexion - Fixe et centré avec plus d'espace */
     .login-container {
         position: fixed;
-        top: 60px;
+        top: 120px;
         left: 0;
         width: 100vw;
-        height: 100vh;
+        height: calc(100vh - 120px);
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0;
+        padding: 30px 0;
         z-index: 10;
     }
 
     .login-card {
         width: 100%;
-        max-width: 420px;
-        max-height: 90vh;  /* Limite la hauteur maximale */
+        max-width: 440px;
+        max-height: calc(100vh - 180px);
         background: var(--white);
         border-radius: 25px;
         overflow: hidden;
@@ -125,6 +233,7 @@
         animation: fadeInUp 0.8s ease-out;
         display: flex;
         flex-direction: column;
+        margin: 0 auto;
     }
 
     .login-card:hover {
@@ -143,15 +252,15 @@
         }
     }
 
-    /* En-tête de la carte - Taille réduite */
+    /* En-tête de la carte - Taille ajustée avec plus d'espace */
     .card-header {
         background: var(--isis-gradient);
-        padding: 25px 25px 20px;
+        padding: 30px 30px 25px;
         text-align: center;
         color: var(--white);
         position: relative;
         overflow: hidden;
-        flex-shrink: 0;  /* Empêche la compression */
+        flex-shrink: 0;
     }
 
     .card-header::before {
@@ -171,27 +280,27 @@
     }
 
     .card-header h4 {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         position: relative;
         z-index: 2;
     }
 
     .card-header p {
-        font-size: 14px;
+        font-size: 15px;
         opacity: 0.9;
         margin-bottom: 0;
         position: relative;
         z-index: 2;
     }
 
-    /* Corps de la carte - Optimisé pour l'espace */
+    /* Corps de la carte - Optimisé pour l'espace avec plus de padding */
     .card-body {
-        padding: 25px 30px;
+        padding: 30px 35px;
         flex: 1;
-        overflow-y: auto;  /* Scroll uniquement si nécessaire dans le corps */
-        max-height: calc(90vh - 120px);  /* Ajustement dynamique */
+        overflow-y: auto;
+        max-height: calc(100vh - 260px);
     }
 
     /* Indicateur API - Compact */
@@ -200,9 +309,9 @@
         border: none;
         font-weight: 500;
         animation: slideDown 0.5s ease-out;
-        padding: 8px 15px;
-        font-size: 13px;
-        margin-bottom: 15px;
+        padding: 10px 16px;
+        font-size: 14px;
+        margin-bottom: 18px;
     }
 
     @keyframes slideDown {
@@ -216,23 +325,23 @@
         }
     }
 
-    /* Groupes de formulaire - Espacement optimisé */
+    /* Groupes de formulaire - Espacement plus généreux */
     .form-group {
-        margin-bottom: 18px;
+        margin-bottom: 22px;
         position: relative;
     }
 
     .form-group label {
         display: block;
         color: var(--text-dark);
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         font-weight: 600;
         font-size: 14px;
     }
 
     .form-control {
         width: 100%;
-        padding: 12px 18px;
+        padding: 14px 20px;
         border: 2px solid #e8ecf4;
         border-radius: 12px;
         font-size: 15px;
@@ -254,10 +363,10 @@
         background: var(--white);
     }
 
-    /* Boutons - Taille adaptée */
+    /* Boutons - Taille adaptée avec plus d'espace */
     .btn-login {
         width: 100%;
-        padding: 14px;
+        padding: 16px;
         border: none;
         border-radius: 12px;
         background: var(--isis-gradient);
@@ -268,7 +377,7 @@
         transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -309,10 +418,11 @@
         color: var(--isis-purple);
         background: transparent;
         transition: all 0.3s ease;
-        padding: 12px;
+        padding: 14px;
         border-radius: 12px;
         font-size: 15px;
         font-weight: 600;
+        width: 100%;
     }
 
     .btn-outline-secondary:hover {
@@ -322,11 +432,12 @@
         box-shadow: 0 6px 15px rgba(139, 95, 191, 0.3);
     }
 
-    /* Section liens - Compact */
+    /* Section liens - Plus d'espace */
     .border-top {
         border-top: 1px solid #e8ecf4 !important;
-        padding-top: 15px;
-        margin-top: 18px;
+        padding-top: 20px;
+        margin-top: 25px;
+        text-align: center;
     }
 
     .border-top a {
@@ -393,8 +504,60 @@
         100% { transform: translateY(-50%) rotate(360deg); }
     }
 
-    /* Responsive - Adaptation pour petits écrans */
+    /* Responsive - Adaptation pour petits écrans avec meilleur espacement */
+    @media (max-height: 700px) {
+        .login-container {
+            top: 100px;
+            height: calc(100vh - 100px);
+            padding: 20px 0;
+        }
+        
+        .login-card {
+            max-height: calc(100vh - 140px);
+        }
+        
+        .card-header {
+            padding: 20px 25px 15px;
+        }
+        
+        .card-header h4 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .card-header p {
+            font-size: 13px;
+        }
+        
+        .card-body {
+            padding: 20px 30px;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-control {
+            padding: 12px 18px;
+        }
+        
+        .btn-login {
+            padding: 14px;
+            font-size: 15px;
+        }
+        
+        .btn-outline-secondary {
+            padding: 12px;
+        }
+    }
+
     @media (max-height: 600px) {
+        .login-container {
+            top: 80px;
+            height: calc(100vh - 80px);
+        }
+        
         .card-header {
             padding: 15px 20px 10px;
         }
@@ -410,6 +573,7 @@
         
         .card-body {
             padding: 15px 25px;
+            max-height: calc(100vh - 160px);
         }
         
         .form-group {
@@ -424,21 +588,32 @@
             padding: 12px;
             font-size: 15px;
         }
+        
+        .btn-outline-secondary {
+            padding: 10px;
+        }
     }
 
     @media (max-width: 480px) {
+        .login-container {
+            top: 90px;
+            height: calc(100vh - 90px);
+            padding: 15px 0;
+        }
+        
         .login-card {
             max-width: 95%;
             margin: 0 10px;
+            max-height: calc(100vh - 120px);
         }
         
         .card-body {
-            padding: 20px;
+            padding: 25px 20px;
         }
         
-        .shape-1, .shape-2, .shape-3 {
-            width: 200px;
-            height: 200px;
+        .shape-1, .shape-2, .shape-3, .shape-4, .shape-5, .shape-6 {
+            width: 120px;
+            height: 120px;
         }
     }
 
@@ -453,14 +628,16 @@
         height: auto;
     }
 </style>
-<!-- Formes animées en arrière-plan -->
+
+<!-- Background avec bulles flottantes style moderne -->
 <div class="bg-shapes">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
     <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
 </div>
-
-
 
 <div class="login-container">
     <div class="login-card">
@@ -510,22 +687,20 @@
                         <i class="fas fa-sign-in-alt mr-2"></i>
                         Se connecter
                     </button>
-                    <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
+                    <a class="btn btn-outline-secondary" href="{% url 'home' %}">
                         <i class="fas fa-arrow-left mr-2"></i>
                         Retour à l'accueil
                     </a>
                 </div>
             </form>
             
-            <div class="border-top pt-3">
-                <div class="text-center">
-                    <small class="text-muted">
-                        Vous n'avez pas de compte? 
-                        <a class="ml-2" href="{% url 'register' %}">
-                            <i class="fas fa-user-plus mr-1"></i>S'inscrire
-                        </a>
-                    </small>
-                </div>
+            <div class="border-top">
+                <small class="text-muted">
+                    Vous n'avez pas de compte? 
+                    <a class="ml-2" href="{% url 'register' %}">
+                        <i class="fas fa-user-plus mr-1"></i>S'inscrire
+                    </a>
+                </small>
             </div>
         </div>
     </div>
@@ -567,8 +742,10 @@ $(document).ready(function() {
     
     // Fonction de vérification du statut API
     function checkApiStatus() {
+        // Simulé pour l'exemple - remplacez par votre vraie URL
+        /*
         $.ajax({
-            url: '{% url "api_status" %}',
+            url: '/api/status/',
             method: 'GET',
             timeout: 5000,
             success: function(data) {
@@ -586,6 +763,7 @@ $(document).ready(function() {
                 showApiError('Impossible de vérifier le statut de l\'API');
             }
         });
+        */
     }
     
     function showApiError(message) {
@@ -596,14 +774,22 @@ $(document).ready(function() {
             .show();
     }
     
-    // Effet de parallaxe léger sur les formes d'arrière-plan
+    // Effet de parallaxe plus subtil sur les bulles
     $(window).on('mousemove', function(e) {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
         
-        $('.shape-1').css('transform', `translate(${x * 15}px, ${y * 15}px)`);
-        $('.shape-2').css('transform', `translate(${x * -10}px, ${y * -10}px)`);
-        $('.shape-3').css('transform', `translate(${x * 8}px, ${y * -8}px)`);
+        // Grandes bulles - mouvement lent
+        $('.shape-1').css('transform', `translate(${x * 20}px, ${y * 20}px)`);
+        $('.shape-2').css('transform', `translate(${x * -15}px, ${y * -15}px)`);
+        
+        // Bulles moyennes - mouvement moyen
+        $('.shape-3').css('transform', `translate(${x * 12}px, ${y * -12}px)`);
+        $('.shape-4').css('transform', `translate(${x * -10}px, ${y * 15}px)`);
+        
+        // Petites bulles - mouvement rapide
+        $('.shape-5').css('transform', `translate(${x * 18}px, ${y * -15}px)`);
+        $('.shape-6').css('transform', `translate(${x * -12}px, ${y * 18}px)`);
     });
     
     // Empêcher le scroll de la page
