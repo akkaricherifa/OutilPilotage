@@ -3,96 +3,859 @@
 {% block title %}Inscription - AppISIS{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-plus mr-2"></i>
-                        Créer un compte AppISIS
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <!-- Messages -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <!-- Formulaire -->
-                    <form method="POST">
-                        {% csrf_token %}
-                        
-                        <div class="form-group">
-                            <label for="username">
-                                <i class="fas fa-user mr-1"></i>Nom d'utilisateur
-                            </label>
-                            <input type="text" class="form-control" name="username" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">
-                                <i class="fas fa-envelope mr-1"></i>Email
-                            </label>
-                            <input type="email" class="form-control" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="role">
-                                <i class="fas fa-id-badge mr-1"></i>Rôle
-                            </label>
-                            <select class="form-control" name="role" required>
-                                <option value="">Choisissez un rôle</option>
-                                <option value="admin">Administrateur</option>
-                                <option value="responsable_recherche">Responsable Recherche</option>
-                                <option value="responsable_admin">Responsable Administratif</option>
-                                <option value="secretaire">Secrétaire</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="password1">
-                                <i class="fas fa-lock mr-1"></i>Mot de passe
-                            </label>
-                            <input type="password" class="form-control" name="password1" required>
-                            <small class="form-text text-muted">Minimum 8 caractères</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="password2">
-                                <i class="fas fa-lock mr-1"></i>Confirmer le mot de passe
-                            </label>
-                            <input type="password" class="form-control" name="password2" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block" type="submit">
-                                <i class="fas fa-user-plus mr-1"></i>S'inscrire
-                            </button>
-                            <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
-                                <i class="fas fa-arrow-left mr-1"></i>Annuler
-                            </a>
-                        </div>
-                    </form>
-                    
-                    <div class="border-top pt-3">
-                        <small class="text-muted">
-                            Vous avez déjà un compte? 
-                            <a class="ml-2" href="{% url 'login' %}">
-                                <i class="fas fa-sign-in-alt mr-1"></i>Se connecter
-                            </a>
-                        </small>
+<style>
+    :root {
+        /* Couleurs du logo ISIS */
+        --isis-purple: #8B5FBF;
+        --isis-coral: #FF6B6B;
+        --isis-gradient: linear-gradient(135deg, #FF6B6B 0%, #8B5FBF 100%);
+        --isis-light-purple: rgba(139, 95, 191, 0.1);
+        --isis-light-coral: rgba(255, 107, 107, 0.1);
+        --text-dark: #333;
+        --white: #ffffff;
+        --light-bg: #f8f9ff;
+        --shadow: 0 15px 35px rgba(139, 95, 191, 0.15);
+        --shadow-hover: 0 20px 40px rgba(139, 95, 191, 0.25);
+    }
+
+    /* Suppression du scroll et fixation de l'interface */
+    html, body {
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background: var(--light-bg);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    /* Conteneur principal prenant toute la hauteur */
+    .container-fluid {
+        height: 100vh;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    /* Background avec bulles flottantes style moderne */
+    .bg-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.7;
+    }
+
+    /* Grandes bulles avec dégradé */
+    .shape-1 {
+        top: 10%;
+        left: 5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.1));
+        filter: blur(60px);
+        animation: float1 25s infinite ease-in-out;
+    }
+
+    .shape-2 {
+        bottom: 5%;
+        right: 10%;
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle at 70% 70%, rgba(139, 95, 191, 0.3), rgba(139, 95, 191, 0.1));
+        filter: blur(50px);
+        animation: float2 30s infinite ease-in-out;
+    }
+
+    /* Bulles moyennes */
+    .shape-3 {
+        top: 35%;
+        right: 20%;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.25), rgba(139, 95, 191, 0.15));
+        filter: blur(30px);
+        animation: float3 20s infinite ease-in-out;
+    }
+
+    .shape-4 {
+        bottom: 40%;
+        left: 10%;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle at 40% 60%, rgba(139, 95, 191, 0.25), rgba(255, 107, 107, 0.15));
+        filter: blur(40px);
+        animation: float4 22s infinite ease-in-out;
+    }
+
+    /* Petites bulles d'accent */
+    .shape-5 {
+        top: 20%;
+        right: 35%;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 107, 107, 0.4), transparent);
+        filter: blur(20px);
+        animation: float5 15s infinite ease-in-out;
+    }
+
+    .shape-6 {
+        bottom: 25%;
+        left: 45%;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle at 70% 30%, rgba(139, 95, 191, 0.4), transparent);
+        filter: blur(25px);
+        animation: float6 18s infinite ease-in-out;
+    }
+
+    /* Micro-bulles pour plus de détail */
+    .shape-7 {
+        top: 60%;
+        right: 50%;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.3), transparent);
+        filter: blur(15px);
+        animation: float7 12s infinite ease-in-out;
+    }
+
+    .shape-8 {
+        top: 45%;
+        left: 25%;
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 50% 50%, rgba(139, 95, 191, 0.35), transparent);
+        filter: blur(10px);
+        animation: float8 14s infinite ease-in-out;
+    }
+
+    /* Animations fluides et organiques */
+    @keyframes float1 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.7;
+        }
+        33% { 
+            transform: translate(-50px, -30px) scale(1.1);
+            opacity: 0.5;
+        }
+        66% { 
+            transform: translate(30px, 50px) scale(0.9);
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes float2 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        25% { 
+            transform: translate(40px, -60px) scale(1.2) rotate(90deg);
+            opacity: 0.4;
+        }
+        50% { 
+            transform: translate(-20px, -40px) scale(0.8) rotate(180deg);
+            opacity: 0.7;
+        }
+        75% { 
+            transform: translate(60px, 20px) scale(1.1) rotate(270deg);
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes float3 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: translate(-40px, 30px) scale(1.3);
+            opacity: 0.4;
+        }
+    }
+
+    @keyframes float4 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.5;
+        }
+        40% { 
+            transform: translate(25px, -35px) scale(1.2);
+            opacity: 0.7;
+        }
+        80% { 
+            transform: translate(-30px, 25px) scale(0.9);
+            opacity: 0.6;
+        }
+    }
+
+    @keyframes float5 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.8;
+        }
+        50% { 
+            transform: translate(20px, -25px) scale(1.4);
+            opacity: 0.3;
+        }
+    }
+
+    @keyframes float6 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            opacity: 0.7;
+        }
+        33% { 
+            transform: translate(-15px, 20px) scale(1.1) rotate(120deg);
+            opacity: 0.5;
+        }
+        66% { 
+            transform: translate(25px, -15px) scale(0.8) rotate(240deg);
+            opacity: 0.6;
+        }
+    }
+
+    @keyframes float7 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: translate(-10px, 15px) scale(1.5);
+            opacity: 0.3;
+        }
+    }
+
+    @keyframes float8 {
+        0%, 100% { 
+            transform: translate(0, 0) scale(1);
+            opacity: 0.7;
+        }
+        25% { 
+            transform: translate(15px, -10px) scale(1.2);
+            opacity: 0.4;
+        }
+        75% { 
+            transform: translate(-10px, 20px) scale(0.9);
+            opacity: 0.8;
+        }
+    }
+
+    /* Conteneur d'inscription - Fixe et centré avec plus d'espace */
+    .register-container {
+        position: fixed;
+        top: 120px;  /* Augmenté de 80px à 120px pour plus d'espace */
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 120px);  /* Ajusté en conséquence */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 0;  /* Plus de padding vertical */
+        z-index: 10;
+        overflow-y: auto;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 500px;
+        max-height: calc(100vh - 180px);  /* Ajusté pour le nouvel espacement */
+        background: var(--white);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.4s ease;
+        position: relative;
+        animation: fadeInUp 0.8s ease-out;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+    }
+
+    .register-card:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-3px);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* En-tête de la carte */
+    .card-header {
+        background: var(--isis-gradient);
+        padding: 30px 30px 25px;
+        text-align: center;
+        color: var(--white);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .card-header h4 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-header p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Corps de la carte - Ajusté pour le nouvel espacement */
+    .card-body {
+        padding: 30px 35px;
+        flex: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 280px);  /* Ajusté pour accommoder l'espace supplémentaire */
+    }
+
+    /* Messages d'alerte */
+    .alert {
+        border-radius: 12px;
+        border: none;
+        font-weight: 500;
+        animation: slideDown 0.5s ease-out;
+        padding: 12px 18px;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Groupes de formulaire */
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 20px;
+        border: 2px solid #e8ecf4;
+        border-radius: 12px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafbfc;
+        position: relative;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--isis-purple);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(139, 95, 191, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-control:hover {
+        border-color: var(--isis-coral);
+        background: var(--white);
+    }
+
+    /* Select styling */
+    .form-control select {
+        cursor: pointer;
+    }
+
+    .form-control option {
+        padding: 10px;
+        background: var(--white);
+        color: var(--text-dark);
+    }
+
+    /* Small text helper */
+    .form-text {
+        font-size: 12px;
+        color: var(--isis-purple);
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    /* Boutons */
+    .btn-register {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        background: var(--isis-gradient);
+        color: var(--white);
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-register::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: 0.6s;
+    }
+
+    .btn-register:hover::before {
+        left: 100%;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(139, 95, 191, 0.4);
+    }
+
+    .btn-register:active {
+        transform: translateY(-1px);
+        animation: pulse 0.6s;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(139, 95, 191, 0.4); }
+        70% { box-shadow: 0 0 0 12px rgba(139, 95, 191, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(139, 95, 191, 0); }
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid var(--isis-purple);
+        color: var(--isis-purple);
+        background: transparent;
+        transition: all 0.3s ease;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--isis-purple);
+        color: var(--white);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(139, 95, 191, 0.3);
+    }
+
+    /* Section liens */
+    .border-top {
+        border-top: 1px solid #e8ecf4 !important;
+        padding-top: 20px;
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .border-top a {
+        color: var(--isis-purple);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .border-top a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--isis-gradient);
+        transition: width 0.3s ease;
+    }
+
+    .border-top a:hover::after {
+        width: 100%;
+    }
+
+    .border-top a:hover {
+        color: var(--isis-coral);
+    }
+
+    /* Icônes */
+    .fas {
+        color: var(--isis-purple);
+        transition: all 0.3s ease;
+    }
+
+    .form-group:hover .fas,
+    .btn:hover .fas {
+        color: var(--isis-coral);
+        transform: scale(1.05);
+    }
+
+    /* Animation de chargement */
+    .loading {
+        position: relative;
+    }
+
+    .loading::after {
+        content: '';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        border: 2px solid transparent;
+        border-top: 2px solid var(--white);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: translateY(-50%) rotate(0deg); }
+        100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Responsive - Ajusté pour le nouvel espacement */
+    @media (max-height: 700px) {
+        .register-container {
+            top: 100px;  /* Réduit légèrement sur les petits écrans */
+            height: calc(100vh - 100px);
+            padding: 20px 0;
+        }
+        
+        .register-card {
+            max-height: calc(100vh - 140px);
+        }
+        
+        .card-header {
+            padding: 20px 25px 15px;
+        }
+        
+        .card-header h4 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .card-body {
+            padding: 20px 30px;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .register-container {
+            top: 90px;  /* Espace adapté pour mobile */
+            height: calc(100vh - 90px);
+            padding: 15px 0;
+        }
+        
+        .register-card {
+            max-width: 95%;
+            margin: 0 10px;
+            max-height: calc(100vh - 120px);
+        }
+        
+        .card-body {
+            padding: 25px 20px;
+            max-height: calc(100vh - 180px);
+        }
+        
+        .shape-1, .shape-2, .shape-3, .shape-4, 
+        .shape-5, .shape-6, .shape-7, .shape-8 {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    /* Assurer que le contenu ne déborde jamais */
+    * {
+        box-sizing: border-box;
+    }
+
+    .row, .col-md-8 {
+        margin: 0;
+        padding: 0;
+        height: auto;
+    }
+</style>
+
+<!-- Background avec bulles flottantes style moderne -->
+<div class="bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
+    <div class="shape shape-7"></div>
+    <div class="shape shape-8"></div>
+</div>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="card-header">
+            <h4 class="mb-0">
+                <i class="fas fa-user-plus mr-2"></i>
+                Créer un compte AppISIS
+            </h4>
+            <p>Rejoignez la communauté ISIS</p>
+        </div>
+        
+        <div class="card-body">
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
                     </div>
+                {% endfor %}
+            {% endif %}
+            
+            <!-- Formulaire -->
+            <form method="POST" id="register-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user mr-2"></i>Nom d'utilisateur
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           name="username" 
+                           id="username"
+                           placeholder="Choisissez votre nom d'utilisateur"
+                           required>
                 </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope mr-2"></i>Adresse email
+                    </label>
+                    <input type="email" 
+                           class="form-control" 
+                           name="email" 
+                           id="email"
+                           placeholder="votre.email@example.com"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">
+                        <i class="fas fa-id-badge mr-2"></i>Rôle dans l'organisation
+                    </label>
+                    <select class="form-control" name="role" id="role" required>
+                        <option value="">Sélectionnez votre rôle</option>
+                        <option value="admin">👑 Administrateur</option>
+                        <option value="responsable_recherche">🔬 Responsable Recherche</option>
+                        <option value="responsable_admin">📋 Responsable Administratif</option>
+                        <option value="secretaire">📝 Secrétaire</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password1">
+                        <i class="fas fa-lock mr-2"></i>Mot de passe
+                    </label>
+                    <input type="password" 
+                           class="form-control" 
+                           name="password1" 
+                           id="password1"
+                           placeholder="Créez un mot de passe sécurisé"
+                           required>
+                    <small class="form-text">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Minimum 8 caractères, incluez majuscules, minuscules et chiffres
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password2">
+                        <i class="fas fa-lock mr-2"></i>Confirmer le mot de passe
+                    </label>
+                    <input type="password" 
+                           class="form-control" 
+                           name="password2" 
+                           id="password2"
+                           placeholder="Répétez votre mot de passe"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-register" type="submit" id="register-btn">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Créer mon compte
+                    </button>
+                    <a class="btn btn-outline-secondary" href="{% url 'home' %}">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Retour à l'accueil
+                    </a>
+                </div>
+            </form>
+            
+            <div class="border-top">
+                <small class="text-muted">
+                    Vous avez déjà un compte? 
+                    <a class="ml-2" href="{% url 'login' %}">
+                        <i class="fas fa-sign-in-alt mr-1"></i>Se connecter
+                    </a>
+                </small>
             </div>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Gestionnaire du formulaire avec animation
+    $('#register-form').on('submit', function(e) {
+        const btn = $('#register-btn');
+        const originalText = btn.html();
+        
+        // Validation des mots de passe
+        const password1 = $('#password1').val();
+        const password2 = $('#password2').val();
+        
+        if (password1 !== password2) {
+            e.preventDefault();
+            alert('Les mots de passe ne correspondent pas !');
+            return;
+        }
+        
+        // Animation de chargement
+        btn.prop('disabled', true)
+           .addClass('loading')
+           .html('<i class="fas fa-spinner fa-spin mr-2"></i>Création du compte...');
+        
+        // Si erreur, restaurer le bouton après 5 secondes
+        setTimeout(() => {
+            if (btn.prop('disabled')) {
+                btn.prop('disabled', false)
+                   .removeClass('loading')
+                   .html(originalText);
+            }
+        }, 5000);
+    });
+    
+    // Animation d'entrée pour les champs
+    $('.form-control').on('focus', function() {
+        $(this).parent().addClass('focused');
+    }).on('blur', function() {
+        $(this).parent().removeClass('focused');
+    });
+    
+    // Validation en temps réel du mot de passe
+    $('#password2').on('input', function() {
+        const password1 = $('#password1').val();
+        const password2 = $(this).val();
+        
+        if (password1 && password2) {
+            if (password1 === password2) {
+                $(this).css('border-color', '#28a745');
+            } else {
+                $(this).css('border-color', '#dc3545');
+            }
+        }
+    });
+    
+    // Effet de parallaxe plus subtil sur les bulles
+    $(window).on('mousemove', function(e) {
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+        
+        // Grandes bulles - mouvement lent
+        $('.shape-1').css('transform', `translate(${x * 20}px, ${y * 20}px)`);
+        $('.shape-2').css('transform', `translate(${x * -15}px, ${y * -15}px)`);
+        
+        // Bulles moyennes - mouvement moyen
+        $('.shape-3').css('transform', `translate(${x * 12}px, ${y * -12}px)`);
+        $('.shape-4').css('transform', `translate(${x * -10}px, ${y * 15}px)`);
+        
+        // Petites bulles - mouvement rapide
+        $('.shape-5').css('transform', `translate(${x * 25}px, ${y * -20}px)`);
+        $('.shape-6').css('transform', `translate(${x * -18}px, ${y * 22}px)`);
+        $('.shape-7').css('transform', `translate(${x * 15}px, ${y * -25}px)`);
+        $('.shape-8').css('transform', `translate(${x * -20}px, ${y * 18}px)`);
+    });
+    
+    // Empêcher le scroll de la page
+    $('body').css('overflow', 'hidden');
+    $(window).on('scroll touchmove mousewheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
+    
+    // Animation des icônes au focus
+    $('.form-control').on('focus', function() {
+        $(this).siblings('label').find('.fas').addClass('animated bounceIn');
+    });
+});
+</script>
 {% endblock %}
