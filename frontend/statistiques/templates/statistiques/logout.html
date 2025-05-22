@@ -1,0 +1,13 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}Déconnexion - Statistiques Étudiants{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h2>Vous avez été déconnecté</h2>
+    <p class="lead">Merci d'avoir utilisé notre application.</p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="{% url 'login' %}">Se reconnecter</a>
+    <a class="btn btn-outline-secondary btn-lg ml-2" href="{% url 'home' %}">Retour à l'accueil</a>
+</div>
+{% endblock %}

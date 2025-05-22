@@ -1,0 +1,54 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}Données - Statistiques Étudiants{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Données étudiantes</h1>
+    <div>
+        <a href="{% url 'update_data' %}" class="btn btn-success">
+            <i class="fas fa-plus-circle mr-1"></i>Ajouter une entrée
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Tableau des données</h5>
+    </div>
+    <div class="card-body">
+        {% if data %}
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Année</th>
+                            <th>FIE1</th>
+                            <th>FIE2</th>
+                            <th>FIE3</th>
+                            <th>Taux boursiers</th>
+                            <th>Diplômés</th>
+                            <th>Handicapés</th>
+                            <th>Étrangers</th>
+                            <th>Démissions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.annee }}</td>
+                                <td>{{ item.nombre_fie1 }}</td>
+                                <td>{{ item.nombre_fie2 }}</td>
+                                <td>{{ item.nombre_fie3 }}</td>
+                                <td>{{ item.taux_boursiers|floatformat:2 }}</td>
+                                <td>{{ item.nombre_diplomes }}</td>
+                                <td>{{ item.nombre_handicapes }}</td>
+                                <td>{{ item.nombre_etrangers }}</td>
+                                <td>{{ item.nombre_demissionnes }}</td>
+                                <td>
+                                    <a href="{% url 'update_data'

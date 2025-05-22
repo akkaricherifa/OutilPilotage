@@ -1,0 +1,114 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}Connexion - AppISIS{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Connexion à AppISIS
+                </h4>
+            </div>
+            <div class="card-body">
+                <!-- Indicateur de statut API -->
+                <div id="api-status" class="alert" style="display: none;"></div>
+                
+                <form method="POST" id="login-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user mr-1"></i>Nom d'utilisateur
+                        </label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock mr-1"></i>Mot de passe
+                        </label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" id="login-btn">
+                            <i class="fas fa-sign-in-alt mr-1"></i>Se connecter
+                        </button>
+                        <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
+                            <i class="fas fa-arrow-left mr-1"></i>Retour à l'accueil
+                        </a>
+                    </div>
+                </form>
+                
+                <div class="border-top pt-3">
+                    <small class="text-muted">
+                        Vous n'avez pas de compte? 
+                        <a class="ml-2" href="{% url 'register' %}">
+                            <i class="fas fa-user-plus mr-1"></i>S'inscrire
+                        </a>
+                    </small>
+                </div>
+                
+                <!-- Comptes de test (à retirer en production) -->
+                <div class="mt-3 p-2 bg-light rounded">
+                    <small class="text-muted">
+                        <strong>Comptes de test:</strong><br>
+                        Admin: admin / admin123<br>
+                        Recherche: responsable_recherche / test123<br>
+                        Secrétaire: secretaire / test123
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Vérifier le statut de l'API au chargement
+    checkApiStatus();
+    
+    // Gestionnaire du formulaire
+    $('#login-form').on('submit', function(e) {
+        const btn = $('#login-btn');
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i>Connexion...');
+        
+        // Le formulaire sera soumis normalement via Django
+        // Le JavaScript sert juste à améliorer l'UX
+    });
+    
+    function checkApiStatus() {
+        $.ajax({
+            url: '{% url "api_status" %}',
+            method: 'GET',
+            timeout: 5000,
+            success: function(data) {
+                if (data.status === 'online') {
+                    $('#api-status')
+                        .removeClass('alert-danger alert-warning')
+                        .addClass('alert-success')
+                        .html('<i class="fas fa-check-circle mr-1"></i>API connectée')
+                        .show();
+                } else {
+                    showApiError('API non accessible');
+                }
+            },
+            error: function() {
+                showApiError('Impossible de vérifier le statut de l\'API');
+            }
+        });
+    }
+    
+    function showApiError(message) {
+        $('#api-status')
+            .removeClass('alert-success alert-warning')
+            .addClass('alert-danger')
+            .html('<i class="fas fa-exclamation-triangle mr-1"></i>' + message)
+            .show();
+    }
+});
+</script>
+{% endblock %}

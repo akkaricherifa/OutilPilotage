@@ -1,0 +1,58 @@
+{% extends 'statistiques/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Importer un fichier CSV - Statistiques Étudiants{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Importer un fichier CSV</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">Importer</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+                
+                <div class="mt-4">
+                    <div class="alert alert-info">
+                        <h5>Format attendu pour le fichier CSV</h5>
+                        <p>Le fichier CSV doit contenir les colonnes suivantes :</p>
+                        <code>annee,nombre_fie1,nombre_fie2,nombre_fie3,taux_boursiers,nombre_diplomes,nombre_handicapes,nombre_etrangers,nombre_demissionnes</code>
+                        <hr>
+                        <h6>Exemple :</h6>
+                        <pre>annee,nombre_fie1,nombre_fie2,nombre_fie3,taux_boursiers,nombre_diplomes,nombre_handicapes,nombre_etrangers,nombre_demissionnes
+2023,133,102,94,0.2,70,11,11,7
+2024,139,102,96,0.28,78,11,12,6
+2025,116,91,80,0.34,81,12,15,4</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Validation du fichier avant envoi
+    $(document).ready(function() {
+        $('form').on('submit', function(e) {
+            const fileInput = $('input[type="file"]');
+            if (fileInput.length > 0 && fileInput[0].files.length > 0) {
+                const fileName = fileInput[0].files[0].name;
+                if (!fileName.endsWith('.csv')) {
+                    e.preventDefault();
+                    alert('Veuillez sélectionner un fichier CSV valide.');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

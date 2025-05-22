@@ -1,0 +1,132 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}Accueil - AppISIS{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">
+            <i class="fas fa-graduation-cap mr-3"></i>
+            Bienvenue sur AppISIS
+        </h1>
+        <p class="lead">
+            Outil de pilotage et d'analyse statistique pour votre établissement scolaire
+        </p>
+        <hr class="my-4">
+        <p>
+            Importez vos données, visualisez les statistiques et générez des rapports détaillés 
+            avec un système de permissions adapté à chaque rôle.
+        </p>
+        
+        {% if request.session.api_token %}
+            <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}" role="button">
+                <i class="fas fa-tachometer-alt mr-2"></i>
+                Accéder au tableau de bord
+            </a>
+        {% else %}
+            <a class="btn btn-primary btn-lg mr-3" href="{% url 'login' %}" role="button">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                Se connecter
+            </a>
+            <a class="btn btn-outline-secondary btn-lg" href="{% url 'register' %}" role="button">
+                <i class="fas fa-user-plus mr-2"></i>
+                S'inscrire
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-csv fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title">Import de données</h5>
+                    <p class="card-text">
+                        Téléchargez vos fichiers CSV pour importer des données 
+                        statistiques dans le système.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x mb-3 text-success"></i>
+                    <h5 class="card-title">Visualisation</h5>
+                    <p class="card-text">
+                        Générez des graphiques interactifs et visualisez 
+                        les tendances de vos données.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users-cog fa-3x mb-3 text-info"></i>
+                    <h5 class="card-title">Gestion des rôles</h5>
+                    <p class="card-text">
+                        Système de permissions adapté aux différents 
+                        acteurs de l'établissement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Rôles disponibles
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-user-shield mr-2 text-danger"></i>Administrateur</h6>
+                            <ul class="small text-muted">
+                                <li>Accès complet au système</li>
+                                <li>Gestion des utilisateurs</li>
+                                <li>Toutes les permissions</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-user-graduate mr-2 text-primary"></i>Responsable Recherche</h6>
+                            <ul class="small text-muted">
+                                <li>Consultation des statistiques</li>
+                                <li>Export des données</li>
+                                <li>Rapports de recherche</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-user-tie mr-2 text-warning"></i>Responsable Admin</h6>
+                            <ul class="small text-muted">
+                                <li>Upload de données</li>
+                                <li>Édition des informations</li>
+                                <li>Statistiques administratives</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-user mr-2 text-secondary"></i>Secrétaire</h6>
+                            <ul class="small text-muted">
+                                <li>Consultation des données</li>
+                                <li>Saisie basique</li>
+                                <li>Rapports simples</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

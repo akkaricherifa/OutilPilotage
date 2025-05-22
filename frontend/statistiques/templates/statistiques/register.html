@@ -1,0 +1,98 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}Inscription - AppISIS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Créer un compte AppISIS
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- Formulaire -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-user mr-1"></i>Nom d'utilisateur
+                            </label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope mr-1"></i>Email
+                            </label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="role">
+                                <i class="fas fa-id-badge mr-1"></i>Rôle
+                            </label>
+                            <select class="form-control" name="role" required>
+                                <option value="">Choisissez un rôle</option>
+                                <option value="admin">Administrateur</option>
+                                <option value="responsable_recherche">Responsable Recherche</option>
+                                <option value="responsable_admin">Responsable Administratif</option>
+                                <option value="secretaire">Secrétaire</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password1">
+                                <i class="fas fa-lock mr-1"></i>Mot de passe
+                            </label>
+                            <input type="password" class="form-control" name="password1" required>
+                            <small class="form-text text-muted">Minimum 8 caractères</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password2">
+                                <i class="fas fa-lock mr-1"></i>Confirmer le mot de passe
+                            </label>
+                            <input type="password" class="form-control" name="password2" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit">
+                                <i class="fas fa-user-plus mr-1"></i>S'inscrire
+                            </button>
+                            <a class="btn btn-outline-secondary btn-block" href="{% url 'home' %}">
+                                <i class="fas fa-arrow-left mr-1"></i>Annuler
+                            </a>
+                        </div>
+                    </form>
+                    
+                    <div class="border-top pt-3">
+                        <small class="text-muted">
+                            Vous avez déjà un compte? 
+                            <a class="ml-2" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt mr-1"></i>Se connecter
+                            </a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
