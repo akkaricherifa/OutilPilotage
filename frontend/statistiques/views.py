@@ -366,3 +366,45 @@ def admin_users(request):
         messages.error(request, "Erreur de connexion pour récupérer les utilisateurs.")
     
     return render(request, 'statistiques/admin_users.html', {'users_data': users_data})
+
+
+
+
+
+
+
+def effectifs_etudiants(request):
+    """Vue principale pour les effectifs étudiants"""
+    try:
+        # Récupérer les statistiques depuis l'API
+        response = requests.get(f"{settings.API_URL}/effectifs/stats")
+        if response.status_code == 200:
+            stats = response.json()
+        else:
+            stats = None
+            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+    except Exception as e:
+        stats = None
+        messages.error(request, f"Erreur de connexion à l'API: {str(e)}")
+    
+    # Récupérer toutes les données pour le tableau
+    try:
+        response = requests.get(f"{settings.API_URL}/effectifs")
+        if response.status_code == 200:
+            all_data = response.json()
+        else:
+            all_data = []
+    except Exception as e:
+        all_data = []
+        messages.error(request, f"Erreur lors de la récupération des données: {str(e)}")
+    
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+
+
+
+
+
+

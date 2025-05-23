@@ -24,4 +24,10 @@ urlpatterns = [
     
     # API Status (AJAX)
     path('api/status/', views.api_status, name='api_status'),
+
+
+
+
+
+    path('effectifs-etudiants/', views.effectifs_etudiants, name='effectifs_etudiants'),
 ]

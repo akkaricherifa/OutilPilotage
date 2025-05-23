@@ -1467,3 +1467,828 @@ django.template.exceptions.TemplateDoesNotExist: statistiques/base.html
 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 5334
 "GET /dashboard/ HTTP/1.1" 200 27152
+Internal Server Error: /charts/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 289, in charts
+    return render(request, 'statistiques/charts.html', {
+        'chart_types': chart_types,
+        'selected_chart': selected_chart,
+        'chart_image': chart_image
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: statistiques/charts.html
+"GET /charts/ HTTP/1.1" 500 92519
+Internal Server Error: /view-data/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 256, in view_data
+    return render(request, 'statistiques/view_data.html', {'data': data})
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 42: 'for'. Looking for one of: empty, endfor.
+"GET /view-data/ HTTP/1.1" 500 210762
+"GET /upload-csv/ HTTP/1.1" 200 25128
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 184, in dashboard
+    return render(request, 'statistiques/dashboard.html', {
+        'statistics': statistics,
+        'user_info': request.session.get('user_info', {})
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'home2' not found. 'home2' is not a valid view function or pattern name.
+"GET /dashboard/ HTTP/1.1" 500 169200
+"GET /dashboard/ HTTP/1.1" 200 36092
+"GET /upload-csv/ HTTP/1.1" 200 24503
+Internal Server Error: /view-data/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 256, in view_data
+    return render(request, 'statistiques/view_data.html', {'data': data})
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 42: 'for'. Looking for one of: empty, endfor.
+"GET /view-data/ HTTP/1.1" 500 210458
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 37015
+"GET /login/ HTTP/1.1" 200 41363
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 36143
+"GET /dashboard/ HTTP/1.1" 200 35670
+"GET /dashboard/ HTTP/1.1" 200 35878
+"GET /dashboard/ HTTP/1.1" 200 33987
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /login/ HTTP/1.1" 200 39963
+"GET /register/ HTTP/1.1" 200 42450
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 34433
+"GET /upload-csv/ HTTP/1.1" 200 22694
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /static/images/isis.png HTTP/1.1" 304 0
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 34433
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /dashboard/ HTTP/1.1" 200 33987
+"GET /effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /login/?next=/effectifs-etudiants/ HTTP/1.1" 200 41103
+"POST /login/?next=/effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 34433
+Internal Server Error: /view-data/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 256, in view_data
+    return render(request, 'statistiques/view_data.html', {'data': data})
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 42: 'for'. Looking for one of: empty, endfor.
+"GET /view-data/ HTTP/1.1" 500 210524
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 184, in dashboard
+    return render(request, 'statistiques/dashboard.html', {
+        'statistics': statistics,
+        'user_info': request.session.get('user_info', {})
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs-etudiants' not found. 'effectifs-etudiants' is not a valid view function or pattern name.
+"GET /dashboard/ HTTP/1.1" 500 170118
+"GET /dashboard/ HTTP/1.1" 200 33997
+"GET /effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /login/?next=/effectifs-etudiants/ HTTP/1.1" 200 41103
+"POST /login/?next=/effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 34443
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /dashboard/ HTTP/1.1" 200 33997
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs_add_data' not found. 'effectifs_add_data' is not a valid view function or pattern name.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 155524
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs_add_data' not found. 'effectifs_add_data' is not a valid view function or pattern name.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 167762
+"GET /effectifs-etudiants/ HTTP/1.1" 200 23403
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs_add_data' not found. 'effectifs_add_data' is not a valid view function or pattern name.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 155540
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs_add_data' not found. 'effectifs_add_data' is not a valid view function or pattern name.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 155540
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'effectifs_add_data' not found. 'effectifs_add_data' is not a valid view function or pattern name.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 167766
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28800
+Not Found: /api/effectifs/charts/categories_speciales
+Not Found: /api/effectifs/charts/repartition_pie
+Not Found: /api/effectifs/charts/diplomes_bar
+Not Found: /api/effectifs/charts/radar_comparison
+Not Found: /api/effectifs/charts/evolution
+Not Found: /api/effectifs/charts/taux_boursiers
+"GET /api/effectifs/charts/categories_speciales HTTP/1.1" 404 5594
+"GET /api/effectifs/charts/repartition_pie HTTP/1.1" 404 5579
+"GET /api/effectifs/charts/diplomes_bar HTTP/1.1" 404 5570
+"GET /api/effectifs/charts/radar_comparison HTTP/1.1" 404 5582
+"GET /api/effectifs/charts/taux_boursiers HTTP/1.1" 404 5576
+"GET /api/effectifs/charts/evolution HTTP/1.1" 404 5561
+Not Found: /api/effectifs/charts/radar_comparison
+Not Found: /api/effectifs/charts/taux_boursiers
+Not Found: /api/effectifs/charts/categories_speciales
+Not Found: /api/effectifs/charts/diplomes_bar
+Not Found: /api/effectifs/charts/repartition_pie
+Not Found: /api/effectifs/charts/evolution
+"GET /api/effectifs/charts/radar_comparison HTTP/1.1" 404 5582
+"GET /api/effectifs/charts/taux_boursiers HTTP/1.1" 404 5576
+"GET /api/effectifs/charts/categories_speciales HTTP/1.1" 404 5594
+"GET /api/effectifs/charts/repartition_pie HTTP/1.1" 404 5579
+"GET /api/effectifs/charts/diplomes_bar HTTP/1.1" 404 5570
+"GET /api/effectifs/charts/evolution HTTP/1.1" 404 5561
+Internal Server Error: /effectifs-etudiants/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 401, in effectifs_etudiants
+    return render(request, 'statistiques/effectifs_etudiants.html', {
+        'stats': stats,
+        'all_data': all_data
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 415: 'block'. Looking for one of: endblock.
+"GET /effectifs-etudiants/ HTTP/1.1" 500 182420
+"GET /effectifs-etudiants/ HTTP/1.1" 200 33825
+Internal Server Error: /upload-csv/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 163, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 196, in upload_csv
+    csv_file.uploaded_by = request.user
+    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 288, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x000001E49724A8B0>>": "CSVFile.uploaded_by" must be a "User" instance.
+"POST /upload-csv/ HTTP/1.1" 500 80283
+Watching for file changes with StatReloader

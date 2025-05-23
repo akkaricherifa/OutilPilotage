@@ -39,8 +39,6 @@ except Exception as e:
     print("Échec de connexion MongoDB:", e)
 
 
-
-
 # Décorateur pour vérifier l'authentification
 def token_required(f):
     @wraps(f)
