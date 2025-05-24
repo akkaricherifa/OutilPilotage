@@ -218,7 +218,7 @@
                     <td>{{ item.taux_boursiers|floatformat:2 }}%</td>
                     <td>{{ item.nombre_diplomes }}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="editData({{ item|json_script:'' }})">
+                        <button class="btn btn-sm btn-outline-primary" onclick="editData({{ item|safe }})">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete({{ item.annee }})">
@@ -263,6 +263,7 @@
             </div>
             <form id="dataForm" method="post" action="{% url 'update_data' %}">
                 {% csrf_token %}
+                <input type="hidden" name="source" value="effectifs">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
@@ -349,6 +350,7 @@
             </div>
             <form id="uploadForm" method="post" enctype="multipart/form-data" action="{% url 'upload_csv' %}">
                 {% csrf_token %}
+                <input type="hidden" name="source" value="effectifs">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Fichier CSV <span class="text-danger">*</span></label>
@@ -412,7 +414,7 @@
 </div>
 {% endblock %}
 
-
+{% block extra_js %}
 <!-- DataTables JS -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
@@ -421,6 +423,11 @@
 // Variables globales
 let deleteYear = null;
 let charts = {};
+
+// Récupère le token API depuis la session Django
+function getApiToken() {
+    return '{{ request.session.api_token }}';
+}
 
 $(document).ready(function() {
     // Initialiser DataTable
@@ -448,20 +455,40 @@ $(document).ready(function() {
     $('#dataForm').on('submit', function(e) {
         e.preventDefault();
         
+        // Afficher un indicateur de chargement
+        const submitBtn = $(this).find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Enregistrement...').prop('disabled', true);
+        
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             data: $(this).serialize(),
             headers: {
-                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val()
+                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+                'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(response) {
                 $('#addDataModal').modal('hide');
                 showNotification('success', 'Données enregistrées avec succès !');
-                setTimeout(() => location.reload(), 1500);
+                
+                // Redirection vers la même page après un court délai
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
-            error: function(xhr) {
-                showNotification('error', 'Erreur lors de l\'enregistrement des données.');
+            error: function(xhr, status, error) {
+                console.error("Erreur AJAX:", xhr.responseText);
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    showNotification('error', response.message || response.error || 'Erreur lors de l\'enregistrement des données.');
+                } catch (e) {
+                    showNotification('error', 'Erreur lors de l\'enregistrement des données.');
+                }
+            },
+            complete: function() {
+                // Restaurer le bouton
+                submitBtn.html(originalText).prop('disabled', false);
             }
         });
     });
@@ -469,6 +496,11 @@ $(document).ready(function() {
     // Soumission du formulaire CSV via AJAX
     $('#uploadForm').on('submit', function(e) {
         e.preventDefault();
+        
+        // Afficher un indicateur de chargement
+        const submitBtn = $(this).find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Importation...').prop('disabled', true);
         
         let formData = new FormData(this);
         
@@ -479,15 +511,30 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             headers: {
-                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val()
+                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+                'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(response) {
                 $('#uploadCSVModal').modal('hide');
                 showNotification('success', 'Fichier CSV importé avec succès !');
-                setTimeout(() => location.reload(), 1500);
+                
+                // Redirection vers la même page après un court délai
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
-            error: function(xhr) {
-                showNotification('error', 'Erreur lors de l\'importation du fichier CSV.');
+            error: function(xhr, status, error) {
+                console.error("Erreur AJAX:", xhr.responseText);
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    showNotification('error', response.message || response.error || 'Erreur lors de l\'importation du fichier CSV.');
+                } catch (e) {
+                    showNotification('error', 'Erreur lors de l\'importation du fichier CSV.');
+                }
+            },
+            complete: function() {
+                // Restaurer le bouton
+                submitBtn.html(originalText).prop('disabled', false);
             }
         });
     });
@@ -495,31 +542,35 @@ $(document).ready(function() {
 
 // Charger tous les graphiques
 function loadCharts() {
-    // Données depuis le backend
-    const evolutionData = {{ stats.evolution_annuelle|json_script:"evolution-data" }};
-    const data = JSON.parse(document.getElementById('evolution-data').textContent);
+    // CORRECTION: Récupération sécurisée des données
+    const evolutionData = {{ stats.evolution_annuelle|safe }};
+    
+    if (!evolutionData || evolutionData.length === 0) {
+        console.warn('Aucune donnée disponible pour les graphiques');
+        return;
+    }
 
     // 1. Graphique en courbe - Évolution des effectifs
     const ctxEvolution = document.getElementById('evolutionChart').getContext('2d');
     charts.evolution = new Chart(ctxEvolution, {
         type: 'line',
         data: {
-            labels: data.map(item => item.annee),
+            labels: evolutionData.map(item => item.annee),
             datasets: [{
                 label: 'FIE1',
-                data: data.map(item => item.nombre_fie1),
+                data: evolutionData.map(item => item.nombre_fie1),
                 borderColor: '#2f0d73',
                 backgroundColor: 'rgba(47, 13, 115, 0.1)',
                 tension: 0.3
             }, {
                 label: 'FIE2',
-                data: data.map(item => item.nombre_fie2),
+                data: evolutionData.map(item => item.nombre_fie2),
                 borderColor: '#7c50de',
                 backgroundColor: 'rgba(124, 80, 222, 0.1)',
                 tension: 0.3
             }, {
                 label: 'FIE3',
-                data: data.map(item => item.nombre_fie3),
+                data: evolutionData.map(item => item.nombre_fie3),
                 borderColor: '#ac54c7',
                 backgroundColor: 'rgba(172, 84, 199, 0.1)',
                 tension: 0.3
@@ -537,7 +588,7 @@ function loadCharts() {
     });
 
     // 2. Camembert - Répartition actuelle
-    const currentYear = data[data.length - 1];
+    const currentYear = evolutionData[evolutionData.length - 1];
     const ctxPie = document.getElementById('pieChart').getContext('2d');
     charts.pie = new Chart(ctxPie, {
         type: 'pie',
@@ -564,10 +615,10 @@ function loadCharts() {
     charts.bar = new Chart(ctxBar, {
         type: 'bar',
         data: {
-            labels: data.map(item => item.annee),
+            labels: evolutionData.map(item => item.annee),
             datasets: [{
                 label: 'Taux de boursiers (%)',
-                data: data.map(item => item.taux_boursiers * 100),
+                data: evolutionData.map(item => (item.taux_boursiers || 0) * 100),
                 backgroundColor: '#ffb43c'
             }]
         },
@@ -584,20 +635,20 @@ function loadCharts() {
     });
 
     // 4. Radar - Comparaison multicritères
-    const lastThreeYears = data.slice(-3);
+    const lastThreeYears = evolutionData.slice(-3);
     const ctxRadar = document.getElementById('radarChart').getContext('2d');
     charts.radar = new Chart(ctxRadar, {
         type: 'radar',
         data: {
             labels: ['FIE1', 'FIE2', 'FIE3', 'Diplômés', 'Taux boursiers'],
             datasets: lastThreeYears.map((year, index) => ({
-                label: year.annee,
+                label: year.annee.toString(),
                 data: [
                     year.nombre_fie1,
                     year.nombre_fie2,
                     year.nombre_fie3,
                     year.nombre_diplomes,
-                    year.taux_boursiers * 100
+                    (year.taux_boursiers || 0) * 100
                 ],
                 borderColor: ['#2f0d73', '#7c50de', '#ac54c7'][index],
                 backgroundColor: ['rgba(47, 13, 115, 0.2)', 'rgba(124, 80, 222, 0.2)', 'rgba(172, 84, 199, 0.2)'][index]
@@ -612,9 +663,14 @@ function loadCharts() {
 
 // Fonction pour éditer les données
 function editData(data) {
-    // Parser les données si elles sont en string
+    // Si les données sont passées en string, les parser
     if (typeof data === 'string') {
-        data = JSON.parse(data);
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            console.error('Erreur parsing data:', e);
+            return;
+        }
     }
     
     $('#addDataModalTitle').text('Modifier les données - Année ' + data.annee);
@@ -649,16 +705,24 @@ function confirmDelete(annee) {
 function deleteData() {
     if (!deleteYear) return;
     
+    // Obtenir le token JWT de la session
+    const token = getApiToken();
+    
     $.ajax({
-        url: `/api/delete/${deleteYear}`,
+        url: `/api/data/delete/${deleteYear}`,
         type: 'DELETE',
         headers: {
-            'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val()
+            'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+            'Authorization': `Bearer ${token}`
         },
         success: function(response) {
             $('#deleteModal').modal('hide');
             showNotification('success', 'Données supprimées avec succès !');
-            setTimeout(() => location.reload(), 1500);
+            
+            // Redirection vers la même page après un court délai
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         },
         error: function(xhr) {
             showNotification('error', 'Erreur lors de la suppression des données.');
@@ -669,14 +733,49 @@ function deleteData() {
 // Actualiser tous les graphiques
 function refreshAllCharts() {
     // Détruire les graphiques existants
-    Object.values(charts).forEach(chart => chart.destroy());
+    Object.values(charts).forEach(chart => {
+        if (chart && typeof chart.destroy === 'function') {
+            chart.destroy();
+        }
+    });
     
     // Recharger les graphiques
+    {% if stats %}
     loadCharts();
+    {% endif %}
     showNotification('success', 'Graphiques actualisés !');
 }
 
 // Afficher une notification
 function showNotification(type, message) {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-    const icon
+    const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+    
+    // Créer la notification
+    const notification = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+            <i class="fas fa-${icon} mr-2"></i>
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    
+    // Ajouter à la page
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.top = '20px';
+    container.style.right = '20px';
+    container.style.zIndex = '9999';
+    container.innerHTML = notification;
+    document.body.appendChild(container);
+    
+    // Supprimer après 3 secondes
+    setTimeout(() => {
+        container.querySelector('.alert').classList.remove('show');
+        setTimeout(() => container.remove(), 300);
+    }, 3000);
+}
+</script>
+{% endblock %}

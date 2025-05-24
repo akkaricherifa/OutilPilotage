@@ -24,13 +24,14 @@ ROLES = {
     'SECRETAIRE': 'secretaire'
 }
 
-#Permissions par rôle
+# CORRECTION: Permissions par rôle - utiliser les valeurs réelles des rôles
 PERMISSIONS = {
-    'ADMIN': ['upload', 'view', 'edit', 'delete', 'manage_users', 'all_stats'],
-    'RESPONSABLE_RECHERCHE': ['view', 'research_stats', 'export'],
-    'RESPONSABLE_ADMIN': ['upload', 'view', 'edit', 'admin_stats'],
-    'SECRETAIRE': ['view', 'basic_upload']
+    'admin': ['upload', 'view', 'edit', 'delete', 'manage_users', 'all_stats'],
+    'responsable_recherche': ['view', 'research_stats', 'export'],
+    'responsable_admin': ['upload', 'view', 'edit', 'admin_stats'],
+    'secretaire': ['view', 'basic_upload']
 }
+
 
 # Configuration JWT
 JWT_SECRET_KEY = SECRET_KEY

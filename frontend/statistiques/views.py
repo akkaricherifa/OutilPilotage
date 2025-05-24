@@ -69,8 +69,6 @@ def register(request):
     
     return render(request, 'statistiques/register.html')
 
-
-
 def login_view(request):
     """Vue pour la connexion"""
     if request.method == 'POST':
@@ -188,26 +186,22 @@ def dashboard(request):
 
 @api_authenticated_required
 def upload_csv(request):
-    """Vue pour télécharger un fichier CSV"""
+    """Vue pour télécharger un fichier CSV - CORRIGÉE"""
     if request.method == 'POST':
         form = CSVUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            csv_file = form.save(commit=False)
-            csv_file.uploaded_by = request.user
-            csv_file.save()
-            
+            # Pas besoin de sauvegarder en Django, envoyer directement à l'API
             token = request.session.get('api_token')
             headers = {'Authorization': f'Bearer {token}'}
             
             try:
-                # Envoyer le fichier à l'API Flask
+                # Préparer le fichier pour l'envoi
+                uploaded_file = request.FILES['file']
                 files = {
-                    'file': (
-                        csv_file.file.name,
-                        csv_file.file.open('rb'),
-                        'text/csv'
-                    )
+                    'file': (uploaded_file.name, uploaded_file.read(), 'text/csv')
                 }
+                
+                # Envoyer à l'API Flask
                 response = requests.post(
                     f"{settings.API_URL}/upload", 
                     files=files, 
@@ -217,18 +211,44 @@ def upload_csv(request):
                 
                 if response.status_code == 200:
                     api_response = response.json()
-                    messages.success(request, f"Fichier CSV traité avec succès! {api_response.get('records_inserted', 0)} enregistrements ajoutés.")
+                    success_message = f"Fichier CSV traité avec succès! {api_response.get('records_inserted', 0)} nouveaux enregistrements, {api_response.get('records_updated', 0)} mis à jour."
+                    
+                    # Gestion des requêtes AJAX
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        return JsonResponse({'success': True, 'message': success_message})
+                    
+                    messages.success(request, success_message)
+                    
+                    # Redirection selon le contexte
+                    if 'effectifs' in request.path or request.GET.get('source') == 'effectifs':
+                        return redirect('effectifs_etudiants')
+                    return redirect('dashboard')
+                    
                 else:
                     api_response = response.json()
-                    messages.error(request, f"Erreur API: {api_response.get('error', 'Erreur inconnue')}")
+                    error_message = f"Erreur API: {api_response.get('error', 'Erreur inconnue')}"
+                    
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'message': error_message}, status=response.status_code)
+                    
+                    messages.error(request, error_message)
                     
             except requests.exceptions.RequestException as e:
                 logger.error(f"Erreur upload API: {e}")
-                messages.error(request, "Erreur de connexion lors de l'upload du fichier.")
-            finally:
-                csv_file.file.close()
+                error_message = "Erreur de connexion lors de l'upload du fichier."
+                
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'success': False, 'message': error_message}, status=500)
+                
+                messages.error(request, error_message)
             
-            return redirect('dashboard')
+        else:
+            # Gestion des erreurs de formulaire
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                errors = {field: str(errors) for field, errors in form.errors.items()}
+                return JsonResponse({'success': False, 'errors': errors}, status=400)
+            
+            messages.error(request, "Formulaire invalide. Veuillez vérifier les données saisies.")
     else:
         form = CSVUploadForm()
     
@@ -294,7 +314,7 @@ def charts(request):
 
 @api_authenticated_required
 def update_data(request):
-    """Vue pour mettre à jour les données"""
+    """Vue pour mettre à jour les données - CORRIGÉE"""
     if request.method == 'POST':
         form = DataUpdateForm(request.POST)
         if form.is_valid():
@@ -312,16 +332,44 @@ def update_data(request):
                 
                 if response.status_code == 200:
                     api_response = response.json()
-                    messages.success(request, api_response.get('message', 'Données mises à jour avec succès!'))
+                    success_message = api_response.get('message', 'Données mises à jour avec succès!')
+                    
+                    # Gestion des requêtes AJAX
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        return JsonResponse({'success': True, 'message': success_message})
+                    
+                    messages.success(request, success_message)
+                    
+                    # Redirection selon le contexte
+                    if 'effectifs' in request.path or request.GET.get('source') == 'effectifs':
+                        return redirect('effectifs_etudiants')
+                    return redirect('view_data')
+                    
                 else:
                     api_response = response.json()
-                    messages.error(request, f"Erreur API: {api_response.get('error', 'Erreur lors de la mise à jour')}")
+                    error_message = f"Erreur API: {api_response.get('error', 'Erreur lors de la mise à jour')}"
+                    
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'message': error_message}, status=400)
+                    
+                    messages.error(request, error_message)
                     
             except requests.exceptions.RequestException as e:
                 logger.error(f"Erreur API update: {e}")
-                messages.error(request, "Erreur de connexion lors de la mise à jour.")
+                error_message = "Erreur de connexion lors de la mise à jour."
+                
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'success': False, 'message': error_message}, status=500)
+                
+                messages.error(request, error_message)
             
-            return redirect('view_data')
+        else:
+            # Gestion des erreurs de formulaire
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                errors = {field: str(errors) for field, errors in form.errors.items()}
+                return JsonResponse({'success': False, 'errors': errors}, status=400)
+            
+            messages.error(request, "Formulaire invalide. Veuillez vérifier les données saisies.")
     else:
         form = DataUpdateForm()
     
@@ -367,44 +415,75 @@ def admin_users(request):
     
     return render(request, 'statistiques/admin_users.html', {'users_data': users_data})
 
-
-
-
-
-
-
+@api_authenticated_required
 def effectifs_etudiants(request):
-    """Vue principale pour les effectifs étudiants"""
+    """Vue principale pour les effectifs étudiants - CORRIGÉE"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    stats = None
+    all_data = []
+    
     try:
         # Récupérer les statistiques depuis l'API
-        response = requests.get(f"{settings.API_URL}/effectifs/stats")
+        response = requests.get(f"{settings.API_URL}/effectifs/stats", headers=headers, timeout=10)
         if response.status_code == 200:
             stats = response.json()
         else:
-            stats = None
-            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+            # Si l'endpoint n'existe pas, essayer l'endpoint général
+            logger.info("Endpoint /effectifs/stats non disponible, utilisation de /statistics")
+            
     except Exception as e:
-        stats = None
-        messages.error(request, f"Erreur de connexion à l'API: {str(e)}")
+        logger.error(f"Erreur lors de la récupération des stats effectifs: {e}")
     
-    # Récupérer toutes les données pour le tableau
     try:
-        response = requests.get(f"{settings.API_URL}/effectifs")
+        # Récupérer toutes les données pour le tableau
+        response = requests.get(f"{settings.API_URL}/effectifs", headers=headers, timeout=10)
         if response.status_code == 200:
             all_data = response.json()
         else:
-            all_data = []
+            # Si l'endpoint n'existe pas, essayer l'endpoint général
+            logger.info("Endpoint /effectifs non disponible, utilisation de /data")
+            response = requests.get(f"{settings.API_URL}/data", headers=headers, timeout=10)
+            if response.status_code == 200:
+                all_data = response.json()
+                
     except Exception as e:
-        all_data = []
-        messages.error(request, f"Erreur lors de la récupération des données: {str(e)}")
+        logger.error(f"Erreur lors de la récupération des données effectifs: {e}")
+    
+    # Si stats est None mais all_data contient des données, générer des statistiques basiques
+    if stats is None and all_data:
+        try:
+            # Créer des statistiques basiques à partir de all_data
+            total_fie1 = sum(item.get('nombre_fie1', 0) for item in all_data)
+            total_fie2 = sum(item.get('nombre_fie2', 0) for item in all_data)
+            total_fie3 = sum(item.get('nombre_fie3', 0) for item in all_data)
+            total_diplomes = sum(item.get('nombre_diplomes', 0) for item in all_data)
+            
+            # Calculer la moyenne des taux de boursiers
+            taux_boursiers_list = [item.get('taux_boursiers', 0) for item in all_data if item.get('taux_boursiers') is not None]
+            avg_taux_boursiers = sum(taux_boursiers_list) / len(taux_boursiers_list) if taux_boursiers_list else 0
+            
+            # Créer un objet stats basique
+            stats = {
+                "total_students": {
+                    "fie1": total_fie1,
+                    "fie2": total_fie2,
+                    "fie3": total_fie3,
+                },
+                "avg_taux_boursiers": avg_taux_boursiers * 100,  # En pourcentage
+                "total_diplomes": total_diplomes,
+                "evolution_annuelle": sorted(all_data, key=lambda x: x.get('annee', 0))
+            }
+        except Exception as e:
+            logger.error(f"Erreur lors de la génération des statistiques: {e}")
+            messages.error(request, f"Erreur lors de la génération des statistiques: {str(e)}")
+    
+    # Si toujours pas de données, afficher un message d'information
+    if not stats and not all_data:
+        messages.info(request, "Aucune donnée d'effectifs disponible. Commencez par importer un fichier CSV ou ajouter des données manuellement.")
     
     return render(request, 'statistiques/effectifs_etudiants.html', {
         'stats': stats,
         'all_data': all_data
     })
-
-
-
-
-
-

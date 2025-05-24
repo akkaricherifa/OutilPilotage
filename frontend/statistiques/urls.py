@@ -28,6 +28,7 @@ urlpatterns = [
 
 
 
-
+    # Nouvelles routes pour les effectifs étudiants
     path('effectifs-etudiants/', views.effectifs_etudiants, name='effectifs_etudiants'),
+    path('effectifs-etudiants/add/', views.update_data, name='effectifs_add_data'),
 ]

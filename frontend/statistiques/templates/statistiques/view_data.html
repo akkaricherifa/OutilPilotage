@@ -47,8 +47,135 @@
                                 <td>{{ item.nombre_fie3 }}</td>
                                 <td>{{ item.taux_boursiers|floatformat:2 }}</td>
                                 <td>{{ item.nombre_diplomes }}</td>
-                                <td>{{ item.nombre_handicapes }}</td>
-                                <td>{{ item.nombre_etrangers }}</td>
-                                <td>{{ item.nombre_demissionnes }}</td>
+                                <td>{{ item.nombre_handicapes|default:"-" }}</td>
+                                <td>{{ item.nombre_etrangers|default:"-" }}</td>
+                                <td>{{ item.nombre_demissionnes|default:"-" }}</td>
                                 <td>
-                                    <a href="{% url 'update_data'
+                                    <a href="{% url 'update_data' %}?annee={{ item.annee }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-danger delete-btn" data-annee="{{ item.annee }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Aucune donnée disponible. <a href="{% url 'update_data' %}">Ajouter des données</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirmer la suppression</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer les données pour l'année <span id="deleteYear" class="font-weight-bold"></span> ?
+                <br><small class="text-muted">Cette action est irréversible.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">
+                    <i class="fas fa-trash mr-1"></i>Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Initialiser DataTable
+    $('#dataTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        "order": [[0, "desc"]],
+        "pageLength": 10,
+        "responsive": true
+    });
+    
+    // Gestion de la suppression
+    let deleteYear = null;
+    
+    $('.delete-btn').on('click', function() {
+        deleteYear = $(this).data('annee');
+        $('#deleteYear').text(deleteYear);
+        $('#deleteModal').modal('show');
+    });
+    
+    $('#confirmDelete').on('click', function() {
+        if (!deleteYear) return;
+        
+        $.ajax({
+            url: `/api/data/delete/${deleteYear}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val(),
+                'Authorization': `Bearer ${localStorage.getItem('api_token') || sessionStorage.getItem('api_token')}`
+            },
+            success: function(response) {
+                $('#deleteModal').modal('hide');
+                showNotification('success', 'Données supprimées avec succès !');
+                setTimeout(() => location.reload(), 1500);
+            },
+            error: function(xhr) {
+                $('#deleteModal').modal('hide');
+                showNotification('error', 'Erreur lors de la suppression des données.');
+            }
+        });
+    });
+    
+    // Fonction pour afficher une notification
+    function showNotification(type, message) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+        
+        // Créer la notification
+        const notification = `
+            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                <i class="fas fa-${icon} mr-2"></i>
+                ${message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+        
+        // Ajouter à la page
+        const container = $('<div>')
+            .css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'z-index': '9999'
+            })
+            .html(notification)
+            .appendTo('body');
+        
+        // Supprimer après 3 secondes
+        setTimeout(() => {
+            container.find('.alert').removeClass('show');
+            setTimeout(() => container.remove(), 300);
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

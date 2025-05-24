@@ -600,30 +600,6 @@
                 <i class="fas fa-user-circle mr-2"></i>
                 {{ request.session.user_info.username|default:"Utilisateur" }}
               </a>
-              <div class="dropdown-menu" aria-labelledby="userDropdown">
-                <h6 class="dropdown-header">
-                  <i class="fas fa-id-badge mr-1"></i>
-                  {{
-                  request.session.user_info.role|capfirst|default:"Utilisateur"
-                  }}
-                </h6>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'dashboard' %}">
-                  <i class="fas fa-tachometer-alt mr-2"></i>Tableau de bord
-                </a>
-                <a class="dropdown-item" href="{% url 'view_data' %}">
-                  <i class="fas fa-table mr-2"></i>Mes données
-                </a>
-                {% if request.session.user_info.role == 'admin' %}
-                <a class="dropdown-item" href="{% url 'admin_users' %}">
-                  <i class="fas fa-users-cog mr-2"></i>Gestion utilisateurs
-                </a>
-                {% endif %}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'logout' %}">
-                  <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
-                </a>
-              </div>
             </li>
             {% else %}
             <!-- Utilisateur non connecté -->
