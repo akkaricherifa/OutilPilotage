@@ -161,6 +161,27 @@
             <p class="mb-0">Total diplômés</p>
         </div>
     </div>
+    <!-- Cartes statistiques pour le genre -->
+    <div class="card stat-card" style="border-left-color: #ff6b94;">
+        <div class="card-body text-center">
+            <h3 style="color: #ff6b94;">
+                {% for item in stats.evolution_annuelle %}
+                    {% if forloop.last %}{{ item.nombre_femmes|default:0 }}{% endif %}
+                {% endfor %}
+            </h3>
+            <p class="mb-0">Étudiantes (Dernière année)</p>
+        </div>
+    </div>
+    <div class="card stat-card" style="border-left-color: #4dabf7;">
+        <div class="card-body text-center">
+            <h3 style="color: #4dabf7;">
+                {% for item in stats.evolution_annuelle %}
+                    {% if forloop.last %}{{ item.nombre_hommes|default:0 }}{% endif %}
+                {% endfor %}
+            </h3>
+            <p class="mb-0">Étudiants (Dernière année)</p>
+        </div>
+    </div>
 </div>
 
 <!-- Graphiques -->
@@ -173,35 +194,42 @@
 
     <!-- Graphique 2: Répartition par niveau (Camembert) -->
     <div class="chart-container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Niveau</h5>
-        <select id="yearSelector" class="form-control" style="width: 150px;">
-            <option value="">Toutes les années</option>
-        </select>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Niveau</h5>
+            <select id="yearSelector" class="form-control" style="width: 150px;">
+                <option value="">Toutes les années</option>
+            </select>
+        </div>
+        <canvas id="pieChart"></canvas>
     </div>
-    <canvas id="pieChart"></canvas>
+
+    <!-- Graphique 3: Évolution du Total des Étudiants -->
+    <div class="chart-container">
+        <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Total des Étudiants</h5>
+        <canvas id="totalStudentsChart"></canvas>
     </div>
 
-
-
-
-    <!-- Nouveau Graphique: Évolution du Total des Étudiants -->
-<div class="chart-container">
-    <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Total des Étudiants</h5>
-    <canvas id="totalStudentsChart"></canvas>
-</div>
-
-
-    <!-- Graphique 3: Taux de boursiers (Histogramme) -->
+    <!-- Graphique 4: Taux de boursiers (Histogramme) -->
     <div class="chart-container">
         <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Taux de Boursiers</h5>
         <canvas id="barChart"></canvas>
     </div>
 
-    <!-- Graphique 4: Comparaison multicritères (Radar) -->
+    <!-- Graphique 5: Comparaison multicritères (Radar) -->
     <div class="chart-container">
         <h5><i class="fas fa-chart-area mr-2"></i>Comparaison Multicritères</h5>
         <canvas id="radarChart"></canvas>
+    </div>
+
+    <!-- Graphique 6: Répartition par genre -->
+    <div class="chart-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5><i class="fas fa-venus-mars mr-2"></i>Répartition par Genre</h5>
+            <select id="genderYearSelector" class="form-control" style="width: 150px;">
+                <option value="">Toutes les années</option>
+            </select>
+        </div>
+        <canvas id="genderChart"></canvas>
     </div>
 </div>
 
@@ -219,6 +247,8 @@
                     <th>Total</th>
                     <th>Taux Boursiers</th>
                     <th>Diplômés</th>
+                    <th>Femmes</th>
+                    <th>Hommes</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -232,6 +262,8 @@
                     <td><strong>{{ item.nombre_fie1|add:item.nombre_fie2|add:item.nombre_fie3 }}</strong></td>
                     <td>{{ item.taux_boursiers|floatformat:2 }}%</td>
                     <td>{{ item.nombre_diplomes }}</td>
+                    <td>{{ item.nombre_femmes|default:0 }}</td>
+                    <td>{{ item.nombre_hommes|default:0 }}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary" onclick="editData({{ item|safe }})">
                             <i class="fas fa-edit"></i>
@@ -341,6 +373,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre d'étudiantes (Femme)</label>
+                                <input type="number" class="form-control" name="nombre_femmes" id="nombre_femmes" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre d'étudiants (Homme)</label>
+                                <input type="number" class="form-control" name="nombre_hommes" id="nombre_hommes" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -376,12 +422,12 @@
                     </div>
                     <div class="alert alert-info">
                         <h6><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV :</h6>
-                        <code>annee,nombre_fie1,nombre_fie2,nombre_fie3,taux_boursiers,nombre_diplomes,nombre_handicapes,nombre_etrangers,nombre_demissionnes</code>
+                        <code>annee,nombre_fie1,nombre_fie2,nombre_fie3,taux_boursiers,nombre_diplomes,nombre_handicapes,nombre_etrangers,nombre_demissionnes,nombre_femmes,nombre_hommes</code>
                         <hr>
                         <h6>Exemple :</h6>
-                        <pre class="mb-0">2023,133,102,94,0.2,70,11,11,7
-2024,139,102,96,0.28,78,11,12,6
-2025,116,91,80,0.34,81,12,15,4</pre>
+                        <pre class="mb-0">2023,133,102,94,0.2,70,11,11,7,150,179
+2024,139,102,96,0.28,78,11,12,6,160,177
+2025,116,91,80,0.34,81,12,15,4,140,147</pre>
                     </div>
                     <div class="form-group">
                         <label>Nom du fichier</label>
@@ -464,6 +510,18 @@ $(document).ready(function() {
     $('.custom-file-input').on('change', function() {
         let fileName = $(this).val().split('\\').pop();
         $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
+    });
+
+    // Gestionnaire pour le changement d'année dans le pie chart
+    $(document).on('change', '#yearSelector', function() {
+        const evolutionData = {{ stats.evolution_annuelle|safe }};
+        updatePieChart(evolutionData);
+    });
+
+    // Gestionnaire pour le changement d'année dans le graphique genre
+    $(document).on('change', '#genderYearSelector', function() {
+        const evolutionData = {{ stats.evolution_annuelle|safe }};
+        updateGenderChart(evolutionData);
     });
 
     // Soumission du formulaire de données via AJAX
@@ -565,8 +623,9 @@ function loadCharts() {
         return;
     }
 
-    // Peupler le sélecteur d'années
+    // Peupler les sélecteurs d'années
     populateYearSelector(evolutionData);
+    populateGenderYearSelector(evolutionData);
 
     // 1. Graphique en courbe - Évolution des effectifs
     const ctxEvolution = document.getElementById('evolutionChart').getContext('2d');
@@ -606,87 +665,9 @@ function loadCharts() {
     });
 
     // 2. Camembert - Répartition par niveau (données par défaut: dernière année)
-  $(document).on('change', '#yearSelector', function() {
-    const evolutionData = {{ stats.evolution_annuelle|safe }};
     updatePieChart(evolutionData);
-});
-    const currentYear = evolutionData[evolutionData.length - 1];
-    const ctxPie = document.getElementById('pieChart').getContext('2d');
-    charts.pie = new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['FIE1', 'FIE2', 'FIE3'],
-            datasets: [{
-                data: [currentYear.nombre_fie1, currentYear.nombre_fie2, currentYear.nombre_fie3],
-                backgroundColor: ['#2f0d73', '#7c50de', '#ac54c7']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                }
-            }
-        }
-    });
 
-    // 3. Histogramme - Taux de boursiers
-    const ctxBar = document.getElementById('barChart').getContext('2d');
-    charts.bar = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: evolutionData.map(item => item.annee),
-            datasets: [{
-                label: 'Taux de boursiers (%)',
-                data: evolutionData.map(item => (item.taux_boursiers || 0) * 100),
-                backgroundColor: '#ffb43c'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
-                }
-            }
-        }
-    });
-
-    // 4. Radar - Comparaison multicritères
-    const lastThreeYears = evolutionData.slice(-3);
-    const ctxRadar = document.getElementById('radarChart').getContext('2d');
-    charts.radar = new Chart(ctxRadar, {
-        type: 'radar',
-        data: {
-            labels: ['FIE1', 'FIE2', 'FIE3', 'Diplômés', 'Taux boursiers'],
-            datasets: lastThreeYears.map((year, index) => ({
-                label: year.annee.toString(),
-                data: [
-                    year.nombre_fie1,
-                    year.nombre_fie2,
-                    year.nombre_fie3,
-                    year.nombre_diplomes,
-                    (year.taux_boursiers || 0) * 100
-                ],
-                borderColor: ['#2f0d73', '#7c50de', '#ac54c7'][index],
-                backgroundColor: ['rgba(47, 13, 115, 0.2)', 'rgba(124, 80, 222, 0.2)', 'rgba(172, 84, 199, 0.2)'][index]
-            }))
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-
-
-
-
-    // 5. NOUVEAU: Graphique du total des étudiants par année
+    // 3. Graphique du total des étudiants par année
     const ctxTotal = document.getElementById('totalStudentsChart').getContext('2d');
     charts.totalStudents = new Chart(ctxTotal, {
         type: 'bar',
@@ -717,16 +698,86 @@ function loadCharts() {
             }
         }
     });
+
+    // 4. Histogramme - Taux de boursiers
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    charts.bar = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: evolutionData.map(item => item.annee),
+            datasets: [{
+                label: 'Taux de boursiers (%)',
+                data: evolutionData.map(item => (item.taux_boursiers || 0) * 100),
+                backgroundColor: '#ffb43c'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+
+    // 5. Radar - Comparaison multicritères
+    const lastThreeYears = evolutionData.slice(-3);
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    charts.radar = new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+            labels: ['FIE1', 'FIE2', 'FIE3', 'Diplômés', 'Taux boursiers'],
+            datasets: lastThreeYears.map((year, index) => ({
+                label: year.annee.toString(),
+                data: [
+                    year.nombre_fie1,
+                    year.nombre_fie2,
+                    year.nombre_fie3,
+                    year.nombre_diplomes,
+                    (year.taux_boursiers || 0) * 100
+                ],
+                borderColor: ['#2f0d73', '#7c50de', '#ac54c7'][index],
+                backgroundColor: ['rgba(47, 13, 115, 0.2)', 'rgba(124, 80, 222, 0.2)', 'rgba(172, 84, 199, 0.2)'][index]
+            }))
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // 6. Graphique de répartition par genre
+    updateGenderChart(evolutionData);
 }
-
-
-
-
-
 
 // Peupler le sélecteur d'années
 function populateYearSelector(data) {
     const yearSelector = document.getElementById('yearSelector');
+    
+    // Vider le sélecteur
+    yearSelector.innerHTML = '<option value="">Toutes les années</option>';
+    
+    // Ajouter les années disponibles
+    const years = data.map(item => item.annee).sort((a, b) => b - a); // Tri décroissant
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelector.appendChild(option);
+    });
+    
+    // Sélectionner la dernière année par défaut
+    if (years.length > 0) {
+        yearSelector.value = years[0];
+    }
+}
+
+// Peupler le sélecteur d'années pour le graphique genre
+function populateGenderYearSelector(data) {
+    const yearSelector = document.getElementById('genderYearSelector');
     
     // Vider le sélecteur
     yearSelector.innerHTML = '<option value="">Toutes les années</option>';
@@ -804,31 +855,79 @@ function updatePieChart(allData) {
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Mettre à jour le graphique genre en fonction de l'année sélectionnée
+function updateGenderChart(allData) {
+    const yearSelector = document.getElementById('genderYearSelector');
+    const selectedYear = yearSelector.value;
+    
+    let dataToShow;
+    if (selectedYear === '') {
+        // Toutes les années: calculer la somme
+        const totals = allData.reduce((acc, item) => {
+            acc.femmes += item.nombre_femmes || 0;
+            acc.hommes += item.nombre_hommes || 0;
+            return acc;
+        }, { femmes: 0, hommes: 0 });
+        
+        dataToShow = {
+            labels: ['Femmes (Total)', 'Hommes (Total)'],
+            data: [totals.femmes, totals.hommes],
+            total: totals.femmes + totals.hommes
+        };
+    } else {
+        // Année spécifique
+        const yearData = allData.find(item => item.annee == selectedYear);
+        if (yearData) {
+            const femmes = yearData.nombre_femmes || 0;
+            const hommes = yearData.nombre_hommes || 0;
+            dataToShow = {
+                labels: [`Femmes (${selectedYear})`, `Hommes (${selectedYear})`],
+                data: [femmes, hommes],
+                total: femmes + hommes
+            };
+        }
+    }
+    
+    // Détruire le graphique existant s'il existe
+    if (charts.gender) {
+        charts.gender.destroy();
+    }
+    
+    // Créer le nouveau graphique genre
+    const ctxGender = document.getElementById('genderChart').getContext('2d');
+    charts.gender = new Chart(ctxGender, {
+        type: 'pie',
+        data: {
+            labels: dataToShow.labels,
+            datasets: [{
+                data: dataToShow.data,
+                backgroundColor: ['#ff6b94', '#4dabf7'], // Rose pour femmes, bleu pour hommes
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = dataToShow.total > 0 ? 
+                                ((value / dataToShow.total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 
 // Fonction pour éditer les données
 function editData(data) {
@@ -852,6 +951,8 @@ function editData(data) {
     $('#nombre_handicapes').val(data.nombre_handicapes || 0);
     $('#nombre_etrangers').val(data.nombre_etrangers || 0);
     $('#nombre_demissionnes').val(data.nombre_demissionnes || 0);
+    $('#nombre_femmes').val(data.nombre_femmes || 0);
+    $('#nombre_hommes').val(data.nombre_hommes || 0);
     
     $('#addDataModal').modal('show');
 }
