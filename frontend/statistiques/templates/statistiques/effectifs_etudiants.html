@@ -173,9 +173,24 @@
 
     <!-- Graphique 2: Répartition par niveau (Camembert) -->
     <div class="chart-container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Niveau</h5>
-        <canvas id="pieChart"></canvas>
+        <select id="yearSelector" class="form-control" style="width: 150px;">
+            <option value="">Toutes les années</option>
+        </select>
     </div>
+    <canvas id="pieChart"></canvas>
+    </div>
+
+
+
+
+    <!-- Nouveau Graphique: Évolution du Total des Étudiants -->
+<div class="chart-container">
+    <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Total des Étudiants</h5>
+    <canvas id="totalStudentsChart"></canvas>
+</div>
+
 
     <!-- Graphique 3: Taux de boursiers (Histogramme) -->
     <div class="chart-container">
@@ -550,6 +565,9 @@ function loadCharts() {
         return;
     }
 
+    // Peupler le sélecteur d'années
+    populateYearSelector(evolutionData);
+
     // 1. Graphique en courbe - Évolution des effectifs
     const ctxEvolution = document.getElementById('evolutionChart').getContext('2d');
     charts.evolution = new Chart(ctxEvolution, {
@@ -587,7 +605,11 @@ function loadCharts() {
         }
     });
 
-    // 2. Camembert - Répartition actuelle
+    // 2. Camembert - Répartition par niveau (données par défaut: dernière année)
+  $(document).on('change', '#yearSelector', function() {
+    const evolutionData = {{ stats.evolution_annuelle|safe }};
+    updatePieChart(evolutionData);
+});
     const currentYear = evolutionData[evolutionData.length - 1];
     const ctxPie = document.getElementById('pieChart').getContext('2d');
     charts.pie = new Chart(ctxPie, {
@@ -659,7 +681,154 @@ function loadCharts() {
             maintainAspectRatio: false
         }
     });
+
+
+
+
+
+    // 5. NOUVEAU: Graphique du total des étudiants par année
+    const ctxTotal = document.getElementById('totalStudentsChart').getContext('2d');
+    charts.totalStudents = new Chart(ctxTotal, {
+        type: 'bar',
+        data: {
+            labels: evolutionData.map(item => item.annee),
+            datasets: [{
+                label: 'Total Étudiants',
+                data: evolutionData.map(item => 
+                    (item.nombre_fie1 || 0) + (item.nombre_fie2 || 0) + (item.nombre_fie3 || 0)
+                ),
+                backgroundColor: 'rgba(47, 13, 115, 0.8)',
+                borderColor: '#2f0d73',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
 }
+
+
+
+
+
+
+// Peupler le sélecteur d'années
+function populateYearSelector(data) {
+    const yearSelector = document.getElementById('yearSelector');
+    
+    // Vider le sélecteur
+    yearSelector.innerHTML = '<option value="">Toutes les années</option>';
+    
+    // Ajouter les années disponibles
+    const years = data.map(item => item.annee).sort((a, b) => b - a); // Tri décroissant
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelector.appendChild(option);
+    });
+    
+    // Sélectionner la dernière année par défaut
+    if (years.length > 0) {
+        yearSelector.value = years[0];
+    }
+}
+
+// Mettre à jour le graphique pie en fonction de l'année sélectionnée
+function updatePieChart(allData) {
+    const yearSelector = document.getElementById('yearSelector');
+    const selectedYear = yearSelector.value;
+    
+    let dataToShow;
+    if (selectedYear === '') {
+        // Toutes les années: calculer la somme
+        const totals = allData.reduce((acc, item) => {
+            acc.fie1 += item.nombre_fie1 || 0;
+            acc.fie2 += item.nombre_fie2 || 0;
+            acc.fie3 += item.nombre_fie3 || 0;
+            return acc;
+        }, { fie1: 0, fie2: 0, fie3: 0 });
+        
+        dataToShow = {
+            labels: ['FIE1 (Total)', 'FIE2 (Total)', 'FIE3 (Total)'],
+            data: [totals.fie1, totals.fie2, totals.fie3]
+        };
+    } else {
+        // Année spécifique
+        const yearData = allData.find(item => item.annee == selectedYear);
+        if (yearData) {
+            dataToShow = {
+                labels: [`FIE1 (${selectedYear})`, `FIE2 (${selectedYear})`, `FIE3 (${selectedYear})`],
+                data: [yearData.nombre_fie1 || 0, yearData.nombre_fie2 || 0, yearData.nombre_fie3 || 0]
+            };
+        }
+    }
+    
+    // Détruire le graphique existant s'il existe
+    if (charts.pie) {
+        charts.pie.destroy();
+    }
+    
+    // Créer le nouveau graphique pie
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    charts.pie = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: dataToShow.labels,
+            datasets: [{
+                data: dataToShow.data,
+                backgroundColor: ['#2f0d73', '#7c50de', '#ac54c7']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Fonction pour éditer les données
 function editData(data) {
@@ -738,6 +907,8 @@ function refreshAllCharts() {
             chart.destroy();
         }
     });
+    // Vider l'objet charts
+    charts = {};
     
     // Recharger les graphiques
     {% if stats %}
