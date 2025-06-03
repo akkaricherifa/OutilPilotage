@@ -254,6 +254,7 @@ def upload_csv(request):
     
     return render(request, 'statistiques/upload_csv.html', {'form': form})
 
+
 @api_authenticated_required
 def view_data(request):
     """Vue pour afficher les données"""
@@ -275,42 +276,9 @@ def view_data(request):
     
     return render(request, 'statistiques/view_data.html', {'data': data})
 
-@api_authenticated_required
-def charts(request):
-    """Vue pour afficher les graphiques"""
-    chart_types = [
-        {'id': 'evolution_etudiants', 'name': 'Évolution du nombre d\'étudiants'},
-        {'id': 'taux_boursiers', 'name': 'Taux de boursiers'},
-        {'id': 'diplomes', 'name': 'Nombre de diplômés'}
-    ]
-    
-    selected_chart = request.GET.get('chart', 'evolution_etudiants')
-    token = request.session.get('api_token')
-    headers = {'Authorization': f'Bearer {token}'}
-    
-    try:
-        response = requests.get(
-            f"{settings.API_URL}/chart/{selected_chart}", 
-            headers=headers,
-            timeout=15
-        )
-        if response.status_code == 200:
-            chart_data = response.json()
-            chart_image = chart_data.get('image')
-        else:
-            chart_image = None
-            api_response = response.json()
-            messages.warning(request, f"Erreur génération graphique: {api_response.get('error', 'Erreur inconnue')}")
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Erreur API charts: {e}")
-        chart_image = None
-        messages.error(request, "Erreur de connexion pour générer le graphique.")
-    
-    return render(request, 'statistiques/charts.html', {
-        'chart_types': chart_types,
-        'selected_chart': selected_chart,
-        'chart_image': chart_image
-    })
+
+
+
 
 @api_authenticated_required
 def update_data(request):
@@ -486,4 +454,278 @@ def effectifs_etudiants(request):
     return render(request, 'statistiques/effectifs_etudiants.html', {
         'stats': stats,
         'all_data': all_data
+    })
+
+######################################## CATEGORIE ENSEIGNEMENT ##############################################
+
+@api_authenticated_required
+def enseignement(request):
+    """Vue principale pour l'enseignement et la pédagogie"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les statistiques depuis l'API
+        api_url = f"{settings.API_URL}/enseignement/stats"
+        logger.info(f"Appel à l'API: {api_url}")
+        
+        response = requests.get(api_url, headers=headers, timeout=10)
+        logger.info(f"Réponse de l'API: Status {response.status_code}")
+        
+        if response.status_code == 200:
+            stats = response.json()
+            logger.info(f"Données reçues: {stats.keys()}")
+            
+            # Vérifier la structure des données
+            if 'donnees_par_semestre' in stats:
+                logger.info(f"Nombre d'enregistrements: {len(stats['donnees_par_semestre'])}")
+                
+                # Ajouter un élément caché dans le contexte pour stocker les données brutes
+                stats['donnees_brutes'] = json.dumps(stats['donnees_par_semestre'])
+            else:
+                logger.error("Clé 'donnees_par_semestre' manquante dans les données")
+                messages.warning(request, "Structure de données incorrecte")
+        else:
+            stats = None
+            try:
+                error_msg = response.json().get('error', 'Erreur inconnue')
+                logger.error(f"Erreur API: {error_msg}")
+                messages.warning(request, f"Impossible de récupérer les statistiques: {error_msg}")
+            except:
+                logger.error(f"Erreur API non-JSON: {response.text}")
+                messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API enseignement: {e}")
+        stats = None
+        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques d'enseignement.")
+    
+    return render(request, 'statistiques/enseignement.html', {
+        'stats': stats,
+        'user_info': request.session.get('user_info', {})
+    })
+
+
+@api_authenticated_required
+def enseignement_add_data(request):
+    """Vue pour ajouter ou mettre à jour des données d'enseignement"""
+    if request.method != 'POST':
+        return redirect('enseignement')
+        
+    try:
+        # Récupérer les données du formulaire avec validation
+        data = {
+                'annee': int(request.POST.get('annee', 0)),
+                'semestre': request.POST.get('semestre', ''),
+                'nombre_cours': int(request.POST.get('nombre_cours', 0)),
+                'nombre_ue': int(request.POST.get('nombre_ue', 0)),
+                'heures_cm': int(request.POST.get('heures_cm', 0)),
+                'heures_td': int(request.POST.get('heures_td', 0)),
+                'heures_tp': int(request.POST.get('heures_tp', 0)),
+                'heures_projet': int(request.POST.get('heures_projet', 0)),
+                'satisfaction': float(request.POST.get('satisfaction', 0)),
+                'nombre_evaluations': int(request.POST.get('nombre_evaluations') or 0),
+                'nombre_projets': int(request.POST.get('nombre_projets') or 0),
+                'taux_reussite': float(request.POST.get('taux_reussite') or 0),
+                'innovations_pedagogiques': int(request.POST.get('innovations_pedagogiques') or 0)
+            }
+        # Plus de logs
+        logger.info(f"Données après conversion: {data}")
+        # Validation des données obligatoires
+        if not data['annee'] or not data['semestre']:
+            return JsonResponse({"error": "L'année et le semestre sont obligatoires."}, status=400)
+        
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
+        
+        # Log pour débogage
+        logger.info(f"Envoi des données à l'API: {data}")
+        
+        response = requests.post(
+            f"{settings.API_URL}/enseignement/update",
+            json=data,
+            headers=headers,
+            timeout=10
+        )
+        
+        logger.info(f"Réponse de l'API: {response.status_code} - {response.text}")
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            return JsonResponse({"message": api_response.get('message', 'Données enregistrées avec succès!')})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur lors de la mise à jour')}, status=response.status_code)
+            
+    except ValueError as e:
+        logger.error(f"Erreur de conversion de données: {e}")
+        return JsonResponse({"error": f"Erreur de validation des données: {str(e)}"}, status=400)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API enseignement_add_data: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de la mise à jour des données."}, status=500)
+    except Exception as e:
+        logger.error(f"Erreur inattendue: {e}")
+        return JsonResponse({"error": f"Une erreur inattendue s'est produite: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def enseignement_upload_csv(request):
+    """Vue pour télécharger un fichier CSV d'enseignement"""
+    if request.method != 'POST':
+        return redirect('enseignement')
+        
+    form = CSVUploadForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return JsonResponse({"error": "Formulaire invalide"}, status=400)
+        
+    csv_file = form.save(commit=False)
+    csv_file.uploaded_by = request.user
+    csv_file.save()
+    
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Envoyer le fichier à l'API Flask
+        files = {
+            'file': (
+                csv_file.file.name,
+                csv_file.file.open('rb'),
+                'text/csv'
+            )
+        }
+        response = requests.post(
+            f"{settings.API_URL}/enseignement/upload", 
+            files=files, 
+            headers=headers,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            return JsonResponse({"message": f"Fichier CSV traité avec succès! {api_response.get('records_inserted', 0)} enregistrements ajoutés."})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur upload API enseignement: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de l'upload du fichier."}, status=500)
+    finally:
+        csv_file.file.close()
+
+@api_authenticated_required
+def enseignement_delete_data(request, annee, semestre):
+    """Vue pour supprimer des données d'enseignement"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        response = requests.delete(
+            f"{settings.API_URL}/enseignement/delete/{annee}/{semestre}",
+            headers=headers,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return JsonResponse({"message": "Données supprimées avec succès!"})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur lors de la suppression')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API enseignement_delete_data: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de la suppression des données."}, status=500)
+    
+
+
+
+@api_authenticated_required
+def categories_enseignement(request):
+    """Vue pour les catégories d'enseignement"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les statistiques spécifiques des catégories d'enseignement
+        response = requests.get(f"{settings.API_URL}/enseignement/categories/stats", headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            stats_data = response.json()
+            
+            # Extraire les données nécessaires pour le template
+            categories_stats = stats_data.get("categories", {})
+            
+            # Statistiques rapides pour l'en-tête
+            quick_stats = {
+                "heures_totales": stats_data.get("total_heures_enseignement", 1254),
+                "satisfaction": round(stats_data.get("taux_satisfaction", 86), 1),
+                "intervenants": stats_data.get("total_intervenants", 42),
+                "innovations": stats_data.get("total_innovations", 18)
+            }
+            
+        else:
+            # En cas d'erreur, on utilise des données par défaut pour le prototype
+            categories_stats = {
+                "heures": {
+                    "total": 845,
+                    "evolution": 5.2,
+                    "trend": "up"
+                },
+                "rse": {
+                    "total": 124,
+                    "evolution": 12.8,
+                    "trend": "up"
+                },
+                "arion": {
+                    "total": 178,
+                    "evolution": 7.3,
+                    "trend": "up"
+                },
+                "vacataires": {
+                    "total": 42,
+                    "evolution": 3.1,
+                    "trend": "up"
+                },
+                "autres": {
+                    "total": 107,
+                    "evolution": -2.4,
+                    "trend": "down"
+                }
+            }
+            
+            quick_stats = {
+                "heures_totales": 1254,
+                "satisfaction": 86.0,
+                "intervenants": 42,
+                "innovations": 18
+            }
+            
+            api_response = response.json()
+            messages.warning(request, f"Erreur API: {api_response.get('error', 'Impossible de récupérer les statistiques des catégories d\'enseignement')}")
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API categories_enseignement: {e}")
+        
+        # Données par défaut en cas d'erreur de connexion
+        categories_stats = {
+            "heures": {"total": 845, "evolution": 5.2, "trend": "up"},
+            "rse": {"total": 124, "evolution": 12.8, "trend": "up"},
+            "arion": {"total": 178, "evolution": 7.3, "trend": "up"},
+            "vacataires": {"total": 42, "evolution": 3.1, "trend": "up"},
+            "autres": {"total": 107, "evolution": -2.4, "trend": "down"}
+        }
+        
+        quick_stats = {
+            "heures_totales": 1254,
+            "satisfaction": 86.0,
+            "intervenants": 42,
+            "innovations": 18
+        }
+        
+        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques des catégories d'enseignement.")
+    
+    # Changement ici: catEnseug.html au lieu de catEnseig.html
+    return render(request, 'statistiques/catEnseug.html', {
+        'categories_stats': categories_stats,
+        'quick_stats': quick_stats,
+        'user_info': request.session.get('user_info', {})
     })

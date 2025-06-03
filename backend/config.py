@@ -10,7 +10,7 @@ MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DB = 'AppISIS'  # Nouvelle base de données
 MONGO_COLLECTION_USERS = 'utilisateurs'  # Collection utilisateurs
 MONGO_COLLECTION_DATA = 'donnees_etudiants'  # Collection données
-
+MONGO_COLLECTION_ENSEIGNEMENT = 'donnees_enseignement'  # Collection enseignement
 # Configuration des uploads
 UPLOAD_FOLDER = '../data'
 ALLOWED_EXTENSIONS = {'csv'}

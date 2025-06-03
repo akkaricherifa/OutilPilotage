@@ -16,7 +16,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('upload-csv/', views.upload_csv, name='upload_csv'),
     path('view-data/', views.view_data, name='view_data'),
-    path('charts/', views.charts, name='charts'),
     path('update-data/', views.update_data, name='update_data'),
     
     # Administration
@@ -31,4 +30,11 @@ urlpatterns = [
     # Nouvelles routes pour les effectifs étudiants
     path('effectifs-etudiants/', views.effectifs_etudiants, name='effectifs_etudiants'),
     path('effectifs-etudiants/add/', views.update_data, name='effectifs_add_data'),
+
+ # Nouvelles routes pour les enseignants
+    path('enseignement/', views.enseignement, name='enseignement'),
+    path('enseignement/add-data/', views.enseignement_add_data, name='enseignement_add_data'),
+    path('enseignement/upload-csv/', views.enseignement_upload_csv, name='enseignement_upload_csv'),
+    path('enseignement/delete/<int:annee>/<str:semestre>/', views.enseignement_delete_data, name='enseignement_delete_data'),
+    path('catEnseug/', views.categories_enseignement, name='categories_enseignement'),
 ]
