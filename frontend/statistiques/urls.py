@@ -37,4 +37,6 @@ urlpatterns = [
     path('enseignement/upload-csv/', views.enseignement_upload_csv, name='enseignement_upload_csv'),
     path('enseignement/delete/<int:annee>/<str:semestre>/', views.enseignement_delete_data, name='enseignement_delete_data'),
     path('catEnseug/', views.categories_enseignement, name='categories_enseignement'),
+    # Ajoutez cette ligne dans la liste urlpatterns
+    path('heures-enseignement/', views.heures_enseignement, name='heures_enseignement'),
 ]

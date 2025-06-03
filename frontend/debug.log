@@ -4331,3 +4331,22 @@ Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
 "GET /catEnseug/ HTTP/1.1" 200 39372
 Endpoint /effectifs/stats non disponible, utilisation de /statistics
 "GET /effectifs-etudiants/ HTTP/1.1" 200 70788
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 39454
+"GET /heures-enseignement/ HTTP/1.1" 200 76783
+Not Found: /api/heures-enseignement/stats
+Not Found: /api/heures-enseignement
+"GET /api/heures-enseignement/stats? HTTP/1.1" 404 7309
+"GET /api/heures-enseignement? HTTP/1.1" 404 7291
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7366
+Not Found: /api/heures-enseignement/form
+"POST /api/heures-enseignement/form HTTP/1.1" 404 7307
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader

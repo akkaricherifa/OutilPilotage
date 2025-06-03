@@ -33,6 +33,7 @@ try:
     users_collection = db[MONGO_COLLECTION_USERS]
     data_collection = db[MONGO_COLLECTION_DATA]
     enseignement_collection = db[MONGO_COLLECTION_ENSEIGNEMENT]
+    heures_enseignement_collection = db['heures_enseignement_detaillees']
 
 
     print(f"Connexion à la base {MONGO_DB} réussie!")
@@ -613,80 +614,11 @@ def get_users(current_user):
         return jsonify({"error": f"Erreur lors de la récupération des utilisateurs: {str(e)}"}), 500
     
 ################################################################### route enseignement ######################
-@app.route('/api/enseignement/stats', methods=['GET'])
+
+@app.route('/api/heures-enseignement/upload', methods=['POST'])
 @token_required
-def get_enseignement_stats(current_user):
-    """Endpoint pour récupérer les statistiques d'enseignement"""
-    try:
-        data = list(enseignement_collection.find({}, {'_id': 0}))
-        
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
-        
-        # Convertir en DataFrame pandas pour faciliter les calculs
-        df = pd.DataFrame(data)
-        
-        # Calcul des statistiques
-        stats = {
-            "total_cours": int(df['nombre_cours'].sum()),
-            "total_unites_enseignement": int(df['nombre_ue'].sum()),
-            "total_evaluations": int(df['nombre_evaluations'].sum()) if 'nombre_evaluations' in df.columns else 0,
-            "total_projets": int(df['nombre_projets'].sum()) if 'nombre_projets' in df.columns else 0,
-            "total_heures_enseignement": int(df['heures_cm'].sum() + df['heures_td'].sum() + df['heures_tp'].sum() + df['heures_projet'].sum()),
-            "taux_satisfaction": float(df['satisfaction'].mean()),
-            "donnees_par_semestre": df.to_dict('records'),
-            "years_count": len(df['annee'].unique()),
-            "latest_year": int(df['annee'].max()) if not df.empty else None
-        }
-        
-        return jsonify(stats), 200
-        
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors du calcul des statistiques d'enseignement: {str(e)}"}), 500
-
-
-
-
-
-@app.route('/api/enseignement/update', methods=['POST'])
-@token_required
-def update_enseignement_data(current_user):
-    """Endpoint pour mettre à jour les données d'enseignement"""
-    # Vérification des permissions
-    user_role = current_user['role']
-    if 'edit' not in PERMISSIONS.get(user_role, []):
-        return jsonify({"error": "Permissions insuffisantes"}), 403
-        
-    data = request.json
-    
-    if not data or 'annee' not in data or 'semestre' not in data:
-        return jsonify({"error": "Données invalides - année et semestre requis"}), 400
-    
-    try:
-        # Recherche de l'enregistrement à mettre à jour
-        query = {"annee": data['annee'], "semestre": data['semestre']}
-        
-        # Ajout de métadonnées
-        data['updated_by'] = current_user['username']
-        data['updated_at'] = datetime.utcnow()
-        
-        # Mise à jour ou insertion si n'existe pas
-        result = enseignement_collection.update_one(query, {"$set": data}, upsert=True)
-        
-        if result.upserted_id:
-            message = "Nouvelles données d'enseignement ajoutées avec succès"
-        else:
-            message = "Données d'enseignement mises à jour avec succès"
-            
-        return jsonify({"message": message}), 200
-        
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la mise à jour des données d'enseignement: {str(e)}"}), 500
-
-@app.route('/api/enseignement/upload', methods=['POST'])
-@token_required
-def upload_enseignement_file(current_user):
-    """Endpoint pour uploader un fichier CSV d'enseignement"""
+def upload_heures_enseignement_file(current_user):
+    """Endpoint pour uploader un fichier Excel ou CSV des heures d'enseignement détaillées"""
     # Vérification des permissions
     user_role = current_user['role']
     if 'upload' not in PERMISSIONS.get(user_role, []):
@@ -699,140 +631,434 @@ def upload_enseignement_file(current_user):
     if file.filename == '':
         return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
     
-    if file and file.filename.endswith('.csv'):
+    if file and (file.filename.endswith('.csv') or file.filename.endswith('.xlsx')):
         try:
-            # Lecture du fichier CSV
-            df = pd.read_csv(file)
+            # Récupérer des paramètres supplémentaires
+            annee_debut = request.form.get('annee_debut', '2020')
+            annee_fin = request.form.get('annee_fin', '2021')
+            niveau = request.form.get('niveau', 'FIE1')
+            semestre = request.form.get('semestre', 'S1')
             
-            # Validation des colonnes requises
-            required_columns = ['annee', 'semestre', 'nombre_cours', 'nombre_ue', 
-                               'heures_cm', 'heures_td', 'heures_tp', 'heures_projet', 'satisfaction']
-            missing_columns = [col for col in required_columns if col not in df.columns]
+            annee_academique = f"{annee_debut}-{annee_fin}"
             
-            if missing_columns:
+            # Lecture du fichier
+            if file.filename.endswith('.csv'):
+                df = pd.read_csv(file)
+            else:  # Excel
+                df = pd.read_excel(file)
+            
+            # Traitement des données et conversion en structure MongoDB
+            # Cette partie dépendra de la structure exacte de votre fichier
+            # Exemple de structure pour le traitement
+            
+            # 1. Identifier les lignes d'unités d'enseignement et de matières
+            # 2. Extraire les données d'heures
+            # 3. Construire la structure hiérarchique
+            
+            # Exemple simplifié (à adapter selon votre fichier exact)
+            unites_enseignement = {}
+            current_ue = None
+            records_to_insert = []
+            
+            # Parcourir le DataFrame
+            for index, row in df.iterrows():
+                # Détecter si c'est une UE (par exemple, si commence par "E1-" pour FIE1)
+                ue_prefix = f"E{niveau[-1]}-" if niveau.startswith('FIE') else f"A{niveau[-1]}-"
+                
+                # Si la valeur dans la colonne 1 (ou autre, à adapter) commence par le préfixe d'UE
+                if isinstance(row.get(1), str) and row.get(1).startswith(ue_prefix):
+                    current_ue = {
+                        "code": row.get(1),
+                        "nom": row.get(2, ""),
+                        "matieres": []
+                    }
+                    unites_enseignement[current_ue["code"]] = current_ue
+                
+                # Si c'est une matière (ligne avec des heures)
+                elif current_ue and pd.notna(row.get(5)) and not pd.isna(row.get(3)):
+                    # Extraire les heures (CM, TD, TP)
+                    try:
+                        ects = float(row.get(3, 0)) if pd.notna(row.get(3)) else 0
+                        intervenant = row.get(4, "") if pd.notna(row.get(4)) else ""
+                        
+                        # Heures CM
+                        hm_cm = float(row.get(5, 0)) if pd.notna(row.get(5)) else 0
+                        hp_cm = float(row.get(6, 0)) if pd.notna(row.get(6)) else 0
+                        hr_cm = float(row.get(7, 0)) if pd.notna(row.get(7)) else 0
+                        
+                        # Heures TD
+                        hm_td = float(row.get(9, 0)) if pd.notna(row.get(9)) else 0
+                        hp_td = float(row.get(10, 0)) if pd.notna(row.get(10)) else 0
+                        hr_td = float(row.get(11, 0)) if pd.notna(row.get(11)) else 0
+                        
+                        # Heures TP
+                        hm_tp = float(row.get(13, 0)) if pd.notna(row.get(13)) else 0
+                        hp_tp = float(row.get(14, 0)) if pd.notna(row.get(14)) else 0
+                        hr_tp = float(row.get(15, 0)) if pd.notna(row.get(15)) else 0
+                        
+                        matiere = {
+                            "nom": str(row.get(2, "Matière non nommée")),
+                            "ects": ects,
+                            "intervenant": intervenant,
+                            "heures_cm": {
+                                "hm": hm_cm,
+                                "hp": hp_cm,
+                                "hr": hr_cm
+                            },
+                            "heures_td": {
+                                "hm": hm_td,
+                                "hp": hp_td,
+                                "hr": hr_td
+                            },
+                            "heures_tp": {
+                                "hm": hm_tp,
+                                "hp": hp_tp,
+                                "hr": hr_tp
+                            }
+                        }
+                        
+                        current_ue["matieres"].append(matiere)
+                    except Exception as e:
+                        print(f"Erreur lors du traitement d'une ligne: {e}")
+            
+            # Préparer les données pour MongoDB
+            for ue_code, ue_data in unites_enseignement.items():
+                if ue_data["matieres"]:  # Ne pas insérer les UE sans matières
+                    record = {
+                        "annee_academique": annee_academique,
+                        "annee_debut": int(annee_debut),
+                        "annee_fin": int(annee_fin),
+                        "niveau": niveau,
+                        "semestre": semestre,
+                        "unite_enseignement": ue_data,
+                        "uploaded_by": current_user['username'],
+                        "uploaded_at": datetime.utcnow()
+                    }
+                    records_to_insert.append(record)
+            
+            # Supprimer les données existantes pour cette combinaison
+            heures_enseignement_collection.delete_many({
+                "annee_academique": annee_academique,
+                "niveau": niveau,
+                "semestre": semestre
+            })
+            
+            # Insérer les nouvelles données
+            if records_to_insert:
+                result = heures_enseignement_collection.insert_many(records_to_insert)
+                
                 return jsonify({
-                    "error": f"Colonnes manquantes: {', '.join(missing_columns)}"
+                    "message": "Données d'heures d'enseignement importées avec succès",
+                    "records_inserted": len(result.inserted_ids),
+                    "success": True
+                }), 200
+            else:
+                return jsonify({
+                    "warning": "Aucune donnée valide trouvée dans le fichier",
+                    "success": False
                 }), 400
-            
-            # Conversion du DataFrame en liste de dictionnaires pour MongoDB
-            records = df.to_dict('records')
-            
-            # Ajout de métadonnées
-            for record in records:
-                record['uploaded_by'] = current_user['username']
-                record['uploaded_at'] = datetime.utcnow()
-            
-            # Insertion des nouvelles données
-            result = enseignement_collection.insert_many(records)
-            
-            return jsonify({
-                "message": "Fichier d'enseignement traité avec succès", 
-                "records_inserted": len(result.inserted_ids)
-            }), 200
-            
+                
         except Exception as e:
-            return jsonify({"error": f"Erreur lors du traitement du fichier d'enseignement: {str(e)}"}), 500
+            return jsonify({"error": f"Erreur lors du traitement du fichier: {str(e)}"}), 500
     
-    return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
+    return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV et Excel sont acceptés."}), 400
 
-@app.route('/api/enseignement/delete/<int:annee>/<string:semestre>', methods=['DELETE'])
+
+@app.route('/api/heures-enseignement/form', methods=['POST'])
 @token_required
-def delete_enseignement_data(current_user, annee, semestre):
-    """Endpoint pour supprimer des données d'enseignement"""
+def add_heures_enseignement_form(current_user):
+    """Endpoint pour ajouter des heures d'enseignement via formulaire"""
+    # Vérification des permissions
+    user_role = current_user['role']
+    if 'edit' not in PERMISSIONS.get(user_role, []):
+        return jsonify({"error": "Permissions insuffisantes"}), 403
+        
+    data = request.json
+    
+    # Validation des données
+    required_fields = ['annee_debut', 'annee_fin', 'niveau', 'semestre', 'unite_enseignement']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({"error": f"Le champ {field} est requis"}), 400
+    
+    try:
+        # Préparation des données
+        annee_academique = f"{data['annee_debut']}-{data['annee_fin']}"
+        
+        # Préparer le document pour MongoDB
+        record = {
+            "annee_academique": annee_academique,
+            "annee_debut": int(data['annee_debut']),
+            "annee_fin": int(data['annee_fin']),
+            "niveau": data['niveau'],
+            "semestre": data['semestre'],
+            "unite_enseignement": data['unite_enseignement'],
+            "created_by": current_user['username'],
+            "created_at": datetime.utcnow()
+        }
+        
+        # Insérer ou mettre à jour les données
+        result = heures_enseignement_collection.update_one(
+            {
+                "annee_academique": annee_academique,
+                "niveau": data['niveau'],
+                "semestre": data['semestre'],
+                "unite_enseignement.code": data['unite_enseignement']['code']
+            },
+            {"$set": record},
+            upsert=True
+        )
+        
+        if result.upserted_id:
+            message = "Nouvelles données d'heures d'enseignement ajoutées avec succès"
+        else:
+            message = "Données d'heures d'enseignement mises à jour avec succès"
+            
+        return jsonify({"message": message, "success": True}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de l'ajout des données: {str(e)}"}), 500
+
+@app.route('/api/heures-enseignement', methods=['GET'])
+@token_required
+def get_heures_enseignement(current_user):
+    """Endpoint pour récupérer les données d'heures d'enseignement"""
+    try:
+        # Paramètres de filtrage
+        annee_debut = request.args.get('annee_debut')
+        annee_fin = request.args.get('annee_fin')
+        niveau = request.args.get('niveau')
+        semestre = request.args.get('semestre')
+        
+        # Construire le filtre en fonction des paramètres fournis
+        filter_query = {}
+        
+        if annee_debut and annee_fin:
+            filter_query["annee_academique"] = f"{annee_debut}-{annee_fin}"
+        elif annee_debut:
+            filter_query["annee_debut"] = int(annee_debut)
+        
+        if niveau:
+            filter_query["niveau"] = niveau
+            
+        if semestre:
+            filter_query["semestre"] = semestre
+        
+        # Récupérer les données
+        data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
+        
+        return jsonify(data), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
+
+@app.route('/api/heures-enseignement/stats', methods=['GET'])
+@token_required
+def get_heures_enseignement_stats(current_user):
+    """Endpoint pour récupérer les statistiques des heures d'enseignement"""
+    try:
+        # Paramètres de filtrage
+        annee_debut = request.args.get('annee_debut')
+        annee_fin = request.args.get('annee_fin')
+        niveau = request.args.get('niveau')
+        
+        # Construire le filtre en fonction des paramètres fournis
+        filter_query = {}
+        
+        if annee_debut and annee_fin:
+            filter_query["annee_academique"] = f"{annee_debut}-{annee_fin}"
+        elif annee_debut:
+            filter_query["annee_debut"] = int(annee_debut)
+        
+        if niveau:
+            filter_query["niveau"] = niveau
+        
+        # Récupérer les données
+        data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
+        
+        if not data:
+            return jsonify({"error": "Aucune donnée trouvée"}), 404
+        
+        # Calculer les statistiques
+        total_ue = 0
+        total_matieres = 0
+        total_heures = {
+            "cm": {"hm": 0, "hp": 0, "hr": 0},
+            "td": {"hm": 0, "hp": 0, "hr": 0},
+            "tp": {"hm": 0, "hp": 0, "hr": 0}
+        }
+        
+        intervenants = set()
+        
+        for record in data:
+            # Compter les UE
+            total_ue += 1
+            
+            # Parcourir les matières
+            for matiere in record["unite_enseignement"]["matieres"]:
+                total_matieres += 1
+                
+                # Ajouter l'intervenant
+                if matiere.get("intervenant"):
+                    intervenants.add(matiere["intervenant"])
+                
+                # Ajouter les heures
+                for type_heures in ["cm", "td", "tp"]:
+                    heures_key = f"heures_{type_heures}"
+                    if heures_key in matiere:
+                        for mesure in ["hm", "hp", "hr"]:
+                            total_heures[type_heures][mesure] += matiere[heures_key].get(mesure, 0)
+        
+        # Préparer la réponse
+        stats = {
+            "nombre_ue": total_ue,
+            "nombre_matieres": total_matieres,
+            "nombre_intervenants": len(intervenants),
+            "heures_totales": {
+                "cm": {
+                    "hm": round(total_heures["cm"]["hm"], 2),
+                    "hp": round(total_heures["cm"]["hp"], 2),
+                    "hr": round(total_heures["cm"]["hr"], 2)
+                },
+                "td": {
+                    "hm": round(total_heures["td"]["hm"], 2),
+                    "hp": round(total_heures["td"]["hp"], 2),
+                    "hr": round(total_heures["td"]["hr"], 2)
+                },
+                "tp": {
+                    "hm": round(total_heures["tp"]["hm"], 2),
+                    "hp": round(total_heures["tp"]["hp"], 2),
+                    "hr": round(total_heures["tp"]["hr"], 2)
+                }
+            },
+            "total_global": {
+                "hm": round(
+                    total_heures["cm"]["hm"] + 
+                    total_heures["td"]["hm"] + 
+                    total_heures["tp"]["hm"], 2
+                ),
+                "hp": round(
+                    total_heures["cm"]["hp"] + 
+                    total_heures["td"]["hp"] + 
+                    total_heures["tp"]["hp"], 2
+                ),
+                "hr": round(
+                    total_heures["cm"]["hr"] + 
+                    total_heures["td"]["hr"] + 
+                    total_heures["tp"]["hr"], 2
+                )
+            },
+            "filtres_appliques": {
+                "annee_academique": f"{annee_debut}-{annee_fin}" if annee_debut and annee_fin else "Toutes",
+                "niveau": niveau if niveau else "Tous"
+            }
+        }
+        
+        return jsonify(stats), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors du calcul des statistiques: {str(e)}"}), 500
+
+@app.route('/api/heures-enseignement/delete', methods=['DELETE'])
+@token_required
+def delete_heures_enseignement(current_user):
+    """Endpoint pour supprimer des données d'heures d'enseignement"""
     # Vérification des permissions
     user_role = current_user['role']
     if 'delete' not in PERMISSIONS.get(user_role, []):
         return jsonify({"error": "Permissions insuffisantes"}), 403
     
+    # Paramètres de suppression
+    data = request.json
+    
+    if not data or not data.get('annee_academique') or not data.get('niveau') or not data.get('semestre'):
+        return jsonify({"error": "Paramètres de suppression incomplets"}), 400
+    
     try:
-        # Recherche et suppression de l'enregistrement
-        result = enseignement_collection.delete_one({"annee": annee, "semestre": semestre})
-        
-        if result.deleted_count > 0:
-            return jsonify({"message": "Données d'enseignement supprimées avec succès"}), 200
-        else:
-            return jsonify({"error": "Aucune donnée trouvée pour cette année et ce semestre"}), 404
-            
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la suppression des données d'enseignement: {str(e)}"}), 500
-
-
-@app.route('/api/enseignement/categories/stats', methods=['GET'])
-@token_required
-def get_enseignement_categories_stats(current_user):
-    """Endpoint pour récupérer les statistiques des catégories d'enseignement"""
-    try:
-        # Récupérer les données d'enseignement de base
-        data = list(enseignement_collection.find({}, {'_id': 0}))
-        
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
-        
-        # Convertir en DataFrame pandas pour faciliter les calculs
-        df = pd.DataFrame(data)
-        
-        # Calculs pour les heures totales par catégorie
-        # Supposons que nous avons des colonnes comme 'heures_rse', 'heures_arion', etc.
-        # ou que nous les calculons à partir d'autres informations
-        
-        # Pour cet exemple, nous allons générer des données simulées
-        total_heures = int(df['heures_cm'].sum() + df['heures_td'].sum() + df['heures_tp'].sum() + df['heures_projet'].sum())
-        
-        # Si des colonnes pour les catégories existent, les utiliser
-        # Sinon, simuler des proportions raisonnables
-        heures_rse = int(df['heures_rse'].sum()) if 'heures_rse' in df.columns else int(total_heures * 0.15)
-        heures_arion = int(df['heures_arion'].sum()) if 'heures_arion' in df.columns else int(total_heures * 0.21)
-        heures_autres = int(df['heures_autres'].sum()) if 'heures_autres' in df.columns else int(total_heures * 0.13)
-        
-        # Nombre d'intervenants
-        total_intervenants = int(df['nombre_intervenants'].sum()) if 'nombre_intervenants' in df.columns else 42
-        
-        # Innovations pédagogiques
-        total_innovations = int(df['innovations_pedagogiques'].sum()) if 'innovations_pedagogiques' in df.columns else 18
-        
-        # Construire la réponse avec toutes les statistiques
-        response = {
-            "total_heures_enseignement": total_heures,
-            "total_cours": int(df['nombre_cours'].sum()),
-            "total_unites_enseignement": int(df['nombre_ue'].sum()),
-            "taux_satisfaction": float(df['satisfaction'].mean()),
-            "total_intervenants": total_intervenants,
-            "total_innovations": total_innovations,
-            
-            # Détails par catégorie
-            "categories": {
-                "heures": {
-                    "total": int(total_heures - heures_rse - heures_arion - heures_autres),
-                    "evolution": 5.2,
-                    "trend": "up"
-                },
-                "rse": {
-                    "total": heures_rse,
-                    "evolution": 12.8,
-                    "trend": "up"
-                },
-                "arion": {
-                    "total": heures_arion,
-                    "evolution": 7.3,
-                    "trend": "up"
-                },
-                "vacataires": {
-                    "total": total_intervenants,
-                    "evolution": 3.1,
-                    "trend": "up"
-                },
-                "autres": {
-                    "total": heures_autres,
-                    "evolution": -2.4,
-                    "trend": "down"
-                }
-            }
+        # Critères de suppression
+        delete_query = {
+            "annee_academique": data['annee_academique'],
+            "niveau": data['niveau'],
+            "semestre": data['semestre']
         }
         
-        return jsonify(response), 200
+        # Si un code d'UE est spécifié, supprimer uniquement cette UE
+        if data.get('code_ue'):
+            delete_query["unite_enseignement.code"] = data['code_ue']
+        
+        # Supprimer les données
+        result = heures_enseignement_collection.delete_many(delete_query)
+        
+        if result.deleted_count > 0:
+            return jsonify({
+                "message": f"{result.deleted_count} enregistrements supprimés avec succès",
+                "success": True
+            }), 200
+        else:
+            return jsonify({"error": "Aucune donnée trouvée correspondant aux critères"}), 404
+            
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la suppression: {str(e)}"}), 500
+
+# Routes pour les listes déroulantes (références)
+@app.route('/api/references/annees-academiques', methods=['GET'])
+@token_required
+def get_annees_academiques(current_user):
+    """Récupérer la liste des années académiques disponibles"""
+    try:
+        # Exécuter une agrégation pour obtenir les années uniques
+        pipeline = [
+            {"$group": {"_id": "$annee_academique"}},
+            {"$sort": {"_id": 1}}
+        ]
+        
+        result = list(heures_enseignement_collection.aggregate(pipeline))
+        
+        annees = [item["_id"] for item in result]
+        
+        # Ajouter les années prédéfinies si elles ne sont pas déjà présentes
+        annees_predefinies = ["2020-2021", "2024-2025"]
+        for annee in annees_predefinies:
+            if annee not in annees:
+                annees.append(annee)
+        
+        annees.sort()
+        
+        return jsonify(annees), 200
         
     except Exception as e:
-        return jsonify({"error": f"Erreur lors du calcul des statistiques par catégorie: {str(e)}"}), 500
+        return jsonify({"error": f"Erreur lors de la récupération des années: {str(e)}"}), 500
+
+@app.route('/api/references/niveaux', methods=['GET'])
+@token_required
+def get_niveaux(current_user):
+    """Récupérer la liste des niveaux disponibles"""
+    try:
+        # Exécuter une agrégation pour obtenir les niveaux uniques
+        pipeline = [
+            {"$group": {"_id": "$niveau"}},
+            {"$sort": {"_id": 1}}
+        ]
+        
+        result = list(heures_enseignement_collection.aggregate(pipeline))
+        
+        niveaux = [item["_id"] for item in result]
+        
+        # Ajouter les niveaux prédéfinis s'ils ne sont pas déjà présents
+        niveaux_predefinis = ["FIE1", "FIE2", "FIE3", "FIE4", "FIE5", "FIA3", "FIA5"]
+        for niveau in niveaux_predefinis:
+            if niveau not in niveaux:
+                niveaux.append(niveau)
+        
+        niveaux.sort()
+        
+        return jsonify(niveaux), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des niveaux: {str(e)}"}), 500
+
+
+
 
 
 

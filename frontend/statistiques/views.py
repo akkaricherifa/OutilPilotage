@@ -729,3 +729,24 @@ def categories_enseignement(request):
         'quick_stats': quick_stats,
         'user_info': request.session.get('user_info', {})
     })
+
+
+@api_authenticated_required
+def heures_enseignement(request):
+    """Vue pour la page des heures d'enseignement"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Essayer de récupérer des statistiques de base pour s'assurer que l'API est accessible
+        response = requests.get(f"{settings.API_URL}/heures-enseignement/stats", headers=headers, timeout=10)
+        if response.status_code != 200:
+            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API heures_enseignement: {e}")
+        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques.")
+    
+    return render(request, 'statistiques/heures_enseignement.html', {
+        'user_info': request.session.get('user_info', {}),
+        'settings': settings  # Passer les paramètres de configuration au template
+    })

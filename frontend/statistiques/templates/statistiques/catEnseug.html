@@ -463,7 +463,9 @@
     </p>
     <div class="category-footer">
         <button class="category-button">
+            <a href="{% url 'heures_enseignement' %}" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
+        </a>
         </button>
         <div class="category-trend {% if categories_stats.heures.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
             <i class="fas fa-arrow-{% if categories_stats.heures.trend == 'up' %}up{% else %}down{% endif %}"></i>
