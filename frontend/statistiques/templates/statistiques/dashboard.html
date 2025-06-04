@@ -18,6 +18,9 @@
         --sidebar-active: linear-gradient(135deg, #7c50de 0%, #f56960 100%);
         --card-shadow: 0 4px 15px rgba(124, 80, 222, 0.15);
         --card-shadow-hover: 0 8px 25px rgba(124, 80, 222, 0.25);
+        
+        /* Transitions */
+        --transition-speed: 0.3s;
     }
 
     /* Layout principal avec sidebar */
@@ -26,9 +29,11 @@
         min-height: calc(100vh - 200px);
         gap: 20px;
         margin-top: 20px;
+        position: relative;
+        transition: all var(--transition-speed) ease;
     }
 
-    /* Sidebar moderne ISIS */
+    /* Sidebar moderne ISIS avec collapsible */
     .dashboard-sidebar {
         width: 280px;
         background: var(--sidebar-bg);
@@ -38,7 +43,48 @@
         height: fit-content;
         position: sticky;
         top: 20px;
-        transition: all 0.3s ease;
+        transition: all var(--transition-speed) ease;
+        z-index: 100;
+        overflow-x: hidden;
+    }
+
+    /* État réduit de la sidebar */
+    .dashboard-sidebar.collapsed {
+        width: 80px;
+        padding: 25px 0;
+    }
+
+    /* Bouton de contrôle du collapsible */
+    .sidebar-toggle {
+        position: absolute;
+        top: 20px;
+        right: -15px;
+        width: 30px;
+        height: 30px;
+        background: var(--isis-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        box-shadow: var(--card-shadow);
+        z-index: 101;
+        transition: all var(--transition-speed) ease;
+        border: none;
+    }
+
+    .sidebar-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: var(--card-shadow-hover);
+    }
+
+    .sidebar-toggle i {
+        transition: transform var(--transition-speed) ease;
+    }
+
+    .sidebar-toggle.collapsed i {
+        transform: rotate(180deg);
     }
 
     .sidebar-section {
@@ -57,6 +103,18 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        transition: all var(--transition-speed) ease;
+        white-space: nowrap;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-title {
+        padding: 0 15px 15px 15px;
+        justify-content: center;
+        border-bottom: none;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-title span {
+        display: none;
     }
 
     .sidebar-link {
@@ -67,9 +125,19 @@
         color: var(--text-dark);
         text-decoration: none;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: all var(--transition-speed) ease;
         position: relative;
         margin: 2px 0;
+        white-space: nowrap;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-link {
+        padding: 12px 15px;
+        justify-content: center;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-link span {
+        display: none;
     }
 
     .sidebar-link:hover {
@@ -79,10 +147,18 @@
         transform: translateX(5px);
     }
 
+    .dashboard-sidebar.collapsed .sidebar-link:hover {
+        transform: translateX(0);
+    }
+
     .sidebar-link.active {
         background: var(--sidebar-active);
         color: white;
         border-radius: 0 25px 25px 0;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-link.active {
+        border-radius: 25px;
     }
 
     .sidebar-link.active::before {
@@ -95,10 +171,53 @@
         background: var(--isis-coral);
     }
 
+    .dashboard-sidebar.collapsed .sidebar-link.active::before {
+        display: none;
+    }
+
     .sidebar-icon {
         font-size: 16px;
         width: 20px;
         text-align: center;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-icon {
+        font-size: 20px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Tooltip pour les icônes quand sidebar est collapsed */
+    .dashboard-sidebar.collapsed .sidebar-link {
+        position: relative;
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-link::after {
+        content: attr(data-title);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--isis-purple-dark);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        z-index: 1000;
+        box-shadow: var(--card-shadow);
+    }
+
+    .dashboard-sidebar.collapsed .sidebar-link:hover::after {
+        opacity: 1;
+        left: calc(100% + 10px);
     }
 
     /* Bouton déconnexion spécial */
@@ -108,6 +227,17 @@
         border-radius: 15px;
         margin: 10px 15px;
         box-shadow: 0 4px 12px rgba(245, 105, 96, 0.3);
+    }
+
+    .dashboard-sidebar.collapsed .logout-link {
+        margin: 10px auto;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .logout-link:hover {
@@ -123,6 +253,7 @@
         border-radius: 20px;
         padding: 30px;
         box-shadow: var(--card-shadow);
+        transition: all var(--transition-speed) ease;
     }
 
     /* Cards catégories style ISIS */
@@ -131,6 +262,16 @@
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
         margin-top: 20px;
+        transition: all var(--transition-speed) ease;
+    }
+
+    /* Ajustement pour expanded/collapsed sidebar */
+    .dashboard-container.expanded .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .dashboard-container.collapsed .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 
     .category-card {
@@ -139,11 +280,14 @@
         padding: 25px;
         text-decoration: none;
         color: inherit;
-        transition: all 0.3s ease;
+        transition: all var(--transition-speed) ease;
         position: relative;
         overflow: hidden;
         border: 2px solid transparent;
         box-shadow: var(--card-shadow);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .category-card::before {
@@ -154,7 +298,7 @@
         right: 0;
         height: 4px;
         background: var(--card-gradient);
-        transition: height 0.3s ease;
+        transition: height var(--transition-speed) ease;
     }
 
     .category-card:hover {
@@ -185,6 +329,7 @@
         color: var(--card-gradient);
         margin-bottom: 15px;
         display: block;
+        transition: all var(--transition-speed) ease;
     }
 
     .category-title {
@@ -199,6 +344,7 @@
         font-size: 0.9rem;
         color: var(--text-light);
         line-height: 1.4;
+        margin-top: auto;
     }
 
     /* Stats rapides */
@@ -207,6 +353,11 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 15px;
         margin-bottom: 30px;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .dashboard-container.collapsed .quick-stats {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
 
     .stat-card {
@@ -216,6 +367,7 @@
         border-radius: 15px;
         text-align: center;
         box-shadow: var(--card-shadow);
+        transition: all var(--transition-speed) ease;
     }
 
     .stat-number {
@@ -227,6 +379,21 @@
     .stat-label {
         font-size: 0.9rem;
         opacity: 0.9;
+    }
+
+    /* Page title and section headers */
+    .page-title {
+        color: var(--isis-purple-dark);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .section-title {
+        color: var(--isis-purple-dark);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
     }
 
     /* Responsive */
@@ -241,7 +408,54 @@
             top: 0;
         }
         
+        .dashboard-sidebar.collapsed {
+            width: 100%;
+            padding: 15px 0;
+        }
+        
+        .sidebar-toggle {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .dashboard-sidebar.collapsed .sidebar-link {
+            padding: 12px 25px;
+            justify-content: flex-start;
+        }
+        
+        .dashboard-sidebar.collapsed .sidebar-link span {
+            display: inline;
+        }
+        
+        .dashboard-sidebar.collapsed .sidebar-title {
+            padding: 0 25px 15px 25px;
+            justify-content: flex-start;
+            border-bottom: 2px solid var(--isis-purple-light);
+        }
+        
+        .dashboard-sidebar.collapsed .sidebar-title span {
+            display: inline;
+        }
+        
+        .dashboard-sidebar.collapsed .sidebar-icon {
+            font-size: 16px;
+            width: 20px;
+            height: auto;
+        }
+        
+        .dashboard-sidebar.collapsed .logout-link {
+            margin: 10px 15px;
+            width: auto;
+            height: auto;
+            border-radius: 15px;
+            padding: 12px 25px;
+        }
+        
         .categories-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .dashboard-container.collapsed .categories-grid {
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
     }
@@ -251,32 +465,60 @@
             padding: 20px 0;
         }
         
-        .categories-grid {
+        .categories-grid, 
+        .dashboard-container.collapsed .categories-grid,
+        .dashboard-container.expanded .categories-grid {
             grid-template-columns: 1fr;
         }
         
-        .quick-stats {
+        .quick-stats,
+        .dashboard-container.collapsed .quick-stats {
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+    }
+
+    @media (max-width: 576px) {
+        .dashboard-main {
+            padding: 20px 15px;
+        }
+        
+        .quick-stats,
+        .dashboard-container.collapsed .quick-stats {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-container">
+<div class="dashboard-container" id="dashboardContainer">
     <!-- Sidebar -->
-    <aside class="dashboard-sidebar">
+    <aside class="dashboard-sidebar" id="dashboardSidebar">
+        <!-- Bouton pour le toggle de la sidebar -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
         <!-- Section Catégories -->
         <div class="sidebar-section">
             <div class="sidebar-title">
                 <i class="fas fa-th-large"></i>
-                Catégories
+                <span>Catégories</span>
             </div>
-            <a href="#categories" class="sidebar-link" onclick="showSection('categories')">
+            <a href="#categories" class="sidebar-link" data-title="Catégories" onclick="showSection('categories')">
                 <i class="fas fa-grid-3x3 sidebar-icon"></i>
                 <span>Toutes les catégories</span>
             </a>
-            <a href="#stats" class="sidebar-link" onclick="showSection('stats')">
+            <a href="#stats" class="sidebar-link" data-title="Statistiques" onclick="showSection('stats')">
                 <i class="fas fa-chart-line sidebar-icon"></i>
                 <span>Statistiques</span>
             </a>
@@ -286,23 +528,23 @@
         <div class="sidebar-section">
             <div class="sidebar-title">
                 <i class="fas fa-bolt"></i>
-                Actions Rapides
+                <span>Actions Rapides</span>
             </div>
-            <a href="{% url 'upload_csv' %}" class="sidebar-link">
+            <a href="{% url 'upload_csv' %}" class="sidebar-link" data-title="Importer CSV">
                 <i class="fas fa-file-upload sidebar-icon"></i>
                 <span>Importer CSV</span>
             </a>
-            <a href="{% url 'view_data' %}" class="sidebar-link">
+            <a href="{% url 'view_data' %}" class="sidebar-link" data-title="Consulter données">
                 <i class="fas fa-table sidebar-icon"></i>
                 <span>Consulter données</span>
             </a>
            
-            <a href="{% url 'update_data' %}" class="sidebar-link">
+            <a href="{% url 'update_data' %}" class="sidebar-link" data-title="Mettre à jour">
                 <i class="fas fa-edit sidebar-icon"></i>
                 <span>Mettre à jour</span>
             </a>
             {% if user_info.role == 'admin' %}
-                <a href="{% url 'admin_users' %}" class="sidebar-link">
+                <a href="{% url 'admin_users' %}" class="sidebar-link" data-title="Gestion utilisateurs">
                     <i class="fas fa-users-cog sidebar-icon"></i>
                     <span>Gestion utilisateurs</span>
                 </a>
@@ -313,20 +555,20 @@
         <div class="sidebar-section">
             <div class="sidebar-title">
                 <i class="fas fa-cog"></i>
-                Paramètres
+                <span>Paramètres</span>
             </div>
-            <a href="#" class="sidebar-link">
+            <a href="#" class="sidebar-link" data-title="Mon profil">
                 <i class="fas fa-user-circle sidebar-icon"></i>
                 <span>Mon profil</span>
             </a>
-            <a href="#" class="sidebar-link">
+            <a href="#" class="sidebar-link" data-title="Préférences">
                 <i class="fas fa-palette sidebar-icon"></i>
                 <span>Préférences</span>
             </a>
         </div>
 
         <!-- Déconnexion -->
-        <a href="{% url 'logout' %}" class="sidebar-link logout-link">
+        <a href="{% url 'logout' %}" class="sidebar-link logout-link" data-title="Déconnexion">
             <i class="fas fa-sign-out-alt sidebar-icon"></i>
             <span>Déconnexion</span>
         </a>
@@ -334,7 +576,7 @@
 
     <!-- Contenu principal -->
     <main class="dashboard-main">
-        <h1 class="mb-4" style="color: var(--isis-purple-dark); font-weight: 700;">
+        <h1 class="page-title">
             <i class="fas fa-tachometer-alt mr-2"></i>
             Tableau de bord ISIS
         </h1>
@@ -361,7 +603,7 @@
 
         <!-- Section Catégories -->
         <div id="categories-section">
-            <h2 style="color: var(--isis-purple-dark); margin-bottom: 20px;">
+            <h2 class="section-title">
                 <i class="fas fa-th-large mr-2"></i>
                 Catégories de Pilotage
             </h2>
@@ -379,7 +621,7 @@
                     <p class="category-desc">Programmes, évaluations, innovation pédagogique</p>
                 </a>
 
-                <a  class="category-card">
+                <a class="category-card">
                     <i class="fas fa-microscope category-icon"></i>
                     <h3 class="category-title">Recherche Académique</h3>
                     <p class="category-desc">Publications, projets de recherche, collaborations</p>
@@ -391,7 +633,7 @@
                     <p class="category-desc">Mobilité étudiante, accords internationaux</p>
                 </a>
 
-                <a  class="category-card">
+                <a class="category-card">
                     <i class="fas fa-heartbeat category-icon"></i>
                     <h3 class="category-title">CHL (Connected Health Lab)</h3>
                     <p class="category-desc">Innovation en santé connectée, projets e-santé</p>
@@ -403,7 +645,7 @@
                     <p class="category-desc">Associations, événements, bien-être étudiant</p>
                 </a>
 
-                <a  class="category-card">
+                <a class="category-card">
                     <i class="fas fa-network-wired category-icon"></i>
                     <h3 class="category-title">Réseau Alumni et Entrepreneuriat</h3>
                     <p class="category-desc">Anciens diplômés, création d'entreprises, mentorat</p>
@@ -443,6 +685,69 @@ $(document).ready(function() {
         $('.sidebar-link').removeClass('active');
         $(this).addClass('active');
     });
+    
+    // Gestion du collapsible sidebar
+    const dashboardContainer = document.getElementById('dashboardContainer');
+    const dashboardSidebar = document.getElementById('dashboardSidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    
+    // Vérifier si l'état de la sidebar est enregistré dans le localStorage
+    const sidebarState = localStorage.getItem('sidebarState');
+    
+    if (sidebarState === 'collapsed') {
+        dashboardSidebar.classList.add('collapsed');
+        sidebarToggle.classList.add('collapsed');
+        dashboardContainer.classList.add('collapsed');
+        dashboardContainer.classList.remove('expanded');
+    } else {
+        dashboardSidebar.classList.remove('collapsed');
+        sidebarToggle.classList.remove('collapsed');
+        dashboardContainer.classList.remove('collapsed');
+        dashboardContainer.classList.add('expanded');
+    }
+    
+    // Gestionnaire d'événement pour le toggle
+    sidebarToggle.addEventListener('click', function() {
+        dashboardSidebar.classList.toggle('collapsed');
+        sidebarToggle.classList.toggle('collapsed');
+        
+        if (dashboardSidebar.classList.contains('collapsed')) {
+            dashboardContainer.classList.add('collapsed');
+            dashboardContainer.classList.remove('expanded');
+            localStorage.setItem('sidebarState', 'collapsed');
+        } else {
+            dashboardContainer.classList.remove('collapsed');
+            dashboardContainer.classList.add('expanded');
+            localStorage.setItem('sidebarState', 'expanded');
+        }
+        
+        // Trigger window resize pour ajuster les graphiques si présents
+        window.dispatchEvent(new Event('resize'));
+    });
+    
+    // Adaptation pour mobile
+    function checkMobileView() {
+        if (window.innerWidth <= 1200) {
+            // Force l'état étendu sur mobile
+            dashboardSidebar.classList.remove('collapsed');
+            sidebarToggle.classList.remove('collapsed');
+            dashboardContainer.classList.remove('collapsed');
+            dashboardContainer.classList.add('expanded');
+        } else {
+            // Restaure l'état enregistré
+            const savedState = localStorage.getItem('sidebarState');
+            if (savedState === 'collapsed') {
+                dashboardSidebar.classList.add('collapsed');
+                sidebarToggle.classList.add('collapsed');
+                dashboardContainer.classList.add('collapsed');
+                dashboardContainer.classList.remove('expanded');
+            }
+        }
+    }
+    
+    // Vérifier au chargement et à chaque redimensionnement
+    checkMobileView();
+    window.addEventListener('resize', checkMobileView);
 });
 
 function showSection(section) {
