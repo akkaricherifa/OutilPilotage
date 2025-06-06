@@ -4359,3 +4359,438 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /heures-enseignement/ HTTP/1.1" 200 76390
 "GET /heures-enseignement/ HTTP/1.1" 200 76390
 Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /static/images/isis.png HTTP/1.1" 304 0
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 33908
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 39454
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49709
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49709
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49709
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /catEnseug/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+"GET /login/ HTTP/1.1" 200 40186
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49688
+"GET /rse/ HTTP/1.1" 302 0
+"GET /login/?next=/rse/ HTTP/1.1" 200 40186
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /rse/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 761, in rse
+    return render(request, 'statistiques/rse.html', context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'rse_add_data' not found. 'rse_add_data' is not a valid view function or pattern name.
+"GET /rse/ HTTP/1.1" 500 155185
+"GET /rse/ HTTP/1.1" 200 44175
+"GET /rse/ HTTP/1.1" 200 44175
+"POST /rse/ HTTP/1.1" 200 44175
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7615
+Not Found: /statistiques/urls.py
+"GET /statistiques/urls.py HTTP/1.1" 404 7531
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 7504
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /rse/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49688
+Erreur lors de la récupération des stats RSE: 404
+Erreur lors de la récupération des données RSE: 404
+"GET /rse/ HTTP/1.1" 200 59245
+Erreur lors de la récupération des stats RSE: 404
+"GET /rse/ HTTP/1.1" 200 59245
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Envoi des données RSE à l'API: {'annee': 2025, 'promotion': 'FIE2', 'semestre': 'S6', 'type_activite': 'Transition écologique et numérique', 'heures_cm': 6, 'heures_td': 9, 'heures_tp': 8, 'description': 'isis isisi isisi is sis'}
+"POST /rse/add/ HTTP/1.1" 302 0
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 61785
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 63147
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 63147
+Envoi des données RSE à l'API: {'annee': 2025, 'promotion': 'FIE4', 'semestre': 'S4', 'type_activite': 'Anthropocène', 'heures_cm': 4, 'heures_td': 9, 'heures_tp': 12, 'description': ''}
+"POST /rse/add/ HTTP/1.1" 302 0
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 65264
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 64739
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 64740
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 65741
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66569
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66569
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Erreur lors de la récupération des stats RSE: 500
+"GET /rse/ HTTP/1.1" 200 66516
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66569
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66738
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43279
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49440
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66740
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66531
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 66726
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 68384
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Envoi des données RSE à l'API: {'annee': 2023, 'promotion': 'FIA3', 'semestre': 'S3', 'type_activite': 'Enjeux socio environnementaux', 'heures_cm': 3, 'heures_td': 7, 'heures_tp': 10, 'description': ''}
+"POST /rse/add/ HTTP/1.1" 302 0
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 68901
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 65743
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Envoi des données RSE à l'API: {'annee': 2020, 'promotion': 'FIE1', 'semestre': 'S1', 'type_activite': 'Enjeux socio environnementaux', 'heures_cm': 4, 'heures_td': 8, 'heures_tp': 12, 'description': ''}
+Forbidden: /rse/add/
+"POST /rse/add/ HTTP/1.1" 403 38
+"GET /dashboard/ HTTP/1.1" 200 42776
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49688
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 65741
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Envoi des données RSE à l'API: {'annee': 2020, 'promotion': 'FIE1', 'semestre': 'S1', 'type_activite': 'Enjeux socio environnementaux', 'heures_cm': 4, 'heures_td': 8, 'heures_tp': 15, 'description': ''}
+"POST /rse/add/ HTTP/1.1" 200 84
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 67121
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Données RSE reçues: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+"GET /rse/ HTTP/1.1" 200 67973
+Not Found: /api/rse/stats
+"GET /api/rse/stats HTTP/1.1" 404 8059
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 67618
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7877
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 67618
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 67617
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7877
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 67617
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7877
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 70442
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49688
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /catEnseug/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 161, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 727, in categories_enseignement
+    return render(request, 'statistiques/catEnseug.html', {
+        'categories_stats': categories_stats,
+        'quick_stats': quick_stats,
+        'user_info': request.session.get('user_info', {})
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'heures-enseignement' not found. 'heures-enseignement' is not a valid view function or pattern name.
+"GET /catEnseug/ HTTP/1.1" 500 187675
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49685
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+"GET /heures-enseignement/ HTTP/1.1" 200 76390
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 70442
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 70442
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 70442
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 72126
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 3
+"GET /rse/ HTTP/1.1" 200 72374
+"POST /rse/add/ HTTP/1.1" 302 0
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 74626
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 74095
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 74095
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 74095
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 73875
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Nombre d'enregistrements RSE récupérés: 4
+"GET /rse/ HTTP/1.1" 200 73887
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Nombre d'enregistrements RSE récupérés: 4
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+"GET /rse/ HTTP/1.1" 200 73327
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Nombre d'enregistrements RSE récupérés: 4
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+"GET /rse/ HTTP/1.1" 200 73327
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Nombre d'enregistrements RSE récupérés: 4
+Données stats RSE récupérées: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+"GET /rse/ HTTP/1.1" 200 73327
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader

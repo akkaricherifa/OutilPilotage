@@ -15,6 +15,7 @@ MONGO_DB = 'AppISIS'
 MONGO_COLLECTION_USERS = 'utilisateurs'
 MONGO_COLLECTION_DATA = 'donnees_etudiants'
 MONGO_COLLECTION_ENSEIGNEMENT = 'donnees_enseignement'
+MONGO_COLLECTION_RSE = 'donnees_rse'
 
 def init_database():
     """Initialise la base de données AppISIS"""

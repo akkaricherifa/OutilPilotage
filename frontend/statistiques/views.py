@@ -750,3 +750,178 @@ def heures_enseignement(request):
         'user_info': request.session.get('user_info', {}),
         'settings': settings  # Passer les paramètres de configuration au template
     })
+
+
+@api_authenticated_required
+def rse_view(request):
+    """Vue principale pour les données RSE"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    # Liste des types d'activités RSE prédéfinis
+    activites_maquette = [
+        "Transition écologique et numérique",
+        "Responsabilité sociale et environnementale de l'ingénieur",
+        "Anthropocène",
+        "Numérique responsable",
+        "Enjeux socio environnementaux",
+        "Autre"
+    ]
+    
+    try:
+        # Récupérer les statistiques depuis l'API
+        stats_response = requests.get(f"{settings.API_URL}/rse/stats", headers=headers, timeout=10)
+        
+        if stats_response.status_code == 200:
+            stats = stats_response.json()
+            logger.info(f"Données stats RSE récupérées: {list(stats.keys())}")
+        else:
+            logger.warning(f"Erreur API stats RSE: {stats_response.status_code}")
+            stats = {}
+            messages.warning(request, "Impossible de récupérer les statistiques RSE.")
+            
+        # Récupérer les données complètes
+        data_response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if data_response.status_code == 200:
+            rse_data = data_response.json()
+            logger.info(f"Nombre d'enregistrements RSE récupérés: {len(rse_data)}")
+        else:
+            logger.warning(f"Erreur API data RSE: {data_response.status_code}")
+            rse_data = []
+            messages.warning(request, "Impossible de récupérer les données RSE.")
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur lors de la récupération des données RSE: {e}")
+        messages.error(request, "Erreur de connexion à l'API RSE.")
+        stats = {}
+        rse_data = []
+    
+    return render(request, 'statistiques/rse.html', {
+        'stats': stats,
+        'rse_data': rse_data,
+        'activites_maquette': activites_maquette,
+        'user_info': request.session.get('user_info', {})
+    })
+
+
+
+
+@api_authenticated_required
+def rse_add_data(request):
+    """Vue pour ajouter/modifier des données RSE"""
+    if request.method != 'POST':
+        return redirect('rse')
+    
+    token = request.session.get('api_token')
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    
+    try:
+        # Traiter les données du formulaire
+        data = {
+            'id': request.POST.get('id', ''),
+            'annee': int(request.POST.get('annee', 0)),
+            'promotion': request.POST.get('promotion', ''),
+            'semestre': request.POST.get('semestre', ''),
+            'heures_cm': int(request.POST.get('heures_cm', 0)),
+            'heures_td': int(request.POST.get('heures_td', 0)),
+            'heures_tp': int(request.POST.get('heures_tp', 0))
+        }
+        
+        # Gérer le type d'activité (standard ou personnalisé)
+        type_activite = request.POST.get('type_activite', '')
+        if type_activite == 'Autre':
+            data['type_activite'] = request.POST.get('autre_type', '')
+        else:
+            data['type_activite'] = type_activite
+            
+        # Ajouter une description si disponible
+        if request.POST.get('description'):
+            data['description'] = request.POST.get('description')
+        
+        # Déterminer si c'est un ajout ou une mise à jour
+        if data['id']:
+            url = f"{settings.API_URL}/rse/update"
+            message_success = "Données RSE mises à jour avec succès!"
+        else:
+            url = f"{settings.API_URL}/rse/add"
+            message_success = "Nouvelles données RSE ajoutées avec succès!"
+        
+        # Envoyer à l'API
+        response = requests.post(
+            url,
+            json=data,
+            headers=headers,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            # Gestion des requêtes AJAX
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': True, 'message': message_success})
+            
+            messages.success(request, message_success)
+            return redirect('rse')
+        else:
+            try:
+                error_data = response.json()
+                error_message = error_data.get('error', 'Erreur inconnue')
+            except:
+                error_message = f"Erreur API (code {response.status_code})"
+            
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'message': error_message}, status=400)
+            
+            messages.error(request, f"Erreur lors de l'enregistrement: {error_message}")
+            
+    except Exception as e:
+        logger.error(f"Erreur lors de l'ajout/modification RSE: {e}")
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+        
+        messages.error(request, f"Une erreur est survenue: {str(e)}")
+    
+    return redirect('rse')
+
+@api_authenticated_required
+def rse_delete_data(request, rse_id):
+    """Vue pour supprimer des données RSE"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        response = requests.delete(
+            f"{settings.API_URL}/rse/delete/{rse_id}",
+            headers=headers,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({"success": True, "message": "Données RSE supprimées avec succès!"})
+            
+            messages.success(request, "Données RSE supprimées avec succès!")
+            return redirect('rse')
+        else:
+            api_response = response.json()
+            error_message = api_response.get('error', 'Erreur lors de la suppression des données RSE.')
+            
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({"error": error_message}, status=response.status_code)
+            
+            messages.error(request, error_message)
+            return redirect('rse')
+    
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API rse_delete_data: {e}")
+        error_message = "Erreur de connexion lors de la suppression des données RSE."
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({"error": error_message}, status=500)
+        
+        messages.error(request, error_message)
+        return redirect('rse')
