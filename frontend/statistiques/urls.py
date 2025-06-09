@@ -41,7 +41,7 @@ urlpatterns = [
     # Ajoutez cette ligne dans la liste urlpatterns
     path('heures-enseignement/', views.heures_enseignement, name='heures_enseignement'),
 
-    #RES 
+    #RSE
     path('rse/', views.rse_view, name='rse'),
     path('rse/add/', views.rse_add_data, name='rse_add_data'),
     path('rse/delete/<str:rse_id>/', views.rse_delete_data, name='rse_delete_data'),
