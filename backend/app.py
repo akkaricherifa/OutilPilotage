@@ -13,6 +13,7 @@ import base64
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import jwt
+import math
 from functools import wraps
 
 # Configuration de l'application
@@ -1500,13 +1501,27 @@ def get_arion_data():
             filter_query["statut"] = statut
         
         # Récupérer les données avec tri par date décroissante
-        data = list(arion_collection.find(filter_query, {'_id': 0}).sort([('annee', -1), ('date', -1)]))
+        cursor = arion_collection.find(filter_query, {'_id': 0}).sort([('annee', -1), ('date', -1)])
         
-        return jsonify(data), 200
+        # Convertir le curseur en liste et nettoyer les données
+        data = list(cursor)
+        
+        # Remplacer explicitement les valeurs NaN, None, etc. par null pour JSON
+        clean_data = []
+        for item in data:
+            clean_item = {}
+            for key, value in item.items():
+                # Convertir les valeurs problématiques en None pour JSON
+                if isinstance(value, float) and math.isnan(value):
+                    clean_item[key] = None
+                else:
+                    clean_item[key] = value
+            clean_data.append(clean_item)
+        
+        return jsonify(clean_data), 200
         
     except Exception as e:
         return jsonify({"error": f"Erreur lors de la récupération des données ARION: {str(e)}"}), 500
-
 @app.route('/api/arion/add', methods=['POST'])
 def add_arion_data():
     """Endpoint pour ajouter/modifier des données ARION"""
@@ -1588,11 +1603,16 @@ def upload_arion_csv():
             # Récupérer l'année par défaut si spécifiée
             default_annee = request.form.get('annee_import', '')
             
-            # Lecture du fichier CSV
-            df = pd.read_csv(file)
+            # Lecture du fichier CSV avec pandas
+            # Utilisation de paramètres spécifiques pour gérer les valeurs NaN
+            df = pd.read_csv(
+                file,
+                na_values=['', 'NA', 'N/A', 'nan', 'NaN', 'None', 'none'],  # Valeurs considérées comme NaN
+                keep_default_na=True  # Conserver les valeurs NaN par défaut
+            )
             
             # Validation des colonnes minimales requises
-            required_columns = ['formateur', 'statut', 'groupe', 'activite', 'code_y', 'niveau', 'date', 'duree']
+            required_columns = ['activite', 'groupe', 'code_y', 'niveau', 'date', 'duree']
             missing_columns = [col for col in required_columns if col not in df.columns]
             
             if missing_columns:
@@ -1617,13 +1637,15 @@ def upload_arion_csv():
                     else:
                         df['annee'] = default_annee
             
-            # Ajouter des colonnes manquantes optionnelles
-            for col in ['lieu', 'intervenant']:
+            # S'assurer que toutes les colonnes attendues existent, même vides
+            for col in ['formateur', 'statut', 'lieu', 'intervenant']:
                 if col not in df.columns:
-                    df[col] = ""
+                    df[col] = None
             
             # Conversion du DataFrame en liste de dictionnaires pour MongoDB
-            records = df.to_dict('records')
+            # Remplacement explicite des valeurs NaN par None pour MongoDB
+            df = df.replace({pd.NA: None})
+            records = df.where(pd.notnull(df), None).to_dict('records')
             
             # Ajout de métadonnées et identifiants uniques
             timestamp = int(datetime.utcnow().timestamp())
@@ -1634,30 +1656,12 @@ def upload_arion_csv():
                 record['created_by'] = 'admin'  # Valeur par défaut
                 record['created_at'] = datetime.utcnow()
                 
-                # Conversion de la durée en nombre
-                if 'duree' in record:
+                # Conversion de la durée en nombre si possible
+                if 'duree' in record and record['duree'] is not None:
                     try:
                         record['duree'] = float(record['duree'])
                     except (ValueError, TypeError):
                         record['duree'] = 0.0
-                
-                # Formatage de la date si nécessaire
-                if 'date' in record and record['date']:
-                    # Tenter de normaliser le format de date si c'est une chaîne
-                    if isinstance(record['date'], str):
-                        try:
-                            # Essayer de convertir diverses formats de date
-                            date_formats = ['%Y-%m-%d', '%d/%m/%Y', '%d-%m-%Y', '%m/%d/%Y']
-                            for fmt in date_formats:
-                                try:
-                                    parsed_date = datetime.strptime(record['date'], fmt)
-                                    record['date'] = parsed_date.strftime('%Y-%m-%d')
-                                    break
-                                except ValueError:
-                                    continue
-                        except Exception:
-                            # Si échec, conserver la valeur originale
-                            pass
             
             # Insertion des données
             if records:

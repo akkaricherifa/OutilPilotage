@@ -7044,3 +7044,70 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
 Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 65728
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /api/arion/stats HTTP/1.1" 200 368
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"GET /arion/ HTTP/1.1" 200 65667
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /arion/ HTTP/1.1" 200 65667
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 65959
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 65482
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /arion/ HTTP/1.1" 200 65523
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 65523
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /arion/ HTTP/1.1" 200 65034
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /arion/ HTTP/1.1" 200 65465
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 65463
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 68288
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /arion/ HTTP/1.1" 200 62463
+"GET /api/arion/data HTTP/1.1" 200 675
+"POST /arion/ HTTP/1.1" 200 62463
+"GET /api/arion/data HTTP/1.1" 200 675
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"POST /arion/ HTTP/1.1" 200 62463
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"GET /api/arion/data HTTP/1.1" 200 675
+"POST /arion/ HTTP/1.1" 200 62463
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"GET /api/arion/data HTTP/1.1" 200 675
+"POST /arion/ HTTP/1.1" 200 63395
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"POST /api/arion/add HTTP/1.1" 200 126
+"GET /api/arion/stats HTTP/1.1" 200 398
+"GET /api/arion/data HTTP/1.1" 200 1250

@@ -539,10 +539,11 @@ function loadArionStats() {
 }
 // Fonction pour charger les données ARION
 function loadArionData() {
-    // Afficher un indicateur de chargement discret
+    // Afficher un indicateur de chargement
     const tableBody = $('#arionTable tbody');
+    tableBody.html('<tr><td colspan="10" class="text-center">Chargement des données...</td></tr>');
     
-    // Faire la requête AJAX immédiatement sans délai
+    // Faire la requête AJAX
     $.ajax({
         url: `${API_BASE_URL}/arion/data`,
         type: 'GET',
@@ -550,6 +551,8 @@ function loadArionData() {
             'Authorization': 'Bearer ' + getToken()
         },
         success: function(data) {
+            console.log("Données reçues:", data); // Pour le débogage
+            
             // Détruire le DataTable existant s'il existe
             if ($.fn.DataTable.isDataTable('#arionTable')) {
                 $('#arionTable').DataTable().destroy();
@@ -558,7 +561,7 @@ function loadArionData() {
             // Vider le tableau
             tableBody.empty();
             
-            if (data.length === 0) {
+            if (!data || data.length === 0) {
                 tableBody.html('<tr><td colspan="10" class="text-center">Aucune donnée disponible</td></tr>');
                 initDataTable();
                 return;
@@ -566,35 +569,64 @@ function loadArionData() {
             
             // Remplir le tableau avec les données
             data.forEach(function(item) {
-                // Déterminer la classe du badge de statut
+                // Fonction pour vérifier si une valeur est valide (non NaN, non null, non undefined)
+                const isValidValue = (val) => {
+                    if (val === null || val === undefined) return false;
+                    if (typeof val === 'number' && isNaN(val)) return false;
+                    if (val === 'NaN' || val === 'null' || val === 'undefined') return false;
+                    return true;
+                };
+                
+                // Extraire et nettoyer les valeurs
+                const annee = isValidValue(item.annee) ? item.annee : '';
+                const formateur = isValidValue(item.formateur) ? item.formateur : '';
+                
+                // Gestion du statut et de la classe correspondante
+                let statusText = isValidValue(item.statut) ? item.statut : 'Non spécifié';
                 let statusClass = 'status-active';
-                if (item.statut === 'Vacataire') {
+                
+                if (statusText === 'Vacataire' || statusText === 'Vacataires') {
                     statusClass = 'status-inactive';
-                } else if (item.statut === 'Personnel non enseignant') {
+                } else if (statusText === 'Personnel non enseignant') {
                     statusClass = 'status-pending';
                 }
                 
-                // Formater la date pour l'affichage
-                let formattedDate = item.date;
-                if (item.date && item.date.includes('-')) {
-                    const dateParts = item.date.split('-');
-                    if (dateParts.length === 3) {
-                        formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                const groupe = isValidValue(item.groupe) ? item.groupe : '';
+                const activite = isValidValue(item.activite) ? item.activite : '';
+                const codeY = isValidValue(item.code_y) ? item.code_y : '';
+                const niveau = isValidValue(item.niveau) ? item.niveau : '';
+                
+                // Formatage de la date
+                let formattedDate = '';
+                if (isValidValue(item.date)) {
+                    const dateStr = String(item.date);
+                    if (dateStr.includes('-')) {
+                        const dateParts = dateStr.split('-');
+                        if (dateParts.length === 3) {
+                            formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                        } else {
+                            formattedDate = dateStr;
+                        }
+                    } else {
+                        formattedDate = dateStr;
                     }
                 }
                 
-                // Ajouter la ligne au tableau
+                // Formatage de la durée
+                const duree = isValidValue(item.duree) ? parseFloat(item.duree) : 0;
+                
+                // Création de la ligne HTML
                 tableBody.append(`
                     <tr>
-                        <td>${item.annee || ''}</td>
-                        <td>${item.formateur || ''}</td>
-                        <td><span class="status-badge ${statusClass}">${item.statut || ''}</span></td>
-                        <td>${item.groupe || ''}</td>
-                        <td>${item.activite || ''}</td>
-                        <td>${item.code_y || ''}</td>
-                        <td>${item.niveau || ''}</td>
-                        <td>${formattedDate || ''}</td>
-                        <td>${item.duree || 0}</td>
+                        <td>${annee}</td>
+                        <td>${formateur}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${groupe}</td>
+                        <td>${activite}</td>
+                        <td>${codeY}</td>
+                        <td>${niveau}</td>
+                        <td>${formattedDate}</td>
+                        <td>${duree}</td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary" onclick="editData('${item.id}')">
                                 <i class="fas fa-edit"></i>
@@ -685,7 +717,7 @@ function initDataTable() {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
         },
         "order": [[0, "desc"], [7, "desc"]],
-        "pageLength": 10,
+        "pageLength": 6,
         "responsive": true
     });
 }
