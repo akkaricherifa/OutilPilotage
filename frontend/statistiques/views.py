@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CSVUploadForm, UserRegisterForm, DataUpdateForm
@@ -14,7 +14,7 @@ import json
 import logging
 import math
 import json
-
+FLASK_API_URL = 'http://localhost:5000'
 logger = logging.getLogger(__name__)
 
 def clean_json_data(data):
@@ -1035,3 +1035,148 @@ def rse_delete_data(request, rse_id):
         
         messages.error(request, error_message)
         return redirect('rse')
+    
+
+
+############ ARION #############################
+@api_authenticated_required
+def arion(request):
+    """Vue pour afficher l'interface ARION"""
+    context = {
+        'page_title': 'ARION - Recherche',
+        'active_tab': 'arion'
+    }
+    return render(request, 'statistiques/arion.html', context)
+
+
+@csrf_exempt
+@api_authenticated_required
+def arion_api_redirect(request):
+    """Redirection vers l'API Flask pour les endpoints ARION"""
+    # Construire l'URL Flask
+    path = request.path
+    flask_url = f"{FLASK_API_URL}{path}"
+    
+    try:
+        # Gérer les différentes méthodes HTTP
+        if request.method == 'GET':
+            # Transmettre les paramètres de requête GET
+            params = request.GET.dict()
+            response = requests.get(flask_url, params=params)
+        elif request.method == 'POST':
+            # Vérifier s'il s'agit d'un formulaire multipart ou de données JSON
+            if request.content_type and 'multipart/form-data' in request.content_type:
+                # Cas de l'upload de fichier CSV
+                files = {'file': request.FILES['file']} if 'file' in request.FILES else None
+                data = request.POST.dict()
+                response = requests.post(flask_url, files=files, data=data)
+            else:
+                # Cas des données JSON
+                try:
+                    data = json.loads(request.body)
+                    response = requests.post(flask_url, json=data)
+                except json.JSONDecodeError:
+                    response = requests.post(flask_url, data=request.body)
+        else:
+            # Méthode non supportée
+            return JsonResponse({"error": f"Méthode {request.method} non supportée"}, status=405)
+        
+        # Retourner la réponse du serveur Flask
+        return HttpResponse(
+            content=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type', 'application/json')
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}, status=500)
+
+@csrf_exempt
+@api_authenticated_required
+def arion_api_stats(request):
+    """Redirection vers l'API Flask pour les statistiques ARION"""
+    try:
+        # Construire l'URL Flask
+        flask_url = f"{FLASK_API_URL}/api/arion/stats"
+        
+        # Faire la requête à l'API Flask
+        response = requests.get(flask_url)
+        
+        # Retourner la réponse du serveur Flask
+        return HttpResponse(
+            content=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type', 'application/json')
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}), 500
+
+@csrf_exempt
+@api_authenticated_required
+def arion_api_add(request):
+    """Redirection vers l'API Flask pour ajouter des données ARION"""
+    try:
+        # Construire l'URL Flask
+        flask_url = f"{FLASK_API_URL}/api/arion/add"
+        
+        # Extraire le contenu JSON de la requête
+        data = json.loads(request.body)
+        
+        # Faire la requête à l'API Flask
+        response = requests.post(flask_url, json=data)
+        
+        # Retourner la réponse du serveur Flask
+        return HttpResponse(
+            content=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type', 'application/json')
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}), 500
+
+@csrf_exempt
+@api_authenticated_required
+def arion_api_delete(request, item_id):
+    """Redirection vers l'API Flask pour supprimer des données ARION"""
+    try:
+        # Construire l'URL Flask
+        flask_url = f"{FLASK_API_URL}/api/arion/delete/{item_id}"
+        
+        # Faire la requête à l'API Flask
+        response = requests.delete(flask_url)
+        
+        # Retourner la réponse du serveur Flask
+        return HttpResponse(
+            content=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type', 'application/json')
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}, status=500)
+
+@csrf_exempt
+@api_authenticated_required
+def arion_api_upload(request):
+    """Redirection vers l'API Flask pour l'upload CSV ARION"""
+    try:
+        # Construire l'URL Flask
+        flask_url = f"{FLASK_API_URL}/api/arion/upload"
+        
+        # Extraire le fichier et les données du formulaire
+        file = request.FILES.get('file')
+        annee_import = request.POST.get('annee_import')
+        
+        # Préparer les données pour la requête multipart
+        files = {'file': (file.name, file.read(), file.content_type)}
+        data = {'annee_import': annee_import} if annee_import else {}
+        
+        # Faire la requête à l'API Flask
+        response = requests.post(flask_url, files=files, data=data)
+        
+        # Retourner la réponse du serveur Flask
+        return HttpResponse(
+            content=response.content,
+            status=response.status_code,
+            content_type=response.headers.get('Content-Type', 'application/json')
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}), 500

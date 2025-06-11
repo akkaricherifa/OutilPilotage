@@ -17,7 +17,7 @@ from functools import wraps
 
 # Configuration de l'application
 app = Flask(__name__)
-CORS(app)  # Permet les requêtes cross-origin
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:8000", "http://127.0.0.1:8000"]}})
 
 # Configuration Flask
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
@@ -35,6 +35,7 @@ try:
     enseignement_collection = db[MONGO_COLLECTION_ENSEIGNEMENT]
     heures_enseignement_collection = db['heures_enseignement_detaillees']
     rse_collection = db[MONGO_COLLECTION_RSE]
+    arion_collection = db[MONGO_COLLECTION_ARION]
 
 
     print(f"Connexion à la base {MONGO_DB} réussie!")
@@ -1472,6 +1473,283 @@ def get_rse_chart(current_user, chart_type):
         
     except Exception as e:
         return jsonify({"error": f"Erreur lors de la génération du graphique RSE: {str(e)}"}), 500
+
+
+
+######################### Routes pour ARION ###################################
+@app.route('/api/arion/data', methods=['GET'])
+def get_arion_data():
+    """Endpoint pour récupérer les données ARION"""
+    try:
+        # Paramètres de filtrage optionnels
+        arion_id = request.args.get('id')
+        annee = request.args.get('annee')
+        formateur = request.args.get('formateur')
+        statut = request.args.get('statut')
+        
+        # Construire le filtre en fonction des paramètres fournis
+        filter_query = {}
+        
+        if arion_id:
+            filter_query["id"] = arion_id
+        if annee:
+            filter_query["annee"] = annee
+        if formateur:
+            filter_query["formateur"] = {"$regex": formateur, "$options": "i"}
+        if statut:
+            filter_query["statut"] = statut
+        
+        # Récupérer les données avec tri par date décroissante
+        data = list(arion_collection.find(filter_query, {'_id': 0}).sort([('annee', -1), ('date', -1)]))
+        
+        return jsonify(data), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des données ARION: {str(e)}"}), 500
+
+@app.route('/api/arion/add', methods=['POST'])
+def add_arion_data():
+    """Endpoint pour ajouter/modifier des données ARION"""
+    data = request.json
+    
+    if not data:
+        return jsonify({"error": "Données manquantes"}), 400
+    
+    # Validation des champs obligatoires
+    required_fields = ['annee', 'formateur', 'statut', 'groupe', 'activite', 
+                      'code_y', 'niveau', 'date', 'duree']
+    missing_fields = [field for field in required_fields if not data.get(field)]
+    if missing_fields:
+        return jsonify({"error": f"Champs manquants: {', '.join(missing_fields)}"}), 400
+    
+    try:
+        # Vérifier si c'est une mise à jour ou un ajout
+        is_update = 'id' in data and data['id']
+        
+        # Conversion des types
+        data['duree'] = float(data['duree'])
+        
+        # Ajout de métadonnées
+        if is_update:
+            data['updated_by'] = 'admin'  # Valeur par défaut
+            data['updated_at'] = datetime.utcnow()
+        else:
+            data['id'] = f"arion_{int(datetime.utcnow().timestamp())}"
+            data['created_by'] = 'admin'  # Valeur par défaut
+            data['created_at'] = datetime.utcnow()
+        
+        # Mise à jour ou insertion
+        if is_update:
+            result = arion_collection.update_one(
+                {"id": data['id']}, 
+                {"$set": data}
+            )
+            
+            if result.matched_count == 0:
+                return jsonify({"error": "Aucune donnée trouvée avec cet ID"}), 404
+                
+            message = "Données ARION mises à jour avec succès"
+        else:
+            result = arion_collection.insert_one(data)
+            message = "Nouvelles données ARION ajoutées avec succès"
+            
+        return jsonify({"message": message, "success": True, "id": data['id']}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de l'ajout/modification des données ARION: {str(e)}"}), 500
+
+@app.route('/api/arion/delete/<string:arion_id>', methods=['DELETE'])
+def delete_arion_data(arion_id):
+    """Endpoint pour supprimer des données ARION"""
+    try:
+        # Suppression des données
+        result = arion_collection.delete_one({"id": arion_id})
+        
+        if result.deleted_count == 0:
+            return jsonify({"error": f"Aucune donnée ARION trouvée avec l'ID {arion_id}"}), 404
+            
+        return jsonify({"message": "Données ARION supprimées avec succès", "success": True}), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la suppression des données ARION: {str(e)}"}), 500
+
+@app.route('/api/arion/upload', methods=['POST'])
+def upload_arion_csv():
+    """Endpoint pour importer un fichier CSV de données ARION"""
+    if 'file' not in request.files:
+        return jsonify({"error": "Aucun fichier n'a été envoyé"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
+    
+    if file and file.filename.endswith('.csv'):
+        try:
+            # Récupérer l'année par défaut si spécifiée
+            default_annee = request.form.get('annee_import', '')
+            
+            # Lecture du fichier CSV
+            df = pd.read_csv(file)
+            
+            # Validation des colonnes minimales requises
+            required_columns = ['formateur', 'statut', 'groupe', 'activite', 'code_y', 'niveau', 'date', 'duree']
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            
+            if missing_columns:
+                return jsonify({
+                    "error": f"Colonnes manquantes dans le CSV: {', '.join(missing_columns)}"
+                }), 400
+            
+            # Ajouter colonne annee si non présente
+            if 'annee' not in df.columns and default_annee:
+                df['annee'] = default_annee
+            
+            # Vérifier que toutes les lignes ont une année
+            if 'annee' not in df.columns or df['annee'].isnull().any():
+                if not default_annee:
+                    return jsonify({
+                        "error": "Certaines lignes n'ont pas d'année spécifiée et aucune année par défaut n'a été fournie"
+                    }), 400
+                else:
+                    # Appliquer l'année par défaut aux lignes sans année
+                    if 'annee' in df.columns:
+                        df['annee'] = df['annee'].fillna(default_annee)
+                    else:
+                        df['annee'] = default_annee
+            
+            # Ajouter des colonnes manquantes optionnelles
+            for col in ['lieu', 'intervenant']:
+                if col not in df.columns:
+                    df[col] = ""
+            
+            # Conversion du DataFrame en liste de dictionnaires pour MongoDB
+            records = df.to_dict('records')
+            
+            # Ajout de métadonnées et identifiants uniques
+            timestamp = int(datetime.utcnow().timestamp())
+            for i, record in enumerate(records):
+                record['id'] = f"arion_csv_{timestamp}_{i}"
+                record['uploaded_by'] = 'admin'  # Valeur par défaut
+                record['uploaded_at'] = datetime.utcnow()
+                record['created_by'] = 'admin'  # Valeur par défaut
+                record['created_at'] = datetime.utcnow()
+                
+                # Conversion de la durée en nombre
+                if 'duree' in record:
+                    try:
+                        record['duree'] = float(record['duree'])
+                    except (ValueError, TypeError):
+                        record['duree'] = 0.0
+                
+                # Formatage de la date si nécessaire
+                if 'date' in record and record['date']:
+                    # Tenter de normaliser le format de date si c'est une chaîne
+                    if isinstance(record['date'], str):
+                        try:
+                            # Essayer de convertir diverses formats de date
+                            date_formats = ['%Y-%m-%d', '%d/%m/%Y', '%d-%m-%Y', '%m/%d/%Y']
+                            for fmt in date_formats:
+                                try:
+                                    parsed_date = datetime.strptime(record['date'], fmt)
+                                    record['date'] = parsed_date.strftime('%Y-%m-%d')
+                                    break
+                                except ValueError:
+                                    continue
+                        except Exception:
+                            # Si échec, conserver la valeur originale
+                            pass
+            
+            # Insertion des données
+            if records:
+                result = arion_collection.insert_many(records)
+                
+                return jsonify({
+                    "message": "Importation CSV réussie", 
+                    "records_inserted": len(result.inserted_ids),
+                    "success": True
+                }), 200
+            else:
+                return jsonify({"warning": "Aucune donnée trouvée dans le fichier CSV", "success": False}), 400
+                
+        except Exception as e:
+            return jsonify({"error": f"Erreur lors du traitement du fichier CSV: {str(e)}"}), 500
+    
+    return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
+
+@app.route('/api/arion/stats', methods=['GET'])
+def get_arion_stats():
+    """Endpoint pour récupérer les statistiques ARION"""
+    try:
+        data = list(arion_collection.find({}, {'_id': 0}))
+        
+        if not data:
+            return jsonify({"error": "Aucune donnée ARION trouvée"}), 404
+        
+        # Convertir en DataFrame pandas pour faciliter les calculs
+        df = pd.DataFrame(data)
+        
+        # Calculer les statistiques
+        stats = {
+            "summary": {
+                "total_activites": len(df),
+                "total_duree": round(float(df['duree'].sum()), 1),
+                "formateurs_count": len(df['formateur'].unique()),
+                "niveaux_count": len(df['niveau'].unique()) if 'niveau' in df.columns else 0
+            }
+        }
+        
+        # Statistiques par année
+        stats_par_annee = {}
+        if 'annee' in df.columns:
+            for annee in df['annee'].unique():
+                annee_df = df[df['annee'] == annee]
+                stats_par_annee[annee] = {
+                    'count': len(annee_df),
+                    'duree_totale': round(float(annee_df['duree'].sum()), 1)
+                }
+        
+        # Préparation des données pour les graphiques
+        graphiques = {
+            'annees': {
+                'labels': list(stats_par_annee.keys()),
+                'values': [stats_par_annee[a]['count'] for a in stats_par_annee]
+            }
+        }
+        
+        # Evolution mensuelle (pour les 12 derniers mois)
+        evolution_mensuelle = {}
+        if 'date' in df.columns:
+            # Convertir la colonne date en datetime si ce n'est pas déjà fait
+            if df['date'].dtype != 'datetime64[ns]':
+                df['date'] = pd.to_datetime(df['date'], errors='coerce')
+            
+            # Filtrer les dates valides
+            date_df = df.dropna(subset=['date'])
+            if not date_df.empty:
+                # Extraire le mois et l'année
+                date_df['mois'] = date_df['date'].dt.strftime('%Y-%m')
+                
+                # Regrouper par mois
+                monthly_counts = date_df.groupby('mois').size()
+                
+                # Sélectionner les 12 derniers mois avec des données
+                last_months = sorted(monthly_counts.index)[-12:] if len(monthly_counts) > 0 else []
+                
+                for month in last_months:
+                    evolution_mensuelle[month] = int(monthly_counts.get(month, 0))
+                
+                graphiques['evolution_mensuelle'] = {
+                    'labels': list(evolution_mensuelle.keys()),
+                    'values': list(evolution_mensuelle.values())
+                }
+        
+        # Ajouter les graphiques aux statistiques
+        stats['graphiques'] = graphiques
+        
+        return jsonify(stats), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors du calcul des statistiques ARION: {str(e)}"}), 500
 
 ############################################################ Routes pour les templates (si nécessaire)
 @app.route('/')

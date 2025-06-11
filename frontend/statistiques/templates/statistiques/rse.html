@@ -779,8 +779,11 @@ function initDataTable() {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
         },
         "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
-        "pageLength": 10,
-        "responsive": true
+        "pageLength": 5,  // Afficher 5 lignes par page au lieu de 10
+        "lengthMenu": [5, 10, 15, 20, 25, 30, 50],  // Options du menu de longueur
+        "responsive": true,
+        "pagingType": "full_numbers",  // Type de pagination complet
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">'  // Disposition des éléments de contrôle
     });
 }
 
@@ -1500,7 +1503,7 @@ function confirmDelete(id, type) {
     // Configurer le formulaire de suppression
     const deleteForm = document.getElementById('deleteForm');
     if (deleteForm) {
-        deleteForm.action = `/api/rse/delete/${id}`;
+        deleteForm.action = `/rse/delete/${id}/`;
     }
     
     // Afficher la modal

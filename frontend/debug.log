@@ -6468,3 +6468,579 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
 Watching for file changes with StatReloader
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIA3', 'FIE2', 'FIE1', 'FIA4', 'FIA5', 'FIE5', 'FIE4'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 97844
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8164
+Réponse API RSE: 200 - {
+  "message": "Nouvelles donn\u00e9es RSE ajout\u00e9es avec succ\u00e8s",
+  "success": true
+}
+
+"POST /rse/add/ HTTP/1.1" 200 90
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 9 enregistrements
+Promotions dans les données: {'FIA3', 'FIE2', 'FIE1', 'FIA4', 'FIA5', 'FIE5', 'FIE4'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Requête AJAX détectée, renvoi des données JSON
+"GET /rse/ HTTP/1.1" 200 9563
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 9 enregistrements
+Promotions dans les données: {'FIA3', 'FIE2', 'FIE1', 'FIA4', 'FIA5', 'FIE5', 'FIE4'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 99828
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49685
+"GET /heures-enseignement/ HTTP/1.1" 200 76390
+"GET /heures-enseignement/ HTTP/1.1" 200 76390
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 9 enregistrements
+Promotions dans les données: {'FIA4', 'FIE1', 'FIE4', 'FIA5', 'FIE5', 'FIA3', 'FIE2'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 99828
+Not Found: /api/rse/delete/rse_1749497203
+"POST /api/rse/delete/rse_1749497203 HTTP/1.1" 404 8108
+Not Found: /api/rse/delete/rse_1749497203
+"POST /api/rse/delete/rse_1749497203 HTTP/1.1" 404 8108
+Not Found: /api/rse/delete/rse_1749497203
+"POST /api/rse/delete/rse_1749497203 HTTP/1.1" 404 8108
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49685
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 9 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 99825
+"POST /rse/delete/rse_1749497203/ HTTP/1.1" 302 0
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98364
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 102872
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 102382
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 102670
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 102696
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 97841
+Réponse API RSE: 200 - {
+  "message": "Donn\u00e9es RSE mises \u00e0 jour avec succ\u00e8s",
+  "success": true
+}
+
+"POST /rse/add/ HTTP/1.1" 200 84
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Requête AJAX détectée, renvoi des données JSON
+"GET /rse/ HTTP/1.1" 200 8723
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 97841
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98125
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98561
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 93928
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98728
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 99141
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE4', 'FIA3', 'FIA4', 'FIE2', 'FIE5', 'FIA5', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49685
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+Internal Server Error: /arion/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 177, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1060, in arion
+    return render(request, 'statistiques/arion.html', context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'arion_add_data' not found. 'arion_add_data' is not a valid view function or pattern name.
+"GET /arion/ HTTP/1.1" 500 165895
+Internal Server Error: /arion/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 177, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1060, in arion
+    return render(request, 'statistiques/arion.html', context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'arion_upload_csv' not found. 'arion_upload_csv' is not a valid view function or pattern name.
+"GET /arion/ HTTP/1.1" 500 165732
+"GET /arion/ HTTP/1.1" 200 58749
+Internal Server Error: /arion/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 177, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1060, in arion
+    return render(request, 'statistiques/arion.html', context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'arion_add_data' not found. 'arion_add_data' is not a valid view function or pattern name.
+"GET /arion/ HTTP/1.1" 500 166032
+Internal Server Error: /arion/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 177, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1060, in arion
+    return render(request, 'statistiques/arion.html', context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'arion_upload_csv' not found. 'arion_upload_csv' is not a valid view function or pattern name.
+"GET /arion/ HTTP/1.1" 500 165732
+"GET /arion/ HTTP/1.1" 200 53531
+"GET /arion/ HTTP/1.1" 200 53531
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8417
+"POST /arion/ HTTP/1.1" 200 53531
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 53531
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8417
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 61640
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8417
+Not Found: /api/arion/data
+Not Found: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 404 8318
+"GET /api/arion/data HTTP/1.1" 404 8315
+Not Found: /api/arion/add
+"POST /api/arion/add HTTP/1.1" 404 8313
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8417
+Not Found: /api/arion/add
+"POST /api/arion/add HTTP/1.1" 404 8313
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 65712
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 65712
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10069
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 65728
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 673
+"GET /api/arion/data?id=arion_1749639102 HTTP/1.1" 200 673
+"POST /api/arion/add HTTP/1.1" 200 120
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+"GET /arion/ HTTP/1.1" 200 65728
+"GET /api/arion/stats HTTP/1.1" 200 368
+"GET /api/arion/data HTTP/1.1" 200 675
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9796
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader

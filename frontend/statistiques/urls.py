@@ -45,4 +45,17 @@ urlpatterns = [
     path('rse/', views.rse_view, name='rse'),
     path('rse/add/', views.rse_add_data, name='rse_add_data'),
     path('rse/delete/<str:rse_id>/', views.rse_delete_data, name='rse_delete_data'),
+
+
+    path('arion/', views.arion, name='arion'),
+      # Si vous utilisez la redirection API, ajoutez ces URLs
+    path('api/arion/data', views.arion_api_redirect, name='arion_api_data'),
+    path('api/arion/stats', views.arion_api_redirect, name='arion_api_stats'),
+    path('api/arion/add', views.arion_api_redirect, name='arion_api_add'),
+    path('api/arion/upload', views.arion_api_redirect, name='arion_api_upload'),
+    path('api/arion/delete/<str:item_id>/', views.arion_api_delete, name='arion_api_delete'),
 ]
+    
+
+
+

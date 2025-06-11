@@ -720,9 +720,9 @@
                     Projets de recherche associés aux formations et collaborations avec des chercheurs.
                 </p>
                 <div class="category-footer">
-                    <button class="category-button">
-                        <i class="fas fa-arrow-right mr-1"></i>Explorer
-                    </button>
+                      <a href="{% url 'arion' %}" class="category-button">
+            <i class="fas fa-arrow-right mr-1"></i>Explorer
+        </a>
                     <div class="category-trend {% if categories_stats.arion.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
                         <i class="fas fa-arrow-{% if categories_stats.arion.trend == 'up' %}up{% else %}down{% endif %}"></i>
                         <span>{% if categories_stats.arion.evolution > 0 %}+{% endif %}{{ categories_stats.arion.evolution }}%</span>

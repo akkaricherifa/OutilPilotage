@@ -1,0 +1,1167 @@
+{% extends 'statistiques/base.html' %}
+
+{% block title %}ARION - Recherche - AppISIS{% endblock %}
+
+{% block extra_css %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+
+<style>
+    :root {
+        /* Couleurs ISIS basées sur la charte graphique */
+        --isis-purple-dark: #2f0d73;    /* Violet foncé principal */
+        --isis-purple: #7c50de;         /* Violet principal */
+        --isis-purple-light: #ac54c7;   /* Violet clair */
+        --isis-coral: #f56960;          /* Corail/rouge */
+        --isis-coral-light: #ffb43c;    /* Orange/jaune */
+        --isis-teal: #3cbebe;           /* Turquoise */
+        
+        --sidebar-bg: #ffffff;
+        --sidebar-hover: rgba(124, 80, 222, 0.1);
+        --sidebar-active: linear-gradient(135deg, #7c50de 0%, #f56960 100%);
+        --card-shadow: 0 4px 15px rgba(124, 80, 222, 0.15);
+        --card-shadow-hover: 0 8px 25px rgba(124, 80, 222, 0.25);
+    }
+
+    /* Cards statistiques */
+    .stat-card {
+        transition: transform 0.2s;
+        border-left: 4px solid;
+        margin-bottom: 20px;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .stat-card-publications { border-left-color: #2f0d73; }
+    .stat-card-projets { border-left-color: #7c50de; }
+    .stat-card-collaborations { border-left-color: #ac54c7; }
+    .stat-card-budget { border-left-color: #f56960; }
+    
+    /* Conteneurs de graphiques */
+    .chart-container {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        border: 1px solid #e9ecef;
+        height: 400px;
+    }
+    
+    .chart-container h5 {
+        color: #2f0d73;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    /* En-tête avec dégradé */
+    .dashboard-header {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .dashboard-header h1 {
+        margin: 0;
+        font-weight: 300;
+    }
+    
+    /* Grille des statistiques */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    /* Grille des graphiques */
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 30px;
+    }
+    
+    /* Style des modales */
+    .modal-header-custom {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        color: white;
+    }
+    
+    /* Personnalisation des formulaires */
+    .form-control:focus {
+        border-color: #7c50de;
+        box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
+    }
+    
+    /* Boutons personnalisés */
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        border: none;
+        color: white;
+    }
+    
+    .btn-primary-custom:hover {
+        background: linear-gradient(135deg, #7c50de 0%, #ac54c7 100%);
+    }
+
+    /* Style pour les canvas de graphiques */
+    canvas {
+        max-height: 300px;
+    }
+    
+    /* Styles spécifiques à Arion */
+    .arion-info-box {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .arion-info-fields {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    /* Badge pour statut */
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .status-active {
+        background-color: rgba(60, 190, 190, 0.2);
+        color: #3cbebe;
+    }
+    
+    .status-inactive {
+        background-color: rgba(245, 105, 96, 0.2);
+        color: #f56960;
+    }
+    
+    .status-pending {
+        background-color: rgba(255, 180, 60, 0.2);
+        color: #ffb43c;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .chart-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- En-tête du dashboard -->
+<div class="dashboard-header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1><i class="fas fa-microscope mr-3"></i>ARION - Plateforme de Recherche</h1>
+            <p class="mb-0">Gestion des activités et projets de recherche</p>
+        </div>
+        <div class="action-buttons d-flex flex-wrap">
+            <button class="btn btn-light btn-lg mr-2" data-toggle="modal" data-target="#addDataModal">
+                <i class="fas fa-plus mr-2"></i>Ajouter des données
+            </button>
+            <button class="btn btn-success btn-lg mr-2" data-toggle="modal" data-target="#uploadCSVModal">
+                <i class="fas fa-file-upload mr-2"></i>Importer CSV
+            </button>
+            <button class="btn btn-warning btn-lg" onclick="refreshData()">
+                <i class="fas fa-sync mr-2"></i>Actualiser
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Contenu principal (sans la sidebar des filtres) -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- Statistiques résumées -->
+        <div class="stats-grid">
+            <div class="card stat-card stat-card-publications">
+                <div class="card-body text-center">
+                    <h3 style="color: #2f0d73;" id="stat-publications">42</h3>
+                    <p class="mb-0">Publications</p>
+                </div>
+            </div>
+            <div class="card stat-card stat-card-projets">
+                <div class="card-body text-center">
+                    <h3 style="color: #7c50de;" id="stat-projets">15</h3>
+                    <p class="mb-0">Projets</p>
+                </div>
+            </div>
+            <div class="card stat-card stat-card-collaborations">
+                <div class="card-body text-center">
+                    <h3 style="color: #ac54c7;" id="stat-collaborations">8</h3>
+                    <p class="mb-0">Collaborations</p>
+                </div>
+            </div>
+            <div class="card stat-card stat-card-budget">
+                <div class="card-body text-center">
+                    <h3 style="color: #f56960;" id="stat-budget">125K€</h3>
+                    <p class="mb-0">Budget</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des données -->
+        <div class="chart-container" style="height: auto;">
+            <h5><i class="fas fa-table mr-2"></i>Données ARION</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="arionTable">
+                    <thead style="background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%); color: white;">
+                        <tr>
+                            <th>Année</th>
+                            <th>Formateur</th>
+                            <th>Statut</th>
+                            <th>Groupe</th>
+                            <th>Activité</th>
+                            <th>Code Y</th>
+                            <th>Niveau</th>
+                            <th>Date</th>
+                            <th>Durée (h)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                  <tbody>
+    <tr>
+        <td colspan="10" class="text-center">Chargement des données...</td>
+    </tr>
+</tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Graphiques (optionnels, à adapter selon vos besoins) -->
+        <div class="chart-grid">
+            <!-- Graphique 1: Répartition par année -->
+            <div class="chart-container">
+                <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par année</h5>
+                <canvas id="yearDistributionChart"></canvas>
+            </div>
+
+            <!-- Graphique 2: Évolution mensuelle -->
+            <div class="chart-container">
+                <h5><i class="fas fa-chart-line mr-2"></i>Évolution mensuelle</h5>
+                <canvas id="monthlyEvolutionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajouter/Modifier des données -->
+<div class="modal fade" id="addDataModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-custom">
+                <h5 class="modal-title" id="addDataModalTitle">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    Ajouter des données ARION
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form id="dataForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="arion_id">
+                <div class="modal-body">
+                    <!-- Première ligne -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Année universitaire <span class="text-danger">*</span></label>
+                                <select class="form-control" name="annee" id="annee" required>
+                                    <option value="">Sélectionner une année</option>
+                                    <option value="2023-2024">2023-2024</option>
+                                    <option value="2024-2025">2024-2025</option>
+                                    <option value="2025-2026">2025-2026</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Formateur <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="formateur" id="formateur" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Deuxième ligne -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Statut <span class="text-danger">*</span></label>
+                                <select class="form-control" name="statut" id="statut" required>
+                                    <option value="">Sélectionner un statut</option>
+                                    <option value="Enseignant">Enseignant</option>
+                                    <option value="Vacataire">Vacataire</option>
+                                    <option value="Personnel non enseignant">Personnel non enseignant</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Groupe <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="groupe" id="groupe" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Activité (Séance) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="activite" id="activite" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Troisième ligne -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Code Y <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="code_y" id="code_y" required>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label>Information <span class="text-danger">*</span></label>
+                            <div class="arion-info-box">
+                                <div class="arion-info-fields">
+                                    <div class="form-group mb-0">
+                                        <label class="small">Niveau</label>
+                                        <input type="text" class="form-control" name="niveau" id="niveau" required>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small">Lieu</label>
+                                        <input type="text" class="form-control" name="lieu" id="lieu" required>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small">Intervenant</label>
+                                        <input type="text" class="form-control" name="intervenant" id="intervenant" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quatrième ligne -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="date" id="date" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Durée en heures <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="duree" id="duree" required min="0" step="0.5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="fas fa-save mr-1"></i>Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Upload CSV -->
+<div class="modal fade" id="uploadCSVModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-custom">
+                <h5 class="modal-title">
+                    <i class="fas fa-file-upload mr-2"></i>
+                    Importer un fichier CSV
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form id="uploadForm" method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Fichier CSV <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="csvFile" name="file" accept=".csv" required>
+                            <label class="custom-file-label" for="csvFile">Choisir un fichier...</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV :</h6>
+                        <code>annee,formateur,statut,groupe,activite,code_y,niveau,lieu,intervenant,date,duree</code>
+                        <hr>
+                        <h6>Exemple :</h6>
+                        <pre class="mb-0">2024-2025,Dr. Martin,Actif,Groupe A,TP Recherche,Y123,Master 2,Salle B12,Dr. Martin,2025-05-15,4
+2024-2025,Dr. Dupont,En attente,Groupe B,Conférence,Y456,Doctorat,Amphithéâtre C,Dr. Dupont,2025-06-20,2</pre>
+                    </div>
+                    <div class="form-group">
+                        <label>Année universitaire</label>
+                        <select class="form-control" name="annee_import" required>
+                            <option value="">Sélectionner une année</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="2024-2025">2024-2025</option>
+                            <option value="2025-2026">2025-2026</option>
+                        </select>
+                        <small class="form-text text-muted">Cette année sera utilisée pour les enregistrements qui n'ont pas d'année spécifiée.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-upload mr-1"></i>Importer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-trash mr-2"></i>
+                    Confirmer la suppression
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cette activité ARION ?</p>
+                <p id="deleteDetails" class="font-weight-bold"></p>
+                <small class="text-muted">Cette action est irréversible.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form id="deleteForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" id="confirmDelete">
+                        <i class="fas fa-trash mr-1"></i>Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- DataTables JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script>
+// Définir l'URL de base pour les API
+const API_BASE_URL = '/api';
+
+// Initialiser la page au chargement
+$(document).ready(function() {
+    // Charger les données au démarrage
+    loadArionData();
+    
+    // Charger les statistiques
+    loadArionStats();
+    
+    // Gestion du nom de fichier pour l'upload CSV
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
+    });
+    
+    // Écouter la soumission du formulaire d'ajout/modification
+    $('#dataForm').on('submit', function(e) {
+        e.preventDefault();
+        submitFormData($(this));
+    });
+    
+    // Écouter la soumission du formulaire d'import CSV
+    $('#uploadForm').on('submit', function(e) {
+        e.preventDefault();
+        uploadCSV($(this));
+    });
+    
+    // Écouter la soumission du formulaire de suppression
+    $('#deleteForm').on('submit', function(e) {
+        e.preventDefault();
+        deleteArionData($(this));
+    });
+    
+    // Configurer le bouton d'actualisation
+    $('.btn-warning').on('click', function() {
+        refreshData();
+    });
+});
+
+// Fonction pour charger les données ARION
+function loadArionStats() {
+    $.ajax({
+        url: `${API_BASE_URL}/arion/stats`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            // Mettre à jour les statistiques résumées
+            $('#stat-publications').text(data.summary?.total_activites || 0);
+            $('#stat-projets').text(data.summary?.formateurs_count || 0);
+            $('#stat-collaborations').text(data.summary?.niveaux_count || 0);
+            $('#stat-budget').text((data.summary?.total_duree || 0) + 'h');
+            
+            // Mettre à jour les graphiques
+            updateCharts(data.graphiques);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des statistiques:', xhr.responseText);
+            showNotification('error', 'Erreur lors du chargement des statistiques ARION');
+        }
+    });
+}
+// Fonction pour charger les données ARION
+function loadArionData() {
+    // Afficher un indicateur de chargement discret
+    const tableBody = $('#arionTable tbody');
+    
+    // Faire la requête AJAX immédiatement sans délai
+    $.ajax({
+        url: `${API_BASE_URL}/arion/data`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            // Détruire le DataTable existant s'il existe
+            if ($.fn.DataTable.isDataTable('#arionTable')) {
+                $('#arionTable').DataTable().destroy();
+            }
+            
+            // Vider le tableau
+            tableBody.empty();
+            
+            if (data.length === 0) {
+                tableBody.html('<tr><td colspan="10" class="text-center">Aucune donnée disponible</td></tr>');
+                initDataTable();
+                return;
+            }
+            
+            // Remplir le tableau avec les données
+            data.forEach(function(item) {
+                // Déterminer la classe du badge de statut
+                let statusClass = 'status-active';
+                if (item.statut === 'Vacataire') {
+                    statusClass = 'status-inactive';
+                } else if (item.statut === 'Personnel non enseignant') {
+                    statusClass = 'status-pending';
+                }
+                
+                // Formater la date pour l'affichage
+                let formattedDate = item.date;
+                if (item.date && item.date.includes('-')) {
+                    const dateParts = item.date.split('-');
+                    if (dateParts.length === 3) {
+                        formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                    }
+                }
+                
+                // Ajouter la ligne au tableau
+                tableBody.append(`
+                    <tr>
+                        <td>${item.annee || ''}</td>
+                        <td>${item.formateur || ''}</td>
+                        <td><span class="status-badge ${statusClass}">${item.statut || ''}</span></td>
+                        <td>${item.groupe || ''}</td>
+                        <td>${item.activite || ''}</td>
+                        <td>${item.code_y || ''}</td>
+                        <td>${item.niveau || ''}</td>
+                        <td>${formattedDate || ''}</td>
+                        <td>${item.duree || 0}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editData('${item.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('${item.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `);
+            });
+            
+            // Initialiser DataTable
+            initDataTable();
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des données:', xhr.responseText);
+            tableBody.html('<tr><td colspan="10" class="text-center text-danger">Erreur lors du chargement des données</td></tr>');
+            showNotification('error', 'Erreur lors du chargement des données ARION');
+        }
+    });
+}
+
+// Initialiser les graphiques de façon statique temporairement
+function initCharts() {
+    // Graphique de répartition par année
+    const yearCtx = document.getElementById('yearDistributionChart');
+    if (yearCtx) {
+        window.yearChart = new Chart(yearCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#cccccc'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    }
+    
+    // Graphique d'évolution mensuelle
+    const monthlyCtx = document.getElementById('monthlyEvolutionChart');
+    if (monthlyCtx) {
+        window.monthlyChart = new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    label: 'Activités',
+                    data: [0],
+                    borderColor: '#7c50de',
+                    backgroundColor: 'rgba(124, 80, 222, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre d\'activités'
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Fonction pour initialiser DataTable
+function initDataTable() {
+    $('#arionTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        "order": [[0, "desc"], [7, "desc"]],
+        "pageLength": 10,
+        "responsive": true
+    });
+}
+
+// Fonction pour mettre à jour les graphiques
+function updateCharts(graphiquesData) {
+    // Si pas de données, initialiser avec des graphiques vides
+    if (!graphiquesData) {
+        initCharts();
+        return;
+    }
+    
+    // Graphique de répartition par année
+    const yearCtx = document.getElementById('yearDistributionChart');
+    if (yearCtx && graphiquesData.annees && graphiquesData.annees.labels && graphiquesData.annees.labels.length > 0) {
+        // Détruire le graphique existant s'il existe
+        if (window.yearChart) {
+            window.yearChart.destroy();
+        }
+        
+        window.yearChart = new Chart(yearCtx, {
+            type: 'pie',
+            data: {
+                labels: graphiquesData.annees.labels,
+                datasets: [{
+                    data: graphiquesData.annees.values,
+                    backgroundColor: ['#2f0d73', '#7c50de', '#ac54c7', '#f56960', '#ffb43c', '#3cbebe'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    } else if (yearCtx && (!window.yearChart || window.yearChart.destroyed)) {
+        // Si pas de données, initialiser avec un graphique vide
+        window.yearChart = new Chart(yearCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#cccccc'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    }
+    
+    // Graphique d'évolution mensuelle
+    const monthlyCtx = document.getElementById('monthlyEvolutionChart');
+    if (monthlyCtx && graphiquesData.evolution_mensuelle && graphiquesData.evolution_mensuelle.labels && graphiquesData.evolution_mensuelle.labels.length > 0) {
+        // Détruire le graphique existant s'il existe
+        if (window.monthlyChart) {
+            window.monthlyChart.destroy();
+        }
+        
+        window.monthlyChart = new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: graphiquesData.evolution_mensuelle.labels,
+                datasets: [{
+                    label: 'Activités',
+                    data: graphiquesData.evolution_mensuelle.values,
+                    borderColor: '#7c50de',
+                    backgroundColor: 'rgba(124, 80, 222, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre d\'activités'
+                        }
+                    }
+                }
+            }
+        });
+    } else if (monthlyCtx && (!window.monthlyChart || window.monthlyChart.destroyed)) {
+        // Si pas de données, initialiser avec un graphique vide
+        window.monthlyChart = new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    label: 'Activités',
+                    data: [0],
+                    borderColor: '#7c50de',
+                    backgroundColor: 'rgba(124, 80, 222, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre d\'activités'
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Fonction pour soumettre le formulaire d'ajout/modification
+function submitFormData(form) {
+    // Valider le formulaire côté client
+    if (!validateForm()) {
+        return false;
+    }
+    
+    // Afficher un indicateur de chargement
+    const submitBtn = form.find('button[type="submit"]');
+    const originalBtnText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Traitement...').prop('disabled', true);
+    
+    // Préparer les données du formulaire
+    const formData = {};
+    form.serializeArray().forEach(item => {
+        formData[item.name] = item.value;
+    });
+    
+    // Envoyer les données via AJAX
+    $.ajax({
+        url: `${API_BASE_URL}/arion/add`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        headers: {
+            'Authorization': 'Bearer ' + getToken(),
+            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            // Fermer la modal
+            $('#addDataModal').modal('hide');
+            
+            // Réinitialiser le formulaire
+            form[0].reset();
+            
+            // Afficher une notification de succès
+            showNotification('success', response.message || 'Données enregistrées avec succès !');
+            
+            // Rafraîchir les données après un court délai
+            setTimeout(function() {
+                loadArionData();
+                loadArionStats();
+            }, 500);
+        },
+        error: function(xhr) {
+            // Afficher une notification d'erreur
+            try {
+                const response = JSON.parse(xhr.responseText);
+                showNotification('error', response.error || 'Une erreur est survenue');
+            } catch (e) {
+                showNotification('error', 'Erreur lors de l\'enregistrement des données');
+            }
+        },
+        complete: function() {
+            // Restaurer le bouton
+            submitBtn.html(originalBtnText).prop('disabled', false);
+        }
+    });
+}
+
+// Fonction pour télécharger un fichier CSV
+function uploadCSV(form) {
+    // Valider que le fichier est bien un CSV
+    const fileInput = $('#csvFile')[0];
+    if (fileInput.files.length === 0) {
+        showNotification('error', 'Veuillez sélectionner un fichier CSV');
+        return false;
+    }
+    
+    const fileName = fileInput.files[0].name;
+    if (!fileName.endsWith('.csv')) {
+        showNotification('error', 'Le fichier doit être au format CSV');
+        return false;
+    }
+    
+    // Afficher un indicateur de chargement
+    const submitBtn = form.find('button[type="submit"]');
+    const originalBtnText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Importation...').prop('disabled', true);
+    
+    // Créer un objet FormData pour l'upload de fichier
+    const formData = new FormData(form[0]);
+    
+    // Envoyer les données via AJAX
+    $.ajax({
+        url: `${API_BASE_URL}/arion/upload`,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'Authorization': 'Bearer ' + getToken(),
+            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            // Fermer la modal
+            $('#uploadCSVModal').modal('hide');
+            
+            // Afficher une notification de succès
+            showNotification('success', `${response.records_inserted} enregistrements importés avec succès !`);
+            
+            // Rafraîchir les données après un court délai
+            setTimeout(function() {
+                loadArionData();
+                loadArionStats();
+            }, 500);
+        },
+        error: function(xhr) {
+            // Afficher une notification d'erreur
+            try {
+                const response = JSON.parse(xhr.responseText);
+                showNotification('error', response.error || 'Une erreur est survenue lors de l\'import');
+            } catch (e) {
+                showNotification('error', 'Erreur lors de l\'importation du fichier CSV');
+            }
+        },
+        complete: function() {
+            // Restaurer le bouton
+            submitBtn.html(originalBtnText).prop('disabled', false);
+            
+            // Réinitialiser le champ de fichier
+            form[0].reset();
+            $('.custom-file-label').text('Choisir un fichier...');
+        }
+    });
+}
+
+// Fonction pour valider le formulaire
+function validateForm() {
+    // Vérifier les champs obligatoires
+    const requiredFields = [
+        'annee', 'formateur', 'statut', 'groupe', 'activite', 
+        'code_y', 'niveau', 'date', 'duree'
+    ];
+    
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        const value = $(`#${field}`).val();
+        if (!value || value.trim() === '') {
+            showNotification('error', `Le champ "${field}" est obligatoire`);
+            $(`#${field}`).addClass('is-invalid');
+            isValid = false;
+        } else {
+            $(`#${field}`).removeClass('is-invalid');
+        }
+    });
+    
+    // Vérifier que la durée est positive
+    const duree = parseFloat($('#duree').val());
+    if (isNaN(duree) || duree <= 0) {
+        showNotification('error', 'La durée doit être un nombre positif');
+        $('#duree').addClass('is-invalid');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+// Fonction pour éditer les données existantes
+function editData(id) {
+    // Réinitialiser le formulaire
+    $('#dataForm')[0].reset();
+    
+    // Mettre à jour le titre de la modal
+    $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i>Modifier les données ARION');
+    
+    // Afficher un indicateur de chargement
+    showNotification('info', 'Chargement des données...');
+    
+    // Récupérer les données de l'élément à modifier
+    $.ajax({
+        url: `${API_BASE_URL}/arion/data?id=${id}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            // Vérifier que des données ont été trouvées
+            if (data && data.length > 0) {
+                const item = data[0];
+                
+                // Remplir le formulaire avec les données
+                $('#arion_id').val(item.id);
+                $('#annee').val(item.annee || '');
+                $('#formateur').val(item.formateur || '');
+                $('#statut').val(item.statut || '');
+                $('#groupe').val(item.groupe || '');
+                $('#activite').val(item.activite || '');
+                $('#code_y').val(item.code_y || '');
+                $('#niveau').val(item.niveau || '');
+                $('#lieu').val(item.lieu || '');
+                $('#intervenant').val(item.intervenant || '');
+                
+                // Formater la date pour l'input date (YYYY-MM-DD)
+                if (item.date) {
+                    let dateValue = item.date;
+                    // Si la date est au format DD/MM/YYYY, la convertir en YYYY-MM-DD
+                    if (dateValue.includes('/')) {
+                        const parts = dateValue.split('/');
+                        dateValue = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    }
+                    $('#date').val(dateValue);
+                }
+                
+                $('#duree').val(item.duree || 0);
+                
+                // Afficher la modal
+                $('#addDataModal').modal('show');
+            } else {
+                showNotification('error', 'Aucune donnée trouvée pour cet identifiant');
+            }
+        },
+        error: function(xhr) {
+            showNotification('error', 'Erreur lors de la récupération des données');
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+// Fonction pour confirmer la suppression
+function confirmDelete(id, activite, formateur, date) {
+    // Mettre à jour le texte de confirmation
+    const details = activite && formateur && date 
+        ? `${activite} - ${formateur} (${date})` 
+        : `ID: ${id}`;
+    
+    $('#deleteDetails').text(details);
+    
+    // Configurer le formulaire de suppression
+    $('#deleteForm').data('id', id);
+    
+    // Afficher la modal de confirmation
+    $('#deleteModal').modal('show');
+}
+
+// Fonction pour supprimer des données
+function deleteArionData(form) {
+    const id = form.data('id');
+    if (!id) {
+        showNotification('error', 'ID manquant pour la suppression');
+        return;
+    }
+    
+    // Afficher un indicateur de chargement
+    const submitBtn = form.find('button[type="submit"]');
+    const originalBtnText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Suppression...').prop('disabled', true);
+    
+    // Envoyer la requête de suppression
+    $.ajax({
+        url: `${API_BASE_URL}/arion/delete/${id}`,
+        type: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + getToken(),
+            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            // Fermer la modal
+            $('#deleteModal').modal('hide');
+            
+            // Afficher une notification de succès
+            showNotification('success', response.message || 'Données supprimées avec succès !');
+            
+            // Rafraîchir les données après un court délai
+            setTimeout(function() {
+                loadArionData();
+                loadArionStats();
+            }, 100);
+        },
+        error: function(xhr) {
+            // Afficher une notification d'erreur
+            try {
+                const response = JSON.parse(xhr.responseText);
+                showNotification('error', response.error || 'Une erreur est survenue lors de la suppression');
+            } catch (e) {
+                showNotification('error', 'Erreur lors de la suppression des données');
+            }
+        },
+        complete: function() {
+            // Restaurer le bouton
+            submitBtn.html(originalBtnText).prop('disabled', false);
+        }
+    });
+}
+
+// Fonction pour rafraîchir les données
+function refreshData() {
+    // Récupérer le bouton
+    const refreshBtn = $('.btn-warning');
+    const originalBtnText = refreshBtn.html();
+    
+    // Afficher un indicateur de chargement
+    refreshBtn.html('<i class="fas fa-spinner fa-spin mr-2"></i>Actualisation...').prop('disabled', true);
+    
+    // Recharger les données immédiatement
+    setTimeout(function() {
+        refreshBtn.html(originalBtnText).prop('disabled', false);
+        loadArionData();
+        loadArionStats();
+        showNotification('success', 'Données actualisées avec succès !');
+    }, 100); // Juste un petit délai pour l'effet visuel
+}
+
+// Fonction pour afficher une notification
+function showNotification(type, message) {
+    // Déterminer la classe d'alerte en fonction du type
+    let alertClass = 'alert-info';
+    let icon = 'fa-info-circle';
+    
+    if (type === 'success') {
+        alertClass = 'alert-success';
+        icon = 'fa-check-circle';
+    } else if (type === 'error') {
+        alertClass = 'alert-danger';
+        icon = 'fa-exclamation-circle';
+    } else if (type === 'warning') {
+        alertClass = 'alert-warning';
+        icon = 'fa-exclamation-triangle';
+    }
+    
+    // Créer l'élément de notification
+    const notification = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert" 
+             style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px; max-width: 400px;">
+            <i class="fas ${icon} mr-2"></i>
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    
+    // Ajouter la notification au DOM
+    $('body').append(notification);
+    
+    // Supprimer automatiquement après 3 secondes
+    setTimeout(function() {
+        $('.alert').alert('close');
+    }, 3000);
+}
+
+// Fonction pour récupérer le token JWT
+function getToken() {
+    return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+}
+</script>
+{% endblock %}
