@@ -1180,3 +1180,50 @@ def arion_api_upload(request):
         )
     except Exception as e:
         return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}), 500
+
+@api_authenticated_required
+def arion_api_status_stats(request):
+    """Vue pour calculer les statistiques de statut des formateurs directement depuis les données"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer toutes les données ARION
+        response = requests.get(f"{settings.API_URL}/arion/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données'}, status=500)
+        
+        # Traiter les données
+        data = response.json()
+        logger.info(f"Nombre de documents récupérés: {len(data)}")
+        
+        # Compter les formateurs par statut
+        status_counts = {}
+        for item in data:
+            status = item.get('statut')
+            # Si le statut est None ou vide, le remplacer par "Non spécifié"
+            if not status:
+                status = 'Non spécifié'
+                
+            if status not in status_counts:
+                status_counts[status] = 0
+            status_counts[status] += 1
+        
+        # Créer les tableaux pour l'histogramme
+        labels = list(status_counts.keys())
+        values = list(status_counts.values())
+        
+        logger.info(f"Labels: {labels}")
+        logger.info(f"Values: {values}")
+        
+        return JsonResponse({
+            "success": True,
+            "status_stats": {
+                "labels": labels,
+                "values": values
+            }
+        })
+    except Exception as e:
+        logger.error(f"Erreur dans arion_api_status_stats: {e}")
+        return JsonResponse({"error": str(e)}, status=500)

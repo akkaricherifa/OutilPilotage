@@ -1681,6 +1681,7 @@ def upload_arion_csv():
     return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
 
 @app.route('/api/arion/stats', methods=['GET'])
+@token_required
 def get_arion_stats():
     """Endpoint pour récupérer les statistiques ARION"""
     try:
@@ -1755,6 +1756,69 @@ def get_arion_stats():
     except Exception as e:
         return jsonify({"error": f"Erreur lors du calcul des statistiques ARION: {str(e)}"}), 500
 
+@app.route('/api/arion/status-stats', methods=['GET'])
+@token_required
+def get_arion_status_stats(current_user):
+    try:
+        # Vérifier si des données existent
+        count = db.arion_data.count_documents({})
+        app.logger.info(f"Nombre total de documents dans arion_data: {count}")
+        
+        if count == 0:
+            # Si aucune donnée, retourner un tableau vide mais sans données fictives
+            return jsonify({
+                "success": True,
+                "status_stats": {
+                    "labels": [],
+                    "values": []
+                },
+                "message": "Aucune donnée trouvée dans la base de données"
+            })
+        
+        # Faire une requête simple pour voir les différents statuts
+        statuts_disponibles = db.arion_data.distinct("statut")
+        app.logger.info(f"Statuts disponibles: {statuts_disponibles}")
+        
+        # Agrégation pour compter par statut
+        pipeline = [
+            {"$group": {"_id": "$statut", "count": {"$sum": 1}}},
+            {"$sort": {"_id": 1}}
+        ]
+        
+        result = list(db.arion_data.aggregate(pipeline))
+        app.logger.info(f"Résultat de l'agrégation: {result}")
+        
+        # Traiter les résultats
+        statuses = {}
+        for item in result:
+            # Si le statut est null ou vide, l'étiqueter comme "Non spécifié"
+            status = item["_id"] if item["_id"] else "Non spécifié"
+            count = item["count"]
+            statuses[status] = count
+        
+        # Créer les tableaux pour l'histogramme
+        labels = list(statuses.keys())
+        values = list(statuses.values())
+        
+        # Enregistrer les valeurs finales pour le débogage
+        app.logger.info(f"Labels: {labels}")
+        app.logger.info(f"Values: {values}")
+        
+        return jsonify({
+            "success": True,
+            "status_stats": {
+                "labels": labels,
+                "values": values
+            }
+        })
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des statistiques par statut: {str(e)}")
+        # En cas d'erreur, retourner un message clair mais pas de données fictives
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Une erreur s'est produite lors de la récupération des données"
+        }), 500
 ############################################################ Routes pour les templates (si nécessaire)
 @app.route('/')
 def home():

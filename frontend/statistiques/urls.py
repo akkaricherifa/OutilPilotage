@@ -54,6 +54,7 @@ urlpatterns = [
     path('api/arion/add', views.arion_api_redirect, name='arion_api_add'),
     path('api/arion/upload', views.arion_api_redirect, name='arion_api_upload'),
     path('api/arion/delete/<str:item_id>/', views.arion_api_delete, name='arion_api_delete'),
+    path('api/arion/status-stats', views.arion_api_status_stats, name='arion_api_status_stats'),
 ]
     
 

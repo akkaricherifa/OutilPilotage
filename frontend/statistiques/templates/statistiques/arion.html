@@ -192,26 +192,26 @@
         <div class="stats-grid">
             <div class="card stat-card stat-card-publications">
                 <div class="card-body text-center">
-                    <h3 style="color: #2f0d73;" id="stat-publications">42</h3>
-                    <p class="mb-0">Publications</p>
+                    <h3 style="color: #2f0d73;" id="stat-publications"></h3>
+                    <p class="mb-0">Données</p>
                 </div>
             </div>
             <div class="card stat-card stat-card-projets">
                 <div class="card-body text-center">
-                    <h3 style="color: #7c50de;" id="stat-projets">15</h3>
+                    <h3 style="color: #7c50de;" id="stat-projets"></h3>
                     <p class="mb-0">Projets</p>
                 </div>
             </div>
             <div class="card stat-card stat-card-collaborations">
                 <div class="card-body text-center">
-                    <h3 style="color: #ac54c7;" id="stat-collaborations">8</h3>
+                    <h3 style="color: #ac54c7;" id="stat-collaborations"></h3>
                     <p class="mb-0">Collaborations</p>
                 </div>
             </div>
             <div class="card stat-card stat-card-budget">
                 <div class="card-body text-center">
-                    <h3 style="color: #f56960;" id="stat-budget">125K€</h3>
-                    <p class="mb-0">Budget</p>
+                    <h3 style="color: #f56960;" id="stat-budget"></h3>
+                    <p class="mb-0">Vacataires</p>
                 </div>
             </div>
         </div>
@@ -257,6 +257,10 @@
                 <h5><i class="fas fa-chart-line mr-2"></i>Évolution mensuelle</h5>
                 <canvas id="monthlyEvolutionChart"></canvas>
             </div>
+            <div class="chart-container">
+    <h5><i class="fas fa-users mr-2"></i>Répartition par statut de formateur</h5>
+    <canvas id="statusChart"></canvas>
+</div>
         </div>
     </div>
 </div>
@@ -482,6 +486,7 @@ $(document).ready(function() {
     
     // Charger les statistiques
     loadArionStats();
+    initCharts();
     
     // Gestion du nom de fichier pour l'upload CSV
     $('.custom-file-input').on('change', function() {
@@ -530,10 +535,134 @@ function loadArionStats() {
             
             // Mettre à jour les graphiques
             updateCharts(data.graphiques);
+            loadStatusStats();
         },
         error: function(xhr) {
             console.error('Erreur lors du chargement des statistiques:', xhr.responseText);
             showNotification('error', 'Erreur lors du chargement des statistiques ARION');
+            loadStatusStats();
+        }
+    });
+}
+function getDefaultStatusData() {
+    return {
+        labels: ['Enseignant', 'Vacataire', 'Personnel non enseignant', 'Non spécifié'],
+        values: [0, 0, 0, 0]
+    };
+}
+function loadStatusStats() {
+    console.log("Chargement des statistiques par statut...");
+    $.ajax({
+        url: `${API_BASE_URL}/arion/status-stats`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            console.log("Succès ! Données reçues:", data);
+            if (data.success && data.status_stats) {
+                updateStatusChart(data.status_stats);
+            } else {
+                // Fallback si les données ne sont pas au format attendu
+                console.warn('Format de données inattendu pour les statistiques de statut');
+                updateStatusChart(getDefaultStatusData());
+            }
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des statistiques par statut:', xhr.responseText);
+            // Utiliser des données de démonstration en cas d'erreur
+            updateStatusChart(getDefaultStatusData());
+        }
+    });
+}
+
+// Fonction pour mettre à jour le graphique de statut
+function updateStatusChart(statusData) {
+    const statusCtx = document.getElementById('statusChart');
+    if (!statusCtx) {
+        console.error("Élément canvas 'statusChart' non trouvé");
+        return;
+    }
+      // Détruire le graphique existant s'il existe
+    if (window.statusChart && typeof window.statusChart.destroy === 'function') {
+        window.statusChart.destroy();
+    }
+
+
+    
+    if (!statusData || !statusData.labels || statusData.labels.length === 0 || !statusData.values) {
+        console.warn("Données invalides pour le graphique");
+        window.statusChart = new Chart(statusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    label: 'Nombre de formateurs',
+                    data: [0],
+                    backgroundColor: '#cccccc'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        return;
+    }
+    
+    // Couleurs pour les différents statuts
+    const colors = {
+        'Vacataires': '#f56960',
+        'Enseignants': '#7c50de',
+        'Personnels non enseignant': '#ffb43c',
+        'Non spécifié': '#cccccc'
+    };
+    
+    // Préparer les couleurs
+    const backgroundColors = statusData.labels.map(label => colors[label] || '#3cbebe');
+    
+    // Créer le graphique
+    window.statusChart = new Chart(statusCtx, {
+        type: 'bar',
+        data: {
+            labels: statusData.labels,
+            datasets: [{
+                label: 'Nombre de formateurs',
+                data: statusData.values,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre de formateurs'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Statut'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Nombre: ${context.raw}`;
+                        }
+                    }
+                }
+            }
         }
     });
 }
@@ -651,6 +780,7 @@ function loadArionData() {
 }
 
 // Initialiser les graphiques de façon statique temporairement
+// Initialiser les graphiques de façon statique temporairement
 function initCharts() {
     // Graphique de répartition par année
     const yearCtx = document.getElementById('yearDistributionChart');
@@ -708,19 +838,76 @@ function initCharts() {
             }
         });
     }
+    
+    // Graphique de statut des formateurs
+    const statusCtx = document.getElementById('statusChart');
+    if (statusCtx) {
+        window.statusChart = new Chart(statusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    label: 'Nombre de formateurs',
+                    data: [0],
+                    backgroundColor: '#cccccc',
+                    borderColor: '#aaaaaa',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre de formateurs'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Statut'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
 }
-
 // Fonction pour initialiser DataTable
 function initDataTable() {
     $('#arionTable').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+            // Traduction directe
+            "emptyTable": "Aucune donnée disponible",
+            "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+            "infoEmpty": "Affichage de 0 à 0 sur 0 entrées",
+            "infoFiltered": "(filtré depuis _MAX_ entrées au total)",
+            "lengthMenu": "Afficher _MENU_ entrées",
+            "loadingRecords": "Chargement...",
+            "processing": "Traitement...",
+            "search": "Rechercher :",
+            "zeroRecords": "Aucun résultat trouvé",
+            "paginate": {
+                "first": "Premier",
+                "last": "Dernier",
+                "next": "Suivant",
+                "previous": "Précédent"
+            }
         },
         "order": [[0, "desc"], [7, "desc"]],
         "pageLength": 6,
         "responsive": true
     });
 }
+
 
 // Fonction pour mettre à jour les graphiques
 function updateCharts(graphiquesData) {
@@ -1149,6 +1336,7 @@ function refreshData() {
         refreshBtn.html(originalBtnText).prop('disabled', false);
         loadArionData();
         loadArionStats();
+        loadStatusStats(); // Ajoutez cette ligne
         showNotification('success', 'Données actualisées avec succès !');
     }, 100); // Juste un petit délai pour l'effet visuel
 }
