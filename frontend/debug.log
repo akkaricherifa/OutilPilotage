@@ -7309,3 +7309,360 @@ Labels: ['Enseignant', 'Non spécifié', 'Vacataires', 'Enseignants', 'Personnels 
 Values: [1, 504, 734, 520, 217, 1, 1, 1]
 "GET /api/arion/status-stats HTTP/1.1" 200 442
 Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /arion/ HTTP/1.1" 200 71260
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242971
+Nombre de documents récupérés: 1979
+Labels: ['Enseignant', 'Non spécifié', 'Vacataires', 'Enseignants', 'Personnels non enseignant', 'Enseignants                                             Personnels non enseignant                                             Personnels non enseignant', 'Vacataire', 'Enseignants                                             Personnels non enseignant']
+Values: [1, 504, 734, 520, 217, 1, 1, 1]
+"GET /api/arion/status-stats HTTP/1.1" 200 442
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10082
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 71250
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242971
+"GET /api/arion/status-stats/ HTTP/1.1" 200 420
+"GET /arion/ HTTP/1.1" 200 71250
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/status-stats/ HTTP/1.1" 200 403
+"GET /arion/ HTTP/1.1" 200 73638
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /arion/ HTTP/1.1" 200 73654
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 73654
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10082
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /arion/ HTTP/1.1" 200 72105
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10082
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Nombre de documents récupérés: 1977
+Labels: ['Non spécifié', 'Vacataires', 'Enseignants', 'Personnels non enseignant', 'Enseignants                                             Personnels non enseignant                                             Personnels non enseignant', 'Enseignants                                             Personnels non enseignant']
+Values: [504, 734, 520, 217, 1, 1]
+"GET /api/arion/status-stats HTTP/1.1" 200 409
+"GET /arion/ HTTP/1.1" 200 71252
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10082
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /arion/ HTTP/1.1" 200 73654
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10082
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 73651
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/status-stats/ HTTP/1.1" 200 403
+"GET /arion/ HTTP/1.1" 200 72419
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /arion/ HTTP/1.1" 200 72419
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIA4', 'FIE4', 'FIA3', 'FIA5', 'FIE5', 'FIE2', 'FIE1'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+"GET /arion/ HTTP/1.1" 200 72419
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /register/ HTTP/1.1" 200 42431
+"GET /login/ HTTP/1.1" 200 39963
+"GET /register/ HTTP/1.1" 200 42431
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+"GET /admin-users/ HTTP/1.1" 200 43106
+"GET /dashboard/ HTTP/1.1" 200 43024
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 70788
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /heures-enseignement/ HTTP/1.1" 200 76390
+"GET /arion/ HTTP/1.1" 200 72419
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /arion/ HTTP/1.1" 200 72419
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /arion/ HTTP/1.1" 200 72419
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+"GET /arion/ HTTP/1.1" 200 73304
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"POST /api/arion/add HTTP/1.1" 200 126
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 73307
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 73312
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 79324
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 84843
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 84949
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 85716
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 86133
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 85987
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 89959
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats HTTP/1.1" 404 10004
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 89981
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats HTTP/1.1" 404 10004
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+"GET /arion/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Erreur de connexion à l'API: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /api/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000295B9649370>: Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée'))
+"POST /login/ HTTP/1.1" 200 40730
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Erreur de connexion à l'API: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /api/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000295B9649BF0>: Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée'))
+"POST /login/ HTTP/1.1" 200 40730
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+"GET /login/ HTTP/1.1" 200 40186
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Erreur de connexion à l'API: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /api/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000295B9648F30>: Failed to establish a new connection: [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée'))
+"POST /login/ HTTP/1.1" 200 40730
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+"GET /arion/ HTTP/1.1" 200 89981
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats HTTP/1.1" 404 10004
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 89981
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats HTTP/1.1" 404 10004
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 404 10014
+"GET /api/arion/data HTTP/1.1" 200 1242285
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 89981
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10079
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats HTTP/1.1" 404 10004
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 404 10014
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 404 10014
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Not Found: /api/arion/monthly_stats
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 404 10014
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 89981
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10363
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /arion/ HTTP/1.1" 200 88817
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 88817
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader

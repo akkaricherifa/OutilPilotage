@@ -1,5 +1,4 @@
 # statistiques/views.py
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,6 +12,7 @@ import requests
 import json
 import logging
 import math
+from django.core.cache import cache
 import json
 FLASK_API_URL = 'http://localhost:5000'
 logger = logging.getLogger(__name__)
@@ -1182,48 +1182,133 @@ def arion_api_upload(request):
         return JsonResponse({"error": f"Erreur de connexion au serveur API: {str(e)}"}), 500
 
 @api_authenticated_required
-def arion_api_status_stats(request):
-    """Vue pour calculer les statistiques de statut des formateurs directement depuis les données"""
+def arion_status_stats(request):
+    """Vue pour obtenir les statistiques par statut des formateurs sans répétition"""
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
     
     try:
-        # Récupérer toutes les données ARION
+        # Appel à l'API Flask pour obtenir les données
         response = requests.get(f"{settings.API_URL}/arion/data", headers=headers, timeout=10)
         
-        if response.status_code != 200:
-            return JsonResponse({'error': 'Erreur lors de la récupération des données'}, status=500)
-        
-        # Traiter les données
-        data = response.json()
-        logger.info(f"Nombre de documents récupérés: {len(data)}")
-        
-        # Compter les formateurs par statut
-        status_counts = {}
-        for item in data:
-            status = item.get('statut')
-            # Si le statut est None ou vide, le remplacer par "Non spécifié"
-            if not status:
-                status = 'Non spécifié'
+        if response.status_code == 200:
+            # Récupérer les données
+            data = response.json()
+            
+            # Utiliser un dictionnaire pour suivre les formateurs uniques par statut
+            formateurs_par_statut = {}
+            
+            for item in data:
+                # Extraire le formateur et le statut
+                formateur = item.get('formateur')
+                statut = item.get('statut', 'Non spécifié')
                 
-            if status not in status_counts:
-                status_counts[status] = 0
-            status_counts[status] += 1
-        
-        # Créer les tableaux pour l'histogramme
-        labels = list(status_counts.keys())
-        values = list(status_counts.values())
-        
-        logger.info(f"Labels: {labels}")
-        logger.info(f"Values: {values}")
-        
-        return JsonResponse({
-            "success": True,
-            "status_stats": {
-                "labels": labels,
-                "values": values
+                # Standardiser les statuts pour éviter les variations mineures
+                if statut == 'Vacataire':
+                    statut = 'Vacataires'
+                elif not statut or statut.lower() == 'non spécifié':
+                    statut = 'Non spécifié'
+                
+                # Initialiser le dictionnaire pour ce statut si nécessaire
+                if statut not in formateurs_par_statut:
+                    formateurs_par_statut[statut] = set()
+                
+                # Ajouter le formateur à l'ensemble pour ce statut (les ensembles éliminent les doublons)
+                if formateur:
+                    formateurs_par_statut[statut].add(formateur)
+            
+            # Calculer le nombre de formateurs uniques par statut
+            status_stats = {
+                "labels": list(formateurs_par_statut.keys()),
+                "values": [len(formateurs) for formateurs in formateurs_par_statut.values()]
             }
-        })
+            
+            return JsonResponse({
+                'success': True,
+                'status_stats': status_stats
+            })
+        else:
+            # En cas d'erreur, renvoyer un message approprié
+            return JsonResponse({
+                'success': False,
+                'error': f"Erreur lors de la récupération des données: {response.status_code}"
+            }, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({
+            'success': False,
+            'error': f"Erreur de connexion à l'API: {str(e)}"
+        }, status=500)
+
+@api_authenticated_required
+def arion_monthly_stats(request):
+    try:
+        # Récupérer le paramètre d'année optionnel
+        selected_year = request.GET.get('year', None)
+        
+        # Ajouter un cache pour les données récentes
+        cache_key = f"arion_monthly_stats_{selected_year or 'all'}"
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return JsonResponse(cached_data)
+        
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}'}
+        
+        # Ajouter des paramètres de pagination et limiter les données
+        # Faire la requête à l'API Flask pour récupérer les données
+        response = requests.get(
+            f"{settings.API_URL}/arion/data", 
+            headers=headers, 
+            params={'limit': 500},  # Limiter à 500 résultats pour améliorer les performances
+            timeout=5  # Réduire le timeout
+        )
+        
+        if response.status_code != 200:
+            return JsonResponse({"error": "Impossible de récupérer les données"}, status=response.status_code)
+        
+        # Obtenir les données
+        data = response.json()
+        
+        # Initialiser les compteurs pour chaque mois
+        monthly_counts = {month: 0 for month in range(1, 13)}
+        
+        # Parcourir les données et compter les activités par mois
+        for item in data:
+            # Vérifier si la date est valide
+            if 'date' in item and item['date']:
+                try:
+                    # La date est au format YYYY-MM-DD
+                    date_parts = item['date'].split('-')
+                    if len(date_parts) == 3:
+                        year = date_parts[0]
+                        month = int(date_parts[1])
+                        
+                        # Filtrer par année si spécifiée
+                        if selected_year and year != selected_year:
+                            continue
+                            
+                        # Incrémenter le compteur pour ce mois
+                        if month in monthly_counts:
+                            monthly_counts[month] += 1
+                except Exception as e:
+                    # Ne pas surcharger les logs
+                    pass
+        
+        # Préparer les données pour le graphique
+        month_names = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"]
+        values = [monthly_counts[month] for month in range(1, 13)]
+        
+        result = {
+            "labels": month_names,
+            "values": values
+        }
+        
+        # Stocker dans le cache pour 10 minutes (600 secondes)
+        cache.set(cache_key, result, 600)
+        
+        return JsonResponse(result)
+    
     except Exception as e:
-        logger.error(f"Erreur dans arion_api_status_stats: {e}")
-        return JsonResponse({"error": str(e)}, status=500)
+        logger.error(f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}")
+        return JsonResponse({"error": f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}"}, status=500)

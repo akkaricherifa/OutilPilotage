@@ -1819,6 +1819,93 @@ def get_arion_status_stats(current_user):
             "error": str(e),
             "message": "Une erreur s'est produite lors de la récupération des données"
         }), 500
+
+@app.route('/api/arion/monthly_stats', methods=['GET'])
+@token_required
+def get_arion_monthly_stats():
+    try:
+        # Récupérer le paramètre d'année optionnel
+        selected_year = request.args.get('year', None)
+        
+        # Connexion à MongoDB
+        client = MongoClient(app.config['MONGO_URI'])
+        db = client[app.config['MONGO_DBNAME']]
+        collection = db.arion_data
+        
+        # Initialiser les compteurs pour chaque mois
+        months = range(1, 13)
+        monthly_counts = {month: 0 for month in months}
+        
+        # Construire le pipeline d'agrégation
+        pipeline = []
+        
+        # Filtrer par année si spécifiée
+        if selected_year:
+            # Filtrer les enregistrements dont l'année (dans le champ annee) contient l'année sélectionnée
+            # ou dont la date est dans l'année sélectionnée
+            pipeline.append({
+                "$match": {
+                    "$or": [
+                        {"annee": {"$regex": f"^{selected_year}"}},
+                        {"date": {"$regex": f"^{selected_year}"}}
+                    ]
+                }
+            })
+        
+        # Grouper par mois et compter les activités
+        pipeline.extend([
+            {
+                "$addFields": {
+                    "month": {
+                        "$cond": {
+                            "if": {"$ne": ["$date", None]},
+                            "then": {
+                                "$month": {
+                                    "$dateFromString": {
+                                        "dateString": "$date",
+                                        "format": "%Y-%m-%d"
+                                    }
+                                }
+                            },
+                            "else": None
+                        }
+                    }
+                }
+            },
+            {
+                "$match": {
+                    "month": {"$ne": None}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$month",
+                    "count": {"$sum": 1}
+                }
+            }
+        ])
+        
+        # Exécuter l'agrégation
+        results = list(collection.aggregate(pipeline))
+        
+        # Remplir les compteurs avec les résultats
+        for result in results:
+            month = result["_id"]
+            if month in monthly_counts:
+                monthly_counts[month] = result["count"]
+        
+        # Préparer les données pour le graphique
+        month_names = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"]
+        values = [monthly_counts[month] for month in months]
+        
+        return jsonify({
+            "labels": month_names,
+            "values": values
+        })
+    
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}")
+        return jsonify({"error": "Erreur lors de la récupération des statistiques mensuelles"}), 500
 ############################################################ Routes pour les templates (si nécessaire)
 @app.route('/')
 def home():

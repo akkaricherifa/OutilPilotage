@@ -160,6 +160,41 @@
             grid-template-columns: 1fr;
         }
     }
+    /* Styles pour les tableaux de formateurs */
+     .nav-tabs .nav-link {
+    color: #495057;
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+      }
+
+     .nav-tabs .nav-link.active {
+    color: var(--isis-purple);
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: 2px solid var(--isis-purple);
+      }
+
+    .nav-tabs .nav-link:hover {
+    border-color: #e9ecef #e9ecef #dee2e6;
+     }
+
+     .tab-content {
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+     }
+
+    .table-sm td, .table-sm th {
+    padding: 0.5rem;
+    }
+
+     .table-hover tbody tr:hover {
+    background-color: rgba(124, 80, 222, 0.05);
+     }
 </style>
 {% endblock %}
 
@@ -189,7 +224,7 @@
 <div class="row">
     <div class="col-md-12">
         <!-- Statistiques résumées -->
-        <div class="stats-grid">
+        {% comment %} <div class="stats-grid">
             <div class="card stat-card stat-card-publications">
                 <div class="card-body text-center">
                     <h3 style="color: #2f0d73;" id="stat-publications"></h3>
@@ -214,7 +249,7 @@
                     <p class="mb-0">Vacataires</p>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 
         <!-- Tableau des données -->
         <div class="chart-container" style="height: auto;">
@@ -236,10 +271,10 @@
                         </tr>
                     </thead>
                   <tbody>
-    <tr>
-        <td colspan="10" class="text-center">Chargement des données...</td>
-    </tr>
-</tbody>
+                        <tr>
+                        <td colspan="10" class="text-center">Chargement des données...</td>
+                        </tr>
+                   </tbody>
                 </table>
             </div>
         </div>
@@ -254,14 +289,139 @@
 
             <!-- Graphique 2: Évolution mensuelle -->
             <div class="chart-container">
-                <h5><i class="fas fa-chart-line mr-2"></i>Évolution mensuelle</h5>
-                <canvas id="monthlyEvolutionChart"></canvas>
+               <div class="d-flex justify-content-between align-items-center mb-3">
+               <h5><i class="fas fa-chart-line mr-2"></i>Évolution mensuelle</h5>
+               <select id="yearFilter" class="form-control" style="width: 150px;">
+               <option value="all">Toutes les années</option>
+              <!-- Les options seront ajoutées dynamiquement via JavaScript -->
+                </select>
+             </div>
+                  <canvas id="monthlyEvolutionChart"></canvas>
             </div>
             <div class="chart-container">
-    <h5><i class="fas fa-users mr-2"></i>Répartition par statut de formateur</h5>
-    <canvas id="statusChart"></canvas>
-</div>
+                <h5><i class="fas fa-users mr-2"></i>Répartition par statut de formateur</h5>
+                <canvas id="statusChart"></canvas>
+            </div>
         </div>
+        <!-- Tableaux des formateurs par statut -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="chart-container" style="height: auto;">
+            <h5><i class="fas fa-user-tag mr-2"></i>Formateurs par statut</h5>
+            
+            <!-- Onglets pour les différents statuts -->
+            <ul class="nav nav-tabs" id="formateursTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="vacataires-tab" data-toggle="tab" href="#vacataires" role="tab">
+                        <i class="fas fa-user-tie mr-1"></i>Vacataires
+                        <span class="badge badge-pill badge-danger ml-1" id="count-vacataires">0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="enseignants-tab" data-toggle="tab" href="#enseignants" role="tab">
+                        <i class="fas fa-chalkboard-teacher mr-1"></i>Enseignants
+                        <span class="badge badge-pill badge-primary ml-1" id="count-enseignants">0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="personnel-tab" data-toggle="tab" href="#personnel" role="tab">
+                        <i class="fas fa-user-cog mr-1"></i>Personnel non enseignant
+                        <span class="badge badge-pill badge-warning ml-1" id="count-personnel">0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="nonspecifie-tab" data-toggle="tab" href="#nonspecifie" role="tab">
+                        <i class="fas fa-question-circle mr-1"></i>Non spécifié
+                        <span class="badge badge-pill badge-secondary ml-1" id="count-nonspecifie">0</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Contenu des onglets -->
+            <div class="tab-content mt-3" id="formateursTabContent">
+                <!-- Vacataires -->
+                <div class="tab-pane fade show active" id="vacataires" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="tableVacataires">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nom du formateur</th>
+                                    <th>Nombre d'activités</th>
+                                    <th>Heures totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Enseignants -->
+                <div class="tab-pane fade" id="enseignants" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="tableEnseignants">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nom du formateur</th>
+                                    <th>Nombre d'activités</th>
+                                    <th>Heures totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Personnel non enseignant -->
+                <div class="tab-pane fade" id="personnel" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="tablePersonnel">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nom du formateur</th>
+                                    <th>Nombre d'activités</th>
+                                    <th>Heures totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Non spécifié -->
+                <div class="tab-pane fade" id="nonspecifie" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="tableNonSpecifie">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nom du formateur</th>
+                                    <th>Nombre d'activités</th>
+                                    <th>Heures totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="text-center">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 
@@ -310,9 +470,9 @@
                                 <label>Statut <span class="text-danger">*</span></label>
                                 <select class="form-control" name="statut" id="statut" required>
                                     <option value="">Sélectionner un statut</option>
-                                    <option value="Enseignant">Enseignant</option>
-                                    <option value="Vacataire">Vacataire</option>
-                                    <option value="Personnel non enseignant">Personnel non enseignant</option>
+                                    <option value="Enseignant">Enseignants</option>
+                                    <option value="Vacataire">Vacataires</option>
+                                    <option value="Personnels non enseignant">Personnel non enseignant</option>
                                 </select>
                             </div>
                         </div>
@@ -476,6 +636,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
+    let availableYears = [];
 // Définir l'URL de base pour les API
 const API_BASE_URL = '/api';
 
@@ -486,7 +647,10 @@ $(document).ready(function() {
     
     // Charger les statistiques
     loadArionStats();
+    loadAvailableYears();
     initCharts();
+    // Charger les formateurs par statut
+    loadFormateursByStatus(); 
     
     // Gestion du nom de fichier pour l'upload CSV
     $('.custom-file-input').on('change', function() {
@@ -544,38 +708,346 @@ function loadArionStats() {
         }
     });
 }
-function getDefaultStatusData() {
-    return {
-        labels: ['Enseignant', 'Vacataire', 'Personnel non enseignant', 'Non spécifié'],
-        values: [0, 0, 0, 0]
-    };
-}
+
 function loadStatusStats() {
     console.log("Chargement des statistiques par statut...");
     $.ajax({
-        url: `${API_BASE_URL}/arion/status-stats`,
+        url: `${API_BASE_URL}/arion/data`,
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + getToken()
         },
         success: function(data) {
-            console.log("Succès ! Données reçues:", data);
-            if (data.success && data.status_stats) {
-                updateStatusChart(data.status_stats);
-            } else {
-                // Fallback si les données ne sont pas au format attendu
-                console.warn('Format de données inattendu pour les statistiques de statut');
-                updateStatusChart(getDefaultStatusData());
-            }
+            // Créer un dictionnaire pour compter les formateurs uniques par statut
+            const formateurParStatut = {
+                'Vacataires': new Set(),
+                'Enseignants': new Set(),
+                'Personnels non enseignant': new Set(),
+                'Non spécifié': new Set()
+            };
+            
+            // Parcourir toutes les données
+            data.forEach(item => {
+                // Récupérer le formateur
+                const formateur = item.formateur;
+                
+                // Traiter seulement si le formateur est valide
+                if (formateur && formateur !== "NaN" && formateur !== "null" && formateur !== "undefined") {
+                    // Récupérer le statut et le normaliser
+                    let statut = item.statut;
+                    
+                    // Si le statut est NaN ou autre valeur non valide, utiliser "Non spécifié"
+                    if (!statut || statut === "NaN" || statut === "null" || statut === "undefined" || statut === "") {
+                        formateurParStatut['Non spécifié'].add(formateur);
+                    }
+                    // Normaliser les noms de statuts
+                    else if (statut === "Vacataire" || statut === "Vacataires") {
+                        formateurParStatut['Vacataires'].add(formateur);
+                    }
+                    else if (statut === "Enseignant" || statut === "Enseignants") {
+                        formateurParStatut['Enseignants'].add(formateur);
+                    }
+                    else if (statut === "Personnels non enseignant") {
+                        formateurParStatut['Personnels non enseignant'].add(formateur);
+                    }
+                    // Tout autre statut va dans "Non spécifié"
+                    else {
+                        formateurParStatut['Non spécifié'].add(formateur);
+                    }
+                }
+            });
+            
+            // Préparer les données pour le graphique
+            const labels = [];
+            const values = [];
+            
+            // Ne garder que les statuts qui ont des formateurs
+            Object.keys(formateurParStatut).forEach(statut => {
+                if (formateurParStatut[statut].size > 0) {
+                    labels.push(statut);
+                    values.push(formateurParStatut[statut].size);
+                }
+            });
+            
+            // Mettre à jour le graphique
+            updateStatusChart({labels, values});
         },
         error: function(xhr) {
             console.error('Erreur lors du chargement des statistiques par statut:', xhr.responseText);
-            // Utiliser des données de démonstration en cas d'erreur
             updateStatusChart(getDefaultStatusData());
         }
     });
 }
+// Fonction pour charger les années disponibles
+function loadAvailableYears() {
+    // Extraire les années uniques des données
+    $.ajax({
+        url: `${API_BASE_URL}/arion/data`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            const years = new Set();
+            
+            // Extraire l'année de chaque enregistrement
+            data.forEach(item => {
+                if (item.annee && typeof item.annee === 'string') {
+                    // Si l'année est au format "2023-2024", prenons la première partie
+                    const yearPart = item.annee.split('-')[0];
+                    if (!isNaN(yearPart)) {
+                        years.add(yearPart);
+                    }
+                }
+            });
+            
+            // Convertir en tableau et trier
+            availableYears = Array.from(years).sort();
+            console.log("Années disponibles:", availableYears);
+            
+            // Populer la liste déroulante
+            populateYearFilter(availableYears);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des années:', xhr.responseText);
+        }
+    });
+}
 
+// Fonction pour populer la liste déroulante des années
+function populateYearFilter(years) {
+    const yearFilter = $('#yearFilter');
+    
+    // Vider d'abord les options existantes sauf la première
+    yearFilter.find('option:not(:first)').remove();
+    
+    // Ajouter les années comme options
+    years.forEach(year => {
+        yearFilter.append(`<option value="${year}">${year}</option>`);
+    });
+    
+    // Configurer l'événement de changement
+    yearFilter.off('change').on('change', function() {
+        const selectedYear = $(this).val();
+        updateMonthlyChart(selectedYear);
+    });
+}
+// Fonction pour mettre à jour le graphique mensuel en fonction de l'année sélectionnée
+function updateMonthlyChart(selectedYear = 'all') {
+    $.ajax({
+        url: `${API_BASE_URL}/arion/monthly_stats${selectedYear !== 'all' ? '?year=' + selectedYear : ''}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            // Mettre à jour le graphique avec les nouvelles données
+            renderMonthlyChart(data);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des statistiques mensuelles:', xhr.responseText);
+            
+            // En cas d'erreur, afficher un graphique vide
+            renderMonthlyChart({
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            });
+        }
+    });
+}
+
+// Fonction pour rendre le graphique mensuel
+function renderMonthlyChart(data) {
+    const monthlyCtx = document.getElementById('monthlyEvolutionChart');
+    if (!monthlyCtx) return;
+    
+    // Détruire le graphique existant s'il existe
+    if (window.monthlyChart) {
+        window.monthlyChart.destroy();
+    }
+    
+    // Vérifier si nous avons des données valides
+    const labels = data.labels || ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const values = data.values || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    
+    // Créer le graphique
+    window.monthlyChart = new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Nombre d\'activités',
+                data: values,
+                borderColor: '#7c50de',
+                backgroundColor: 'rgba(124, 80, 222, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre d\'activités'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Mois'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Activités: ${context.raw}`;
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: $('#yearFilter').val() === 'all' ? 'Toutes les années' : `Année: ${$('#yearFilter').val()}`,
+                    font: {
+                        size: 14
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Fonction pour charger les formateurs par statut
+function loadFormateursByStatus() {
+    console.log("Chargement des formateurs par statut...");
+    
+    $.ajax({
+        url: `${API_BASE_URL}/arion/data`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        success: function(data) {
+            // Objet pour stocker les formateurs par statut
+            const formateursByStatus = {
+                'Vacataires': {},
+                'Enseignants': {},
+                'Personnels non enseignant': {},
+                'Non spécifié': {}
+            };
+            
+            // Parcourir toutes les données pour regrouper par statut et formateur
+            data.forEach(item => {
+                // Récupérer le formateur et ses données
+                const formateur = item.formateur;
+                const duree = parseFloat(item.duree) || 0;
+                
+                // Traiter seulement si le formateur est valide
+                if (formateur && formateur !== "NaN" && formateur !== "null" && formateur !== "undefined") {
+                    // Normaliser le statut
+                    let statut = item.statut;
+                    
+                    // Si le statut est NaN ou autre valeur non valide, utiliser "Non spécifié"
+                    if (!statut || statut === "NaN" || statut === "null" || statut === "undefined" || statut === "") {
+                        statut = 'Non spécifié';
+                    }
+                    // Normaliser les noms de statuts
+                    else if (statut === "Vacataire" || statut === "Vacataires") {
+                        statut = 'Vacataires';
+                    }
+                    else if (statut === "Enseignant" || statut === "Enseignants") {
+                        statut = 'Enseignants';
+                    }
+                    else if (statut === "Personnels non enseignant") {
+                        statut = 'Personnels non enseignant';
+                    }
+                    // Tout autre statut va dans "Non spécifié"
+                    else {
+                        statut = 'Non spécifié';
+                    }
+                    
+                    // Initialiser les données pour ce formateur s'il n'existe pas encore
+                    if (!formateursByStatus[statut][formateur]) {
+                        formateursByStatus[statut][formateur] = {
+                            activites: 0,
+                            heures: 0
+                        };
+                    }
+                    
+                    // Incrémenter les compteurs
+                    formateursByStatus[statut][formateur].activites++;
+                    formateursByStatus[statut][formateur].heures += duree;
+                }
+            });
+            
+            // Mettre à jour les tableaux pour chaque statut
+            updateFormateursTable('Vacataires', formateursByStatus['Vacataires'], 'tableVacataires', 'count-vacataires');
+            updateFormateursTable('Enseignants', formateursByStatus['Enseignants'], 'tableEnseignants', 'count-enseignants');
+            updateFormateursTable('Personnels non enseignant', formateursByStatus['Personnels non enseignant'], 'tablePersonnel', 'count-personnel');
+            updateFormateursTable('Non spécifié', formateursByStatus['Non spécifié'], 'tableNonSpecifie', 'count-nonspecifie');
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des formateurs par statut:', xhr.responseText);
+            showNotification('error', 'Erreur lors du chargement des formateurs par statut');
+        }
+    });
+}
+
+// Fonction pour mettre à jour un tableau de formateurs
+function updateFormateursTable(statut, formateursData, tableId, countId) {
+    const table = document.getElementById(tableId);
+    if (!table) {
+        console.error(`Table ${tableId} non trouvée`);
+        return;
+    }
+    
+    // Récupérer le body du tableau
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+    
+    // Obtenir tous les formateurs pour ce statut
+    const formateurs = Object.keys(formateursData);
+    
+    // Mettre à jour le compteur
+    document.getElementById(countId).textContent = formateurs.length;
+    
+    // Si aucun formateur, afficher un message
+    if (formateurs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center">Aucun formateur ${statut}</td></tr>`;
+        return;
+    }
+    
+    // Trier les formateurs par nombre d'heures décroissant
+    formateurs.sort((a, b) => formateursData[b].heures - formateursData[a].heures);
+    
+    // Ajouter chaque formateur au tableau
+    formateurs.forEach(formateur => {
+        const row = document.createElement('tr');
+        
+        // Cellule pour le nom du formateur
+        const cellNom = document.createElement('td');
+        cellNom.textContent = formateur;
+        row.appendChild(cellNom);
+        
+        // Cellule pour le nombre d'activités
+        const cellActivites = document.createElement('td');
+        cellActivites.textContent = formateursData[formateur].activites;
+        row.appendChild(cellActivites);
+        
+        // Cellule pour les heures totales
+        const cellHeures = document.createElement('td');
+        cellHeures.textContent = formateursData[formateur].heures.toFixed(1) + ' h';
+        row.appendChild(cellHeures);
+        
+        // Ajouter la ligne au tableau
+        tbody.appendChild(row);
+    });
+}
 // Fonction pour mettre à jour le graphique de statut
 function updateStatusChart(statusData) {
     const statusCtx = document.getElementById('statusChart');
@@ -583,13 +1055,12 @@ function updateStatusChart(statusData) {
         console.error("Élément canvas 'statusChart' non trouvé");
         return;
     }
-      // Détruire le graphique existant s'il existe
+    
+    // Détruire le graphique existant s'il existe
     if (window.statusChart && typeof window.statusChart.destroy === 'function') {
         window.statusChart.destroy();
     }
 
-
-    
     if (!statusData || !statusData.labels || statusData.labels.length === 0 || !statusData.values) {
         console.warn("Données invalides pour le graphique");
         window.statusChart = new Chart(statusCtx, {
@@ -610,8 +1081,8 @@ function updateStatusChart(statusData) {
         return;
     }
     
-    // Couleurs pour les différents statuts
-    const colors = {
+    // Définir des couleurs spécifiques pour chaque statut
+    const colorMap = {
         'Vacataires': '#f56960',
         'Enseignants': '#7c50de',
         'Personnels non enseignant': '#ffb43c',
@@ -619,7 +1090,7 @@ function updateStatusChart(statusData) {
     };
     
     // Préparer les couleurs
-    const backgroundColors = statusData.labels.map(label => colors[label] || '#3cbebe');
+    const backgroundColors = statusData.labels.map(label => colorMap[label] || '#3cbebe');
     
     // Créer le graphique
     window.statusChart = new Chart(statusCtx, {
@@ -716,7 +1187,7 @@ function loadArionData() {
                 
                 if (statusText === 'Vacataire' || statusText === 'Vacataires') {
                     statusClass = 'status-inactive';
-                } else if (statusText === 'Personnel non enseignant') {
+                } else if (statusText === 'Personnels non enseignant') {
                     statusClass = 'status-pending';
                 }
                 
@@ -807,37 +1278,7 @@ function initCharts() {
         });
     }
     
-    // Graphique d'évolution mensuelle
-    const monthlyCtx = document.getElementById('monthlyEvolutionChart');
-    if (monthlyCtx) {
-        window.monthlyChart = new Chart(monthlyCtx, {
-            type: 'line',
-            data: {
-                labels: ['Aucune donnée'],
-                datasets: [{
-                    label: 'Activités',
-                    data: [0],
-                    borderColor: '#7c50de',
-                    backgroundColor: 'rgba(124, 80, 222, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Nombre d\'activités'
-                        }
-                    }
-                }
-            }
-        });
-    }
+    updateMonthlyChart('all');
     
     // Graphique de statut des formateurs
     const statusCtx = document.getElementById('statusChart');
@@ -903,7 +1344,7 @@ function initDataTable() {
             }
         },
         "order": [[0, "desc"], [7, "desc"]],
-        "pageLength": 6,
+        "pageLength": 4,
         "responsive": true
     });
 }
@@ -1337,6 +1778,7 @@ function refreshData() {
         loadArionData();
         loadArionStats();
         loadStatusStats(); // Ajoutez cette ligne
+        loadFormateursByStatus();
         showNotification('success', 'Données actualisées avec succès !');
     }, 100); // Juste un petit délai pour l'effet visuel
 }
