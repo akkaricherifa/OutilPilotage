@@ -1343,65 +1343,278 @@ def delete_rse_data(current_user, rse_id):
 @app.route('/api/rse/upload', methods=['POST'])
 @token_required
 def upload_rse_csv(current_user):
-    """Endpoint pour uploader un fichier CSV RSE"""
+    """Endpoint pour uploader des données RSE (supporte CSV et JSON)"""
     # Vérification des permissions
     user_role = current_user['role']
     if 'upload' not in PERMISSIONS.get(user_role, []):
         return jsonify({"error": "Permissions insuffisantes"}), 403
     
+    # Vérifier s'il s'agit d'une requête JSON (bulk_add)
+    if request.is_json:
+        data = request.get_json()
+        
+        if not data or 'data' not in data:
+            return jsonify({"error": "Données manquantes ou format incorrect"}), 400
+        
+        records = data['data']
+        
+        if not records or not isinstance(records, list):
+            return jsonify({"error": "Format de données invalide - tableau attendu"}), 400
+        
+        try:
+            # Traitement des enregistrements
+            for i, record in enumerate(records):
+                # Ajout d'un ID unique s'il n'existe pas
+                if 'id' not in record:
+                    record['id'] = f"rse_{int(datetime.utcnow().timestamp())}_{i}"
+                
+                # Métadonnées
+                record['uploaded_by'] = current_user['username']
+                record['uploaded_at'] = datetime.utcnow()
+                record['created_by'] = current_user['username']
+                record['created_at'] = datetime.utcnow()
+                record['updated_by'] = current_user['username']
+                record['updated_at'] = datetime.utcnow()
+                
+                # S'assurer que les champs numériques sont des nombres
+                record['annee'] = int(record.get('annee', datetime.utcnow().year))
+                record['heures_cm'] = int(record.get('heures_cm', 0))
+                record['heures_td'] = int(record.get('heures_td', 0))
+                record['heures_tp'] = int(record.get('heures_tp', 0))
+                
+                # Traitement des champs supplémentaires (heure1, heure2, heure3, heure4)
+                for hour_field in ['heure1', 'heure2', 'heure3', 'heure4']:
+                    if hour_field in record:
+                        record[hour_field] = int(record.get(hour_field, 0))
+                
+                # Recalculer le total des heures si nécessaire
+                record['total_heures'] = record['heures_cm'] + record['heures_td'] + record['heures_tp']
+            
+            # Insertion dans la base de données
+            result = rse_collection.insert_many(records)
+            
+            return jsonify({
+                "message": "Données RSE ajoutées avec succès",
+                "records_inserted": len(result.inserted_ids),
+                "success": True
+            }), 200
+            
+        except Exception as e:
+            return jsonify({"error": f"Erreur lors de l'ajout des données RSE: {str(e)}"}), 500
+    
+    # Sinon, c'est un upload de fichier CSV comme avant
     if 'file' not in request.files:
         return jsonify({"error": "Aucun fichier n'a été envoyé"}), 400
     
     file = request.files['file']
     if file.filename == '':
         return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
-    
     if file and file.filename.endswith('.csv'):
         try:
-            # Lecture du fichier CSV
-            df = pd.read_csv(file)
+            # Lecture du fichier CSV avec pandas
+            df = pd.read_csv(file, encoding='utf-8')
             
-            # Validation des colonnes requises
-            required_columns = ['annee', 'promotion', 'semestre', 'type_activite', 
-                               'heures_cm', 'heures_td', 'heures_tp']
-            missing_columns = [col for col in required_columns if col not in df.columns]
+            # Vérifier que le fichier correspond au format attendu
+            expected_columns = ['promotion_semestre', 'activite', 'cm_maquette', 'td_maquette', 
+                              'cm_hors_maquette', 'td1', 'td2', 'td3', 'td4', 'td5', 'total_heures']
             
+            missing_columns = [col for col in expected_columns if col not in df.columns]
             if missing_columns:
-                return jsonify({
-                    "error": f"Colonnes manquantes: {', '.join(missing_columns)}"
-                }), 400
+                # Si certaines colonnes manquent, vérifier si c'est un format alternatif
+                # Pour le format standard RSE
+                alt_columns = ['annee', 'promotion', 'semestre', 'type_activite', 'heures_cm', 'heures_td', 'heures_tp']
+                alt_missing = [col for col in alt_columns if col not in df.columns]
+                
+                if alt_missing:
+                    return jsonify({
+                        "error": f"Format de fichier non reconnu. Colonnes manquantes: {', '.join(missing_columns)}"
+                    }), 400
+                else:
+                    # C'est le format standard RSE, on peut procéder directement
+                    return process_standard_rse_format(df, current_user)
             
-            # Conversion du DataFrame en liste de dictionnaires pour MongoDB
-            records = df.to_dict('records')
+            # C'est le format spécifique avec promotion_semestre, etc.
+            # Transformation en format RSE standard
+            records = []
             
-            # Ajout de métadonnées et calculs
-            for record in records:
-                record['id'] = f"rse_{int(datetime.utcnow().timestamp())}_{records.index(record)}"
-                record['total_heures'] = int(record['heures_cm']) + int(record['heures_td']) + int(record['heures_tp'])
-                record['uploaded_by'] = current_user['username']
-                record['uploaded_at'] = datetime.utcnow()
-                record['created_by'] = current_user['username']
-                record['created_at'] = datetime.utcnow()
-                # S'assurer que l'année est un entier
-                record['annee'] = int(record['annee'])
-                # Assurer que les heures sont des entiers
-                record['heures_cm'] = int(record['heures_cm'])
-                record['heures_td'] = int(record['heures_td'])
-                record['heures_tp'] = int(record['heures_tp'])
+            for _, row in df.iterrows():
+                # Extraire promotion et semestre de promotion_semestre
+                promotion_semestre = str(row.get('promotion_semestre', ''))
+                
+                # Pattern attendu: FIEx-Sy
+                parts = promotion_semestre.split('-')
+                if len(parts) == 2:
+                    promotion = parts[0].strip()
+                    semestre = parts[1].strip()
+                else:
+                    # Si format incorrect, utiliser des valeurs par défaut
+                    promotion = promotion_semestre
+                    semestre = "S1"  # Valeur par défaut
+                
+                # Déterminer l'année en fonction de la promotion (approximation)
+                current_year = datetime.utcnow().year
+                annee = current_year
+                
+                # Extraire les heures
+                heures_cm = parse_numeric_value(row.get('cm_maquette', 0)) + parse_numeric_value(row.get('cm_hors_maquette', 0))
+                heures_td = sum([
+                    parse_numeric_value(row.get('td_maquette', 0)),
+                    parse_numeric_value(row.get('td1', 0)),
+                    parse_numeric_value(row.get('td2', 0))
+                ])
+                heures_tp = sum([
+                    parse_numeric_value(row.get('td3', 0)),
+                    parse_numeric_value(row.get('td4', 0)),
+                    parse_numeric_value(row.get('td5', 0))
+                ])
+                
+                # Calculer le total ou utiliser celui fourni
+                total_heures = parse_numeric_value(row.get('total_heures', 0))
+                if total_heures == 0:
+                    total_heures = heures_cm + heures_td + heures_tp
+                
+                # Créer l'enregistrement au format standard RSE
+                record = {
+                    'id': f"rse_{int(datetime.utcnow().timestamp())}_{len(records)}",
+                    'annee': annee,
+                    'promotion': promotion,
+                    'semestre': semestre,
+                    'type_activite': str(row.get('activite', '')),
+                    'heures_cm': int(heures_cm),
+                    'heures_td': int(heures_td),
+                    'heures_tp': int(heures_tp),
+                    'total_heures': int(total_heures),
+                    'uploaded_by': current_user['username'],
+                    'uploaded_at': datetime.utcnow(),
+                    'created_by': current_user['username'],
+                    'created_at': datetime.utcnow(),
+                    'updated_by': current_user['username'],
+                    'updated_at': datetime.utcnow()
+                }
+                
+                records.append(record)
             
             # Insertion des nouvelles données
-            result = rse_collection.insert_many(records)
-            
-            return jsonify({
-                "message": "Fichier CSV RSE traité avec succès", 
-                "records_inserted": len(result.inserted_ids),
-                "success": True
-            }), 200
-            
+            if records:
+                result = rse_collection.insert_many(records)
+                
+                return jsonify({
+                    "message": "Fichier CSV RSE traité avec succès", 
+                    "records_inserted": len(result.inserted_ids),
+                    "success": True
+                }), 200
+            else:
+                return jsonify({
+                    "warning": "Aucune donnée valide trouvée dans le fichier CSV RSE",
+                    "success": False
+                }), 400
+                
         except Exception as e:
             return jsonify({"error": f"Erreur lors du traitement du fichier CSV RSE: {str(e)}"}), 500
     
     return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
+
+def process_standard_rse_format(df, current_user):
+    """Traite un fichier CSV au format RSE standard"""
+    try:
+        # Conversion du DataFrame en liste de dictionnaires pour MongoDB
+        records = df.to_dict('records')
+        
+        # Ajout de métadonnées et calculs
+        for i, record in enumerate(records):
+            record['id'] = f"rse_{int(datetime.utcnow().timestamp())}_{i}"
+            
+            # Convertir les types numériques
+            record['annee'] = int(record.get('annee', datetime.utcnow().year))
+            record['heures_cm'] = int(record.get('heures_cm', 0))
+            record['heures_td'] = int(record.get('heures_td', 0))
+            record['heures_tp'] = int(record.get('heures_tp', 0))
+            
+            # Calculer le total
+            record['total_heures'] = record['heures_cm'] + record['heures_td'] + record['heures_tp']
+            
+            # Métadonnées
+            record['uploaded_by'] = current_user['username']
+            record['uploaded_at'] = datetime.utcnow()
+            record['created_by'] = current_user['username']
+            record['created_at'] = datetime.utcnow()
+            record['updated_by'] = current_user['username']
+            record['updated_at'] = datetime.utcnow()
+        
+        # Insertion des nouvelles données
+        result = rse_collection.insert_many(records)
+        
+        return jsonify({
+            "message": "Fichier CSV RSE traité avec succès", 
+            "records_inserted": len(result.inserted_ids),
+            "success": True
+        }), 200
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors du traitement du fichier CSV RSE standard: {str(e)}"}), 500
+
+def parse_numeric_value(value):
+    """Convertit une valeur en nombre, gère les cas particuliers"""
+    if value is None:
+        return 0
+    
+    if isinstance(value, (int, float)):
+        return value
+    
+    try:
+        # Supprimer les caractères non numériques sauf le point décimal
+        cleaned_value = ''.join(c for c in str(value) if c.isdigit() or c == '.')
+        if cleaned_value:
+            return float(cleaned_value)
+        return 0
+    except (ValueError, TypeError):
+        return 0
+    
+@app.route('/api/rse/bulk_add', methods=['POST'])
+@token_required
+def rse_bulk_add(current_user):
+    """Endpoint pour l'ajout en masse de données RSE à partir du CSV transformé"""
+    # Vérification des permissions
+    user_role = current_user['role']
+    if 'upload' not in PERMISSIONS.get(user_role, []):
+        return jsonify({"error": "Permissions insuffisantes"}), 403
+    
+    # Récupérer les données JSON
+    data = request.get_json()
+    
+    if not data or 'data' not in data:
+        return jsonify({"error": "Données manquantes ou format incorrect"}), 400
+    
+    records = data['data']
+    
+    if not records or not isinstance(records, list):
+        return jsonify({"error": "Format de données invalide - tableau attendu"}), 400
+    
+    try:
+        # Traitement des enregistrements
+        for i, record in enumerate(records):
+            # Ajout d'un ID unique s'il n'existe pas
+            if 'id' not in record:
+                record['id'] = f"rse_{int(datetime.utcnow().timestamp())}_{i}"
+            
+            # Métadonnées
+            record['uploaded_by'] = current_user['username']
+            record['uploaded_at'] = datetime.utcnow()
+            record['created_by'] = current_user['username']
+            record['created_at'] = datetime.utcnow()
+            record['updated_by'] = current_user['username']
+            record['updated_at'] = datetime.utcnow()
+        
+        # Insertion dans la base de données
+        result = rse_collection.insert_many(records)
+        
+        return jsonify({
+            "message": "Données RSE ajoutées avec succès",
+            "records_inserted": len(result.inserted_ids),
+            "success": True
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de l'ajout des données RSE: {str(e)}"}), 500
 
 @app.route('/api/rse/charts/<chart_type>', methods=['GET'])
 @token_required

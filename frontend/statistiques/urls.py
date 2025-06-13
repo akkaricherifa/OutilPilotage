@@ -45,6 +45,13 @@ urlpatterns = [
     path('rse/', views.rse_view, name='rse'),
     path('rse/add/', views.rse_add_data, name='rse_add_data'),
     path('rse/delete/<str:rse_id>/', views.rse_delete_data, name='rse_delete_data'),
+    path('rse/upload-csv/', views.rse_upload_csv, name='rse_upload_csv'),
+    # Ajouter ces routes dans le fichier urls.py
+    path('api/rse-data/', views.get_rse_data, name='get_rse_data'),
+    path('api/rse-evolution/', views.get_rse_evolution_data, name='get_rse_evolution_data'),
+    path('api/rse-activity-types/', views.get_rse_activity_types, name='get_rse_activity_types'),
+    path('api/rse-format-cours/', views.get_rse_format_cours, name='get_rse_format_cours'),
+    path('api/rse-hours-by-promotion/', views.get_rse_hours_by_promotion, name='get_rse_hours_by_promotion'),
 
 
     path('arion/', views.arion, name='arion'),

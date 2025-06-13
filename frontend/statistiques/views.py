@@ -14,6 +14,10 @@ import logging
 import math
 from django.core.cache import cache
 import json
+import pandas as pd
+import numpy as np
+import tempfile
+import os
 FLASK_API_URL = 'http://localhost:5000'
 logger = logging.getLogger(__name__)
 
@@ -398,7 +402,7 @@ def admin_users(request):
         messages.error(request, "Erreur de connexion pour récupérer les utilisateurs.")
     
     return render(request, 'statistiques/admin_users.html', {'users_data': users_data})
-
+###################cat etudiants ####################################
 @api_authenticated_required
 def effectifs_etudiants(request):
     """Vue principale pour les effectifs étudiants - CORRIGÉE"""
@@ -473,7 +477,6 @@ def effectifs_etudiants(request):
     })
 
 ######################################## CATEGORIE ENSEIGNEMENT ##############################################
-
 @api_authenticated_required
 def enseignement(request):
     """Vue principale pour l'enseignement et la pédagogie"""
@@ -767,196 +770,146 @@ def heures_enseignement(request):
 ############################rse rse rse rse #################
 @api_authenticated_required
 def rse_view(request):
-    """Vue principale pour les données RSE"""
+    """Vue principale pour la Responsabilité Sociétale des Entreprises (RSE)"""
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
     
-    # Liste des types d'activités RSE prédéfinis
-    activites_maquette = [
-        "Transition écologique et numérique",
-        "Responsabilité sociale et environnementale de l'ingénieur",
-        "Anthropocène",
-        "Numérique responsable",
-        "Enjeux socio environnementaux",
-        "Autre"
-    ]
-    
-    # Valeurs par défaut au cas où les requêtes API échouent
-    stats = {"items": []}
+    stats = None
     rse_data = []
     
     try:
-        # Récupérer d'abord les données complètes
-        logger.info("Récupération des données RSE depuis l'API")
-        data_response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
-        
-        if data_response.status_code == 200:
-            rse_data = data_response.json()
+        # Récupérer les statistiques depuis l'API
+        response = requests.get(f"{settings.API_URL}/rse/stats", headers=headers, timeout=10)
+        if response.status_code == 200:
+            stats = response.json()
+            logger.info(f"Stats RSE récupérées: {stats.keys()}")
+        else:
+            logger.warning(f"Impossible de récupérer les stats RSE: Code {response.status_code}")
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des stats RSE: {e}")
+    
+    try:
+        # Récupérer les données détaillées
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        if response.status_code == 200:
+            rse_data = response.json()
             logger.info(f"Données RSE récupérées: {len(rse_data)} enregistrements")
             
-            # Nettoyer les données pour éviter les valeurs non-JSON
-            rse_data = clean_json_data(rse_data)
+            # Extraire les promotions disponibles directement des données
+            promotions_disponibles = sorted(list(set(item.get('promotion') for item in rse_data if item.get('promotion'))))
             
-            # Extraire les promotions pour débogage
-            promotions = set([item.get('promotion') for item in rse_data if 'promotion' in item])
-            logger.info(f"Promotions dans les données: {promotions}")
-        else:
-            logger.warning(f"Erreur API data RSE: {data_response.status_code} - {data_response.text}")
-            messages.warning(request, "Impossible de récupérer les données RSE.")
-        
-        # Récupérer ensuite les statistiques
-        logger.info("Récupération des statistiques RSE depuis l'API")
-        stats_response = requests.get(f"{settings.API_URL}/rse/stats", headers=headers, timeout=10)
-        
-        if stats_response.status_code == 200:
-            stats = stats_response.json()
-            logger.info(f"Statistiques RSE récupérées avec les clés: {list(stats.keys())}")
-            
-            # Nettoyer les statistiques pour éviter les valeurs non-JSON
-            stats = clean_json_data(stats)
-            
-            # S'assurer que les items sont inclus dans les stats
-            if 'items' not in stats and rse_data:
-                logger.info("Ajout des données RSE aux statistiques car 'items' est manquant")
-                stats['items'] = rse_data
-            
-            # S'assurer que la liste des promotions est complète
-            if rse_data and 'promotions_disponibles' not in stats:
-                logger.info("Génération de la liste des promotions disponibles")
-                promotions_set = set()
-                for item in rse_data:
-                    if item.get('promotion'):
-                        promotions_set.add(item.get('promotion'))
-                
-                stats['promotions_disponibles'] = sorted(list(promotions_set))
-                logger.info(f"Promotions générées: {stats['promotions_disponibles']}")
-        else:
-            logger.warning(f"Erreur API stats RSE: {stats_response.status_code} - {stats_response.text}")
-            
-            # Construire des statistiques minimales à partir des données
-            if rse_data:
-                logger.info("Construction de statistiques de base à partir des données RSE")
-                
-                # Extraire les promotions
-                promotions_set = set()
-                for item in rse_data:
-                    if item.get('promotion'):
-                        promotions_set.add(item.get('promotion'))
-                
-                # Calculer les totaux
-                total_cm = sum(item.get('heures_cm', 0) for item in rse_data)
-                total_td = sum(item.get('heures_td', 0) for item in rse_data)
-                total_tp = sum(item.get('heures_tp', 0) for item in rse_data)
-                total_heures = total_cm + total_td + total_tp
-                
-                # Construire l'objet stats
+            # Si stats existe déjà, mettre à jour ou ajouter les promotions disponibles
+            if stats:
+                stats['promotions_disponibles'] = promotions_disponibles
+            else:
+                # Créer des statistiques de base si stats n'existe pas
                 stats = {
-                    "items": rse_data,
-                    "total_heures_rse": total_heures,
-                    "total_activites": len(rse_data),
-                    "promotions_impliquees": len(promotions_set),
-                    "etudiants_impliques": 342,  # Valeur par défaut
-                    "promotions_disponibles": sorted(list(promotions_set)),
-                    "format_cours_pourcentage": {
-                        'CM': round(total_cm / total_heures * 100 if total_heures > 0 else 0, 1),
-                        'TD': round(total_td / total_heures * 100 if total_heures > 0 else 0, 1),
-                        'TP': round(total_tp / total_heures * 100 if total_heures > 0 else 0, 1)
-                    },
-                    "graphiques": {
-                        'format_cours': {
-                            'labels': ['CM', 'TD', 'TP'],
-                            'values': [total_cm, total_td, total_tp]
-                        }
-                    }
+                    'promotions_disponibles': promotions_disponibles
                 }
                 
-                logger.info("Statistiques de base construites avec succès")
-            else:
-                stats = {"items": []}
-                messages.warning(request, "Impossible de récupérer les statistiques RSE.")
-        
-        # Si c'est une requête AJAX, renvoyer les données en JSON
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            logger.info("Requête AJAX détectée, renvoi des données JSON")
-            return JsonResponse(stats)
-            
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Erreur de connexion lors de la récupération des données RSE: {e}")
-        
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'error': str(e), 'details': 'Erreur de connexion à l\'API'}, status=500)
-            
-        messages.error(request, f"Erreur de connexion à l'API RSE: {str(e)}")
+            logger.info(f"Promotions disponibles: {promotions_disponibles}")
+        else:
+            logger.warning(f"Impossible de récupérer les données RSE: Code {response.status_code}")
     except Exception as e:
-        logger.error(f"Erreur inattendue dans rse_view: {e}")
+        logger.error(f"Erreur lors de la récupération des données RSE: {e}")
+    
+    # Liste des types d'activités RSE
+    activites_maquette = [
+        "Transition écologique et numérique",
+        "Éthique informatique",
+        "Développement durable",
+        "Numérique responsable",
+        "Accessibilité numérique",
+        "Impact environnemental",
+        "Diversité et inclusion",
+        "Gouvernance responsable",
+        "Autre"
+    ]
+    
+    # Si pas de stats disponibles, créer des statistiques basiques à partir des données
+    if not stats and rse_data:
+        total_heures = sum(item.get('total_heures', 0) for item in rse_data)
+        promotions = set(item.get('promotion') for item in rse_data if item.get('promotion'))
         
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'error': str(e), 'details': 'Erreur inattendue'}, status=500)
-            
-        messages.error(request, f"Une erreur inattendue s'est produite: {str(e)}")
+        stats = {
+            'total_heures_rse': total_heures,
+            'total_activites': len(rse_data),
+            'promotions_impliquees': len(promotions),
+            'etudiants_impliques': len(promotions) * 30,  # Estimation
+            'promotions_disponibles': sorted(list(promotions)),
+            'annees_disponibles': sorted(list(set(item.get('annee') for item in rse_data if item.get('annee'))))
+        }
     
-    # Préparer les données pour le template en convertissant stats en JSON
-    try:
-        # Double vérification des valeurs problématiques
-        stats = clean_json_data(stats)
-        stats_json = json.dumps(stats)
-        logger.info("Conversion des statistiques en JSON réussie")
-    except Exception as e:
-        logger.error(f"Erreur lors de la conversion des stats en JSON: {e}")
-        # En cas d'erreur, créer un JSON minimal
-        stats_json = json.dumps({"items": []})
-        messages.error(request, "Erreur lors du traitement des données RSE pour l'affichage")
+    # Pour les requêtes AJAX, renvoyer juste les données JSON
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'stats': stats,
+            'rse_data': rse_data
+        })
     
+    # Pour les requêtes normales, renvoyer la page HTML
     return render(request, 'statistiques/rse.html', {
-        'stats': stats_json,
+        'stats': json.dumps(stats) if stats else "{}",
         'rse_data': rse_data,
         'activites_maquette': activites_maquette,
-        'user_info': request.session.get('user_info', {})
+        'promotions_disponibles': promotions_disponibles
     })
+
 @api_authenticated_required
 def rse_add_data(request):
     """Vue pour ajouter/modifier des données RSE"""
     if request.method != 'POST':
-        return redirect('rse')
-    
-    token = request.session.get('api_token')
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/json'
-    }
+        return JsonResponse({'success': False, 'message': 'Méthode non autorisée'}, status=405)
     
     try:
-        # Traiter les données du formulaire
+        # Récupérer les données du formulaire
         data = {
-            'id': request.POST.get('id', ''),
-            'annee': int(request.POST.get('annee', 0)),
-            'promotion': request.POST.get('promotion', ''),
-            'semestre': request.POST.get('semestre', ''),
-            'heures_cm': int(request.POST.get('heures_cm', 0)),
-            'heures_td': int(request.POST.get('heures_td', 0)),
-            'heures_tp': int(request.POST.get('heures_tp', 0))
+            'id': request.POST.get('id'),
+            'annee': request.POST.get('annee'),
+            'promotion': request.POST.get('promotion'),
+            'semestre': request.POST.get('semestre'),
+            'type_activite': request.POST.get('type_activite'),
+            'heures_cm': int(float(request.POST.get('heures_cm', 0) or 0)),
+            'heures_td': int(float(request.POST.get('heures_td', 0) or 0)),
+            'heures_tp': int(float(request.POST.get('heures_tp', 0) or 0)),
+            'description': request.POST.get('description', '')
         }
         
-        # Gérer le type d'activité (standard ou personnalisé)
-        type_activite = request.POST.get('type_activite', '')
-        if type_activite == 'Autre':
-            data['type_activite'] = request.POST.get('autre_type', '')
-        else:
-            data['type_activite'] = type_activite
-            
-        # Ajouter une description si disponible
-        if request.POST.get('description'):
-            data['description'] = request.POST.get('description')
+        # Si le type est "Autre", utiliser la valeur spécifiée
+        if data['type_activite'] == 'Autre':
+            autre_type = request.POST.get('autre_type')
+            if autre_type:
+                data['type_activite'] = autre_type
         
-        # Déterminer si c'est un ajout ou une mise à jour
-        if data['id']:
+        # Calculer le total des heures
+        data['total_heures'] = data['heures_cm'] + data['heures_td'] + data['heures_tp']
+        
+        # Validation
+        if not data['annee'] or not data['promotion'] or not data['semestre'] or not data['type_activite']:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Les champs année, promotion, semestre et type d\'activité sont obligatoires'
+            }, status=400)
+        
+        if data['heures_cm'] == 0 and data['heures_td'] == 0 and data['heures_tp'] == 0:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Veuillez spécifier au moins un type d\'heures (CM, TD ou TP)'
+            }, status=400)
+        
+        # Envoyer les données à l'API
+        token = request.session.get('api_token')
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+        
+        if data['id']:  # Mise à jour
             url = f"{settings.API_URL}/rse/update"
-            message_success = "Données RSE mises à jour avec succès!"
-        else:
+        else:  # Nouvelle entrée
             url = f"{settings.API_URL}/rse/add"
-            message_success = "Nouvelles données RSE ajoutées avec succès!"
+            data.pop('id', None)  # Supprimer l'ID pour une nouvelle entrée
         
-        # Envoyer à l'API
         response = requests.post(
             url,
             json=data,
@@ -964,81 +917,528 @@ def rse_add_data(request):
             timeout=10
         )
         
-        # Journaliser la réponse pour débogage
-        logger.info(f"Réponse API RSE: {response.status_code} - {response.text}")
-        
         if response.status_code == 200:
-            # Gestion des requêtes AJAX
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': True, 'message': message_success})
-            
-            messages.success(request, message_success)
-            return redirect('rse')
+            api_response = response.json()
+            return JsonResponse({
+                'success': True,
+                'message': api_response.get('message', 'Données RSE enregistrées avec succès!')
+            })
         else:
-            try:
-                error_data = response.json()
-                error_message = error_data.get('error', 'Erreur inconnue')
-            except:
-                error_message = f"Erreur API (code {response.status_code})"
+            api_response = response.json()
+            return JsonResponse({
+                'success': False,
+                'message': api_response.get('error', 'Erreur lors de l\'enregistrement des données RSE')
+            }, status=response.status_code)
             
-            logger.error(f"Erreur API lors de l'ajout RSE: {error_message}")
-            
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'message': error_message}, status=400)
-            
-            messages.error(request, f"Erreur lors de l'enregistrement: {error_message}")
-            
+    except ValueError as e:
+        logger.error(f"Erreur de conversion de valeur dans rse_add_data: {e}")
+        return JsonResponse({
+            'success': False,
+            'message': f"Erreur de validation des données: {str(e)}"
+        }, status=400)
     except Exception as e:
-        logger.error(f"Erreur lors de l'ajout/modification RSE: {e}")
-        
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'success': False, 'message': str(e)}, status=500)
-        
-        messages.error(request, f"Une erreur est survenue: {str(e)}")
-    
-    return redirect('rse')
-@api_authenticated_required
-def rse_delete_data(request, rse_id):
+        logger.error(f"Erreur dans rse_add_data: {e}")
+        return JsonResponse({
+            'success': False,
+            'message': f"Une erreur est survenue: {str(e)}"
+        }, status=500)
+
+def rse_delete_data(request, id):
     """Vue pour supprimer des données RSE"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Méthode non autorisée'}, status=405)
+    
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
     
     try:
         response = requests.delete(
-            f"{settings.API_URL}/rse/delete/{rse_id}",
+            f"{settings.API_URL}/rse/delete/{id}",
             headers=headers,
             timeout=10
         )
         
         if response.status_code == 200:
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({"success": True, "message": "Données RSE supprimées avec succès!"})
-            
-            messages.success(request, "Données RSE supprimées avec succès!")
-            return redirect('rse')
+            return JsonResponse({
+                'success': True,
+                'message': 'Données RSE supprimées avec succès!'
+            })
         else:
             api_response = response.json()
-            error_message = api_response.get('error', 'Erreur lors de la suppression des données RSE.')
+            return JsonResponse({
+                'success': False,
+                'message': api_response.get('error', 'Erreur lors de la suppression des données RSE')
+            }, status=response.status_code)
             
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({"error": error_message}, status=response.status_code)
+    except Exception as e:
+        logger.error(f"Erreur dans rse_delete_data: {e}")
+        return JsonResponse({
+            'success': False,
+            'message': f"Une erreur est survenue: {str(e)}"
+        }, status=500)
+    
+@api_authenticated_required
+def rse_upload_csv(request):
+    """Vue pour importer un fichier CSV de données RSE"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Méthode non autorisée'}, status=405)
+    
+    try:
+        # Vérifier le fichier
+        if 'file' not in request.FILES:
+            return JsonResponse({
+                'success': False,
+                'message': 'Aucun fichier fourni'
+            }, status=400)
+        
+        csv_file = request.FILES['file']
+        
+        # Vérifier l'extension du fichier
+        if not csv_file.name.endswith('.csv'):
+            return JsonResponse({
+                'success': False,
+                'message': 'Le fichier doit être au format CSV'
+            }, status=400)
+        
+        # Sauvegarder temporairement le fichier
+        import tempfile
+        import os
+        
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.csv')
+        temp_file.close()
+        
+        with open(temp_file.name, 'wb+') as destination:
+            for chunk in csv_file.chunks():
+                destination.write(chunk)
+        
+        # Traiter le fichier CSV
+        result = process_rse_csv(temp_file.name)
+        
+        if not result['success']:
+            return JsonResponse({
+                'success': False,
+                'message': f"Erreur lors du traitement du fichier CSV RSE: {result['error']}"
+            }, status=400)
+        
+        # Envoyer les données à l'API
+        token = request.session.get('api_token')
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.post(
+            f"{settings.API_URL}/rse/bulk_add",
+            json={'data': result['data']},
+            headers=headers,
+            timeout=30  # Délai plus long pour les imports volumineux
+        )
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            return JsonResponse({
+                'success': True,
+                'message': f"Fichier CSV traité avec succès: {api_response.get('records_inserted', 0)} enregistrements importés",
+                'warnings': result['errors'] if result['errors'] else []
+            })
+        else:
+            try:
+                api_response = response.json()
+                error_msg = api_response.get('error', 'Erreur inconnue')
+            except:
+                error_msg = f"Erreur de communication avec l'API (Code: {response.status_code})"
             
-            messages.error(request, error_message)
-            return redirect('rse')
+            return JsonResponse({
+                'success': False,
+                'message': f"Erreur lors de l'importation: {error_msg}"
+            }, status=500)
+            
+    except Exception as e:
+        logger.error(f"Erreur dans rse_upload_csv: {e}")
+        return JsonResponse({
+            'success': False,
+            'message': f"Erreur lors du traitement du fichier CSV RSE: {str(e)}"
+        }, status=500)
+    finally:
+        # Nettoyer - supprimer le fichier temporaire
+        if 'temp_file' in locals():
+            try:
+                os.unlink(temp_file.name)
+            except:
+                pass
+def process_rse_csv(file_path):
+    """
+    Process a CSV file containing RSE data and safely convert values to appropriate types.
+    Handles empty fields, NaN values, and other potential data issues.
+    Also processes additional hour columns (heure1, heure2, heure3, heure4).
+    """
+    import pandas as pd
+    import numpy as np
+    import os
     
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Erreur API rse_delete_data: {e}")
-        error_message = "Erreur de connexion lors de la suppression des données RSE."
+    # Read the CSV file using pandas
+    try:
+        # Try to guess the delimiter
+        data = pd.read_csv(file_path, 
+                          sep=None, 
+                          engine='python', 
+                          dtype=str,  # First read all as strings to avoid conversion errors
+                          na_values=['', 'NA', 'N/A', 'nan', 'NaN'],
+                          keep_default_na=True)
         
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({"error": error_message}, status=500)
+        # Validate required columns
+        required_columns = ['annee', 'promotion', 'semestre', 'type_activite']
+        numeric_columns = ['heures_cm', 'heures_td', 'heures_tp']
+        additional_hours = ['heure1', 'heure2', 'heure3', 'heure4']
         
-        messages.error(request, error_message)
-        return redirect('rse')
+        # Check which additional hour columns are present
+        present_additional_hours = [col for col in additional_hours if col in data.columns]
+        
+        # Add present additional hour columns to numeric columns for processing
+        all_numeric_columns = numeric_columns + present_additional_hours
+        
+        # Check if required columns exist
+        missing_columns = [col for col in required_columns if col not in data.columns]
+        if missing_columns:
+            return {
+                'success': False, 
+                'error': f"Colonnes manquantes dans le fichier CSV: {', '.join(missing_columns)}"
+            }
+        
+        # Process and clean the data
+        processed_data = []
+        errors = []
+        
+        for index, row in data.iterrows():
+            try:
+                # Basic validation for required fields
+                for col in required_columns:
+                    if pd.isna(row[col]) or str(row[col]).strip() == '':
+                        raise ValueError(f"La ligne {index+2} a une valeur manquante pour '{col}'")
+                
+                # Create a dictionary for this row
+                record = {}
+                
+                # Process string fields
+                record['annee'] = str(row['annee']).strip()
+                record['promotion'] = str(row['promotion']).strip()
+                record['semestre'] = str(row['semestre']).strip()
+                record['type_activite'] = str(row['type_activite']).strip()
+                
+                # Add description if present
+                if 'description' in row and not pd.isna(row['description']):
+                    record['description'] = str(row['description']).strip()
+                else:
+                    record['description'] = ""
+                
+                # Process numeric fields with safe conversion
+                for col in all_numeric_columns:
+                    if col in row:
+                        try:
+                            # Handle missing or non-numeric values
+                            if pd.isna(row[col]) or str(row[col]).strip() == '':
+                                record[col] = 0  # Default to 0 for missing numeric values
+                            else:
+                                # Try to convert to float first, then to int
+                                value = str(row[col]).strip().replace(',', '.')  # Handle commas as decimal separators
+                                try:
+                                    record[col] = int(float(value))
+                                except ValueError:
+                                    record[col] = 0
+                                    errors.append(f"Ligne {index+2}: Valeur non numérique pour '{col}': '{value}' (0 utilisé)")
+                        except Exception as e:
+                            record[col] = 0  # Default to 0 on error
+                            errors.append(f"Ligne {index+2}: Erreur lors du traitement de '{col}': {str(e)}")
+                    else:
+                        # Si la colonne est dans numeric_columns (obligatoire) mais pas dans les données
+                        if col in numeric_columns:
+                            record[col] = 0  # Default if column is missing
+                
+                # Calculate total hours (standard columns only)
+                record['total_heures'] = record['heures_cm'] + record['heures_td'] + record['heures_tp']
+                
+                # Add the processed record
+                processed_data.append(record)
+                
+            except Exception as e:
+                errors.append(f"Erreur à la ligne {index+2}: {str(e)}")
+        
+        # Return the processed data and any errors
+        return {
+            'success': True,
+            'data': processed_data,
+            'errors': errors,
+            'row_count': len(processed_data)
+        }
+        
+    except Exception as e:
+        # Handle file reading errors
+        return {'success': False, 'error': f"Erreur lors de la lecture du fichier CSV: {str(e)}"}
+    finally:
+        # Clean up - remove the temporary file if needed
+        if os.path.exists(file_path) and 'temp' in file_path:
+            try:
+                os.remove(file_path)
+            except:
+                pass
+@api_authenticated_required
+def get_rse_data(request):
+    """API pour obtenir les données RSE filtrées par promotion"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
     
+    # Récupérer le paramètre de promotion s'il est spécifié
+    promotion = request.GET.get('promotion', 'all')
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Filtrer par promotion si nécessaire
+        if promotion != 'all':
+            rse_data = [item for item in rse_data if item.get('promotion') == promotion]
+        
+        # Calculer les totaux pour les heures
+        total_cm = sum(int(item.get('heures_cm', 0)) for item in rse_data)
+        total_td = sum(int(item.get('heures_td', 0)) for item in rse_data)
+        total_tp = sum(int(item.get('heures_tp', 0)) for item in rse_data)
+        
+        # Calculer les heures additionnelles si présentes
+        additional_hours = {}
+        for hour_type in ['heure1', 'heure2', 'heure3', 'heure4']:
+            if any(hour_type in item for item in rse_data):
+                additional_hours[hour_type] = sum(int(item.get(hour_type, 0)) for item in rse_data)
+        
+        # Extraire la liste des promotions disponibles
+        promotions = list(set(item.get('promotion') for item in rse_data if item.get('promotion')))
+        promotions.sort()  # Trier les promotions
+        
+        # Retourner les données au format JSON
+        return JsonResponse({
+            'data': {
+                'heures_cm': total_cm,
+                'heures_td': total_td,
+                'heures_tp': total_tp,
+                **additional_hours  # Inclure les heures additionnelles si présentes
+            },
+            'promotions': promotions
+        })
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_data: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
 
+@api_authenticated_required
+def get_rse_evolution_data(request):
+    """API pour obtenir les données d'évolution des heures RSE par année"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Récupérer la liste des années disponibles
+        annees = list(set(item.get('annee') for item in rse_data if item.get('annee')))
+        annees.sort()  # Trier les années
+        
+        # Initialiser les données d'évolution
+        evolution_data = []
+        
+        # Pour chaque année, calculer les totaux
+        for annee in annees:
+            # Filtrer les enregistrements pour cette année
+            records = [item for item in rse_data if item.get('annee') == annee]
+            
+            # Calculer les totaux pour cette année
+            total_cm = sum(int(item.get('heures_cm', 0)) for item in records)
+            total_td = sum(int(item.get('heures_td', 0)) for item in records)
+            total_tp = sum(int(item.get('heures_tp', 0)) for item in records)
+            total = total_cm + total_td + total_tp
+            
+            # Ajouter à nos données d'évolution
+            evolution_data.append({
+                'annee': annee,
+                'cm': total_cm,
+                'td': total_td,
+                'tp': total_tp,
+                'total': total
+            })
+        
+        return JsonResponse({
+            'evolution_data': evolution_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_evolution_data: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
 
-############ ARION #############################
+@api_authenticated_required
+def get_rse_activity_types(request):
+    """API pour obtenir la répartition des heures par type d'activité"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Créer un dictionnaire pour stocker les totaux par type d'activité
+        type_totals = {}
+        
+        # Calculer les totaux par type d'activité
+        for item in rse_data:
+            type_activite = item.get('type_activite', 'Non spécifié')
+            if type_activite not in type_totals:
+                type_totals[type_activite] = 0
+                
+            # Ajouter les heures totales pour ce type
+            heures_cm = int(item.get('heures_cm', 0))
+            heures_td = int(item.get('heures_td', 0))
+            heures_tp = int(item.get('heures_tp', 0))
+            type_totals[type_activite] += heures_cm + heures_td + heures_tp
+        
+        # Convertir en liste pour le tri
+        types_list = [{'type_activite': k, 'total_heures': v} for k, v in type_totals.items()]
+        
+        # Trier par total d'heures décroissant
+        types_list.sort(key=lambda x: x['total_heures'], reverse=True)
+        
+        # Limiter à 8 types pour la lisibilité si nécessaire
+        if len(types_list) > 8:
+            # Conserver les 7 premiers types et regrouper les autres
+            autres_total = sum(item['total_heures'] for item in types_list[7:])
+            types_list = types_list[:7]
+            types_list.append({
+                'type_activite': 'Autres',
+                'total_heures': autres_total
+            })
+        
+        return JsonResponse({
+            'types_data': types_list
+        })
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_activity_types: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def get_rse_format_cours(request):
+    """API pour obtenir la répartition globale CM/TD/TP"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Calculer les totaux
+        total_cm = sum(int(item.get('heures_cm', 0)) for item in rse_data)
+        total_td = sum(int(item.get('heures_td', 0)) for item in rse_data)
+        total_tp = sum(int(item.get('heures_tp', 0)) for item in rse_data)
+        
+        # Calculer les pourcentages
+        total = total_cm + total_td + total_tp
+        
+        if total > 0:
+            percent_cm = (total_cm / total) * 100
+            percent_td = (total_td / total) * 100
+            percent_tp = (total_tp / total) * 100
+        else:
+            percent_cm = percent_td = percent_tp = 0
+        
+        return JsonResponse({
+            'total_cm': total_cm,
+            'total_td': total_td,
+            'total_tp': total_tp,
+            'percent_cm': round(percent_cm, 1),
+            'percent_td': round(percent_td, 1),
+            'percent_tp': round(percent_tp, 1)
+        })
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_format_cours: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def get_rse_hours_by_promotion(request):
+    """API pour obtenir les heures RSE totales par promotion"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Créer un dictionnaire pour stocker les totaux par promotion
+        promotion_totals = {}
+        
+        # Calculer les totaux par promotion
+        for item in rse_data:
+            promotion = item.get('promotion')
+            if not promotion:
+                continue
+                
+            if promotion not in promotion_totals:
+                promotion_totals[promotion] = 0
+                
+            # Ajouter les heures totales pour cette promotion
+            heures_cm = int(item.get('heures_cm', 0))
+            heures_td = int(item.get('heures_td', 0))
+            heures_tp = int(item.get('heures_tp', 0))
+            
+            # Ajouter les heures additionnelles si présentes
+            additional_hours = 0
+            for hour_key in ['heure1', 'heure2', 'heure3', 'heure4']:
+                if hour_key in item:
+                    additional_hours += int(item.get(hour_key, 0))
+            
+            promotion_totals[promotion] += heures_cm + heures_td + heures_tp + additional_hours
+        
+        # Convertir en liste pour le tri
+        promotions_list = [{'promotion': k, 'total_heures': v} for k, v in promotion_totals.items()]
+        
+        # Trier par nom de promotion
+        promotions_list.sort(key=lambda x: x['promotion'])
+        
+        return JsonResponse({
+            'promotions_data': promotions_list
+        })
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_hours_by_promotion: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
+################################################################################################### ARION #############################
 @api_authenticated_required
 def arion(request):
     """Vue pour afficher l'interface ARION"""
@@ -1047,7 +1447,6 @@ def arion(request):
         'active_tab': 'arion'
     }
     return render(request, 'statistiques/arion.html', context)
-
 
 @csrf_exempt
 @api_authenticated_required

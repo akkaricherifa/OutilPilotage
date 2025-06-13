@@ -7666,3 +7666,523 @@ C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloa
 Watching for file changes with StatReloader
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
 Watching for file changes with StatReloader
+"GET /arion/ HTTP/1.1" 200 88817
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /arion/ HTTP/1.1" 200 88817
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIA5', 'FIE4', 'FIE2', 'FIE1', 'FIA3', 'FIE5', 'FIA4'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98132
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE2', 'FIE1', 'FIE5', 'FIA5', 'FIE4', 'FIA4', 'FIA3'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 98136
+Récupération des données RSE depuis l'API
+Données RSE récupérées: 8 enregistrements
+Promotions dans les données: {'FIE2', 'FIE1', 'FIE5', 'FIA5', 'FIE4', 'FIA4', 'FIA3'}
+Récupération des statistiques RSE depuis l'API
+Statistiques RSE récupérées avec les clés: ['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse']
+Ajout des données RSE aux statistiques car 'items' est manquant
+Conversion des statistiques en JSON réussie
+"GET /rse/ HTTP/1.1" 200 99937
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 114
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /rse/upload-csv/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1222, in rse_upload_csv
+    csv_file.uploaded_by = request.user
+    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 288, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x000002B2C7D91010>>": "CSVFile.uploaded_by" must be a "User" instance.
+"POST /rse/upload-csv/ HTTP/1.1" 500 75254
+Internal Server Error: /rse/upload-csv/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1222, in rse_upload_csv
+    csv_file.uploaded_by = request.user
+    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 288, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x000002B2C7D77610>>": "CSVFile.uploaded_by" must be a "User" instance.
+"POST /rse/upload-csv/ HTTP/1.1" 500 75254
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Erreur dans rse_upload_csv: name 'process_rse_csv' is not defined
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 116
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Bad Request: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 400 161
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Bad Request: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 400 161
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 109
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 98023
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 109
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 1 enregistrements
+"GET /rse/ HTTP/1.1" 200 85673
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 109
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 1 enregistrements
+"GET /rse/ HTTP/1.1" 200 85673
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+Internal Server Error: /rse/upload-csv/
+"POST /rse/upload-csv/ HTTP/1.1" 500 109
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 1 enregistrements
+"GET /rse/ HTTP/1.1" 200 85673
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+"POST /rse/upload-csv/ HTTP/1.1" 200 203
+Impossible de récupérer les stats RSE: Code 500
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 92590
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Impossible de récupérer les stats RSE: Code 500
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 92590
+"GET /static/images/isis.png HTTP/1.1" 304 0
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10634
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Impossible de récupérer les stats RSE: Code 500
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 85646
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11753
+Erreur dans get_rse_evolution_data: '<' not supported between instances of 'str' and 'int'
+Internal Server Error: /api/rse-evolution/
+"GET /api/rse-evolution/ HTTP/1.1" 500 92
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 186
+"GET /api/rse-format-cours/ HTTP/1.1" 200 108
+"GET /api/rse-activity-types/ HTTP/1.1" 200 471
+"GET /api/rse-data/?promotion=FIE1 HTTP/1.1" 200 134
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 186
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /rse/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40510
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+Impossible de récupérer les stats RSE: Code 500
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 88930
+"GET /api/rse-activity-types/ HTTP/1.1" 200 471
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"GET /api/rse-format-cours/ HTTP/1.1" 200 108
+Erreur dans get_rse_evolution_data: '<' not supported between instances of 'str' and 'int'
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 186
+Internal Server Error: /api/rse-evolution/
+"GET /api/rse-evolution/ HTTP/1.1" 500 92
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93567
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 185
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93567
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 185
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93198
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 185
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93198
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 185
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93198
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 186
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 7 enregistrements
+"GET /rse/ HTTP/1.1" 200 93216
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 186
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 322
+"POST /rse/upload-csv/ HTTP/1.1" 200 121
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 95101
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=FIE5 HTTP/1.1" 200 134
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+"GET /rse/ HTTP/1.1" 200 95093
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+Internal Server Error: /rse/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 851, in rse_view
+    return render(request, 'statistiques/rse.html', {
+        'stats': json.dumps(stats) if stats else "{}",
+        'rse_data': rse_data,
+        'activites_maquette': activites_maquette
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 1531, in do_with
+    extra_context = token_kwargs(remaining_bits, parser, support_legacy=True)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1127, in token_kwargs
+    kwargs[key] = parser.compile_filter(value)
+                  ~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 705, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 615, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'json_parse'
+"GET /rse/ HTTP/1.1" 500 354537
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+Internal Server Error: /rse/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 851, in rse_view
+    return render(request, 'statistiques/rse.html', {
+        'stats': json.dumps(stats) if stats else "{}",
+    ...<2 lines>...
+        'promotions_disponibles': promotions_disponibles
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 1531, in do_with
+    extra_context = token_kwargs(remaining_bits, parser, support_legacy=True)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1127, in token_kwargs
+    kwargs[key] = parser.compile_filter(value)
+                  ~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 705, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 615, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'json_parse'
+"GET /rse/ HTTP/1.1" 500 354507
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95555
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96679
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 12048
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95860
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 12048
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96679
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 12048
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Watching for file changes with StatReloader

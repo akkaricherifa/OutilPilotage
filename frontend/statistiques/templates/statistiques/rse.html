@@ -10,118 +10,324 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
 
 <style>
-    .stat-card {
-        transition: transform 0.2s;
-        border-left: 4px solid;
-        margin-bottom: 20px;
+   .stat-card {
+    transition: transform 0.2s;
+    border-left: 4px solid;
+    margin-bottom: 20px;
     }
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+     .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    .stat-card-heures { border-left-color: #2f0d73; }
+     .stat-card-heures { border-left-color: #2f0d73; }
     .stat-card-activites { border-left-color: #7c50de; }
     .stat-card-promotions { border-left-color: #ac54c7; }
     .stat-card-etudiants { border-left-color: #f56960; }
-    
-    .chart-container {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-        border: 1px solid #e9ecef;
-        height: 400px;
-    }
-    
-    .chart-container h5 {
-        color: #2f0d73;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-    
-    .dashboard-header {
-        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .dashboard-header h1 {
-        margin: 0;
-        font-weight: 300;
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    
-    .chart-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-        gap: 30px;
-    }
-    
-    .modal-header-custom {
-        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
-        color: white;
-    }
-    
-    .form-control:focus {
-        border-color: #7c50de;
-        box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
-    }
-    
-    .btn-primary-custom {
-        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
-        border: none;
-        color: white;
-    }
-    
-    .btn-primary-custom:hover {
-        background: linear-gradient(135deg, #7c50de 0%, #ac54c7 100%);
+
+     .chart-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+    height: 450px;
     }
 
-    canvas {
-        max-height: 300px;
+     .chart-container h5 {
+    color: #2f0d73;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    }
+
+     .dashboard-header {
+    background: linear-gradient(135deg, #6a4c93 0%, #8b5cf6 50%, #a855f7 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+     }
+
+     .dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: shimmer 3s infinite ease-in-out;
+     }
+
+    @keyframes shimmer {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+     }
+
+    .dashboard-header .header-content {
+    position: relative;
+    z-index: 2;
+    }
+
+    .dashboard-header h1 {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    }
+
+    .dashboard-header h1 i {
+    font-size: 2.2rem;
+    opacity: 0.9;
+    }
+
+    .dashboard-header p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 300;
+     }
+
+    .action-buttons {
+    position: relative;
+    z-index: 3;
+     }
+
+      /* NOUVEAUX STYLES POUR LES BOUTONS */
+     .action-button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    height: 50px;
+    margin-right: 15px;
+     }
+
+    .btn-add {
+    background: white;
+    color: #7c50de;
+    border: 2px solid #7c50de;
+    }
+
+    .btn-add:hover {
+    background: #7c50de;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(124, 80, 222, 0.3);
+    }
+
+    .btn-import {
+    background: #20c997;
+    color: white;
+    border: none;
+     }
+
+    .btn-import:hover {
+    background: #16a085;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(32, 201, 151, 0.3);
+    }  
+
+    /* NOUVEAU STYLE POUR LE RÉSUMÉ */
+    .rse-summary-box {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    }
+
+    .rse-summary-item {
+    text-align: center;
+    padding: 0 20px;
+    flex: 1;
+     }
+
+    .rse-summary-item h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #7c50de;
+    margin-bottom: 5px;
+     }
+
+    .rse-summary-item p {
+    margin: 0;
+    color: #6c757d;
+     } 
+
+    .rse-summary-divider {
+    width: 1px;
+    height: 60px;
+    background: #e9ecef;
+     }
+
+    .progress-container {
+    flex: 2;
+    padding: 0 20px;
+     }
+
+    .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+     }
+
+    .progress-bar-success {
+    background-color: #20c997;
+     }
+
+    .progress-bar-info {
+    background-color: #7c50de;
+     }
+
+    /* Autres styles existants conservés */
+    .custom-file {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    margin-bottom: 0;
+     }
+
+    .custom-file-input {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    margin: 0;
+    opacity: 0;
+     }
+
+    .custom-file-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+     }
+
+    .custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(1.5em + 0.75rem);
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: inherit;
+    border-radius: 0 0.25rem 0.25rem 0;
+     }
+
+    .custom-file-label.selected {
+    color: #495057;
+    background-color: #fff;
+     }
+
+    .custom-file-input:focus ~ .custom-file-label {
+    border-color: #7c50de;
+    box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
+     }
+
+    .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+     }
+
+    .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+      }
+
+     .modal-header-custom {
+    background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+    color: white;
+     }
+
+    .form-control:focus {
+    border-color: #7c50de;
+    box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
+     }
+
+     .btn-primary-custom {
+    background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+    border: none;
+    color: white;
+      }
+
+    .btn-primary-custom:hover {
+    background: linear-gradient(135deg, #7c50de 0%, #ac54c7 100%);
+    }
+
+     canvas {
+    max-height: 300px;
+     }
+
+     /* Style pour agrandir le tableau et optimiser l'espace */
+     .table-container {
+    height: calc(100vh - 350px);
+    min-height: 400px;
+    overflow-y: auto;
+    }
+
+     @media (max-width: 768px) {
+    .chart-grid {
+        grid-template-columns: 1fr;
     }
     
-    .sidebar {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
+    .rse-summary-box {
+        flex-direction: column;
+        padding: 15px;
     }
     
-    .sidebar h5 {
-        color: #2f0d73;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-    
-    .filter-group {
+    .rse-summary-item {
         margin-bottom: 15px;
     }
     
-    .filter-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: 600;
-        color: #495057;
+    .rse-summary-divider {
+        width: 80%;
+        height: 1px;
+        margin: 10px 0;
     }
     
-    @media (max-width: 768px) {
-        .chart-grid {
-            grid-template-columns: 1fr;
-        }
+    .action-button {
+        margin-bottom: 10px;
+        width: 100%;
     }
+   }
 </style>
 {% endblock %}
 
@@ -131,128 +337,32 @@
 
 <!-- En-tête du dashboard -->
 <div class="dashboard-header">
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h1><i class="fas fa-leaf mr-3"></i>RSE - Responsabilité Sociétale</h1>
-            <p class="mb-0">Gestion des activités et heures dédiées à la Responsabilité Sociétale des Entreprises</p>
-        </div>
-        <div class="action-buttons d-flex flex-wrap">
-            <button class="btn btn-light btn-lg mr-2" data-toggle="modal" data-target="#addDataModal">
-                <i class="fas fa-plus mr-2"></i>Ajouter des données
-            </button>
-            <button class="btn btn-success btn-lg mr-2" data-toggle="modal" data-target="#uploadCSVModal">
-                <i class="fas fa-file-upload mr-2"></i>Importer CSV
-            </button>
-            <button class="btn btn-warning btn-lg" onclick="refreshAllCharts()">
-                <i class="fas fa-sync mr-2"></i>Actualiser
-            </button>
+    <div class="header-content">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1>
+                    <i class="fas fa-leaf"></i>
+                    RSE - Responsabilité Sociétale
+                </h1>
+                <p>Pilotage des actions RSE et gestion des heures dédiées à la responsabilité sociétale de l'école</p>
+            </div>
+            <div class="action-buttons d-flex flex-wrap">
+                <button class="action-button btn-add" data-toggle="modal" data-target="#addDataModal">
+                    <i class="fas fa-plus mr-2"></i>Ajouter des données
+                </button>
+                <button class="action-button btn-import" data-toggle="modal" data-target="#uploadCSVModal">
+                    <i class="fas fa-file-upload mr-2"></i>Importer CSV
+                </button>
+                
+            </div>
         </div>
     </div>
 </div>
 
 <div class="row">
     <!-- Sidebar filtres -->
-    <div class="col-md-3">
-        <div class="sidebar">
-            <h5><i class="fas fa-filter mr-2"></i>Filtres</h5>
-            
-            <div class="filter-group">
-                <label>Année académique</label>
-                <select id="filterAnnee" class="form-control">
-                    <option value="">Toutes les années</option>
-                    {% if stats.annees_disponibles %}
-                        {% for annee in stats.annees_disponibles %}
-                            <option value="{{ annee }}">{{ annee }}</option>
-                        {% endfor %}
-                    {% endif %}
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label>Promotion</label>
-                <select id="filterPromotion" class="form-control">
-                    <option value="">Toutes les promotions</option>
-                    {% if stats.promotions_disponibles %}
-                        {% for promotion in stats.promotions_disponibles %}
-                            <option value="{{ promotion }}">{{ promotion }}</option>
-                        {% endfor %}
-                    {% endif %}
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label>Semestre</label>
-                <select id="filterSemestre" class="form-control">
-                    <option value="">Tous les semestres</option>
-                    <option value="S1">S1</option>
-                    <option value="S2">S2</option>
-                    <option value="S3">S3</option>
-                    <option value="S4">S4</option>
-                    <option value="S5">S5</option>
-                    <option value="S6">S6</option>
-                    <option value="S7">S7</option>
-                    <option value="S8">S8</option>
-                    <option value="S9">S9</option>
-                    <option value="S10">S10</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label>Type d'activité</label>
-                <select id="filterTypeActivite" class="form-control">
-                    <option value="">Tous les types</option>
-                    {% for activite in activites_maquette %}
-                        <option value="{{ activite }}">{{ activite }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <button id="applyFilters" class="btn btn-primary-custom w-100 mt-3">
-                <i class="fas fa-search mr-2"></i>Appliquer les filtres
-            </button>
-            
-            <button id="resetFilters" class="btn btn-outline-secondary w-100 mt-2">
-                <i class="fas fa-undo mr-2"></i>Réinitialiser
-            </button>
-        </div>
-        
-        <!-- Statistiques résumées -->
-        <div class="sidebar">
-            <h5><i class="fas fa-chart-pie mr-2"></i>Résumé</h5>
-            
-            <div class="text-center mb-3">
-                <h2 class="text-primary" id="sidebar-total-heures">
-                    {% if stats.total_heures_rse %}
-                        {{ stats.total_heures_rse }}
-                    {% else %}
-                        0
-                    {% endif %}
-                </h2>
-                <p class="mb-0">Heures totales RSE</p>
-            </div>
-            
-            <div class="progress mb-3" style="height: 20px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65% Maquette</div>
-            </div>
-            
-            <div class="progress mb-4" style="height: 20px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">35% Hors maquette</div>
-            </div>
-            
-            <div class="small text-muted">
-                <p><i class="fas fa-users mr-1"></i> <strong id="sidebar-etudiants">
-                    {% if stats.etudiants_impliques %}
-                        {{ stats.etudiants_impliques }}
-                    {% else %}
-                        0
-                    {% endif %}
-                </strong> étudiants impliqués</p>
-            </div>
-        </div>
-    </div>
-    
     <!-- Contenu principal -->
-    <div class="col-md-9">
+    <div class="col-md-12">
         <!-- Statistiques résumées -->
         <div class="stats-grid">
             <div class="card stat-card stat-card-heures">
@@ -264,43 +374,7 @@
                             0
                         {% endif %}
                     </h3>
-                    <p class="mb-0">Heures RSE</p>
-                </div>
-            </div>
-            <div class="card stat-card stat-card-activites">
-                <div class="card-body text-center">
-                    <h3 style="color: #7c50de;" id="stat-activites">
-                        {% if stats.total_activites %}
-                            {{ stats.total_activites }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </h3>
-                    <p class="mb-0">Activités</p>
-                </div>
-            </div>
-            <div class="card stat-card stat-card-promotions">
-                <div class="card-body text-center">
-                    <h3 style="color: #ac54c7;" id="stat-promotions">
-                        {% if stats.promotions_impliquees %}
-                            {{ stats.promotions_impliquees }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </h3>
-                    <p class="mb-0">Promotions</p>
-                </div>
-            </div>
-            <div class="card stat-card stat-card-etudiants">
-                <div class="card-body text-center">
-                    <h3 style="color: #f56960;" id="stat-etudiants">
-                        {% if stats.etudiants_impliques %}
-                            {{ stats.etudiants_impliques }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </h3>
-                    <p class="mb-0">Étudiants</p>
+                    <p class="mb-0">Résumé : Heures Totales RSE</p>
                 </div>
             </div>
         </div>
@@ -320,13 +394,15 @@
                         {% endif %}
                     </select>
                 </div>
-                <canvas id="promotionsChart" height="300"></canvas>
+                <div class="chart-wrapper" style="position: relative; height: 350px; width: 100%; margin: 0 auto;">
+        <canvas id="promotionsChart"></canvas>
+    </div>
             </div>
 
             <!-- Graphique 2: Évolution des heures RSE -->
             <div class="chart-container">
-                <h5><i class="fas fa-chart-line mr-2"></i>Évolution des heures RSE</h5>
-                <canvas id="evolutionChart"></canvas>
+                <h5><i class="fas fa-chart-line mr-2"></i>Nombre des heures RSE Totales par Promotion</h5>
+                <canvas id="promotionHoursChart"></canvas>
             </div>
 
             <!-- Graphique 3: Répartition par type d'activité -->
@@ -342,8 +418,8 @@
             </div>
         </div>
 
-        <!-- Tableau des données -->
-        <div class="chart-container" style="height: auto;">
+        <!-- Tableau des données (maintenant en pleine largeur et plus grand) -->
+        <div class="chart-container" style="height: auto; margin-bottom: 30px;">
             <h5><i class="fas fa-table mr-2"></i>Données détaillées RSE</h5>
             <div class="table-responsive">
                 <table class="table table-striped table-hover" id="rseTable">
@@ -391,6 +467,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -537,7 +614,7 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form id="uploadForm" method="post" action="{% url 'upload_csv' %}" enctype="multipart/form-data">
+            <form id="uploadForm" method="post" action="{% url 'rse_upload_csv' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="destination" value="rse">
                 <div class="modal-body">
@@ -613,164 +690,124 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 <script>
-// Script amélioré pour la visualisation des données RSE
-
 // Configuration globale des graphiques
 Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
 Chart.defaults.color = '#495057';
-
 // Variables globales
 let charts = {};
 let rseData = [];
-
 $(document).ready(function() {
-    // Charger les données
-    loadRseData();
-    
-    // Initialiser les graphiques et autres composants
-    initPage();
-    
-    // Configurer les filtres et autres événements
-    setupEventListeners();
-});
-
-// Fonction pour charger les données RSE
-function loadRseData() {
-    try {
-        // 1. Essayer de récupérer les données depuis le conteneur caché
-        const statsElement = document.getElementById('stats-data');
-        if (statsElement && statsElement.textContent.trim()) {
-            try {
-                // Analyser les données JSON
-                const parsedData = JSON.parse(statsElement.textContent.trim());
-                console.log("Données chargées avec succès:", parsedData);
-                
-                // Vérifier si les données sont dans la structure attendue
-                if (parsedData.items) {
-                    rseData = parsedData.items || [];
-                } else if (Array.isArray(parsedData)) {
-                    rseData = parsedData;
-                } else {
-                    rseData = [];
-                    console.warn("Format de données inattendu, tableau vide utilisé");
-                }
-                
-                // Extraire la liste complète des promotions
-                const allPromotions = new Set();
-                rseData.forEach(item => {
-                    if (item.promotion) {
-                        allPromotions.add(item.promotion);
-                    }
-                });
-                
-                // Stocker la liste des promotions pour utilisation ultérieure
-                window.availablePromotions = Array.from(allPromotions).sort();
-                console.log("Promotions disponibles:", window.availablePromotions);
-                
-                // Extraire également les statistiques globales
-                window.statsGlobals = {
-                    total_heures_rse: parsedData.total_heures_rse || rseData.reduce((sum, item) => sum + (parseInt(item.total_heures) || 0), 0),
-                    total_activites: parsedData.total_activites || rseData.length,
-                    etudiants_impliques: parsedData.etudiants_impliques || 0,
-                    promotions_impliquees: parsedData.promotions_impliquees || allPromotions.size
-                };
-            } catch (e) {
-                console.error("Erreur lors du parsing JSON:", e);
-                setDemoData();
-            }
-        } else {
-            console.warn("Élément stats-data non trouvé ou vide, utilisation de données de démonstration");
-            setDemoData();
-        }
-    } catch (error) {
-        console.error("Erreur lors du chargement des données:", error);
-        setDemoData();
-    }
-    
-    // Mettre à jour les statistiques dans l'interface
-    updateStatsSummary();
-}
-// Fonction pour définir des données de démonstration si les données réelles ne sont pas disponibles
-function setDemoData() {
-    // Données fictives pour la démonstration
-    rseData = [
-        {
-            id: "rse_174947347",
-            annee: 2023,
-            promotion: "FIE3",
-            semestre: "S5",
-            heures_cm: 10,
-            heures_td: 15,
-            heures_tp: 8,
-            type_activite: "Numérique responsable",
-            total_heures: 33
-        },
-        {
-            id: "rse_174947348",
-            annee: 2023,
-            promotion: "FIE2",
-            semestre: "S3",
-            heures_cm: 8,
-            heures_td: 10,
-            heures_tp: 12,
-            type_activite: "Transition écologique",
-            total_heures: 30
-        },
-        {
-            id: "rse_174947349",
-            annee: 2024,
-            promotion: "FIE1",
-            semestre: "S1",
-            heures_cm: 12,
-            heures_td: 8,
-            heures_tp: 10,
-            type_activite: "Responsabilité sociale",
-            total_heures: 30
-        },
-        {
-            id: "rse_174947350",
-            annee: 2024,
-            promotion: "FIA3",
-            semestre: "S9",
-            heures_cm: 15,
-            heures_td: 15,
-            heures_tp: 15,
-            type_activite: "Enjeux socio-environnementaux",
-            total_heures: 45
-        },
-        {
-            id: "rse_174947351",
-            annee: 2025,
-            promotion: "FIE2",
-            semestre: "S4",
-            heures_cm: 10,
-            heures_td: 15,
-            heures_tp: 5,
-            type_activite: "Numérique responsable",
-            total_heures: 30
-        }
-    ];
-    
-    // Calculer les statistiques globales
-    window.statsGlobals = {
-        total_heures_rse: rseData.reduce((sum, item) => sum + (item.total_heures || 0), 0),
-        total_activites: rseData.length,
-        etudiants_impliques: 125,
-        promotions_impliquees: new Set(rseData.map(item => item.promotion)).size
-    };
-}
-
-// Initialiser la page avec les données chargées
-function initPage() {
     // Initialiser DataTable
     initDataTable();
+    // Initialiser les graphiques vides
+    initEmptyCharts();
+    // Charger les données pour chaque graphique
+    loadRseDataFromAPI();
+    loadRseEvolutionData();
+    loadRseActivityTypesData();
+    loadRseFormatCoursData();
+    loadRseHoursByPromotionData();
+    // Configurer les événements
+    setupEventListeners();
+    loadAndPopulatePromotions();
     
-    // Initialiser les filtres
-    populateFilters();
+    // Gestion du formulaire d'upload CSV
+    $('#uploadForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Afficher un indicateur de chargement
+        const submitBtn = $(this).find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Importation...').prop('disabled', true);
+        
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                $('#uploadCSVModal').modal('hide');
+                showNotification('success', 'Fichier CSV importé avec succès !');
+                
+                // Redirection vers la même page après un court délai
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            },
+            error: function(xhr) {
+                console.error("Erreur AJAX:", xhr.responseText);
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    showNotification('error', response.message || response.error || 'Erreur lors de l\'importation du fichier CSV.');
+                } catch (e) {
+                    showNotification('error', 'Erreur lors de l\'importation du fichier CSV.');
+                }
+            },
+            complete: function() {
+                // Restaurer le bouton
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        });
+    });
+    $('.custom-file-input').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).siblings('.custom-file-label').addClass("selected").html(fileName || "Choisir un fichier...");
+    });
     
-    // Initialiser les graphiques
-    initCharts();
-}
+    // Gestion du formulaire d'ajout/édition
+    $('#dataForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Vérifier la validité du formulaire
+        if (!validateForm()) {
+            return;
+        }
+        
+        // Afficher un indicateur de chargement
+        const submitBtn = $(this).find('button[type="submit"]');
+        const originalText = submitBtn.html();
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Enregistrement...').prop('disabled', true);
+        
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            headers: {
+                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                $('#addDataModal').modal('hide');
+                showNotification('success', response.message || 'Données enregistrées avec succès !');
+                
+                // Redirection vers la même page après un court délai
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            },
+            error: function(xhr) {
+                console.error("Erreur AJAX:", xhr.responseText);
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    showNotification('error', response.message || response.error || 'Erreur lors de l\'enregistrement des données.');
+                } catch (e) {
+                    showNotification('error', 'Erreur lors de l\'enregistrement des données.');
+                }
+            },
+            complete: function() {
+                // Restaurer le bouton
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        });
+    });
+});
 
 // Initialiser DataTable
 function initDataTable() {
@@ -779,135 +816,163 @@ function initDataTable() {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
         },
         "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
-        "pageLength": 5,  // Afficher 5 lignes par page au lieu de 10
-        "lengthMenu": [5, 10, 15, 20, 25, 30, 50],  // Options du menu de longueur
+        "pageLength": 4,
+        "lengthMenu": [5, 10, 15, 20, 25],
         "responsive": true,
-        "pagingType": "full_numbers",  // Type de pagination complet
-        "dom": '<"top"lf>rt<"bottom"ip><"clear">'  // Disposition des éléments de contrôle
+        "pagingType": "full_numbers",
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">'
     });
 }
 
-// Populer les filtres avec les valeurs disponibles
-function populateFilters() {
-    // Extraire les valeurs uniques pour les filtres
-    const annees = [...new Set(rseData.map(item => item.annee))].sort((a, b) => b - a);
-    const promotions = [...new Set(rseData.map(item => item.promotion))].sort();
-    const typesActivite = [...new Set(rseData.map(item => item.type_activite))].filter(Boolean).sort();
+// Initialiser des graphiques vides
+function initEmptyCharts() {
+    // Graphique 1: Répartition par promotion
+    const ctx1 = document.getElementById('promotionsChart');
+    if (ctx1) {
+        charts.promotions = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Chargement...'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#cccccc'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
     
-    // Remplir les sélecteurs
-    const anneeFilter = $('#filterAnnee');
-    const promotionFilter = $('#filterPromotion');
-    const typeActiviteFilter = $('#filterTypeActivite');
-    const promotionSelector = $('#promotionSelector');
+    // Graphique 2: Évolution des heures RSE
+    const ctx5 = document.getElementById('promotionHoursChart');
+if (ctx5) {
+    charts.promotionHours = new Chart(ctx5, {
+        type: 'bar',
+        data: {
+            labels: ['Chargement...'],
+            datasets: [{
+                label: 'Chargement...',
+                data: [0],
+                backgroundColor: ['#cccccc']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
     
-    // Vider les sélecteurs d'abord
-    anneeFilter.find('option:not(:first)').remove();
-    promotionFilter.find('option:not(:first)').remove();
-    typeActiviteFilter.find('option:not(:first)').remove();
-    promotionSelector.find('option:not(:first)').remove();
+    // Graphique 3: Répartition par type d'activité
+    const ctx3 = document.getElementById('typeActiviteChart');
+    if (ctx3) {
+        charts.typeActivite = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['Chargement...'],
+                datasets: [{
+                    label: 'Chargement...',
+                    data: [0],
+                    backgroundColor: ['#cccccc']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
     
-    // Ajouter les options
-    annees.forEach(annee => {
-        anneeFilter.append(`<option value="${annee}">${annee}</option>`);
+    // Graphique 4: Répartition CM/TD/TP
+    const ctx4 = document.getElementById('formatCoursChart');
+    if (ctx4) {
+        charts.formatCours = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: ['Chargement...'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#cccccc']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+}
+
+// Configurer les événements
+function setupEventListeners() {
+    // Sélecteur de promotion pour le graphique 1
+    $('#promotionSelector').on('change', function() {
+        const selectedPromotion = $(this).val();
+        loadRseDataFromAPI(selectedPromotion);
     });
     
-    promotions.forEach(promotion => {
-        promotionFilter.append(`<option value="${promotion}">${promotion}</option>`);
-        promotionSelector.append(`<option value="${promotion}">${promotion}</option>`);
+    // Bouton d'actualisation
+    $('.btn-warning').on('click', function() {
+        refreshAllCharts();
     });
     
-    typesActivite.forEach(type => {
-        if (type) {
-            typeActiviteFilter.append(`<option value="${type}">${type}</option>`);
+    // Appliquer les filtres au tableau
+    $('#applyFilters').on('click', function() {
+        filterTable();
+    });
+    
+    // Réinitialiser les filtres
+    $('#resetFilters').on('click', function() {
+        $('#filterAnnee, #filterPromotion, #filterSemestre, #filterTypeActivite').val('');
+        filterTable();
+    });
+    
+    // Gestion du type d'activité "Autre"
+    $('#type_activite').on('change', function() {
+        toggleAutreType();
+    });
+}
+
+// Fonction pour charger les données RSE depuis l'API
+function loadRseDataFromAPI(selectedPromotion = 'all') {
+    // Afficher un indicateur de chargement
+    $('#promotionsChart').css('opacity', '0.5');
+    
+    // Faire la requête AJAX vers l'API
+    $.ajax({
+        url: '/api/rse-data/',
+        type: 'GET',
+        data: {
+            promotion: selectedPromotion
+        },
+        success: function(response) {
+            // Mettre à jour le graphique avec les nouvelles données
+            updatePromotionChart(response.data, selectedPromotion);
+            
+            // Si c'est la première fois, initialiser également le sélecteur de promotions
+            if (selectedPromotion === 'all' && response.promotions) {
+                populatePromotionSelector(response.promotions);
+            }
+            
+            // Mettre à jour d'autres éléments de l'interface si nécessaire
+            updateStatsSummary(response.data);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des données:', xhr.responseText);
+            showNotification('error', 'Erreur lors du chargement des données RSE');
+        },
+        complete: function() {
+            // Restaurer l'opacité du graphique
+            $('#promotionsChart').css('opacity', '1');
         }
     });
 }
 
-// Fonction pour mettre à jour le tableau de données
-function updateDataTable(data) {
-    // Détruire la table DataTable existante
-    if ($.fn.DataTable.isDataTable('#rseTable')) {
-        $('#rseTable').DataTable().destroy();
-    }
-    
-    // Vider le tableau
-    $('#rseTable tbody').empty();
-    
-    // Ajouter les nouvelles données
-    if (data && data.length > 0) {
-        data.forEach(item => {
-            $('#rseTable tbody').append(`
-                <tr>
-                    <td>${item.annee}</td>
-                    <td>${item.promotion}</td>
-                    <td>${item.semestre}</td>
-                    <td>${item.type_activite}</td>
-                    <td>${item.heures_cm}</td>
-                    <td>${item.heures_td}</td>
-                    <td>${item.heures_tp}</td>
-                    <td>${item.total_heures || 0}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="editData('${item.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('${item.id}', '${item.type_activite}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `);
-        });
-    } else {
-        $('#rseTable tbody').append(`
-            <tr>
-                <td colspan="9" class="text-center">Aucune donnée disponible</td>
-            </tr>
-        `);
-    }
-    
-    // Réinitialiser DataTable
-    $('#rseTable').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
-        },
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
-        "pageLength": 10,
-        "responsive": true
-    });
-}
-// Mettre à jour les statistiques affichées
-function updateStatsSummary() {
-    // Mettre à jour les compteurs statistiques
-    $('#stat-heures').text(window.statsGlobals.total_heures_rse || 0);
-    $('#stat-activites').text(window.statsGlobals.total_activites || 0);
-    $('#stat-promotions').text(window.statsGlobals.promotions_impliquees || 0);
-    $('#stat-etudiants').text(window.statsGlobals.etudiants_impliques || 0);
-    
-    // Mettre à jour le sidebar
-    $('#sidebar-total-heures').text(window.statsGlobals.total_heures_rse || 0);
-    $('#sidebar-etudiants').text(window.statsGlobals.etudiants_impliques || 0);
-}
-
-// Initialiser tous les graphiques
-function initCharts() {
-    // 1. Graphique de répartition par promotion
-    initPromotionChart();
-    
-    // 2. Graphique d'évolution des heures RSE
-    initEvolutionChart();
-    
-    // 3. Graphique de répartition par type d'activité
-    initTypeActiviteChart();
-    
-    // 4. Graphique de répartition CM/TD/TP
-    initFormatCoursChart();
-}
-
-// Graphique 1: Répartition par promotion
-// Graphique 1: Répartition par promotion
-function initPromotionChart(selectedPromotion = 'all') {
-    console.log("Initialisation du graphique de promotions avec sélection:", selectedPromotion);
-    
+// Fonction pour mettre à jour le graphique de répartition par promotion
+function updatePromotionChart(data, selectedPromotion) {
     const ctx = document.getElementById('promotionsChart');
     if (!ctx) {
         console.error("Canvas 'promotionsChart' non trouvé");
@@ -919,31 +984,33 @@ function initPromotionChart(selectedPromotion = 'all') {
         charts.promotions.destroy();
     }
     
-    // Préparer les données
-    let filteredData = rseData;
+    // Extraire les données
+    const totalCM = data.heures_cm || 0;
+    const totalTD = data.heures_td || 0;
+    const totalTP = data.heures_tp || 0;
     
-    // Filtrer par promotion si nécessaire
-    if (selectedPromotion !== 'all') {
-        filteredData = rseData.filter(item => item.promotion === selectedPromotion);
-        console.log(`Données filtrées pour ${selectedPromotion}:`, filteredData.length, "enregistrements");
+    // Préparer les labels et données pour les heures additionnelles
+    const additionalLabels = [];
+    const additionalData = [];
+    const additionalColors = ['#F08080', '#4682B4', '#9ACD32', '#FFD700']; // Couleurs pour heures additionnelles
+    
+    // Extraire les heures additionnelles si présentes
+    let index = 0;
+    for (const key in data) {
+        if (['heures_cm', 'heures_td', 'heures_tp'].includes(key)) continue;
+        if (key.startsWith('heure') && !isNaN(parseInt(data[key]))) {
+            additionalLabels.push(key.charAt(0).toUpperCase() + key.slice(1));
+            additionalData.push(data[key]);
+            index++;
+        }
     }
     
-    // Vérifier qu'il y a des données à afficher
-    if (filteredData.length === 0) {
-        console.warn("Aucune donnée disponible pour le graphique des promotions");
-        // Créer un graphique vide ou afficher un message
-        ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
-        ctx.getContext('2d').font = '14px Arial';
-        ctx.getContext('2d').fillText('Aucune donnée disponible pour cette sélection', 50, 100);
-        return;
-    }
+    // Combiner les données standard et additionnelles
+    const allLabels = ['CM', 'TD', 'TP', ...additionalLabels];
+    const allData = [totalCM, totalTD, totalTP, ...additionalData];
+    const allColors = ['#2f0d73', '#ac54c7', '#ffb43c', ...additionalColors.slice(0, additionalLabels.length)];
     
-    // Calculer les totaux pour chaque type d'enseignement
-    const totalCM = filteredData.reduce((sum, item) => sum + (parseInt(item.heures_cm) || 0), 0);
-    const totalTD = filteredData.reduce((sum, item) => sum + (parseInt(item.heures_td) || 0), 0);
-    const totalTP = filteredData.reduce((sum, item) => sum + (parseInt(item.heures_tp) || 0), 0);
-    
-    console.log("Totaux calculés:", { CM: totalCM, TD: totalTD, TP: totalTP });
+    console.log("Données pour le graphique:", { CM: totalCM, TD: totalTD, TP: totalTP, additionalHours: additionalData });
     
     // Titre du graphique
     const title = selectedPromotion === 'all' ? 'Toutes les promotions' : selectedPromotion;
@@ -952,10 +1019,10 @@ function initPromotionChart(selectedPromotion = 'all') {
     charts.promotions = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['CM', 'TD', 'TP'],
+            labels: allLabels,
             datasets: [{
-                data: [totalCM, totalTD, totalTP],
-                backgroundColor: ['#2f0d73', '#ac54c7', '#ffb43c'],
+                data: allData,
+                backgroundColor: allColors,
                 borderWidth: 1,
                 borderColor: '#fff'
             }]
@@ -979,7 +1046,7 @@ function initPromotionChart(selectedPromotion = 'all') {
                         label: function(context) {
                             const label = context.label || '';
                             const value = context.raw;
-                            const total = totalCM + totalTD + totalTP;
+                            const total = allData.reduce((a, b) => a + b, 0);
                             const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
                             return `${label}: ${value} heures (${percentage}%)`;
                         }
@@ -989,41 +1056,65 @@ function initPromotionChart(selectedPromotion = 'all') {
         }
     });
     
-    console.log("Graphique de promotions initialisé avec succès");
+    console.log("Graphique de promotions mis à jour avec succès");
 }
 
-// Graphique 2: Évolution des heures RSE par année
-function initEvolutionChart() {
+// Fonction pour peupler le sélecteur de promotions
+function populatePromotionSelector(promotions) {
+    const selector = $('#promotionSelector');
+    
+    // Vider le sélecteur sauf l'option "Toutes les promotions"
+    selector.find('option:not(:first)').remove();
+    
+    // Ajouter les promotions disponibles
+    promotions.forEach(promotion => {
+        selector.append(`<option value="${promotion}">${promotion}</option>`);
+    });
+}
+
+// Fonction pour charger les données d'évolution RSE
+function loadRseEvolutionData() {
+    // Afficher un indicateur de chargement
+    $('#evolutionChart').css('opacity', '0.5');
+    
+    // Faire la requête AJAX vers l'API
+    $.ajax({
+        url: '/api/rse-evolution/',
+        type: 'GET',
+        success: function(response) {
+            // Mettre à jour le graphique avec les nouvelles données
+            updateEvolutionChart(response.evolution_data);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des données d\'évolution:', xhr.responseText);
+            showNotification('error', 'Erreur lors du chargement des données d\'évolution RSE');
+        },
+        complete: function() {
+            // Restaurer l'opacité du graphique
+            $('#evolutionChart').css('opacity', '1');
+        }
+    });
+}
+
+// Fonction pour mettre à jour le graphique d'évolution
+function updateEvolutionChart(evolutionData) {
     const ctx = document.getElementById('evolutionChart');
-    if (!ctx) return;
+    if (!ctx) {
+        console.error("Canvas 'evolutionChart' non trouvé");
+        return;
+    }
     
     // Détruire le graphique existant s'il existe
     if (charts.evolution) {
         charts.evolution.destroy();
     }
     
-    // Préparer les données par année
-    const annees = [...new Set(rseData.map(item => item.annee))].sort();
-    
-    // Calculer les heures totales par année
-    const dataByYear = {};
-    annees.forEach(annee => {
-        dataByYear[annee] = {
-            total: 0,
-            cm: 0,
-            td: 0,
-            tp: 0
-        };
-    });
-    
-    rseData.forEach(item => {
-        if (dataByYear[item.annee]) {
-            dataByYear[item.annee].total += (parseInt(item.total_heures) || 0);
-            dataByYear[item.annee].cm += (parseInt(item.heures_cm) || 0);
-            dataByYear[item.annee].td += (parseInt(item.heures_td) || 0);
-            dataByYear[item.annee].tp += (parseInt(item.heures_tp) || 0);
-        }
-    });
+    // Extraire les années et les données
+    const annees = evolutionData.map(item => item.annee);
+    const totalValues = evolutionData.map(item => item.total);
+    const cmValues = evolutionData.map(item => item.cm);
+    const tdValues = evolutionData.map(item => item.td);
+    const tpValues = evolutionData.map(item => item.tp);
     
     // Créer le graphique
     charts.evolution = new Chart(ctx, {
@@ -1033,7 +1124,7 @@ function initEvolutionChart() {
             datasets: [
                 {
                     label: 'Total',
-                    data: annees.map(annee => dataByYear[annee].total),
+                    data: totalValues,
                     borderColor: '#7c50de',
                     backgroundColor: 'rgba(124, 80, 222, 0.1)',
                     tension: 0.3,
@@ -1042,7 +1133,7 @@ function initEvolutionChart() {
                 },
                 {
                     label: 'CM',
-                    data: annees.map(annee => dataByYear[annee].cm),
+                    data: cmValues,
                     borderColor: '#2f0d73',
                     borderDash: [5, 5],
                     tension: 0.3,
@@ -1050,7 +1141,7 @@ function initEvolutionChart() {
                 },
                 {
                     label: 'TD',
-                    data: annees.map(annee => dataByYear[annee].td),
+                    data: tdValues,
                     borderColor: '#ac54c7',
                     borderDash: [5, 5],
                     tension: 0.3,
@@ -1058,7 +1149,7 @@ function initEvolutionChart() {
                 },
                 {
                     label: 'TP',
-                    data: annees.map(annee => dataByYear[annee].tp),
+                    data: tpValues,
                     borderColor: '#ffb43c',
                     borderDash: [5, 5],
                     tension: 0.3,
@@ -1095,528 +1186,580 @@ function initEvolutionChart() {
             }
         }
     });
+    
+    console.log("Graphique d'évolution mis à jour avec succès");
 }
 
-// Graphique 3: Répartition par type d'activité
-function initTypeActiviteChart() {
-    const ctx = document.getElementById('typeActiviteChart');
-    if (!ctx) return;
+// Fonction pour charger les données de types d'activités
+function loadRseActivityTypesData() {
+    // Afficher un indicateur de chargement
+    $('#typeActiviteChart').css('opacity', '0.5');
     
-    // Détruire le graphique existant s'il existe
-    if (charts.typeActivite) {
-        charts.typeActivite.destroy();
+    // Faire la requête AJAX vers l'API
+    $.ajax({
+        url: '/api/rse-activity-types/',
+    type: 'GET',
+    success: function(response) {
+        // Mettre à jour le graphique avec les nouvelles données
+        updateTypeActiviteChart(response.types_data);
+    },
+    error: function(xhr) {
+        console.error('Erreur lors du chargement des données de types d\'activités:', xhr.responseText);
+        showNotification('error', 'Erreur lors du chargement des données de types d\'activités');
+    },
+    complete: function() {
+        // Restaurer l'opacité du graphique
+        $('#typeActiviteChart').css('opacity', '1');
+    }
+});
+}
+
+// Fonction pour mettre à jour le graphique de types d'activités
+function updateTypeActiviteChart(typesData) {
+const ctx = document.getElementById('typeActiviteChart');
+if (!ctx) {
+    console.error("Canvas 'typeActiviteChart' non trouvé");
+    return;
+}
+
+// Détruire le graphique existant s'il existe
+if (charts.typeActivite) {
+    charts.typeActivite.destroy();
+}
+
+// Extraire les labels et les données
+const labels = typesData.map(item => item.type_activite);
+const values = typesData.map(item => item.total_heures);
+
+// Générer des couleurs
+const colors = generateColors(labels.length);
+
+// Déterminer si le graphique doit être horizontal ou vertical
+const isHorizontal = labels.length > 4;
+
+// Créer le graphique
+charts.typeActivite = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Heures par type d\'activité',
+            data: values,
+            backgroundColor: colors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: isHorizontal ? 'y' : 'x',
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: !isHorizontal,
+                    text: 'Nombre d\'heures'
+                }
+            },
+            x: {
+                title: {
+                    display: isHorizontal,
+                    text: 'Nombre d\'heures'
+                },
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+console.log("Graphique de types d'activités mis à jour avec succès");
+}
+
+// Fonction pour charger les données de format de cours
+function loadRseFormatCoursData() {
+// Afficher un indicateur de chargement
+$('#formatCoursChart').css('opacity', '0.5');
+
+// Faire la requête AJAX vers l'API
+$.ajax({
+    url: '/api/rse-format-cours/',
+    type: 'GET',
+    success: function(response) {
+        // Mettre à jour le graphique avec les nouvelles données
+        updateFormatCoursChart(response);
+    },
+    error: function(xhr) {
+        console.error('Erreur lors du chargement des données de format de cours:', xhr.responseText);
+        showNotification('error', 'Erreur lors du chargement des données de format de cours');
+    },
+    complete: function() {
+        // Restaurer l'opacité du graphique
+        $('#formatCoursChart').css('opacity', '1');
+    }
+});
+}
+// Fonction pour charger et remplir le sélecteur de promotions
+function loadAndPopulatePromotions() {
+    $.ajax({
+        url: '/api/rse-hours-by-promotion/',
+        type: 'GET',
+        success: function(response) {
+            if (response.promotions_data && response.promotions_data.length > 0) {
+                // Récupérer les promotions
+                const promotions = response.promotions_data.map(item => item.promotion);
+                
+                // Vider le sélecteur sauf l'option "Toutes les promotions"
+                const selector = $('#filterPromotion');
+                selector.find('option:not(:first)').remove();
+                
+                // Ajouter les promotions
+                promotions.forEach(promotion => {
+                    selector.append(`<option value="${promotion}">${promotion}</option>`);
+                });
+                
+                console.log(`Sélecteur de promotions rempli avec ${promotions.length} promotions`);
+            }
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des promotions:', xhr.responseText);
+        }
+    });
+}
+// Fonction pour mettre à jour le graphique de format de cours
+function updateFormatCoursChart(data) {
+const ctx = document.getElementById('formatCoursChart');
+if (!ctx) {
+    console.error("Canvas 'formatCoursChart' non trouvé");
+    return;
+}
+
+// Détruire le graphique existant s'il existe
+if (charts.formatCours) {
+    charts.formatCours.destroy();
+}
+
+// Extraire les données
+const totalCM = data.total_cm || 0;
+const totalTD = data.total_td || 0;
+const totalTP = data.total_tp || 0;
+
+// Créer le graphique
+charts.formatCours = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+            `CM (${data.percent_cm}%)`, 
+            `TD (${data.percent_td}%)`, 
+            `TP (${data.percent_tp}%)`
+        ],
+        datasets: [{
+            data: [totalCM, totalTD, totalTP],
+            backgroundColor: ['#2f0d73', '#ac54c7', '#ffb43c'],
+            borderWidth: 1,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '50%',
+        plugins: {
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const label = context.label || '';
+                        const value = context.raw;
+                        return `${value} heures`;
+                    }
+                }
+            }
+        }
+    }
+});
+
+console.log("Graphique de format de cours mis à jour avec succès");
+}
+
+// Fonction pour mettre à jour les statistiques affichées
+function updateStatsSummary(data) {
+// Calculer le total des heures
+const totalHeures = (data.heures_cm || 0) + (data.heures_td || 0) + (data.heures_tp || 0) + 
+                   Object.keys(data)
+                       .filter(key => key.startsWith('heure') && !['heures_cm', 'heures_td', 'heures_tp'].includes(key))
+                       .reduce((sum, key) => sum + (parseInt(data[key]) || 0), 0);
+
+// Mettre à jour l'affichage
+$('#stat-heures').text(totalHeures);
+$('#sidebar-total-heures').text(totalHeures);
+}
+
+// Fonction pour rafraîchir tous les graphiques
+function refreshAllCharts() {
+// Afficher un indicateur de chargement
+const originalBtn = $('.btn-warning').html();
+$('.btn-warning').html('<i class="fas fa-spinner fa-spin mr-2"></i>Actualisation...').prop('disabled', true);
+
+// Ajouter un overlay de chargement global
+const loadingOverlay = $('<div class="loading-overlay"></div>').css({
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'rgba(255, 255, 255, 0.7)',
+    zIndex: 9999,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+});
+
+const spinner = $('<div class="spinner-border text-primary" role="status"></div>');
+const loadingText = $('<div class="ml-2">Actualisation des données...</div>').css({
+    color: '#7c50de',
+    fontWeight: 'bold'
+});
+
+const spinnerContainer = $('<div></div>').css({
+    display: 'flex',
+    alignItems: 'center',
+    padding: '20px',
+    background: 'white',
+    borderRadius: '10px',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+}).append(spinner).append(loadingText);
+
+loadingOverlay.append(spinnerContainer);
+$('body').append(loadingOverlay);
+
+// Créer un tableau de promesses pour toutes les requêtes AJAX
+const promises = [
+    // Promesse pour les données de répartition
+    new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/rse-data/',
+            type: 'GET',
+            data: {
+                promotion: $('#promotionSelector').val()
+            },
+            success: resolve,
+            error: reject
+        });
+    }),
+    
+    // Promesse pour les données d'évolution
+    new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/rse-evolution/',
+            type: 'GET',
+            success: resolve,
+            error: reject
+        });
+    }),
+    
+    // Promesse pour les données de types d'activités
+    new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/rse-activity-types/',
+            type: 'GET',
+            success: resolve,
+            error: reject
+        });
+    }),
+    
+    // Promesse pour les données de format de cours
+    new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/rse-format-cours/',
+            type: 'GET',
+            success: resolve,
+            error: reject
+        });
+    })
+];
+
+// Exécuter toutes les promesses en parallèle
+Promise.all(promises)
+    .then(results => {
+        // Mettre à jour tous les graphiques avec les données fraîches
+        if (results[0]) updatePromotionChart(results[0].data, $('#promotionSelector').val());
+        if (results[1]) updateEvolutionChart(results[1].evolution_data);
+        if (results[2]) updateTypeActiviteChart(results[2].types_data);
+        if (results[3]) updateFormatCoursChart(results[3]);
+        
+        // Mettre à jour les statistiques globales
+        if (results[0]) {
+            updateStatsSummary(results[0].data);
+        }
+        
+        // Afficher un message de succès
+        showNotification('success', 'Tous les graphiques ont été actualisés avec succès !');
+    })
+    .catch(error => {
+        console.error('Erreur lors de l\'actualisation des graphiques:', error);
+        showNotification('error', 'Une erreur est survenue lors de l\'actualisation des graphiques');
+    })
+    .finally(() => {
+        // Restaurer le bouton original
+        $('.btn-warning').html(originalBtn).prop('disabled', false);
+        
+        // Supprimer l'overlay de chargement
+        loadingOverlay.fadeOut(300, function() {
+            $(this).remove();
+        });
+    });
+}
+// Fonction pour charger les données d'heures par promotion
+function loadRseHoursByPromotionData() {
+    // Afficher un indicateur de chargement
+    $('#promotionHoursChart').css('opacity', '0.5');
+    
+    // Faire la requête AJAX vers l'API
+    $.ajax({
+        url: '/api/rse-hours-by-promotion/',
+        type: 'GET',
+        success: function(response) {
+            // Mettre à jour le graphique avec les nouvelles données
+            updatePromotionHoursChart(response.promotions_data);
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des données d\'heures par promotion:', xhr.responseText);
+            showNotification('error', 'Erreur lors du chargement des données d\'heures par promotion');
+        },
+        complete: function() {
+            // Restaurer l'opacité du graphique
+            $('#promotionHoursChart').css('opacity', '1');
+        }
+    });
+}
+
+// Fonction pour mettre à jour le graphique d'heures par promotion
+function updatePromotionHoursChart(promotionsData) {
+    const ctx = document.getElementById('promotionHoursChart');
+    if (!ctx) {
+        console.error("Canvas 'promotionHoursChart' non trouvé");
+        return;
     }
     
-    // Regrouper par type d'activité
-    const typeData = {};
-    rseData.forEach(item => {
-        const type = item.type_activite || 'Non spécifié';
-        if (!typeData[type]) {
-            typeData[type] = 0;
-        }
-        typeData[type] += (parseInt(item.total_heures) || 0);
+    // Détruire le graphique existant s'il existe
+    if (charts.promotionHours) {
+        charts.promotionHours.destroy();
+    }
+    
+    // Extraire les labels et les données
+    const promotions = promotionsData.map(item => item.promotion);
+    const hours = promotionsData.map(item => item.total_heures);
+    
+    // Générer des couleurs graduées
+    const gradientColors = promotions.map((_, index) => {
+        // Créer un dégradé de couleurs du violet au corail
+        const ratio = index / (promotions.length - 1);
+        const r = Math.round(124 + ratio * (255 - 124));
+        const g = Math.round(80 + ratio * (107 - 80));
+        const b = Math.round(222 + ratio * (107 - 222));
+        return `rgb(${r}, ${g}, ${b})`;
     });
     
-    // Trier par valeur décroissante
-    const sortedTypes = Object.entries(typeData)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 8); // Limiter à 8 types pour la lisibilité
-    
-    const types = sortedTypes.map(item => item[0]);
-    const values = sortedTypes.map(item => item[1]);
-    
     // Créer le graphique
-    charts.typeActivite = new Chart(ctx, {
+    charts.promotionHours = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: types,
+            labels: promotions,
             datasets: [{
-                label: 'Heures par type d\'activité',
-                data: values,
-                backgroundColor: generateColors(types.length),
+                label: 'Heures totales',
+                data: hours,
+                backgroundColor: gradientColors,
+                borderColor: 'rgba(0, 0, 0, 0.1)',
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            indexAxis: types.length > 4 ? 'y' : 'x', // Utiliser un graphique horizontal si beaucoup de types
             scales: {
                 y: {
                     beginAtZero: true,
                     title: {
-                        display: types.length <= 4,
+                        display: true,
                         text: 'Nombre d\'heures'
                     }
                 },
                 x: {
                     title: {
-                        display: types.length > 4,
-                        text: 'Nombre d\'heures'
-                    },
-                    ticks: {
-                        autoSkip: false,
-                        maxRotation: 45,
-                        minRotation: 45
+                        display: true,
+                        text: 'Promotion'
                     }
                 }
             },
             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw} heures`;
+                        }
+                    }
+                },
                 legend: {
                     display: false
                 }
             }
         }
     });
+    
+    console.log("Graphique d'heures par promotion mis à jour avec succès");
 }
-
-// Graphique 4: Répartition CM/TD/TP
-function initFormatCoursChart() {
-    const ctx = document.getElementById('formatCoursChart');
-    if (!ctx) return;
-    
-    // Détruire le graphique existant s'il existe
-    if (charts.formatCours) {
-        charts.formatCours.destroy();
-    }
-    
-    // Calculer les totaux
-    const totalCM = rseData.reduce((sum, item) => sum + (parseInt(item.heures_cm) || 0), 0);
-    const totalTD = rseData.reduce((sum, item) => sum + (parseInt(item.heures_td) || 0), 0);
-    const totalTP = rseData.reduce((sum, item) => sum + (parseInt(item.heures_tp) || 0), 0);
-    
-    // Créer le graphique
-    charts.formatCours = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['CM', 'TD', 'TP'],
-            datasets: [{
-                data: [totalCM, totalTD, totalTP],
-                backgroundColor: ['#2f0d73', '#ac54c7', '#ffb43c'],
-                borderWidth: 1,
-                borderColor: '#fff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '50%',
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const label = context.label || '';
-                            const value = context.raw;
-                            const total = totalCM + totalTD + totalTP;
-                            const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                            return `${label}: ${value} heures (${percentage}%)`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-// Configurer les événements de l'interface
-function setupEventListeners() {
-    // Sélecteur de promotion pour le graphique 1
-    $('#promotionSelector').on('change', function() {
-        const selectedPromotion = $(this).val();
-        initPromotionChart(selectedPromotion);
-    });
-    
-    // Appliquer les filtres au tableau
-    $('#applyFilters').on('click', function() {
-        filterTable();
-    });
-    
-    // Réinitialiser les filtres
-    $('#resetFilters').on('click', function() {
-        $('#filterAnnee, #filterPromotion, #filterSemestre, #filterTypeActivite').val('');
-        filterTable();
-    });
-    
-    // Gestion du formulaire d'ajout/édition
-    $('#dataForm').on('submit', function(e) {
-    e.preventDefault();
-    
-    $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
-        data: $(this).serialize(),
-        headers: {
-            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val(),
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        success: function(response) {
-            // Fermer la modal
-            $('#addDataModal').modal('hide');
-            
-            // Afficher la notification de succès
-            showNotification('success', response.message || 'Données enregistrées avec succès!');
-            
-            // Actualiser les données sans recharger toute la page
-            refreshDataAndCharts();
-        },
-        error: function(xhr) {
-            // Gestion d'erreur...
-        }
-    });
-});
-    
-    // Gestion du nom de fichier pour l'upload CSV
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
-    });
-    
-    // Gestion du type d'activité "Autre"
-    $('#type_activite').on('change', function() {
-        toggleAutreType();
-    });
-}
-
-// Fonction pour actualiser les données
-function refreshDataAndCharts() {
-    // Afficher un indicateur de chargement
-    const loadingOverlay = $('<div class="loading-overlay"><div class="spinner-border text-primary" role="status"><span class="sr-only">Chargement...</span></div></div>');
-    $('body').append(loadingOverlay);
-    
-    // Requête AJAX pour récupérer les données actualisées
-    $.ajax({
-        url: window.location.pathname,
-        type: 'GET',
-        dataType: 'json',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        success: function(data) {
-            // Mettre à jour les données et les graphiques
-            if (data && data.rse_data) {
-                // Mettre à jour les données RSE
-                rseData = data.rse_data;
-                
-                // Mettre à jour les statistiques globales
-                window.statsGlobals = {
-                    total_heures_rse: rseData.reduce((sum, item) => sum + (parseInt(item.total_heures) || 0), 0),
-                    total_activites: rseData.length,
-                    etudiants_impliques: 342, // Valeur par défaut, à adapter
-                    promotions_impliquees: new Set(rseData.map(item => item.promotion)).size
-                };
-                
-                // Mettre à jour les statistiques affichées
-                updateStatsSummary();
-                
-                // Mettre à jour le tableau de données
-                updateDataTable(rseData);
-                
-                // Réinitialiser et mettre à jour les graphiques
-                initCharts();
-            }
-        },
-        complete: function() {
-            // Supprimer l'indicateur de chargement
-            loadingOverlay.remove();
-        }
-    });
-}
-
-// Valider le formulaire avant envoi
-function validateForm() {
-    // Vérifier les champs obligatoires
-    const annee = $('#annee').val();
-    const promotion = $('#promotion').val();
-    const semestre = $('#semestre').val();
-    const typeActivite = $('#type_activite').val();
-    const heuresCM = parseInt($('#heures_cm').val()) || 0;
-    const heuresTD = parseInt($('#heures_td').val()) || 0;
-    const heuresTP = parseInt($('#heures_tp').val()) || 0;
-    
-    if (!annee || !promotion || !semestre) {
-        showNotification('error', 'Les champs Année, Promotion et Semestre sont obligatoires.');
-        return false;
-    }
-    
-    if (typeActivite === 'Autre' && !$('#autre_type').val()) {
-        showNotification('error', 'Veuillez préciser le type d\'activité.');
-        return false;
-    }
-    
-    if (heuresCM === 0 && heuresTD === 0 && heuresTP === 0) {
-        showNotification('error', 'Veuillez saisir au moins une valeur pour les heures (CM, TD ou TP).');
-        return false;
-    }
-    
-    return true;
-}
-
-// Envoyer les données du formulaire via AJAX
-function sendFormData(form) {
-    $.ajax({
-        url: form.attr('action'),
-        type: 'POST',
-        data: form.serialize(),
-        headers: {
-            'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val(),
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        beforeSend: function() {
-            // Désactiver le bouton et montrer un indicateur de chargement
-            form.find('button[type="submit"]').prop('disabled', true)
-                .html('<i class="fas fa-spinner fa-spin mr-1"></i>Traitement...');
-        },
-        success: function(response) {
-            $('#addDataModal').modal('hide');
-            showNotification('success', response.message || 'Données enregistrées avec succès!');
-            setTimeout(() => window.location.reload(), 1500);
-        },
-        error: function(xhr) {
-            try {
-                const response = JSON.parse(xhr.responseText);
-                showNotification('error', response.error || 'Erreur lors de l\'enregistrement');
-            } catch (e) {
-                showNotification('error', 'Erreur lors de l\'enregistrement des données');
-            }
-        },
-        complete: function() {
-            // Réactiver le bouton
-            form.find('button[type="submit"]').prop('disabled', false)
-                .html('<i class="fas fa-save mr-1"></i>Enregistrer');
-        }
-    });
-}
-
 // Filtrer le tableau selon les critères sélectionnés
 function filterTable() {
-    const annee = $('#filterAnnee').val();
-    const promotion = $('#filterPromotion').val();
-    const semestre = $('#filterSemestre').val();
-    const typeActivite = $('#filterTypeActivite').val();
-    
-    const table = $('#rseTable').DataTable();
-    
-    // Réinitialiser d'abord
-    table.search('').columns().search('').draw();
-    
-    // Appliquer les filtres
-    if (annee) {
-        table.column(0).search(annee).draw();
-    }
-    if (promotion) {
-        table.column(1).search(promotion).draw();
-    }
-    if (semestre) {
-        table.column(2).search(semestre).draw();
-    }
-    if (typeActivite) {
-        table.column(3).search(typeActivite).draw();
-    }
+const annee = $('#filterAnnee').val();
+const promotion = $('#filterPromotion').val();
+const semestre = $('#filterSemestre').val();
+const typeActivite = $('#filterTypeActivite').val();
+
+const table = $('#rseTable').DataTable();
+
+// Réinitialiser d'abord
+table.search('').columns().search('').draw();
+
+// Appliquer les filtres
+if (annee) {
+    table.column(0).search(annee).draw();
+}
+if (promotion) {
+    table.column(1).search(promotion).draw();
+}
+if (semestre) {
+    table.column(2).search(semestre).draw();
+}
+if (typeActivite) {
+    table.column(3).search(typeActivite).draw();
+}
 }
 
 // Fonction pour afficher/masquer le champ "autre type"
 function toggleAutreType() {
-    const typeSelect = document.getElementById('type_activite');
-    const autreContainer = document.getElementById('autre_type_container');
-    
-    if (!typeSelect || !autreContainer) return;
-    
-    if (typeSelect.value === 'Autre') {
-        autreContainer.style.display = 'block';
-        document.getElementById('autre_type').setAttribute('required', 'required');
-    } else {
-        autreContainer.style.display = 'none';
-        document.getElementById('autre_type').removeAttribute('required');
-    }
-}
+const typeSelect = document.getElementById('type_activite');
+const autreContainer = document.getElementById('autre_type_container');
 
-// Fonction pour éditer les données
-function editData(id) {
-    if (!id) return;
-    
-    // Rechercher l'élément dans les données
-    const item = rseData.find(item => item.id === id);
-    
-    if (item) {
-        // Remplir le formulaire avec les données existantes
-        $('#rse_id').val(id);
-        $('#annee').val(item.annee);
-        $('#promotion').val(item.promotion);
-        $('#semestre').val(item.semestre);
-        $('#heures_cm').val(item.heures_cm || 0);
-        $('#heures_td').val(item.heures_td || 0);
-        $('#heures_tp').val(item.heures_tp || 0);
-        $('#description').val(item.description || '');
-        
-        // Gérer le type d'activité
-        const typeActivite = item.type_activite;
-        const typeSelect = document.getElementById('type_activite');
-        
-        let found = false;
-        if (typeSelect) {
-            // Parcourir les options pour trouver si le type existe
-            for (let i = 0; i < typeSelect.options.length; i++) {
-                if (typeSelect.options[i].value === typeActivite) {
-                    typeSelect.selectedIndex = i;
-                    found = true;
-                    break;
-                }
-            }
-            
-            // Si le type n'existe pas dans la liste, utiliser "Autre"
-            if (!found && typeActivite) {
-                // Trouver l'option "Autre"
-                for (let i = 0; i < typeSelect.options.length; i++) {
-                    if (typeSelect.options[i].value === 'Autre') {
-                        typeSelect.selectedIndex = i;
-                        $('#autre_type').val(typeActivite);
-                        $('#autre_type_container').show();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // Mettre à jour le titre de la modal
-        $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i>Modifier les données RSE');
-        
-        // Afficher la modal
-        $('#addDataModal').modal('show');
-    } else {
-        console.error(`Élément avec ID ${id} non trouvé dans les données`);
-        showNotification('error', 'Impossible de trouver les données à éditer');
-    }
-}
+if (!typeSelect || !autreContainer) return;
 
-// Fonction pour confirmer la suppression
-function confirmDelete(id, type) {
-    if (!id) return;
-    
-    const deleteDetails = document.getElementById('deleteDetails');
-    if (deleteDetails) {
-        deleteDetails.textContent = type || id;
-    }
-    
-    // Configurer le formulaire de suppression
-    const deleteForm = document.getElementById('deleteForm');
-    if (deleteForm) {
-        deleteForm.action = `/rse/delete/${id}/`;
-    }
-    
-    // Afficher la modal
-    $('#deleteModal').modal('show');
+if (typeSelect.value === 'Autre') {
+    autreContainer.style.display = 'block';
+    document.getElementById('autre_type').setAttribute('required', 'required');
+} else {
+    autreContainer.style.display = 'none';
+    document.getElementById('autre_type').removeAttribute('required');
 }
-
-// Fonction pour actualiser tous les graphiques
-function refreshAllCharts() {
-    // Afficher un indicateur de chargement
-    const originalBtn = $('.btn-warning').html();
-    $('.btn-warning').html('<i class="fas fa-spinner fa-spin mr-2"></i>Actualisation...').prop('disabled', true);
-    
-    // Actualiser les données depuis le serveur
-    $.ajax({
-        url: window.location.href,
-        type: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            // Extraire les nouvelles données des stats du HTML reçu
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(response, 'text/html');
-            const statsElement = doc.getElementById('stats-data');
-            
-            if (statsElement && statsElement.textContent) {
-                try {
-                    const parsedData = JSON.parse(statsElement.textContent);
-                    rseData = parsedData.items || [];
-                    
-                    // Mettre à jour les statistiques globales
-                    window.statsGlobals = {
-                        total_heures_rse: parsedData.total_heures_rse || 0,
-                        total_activites: parsedData.total_activites || 0,
-                        etudiants_impliques: parsedData.etudiants_impliques || 0,
-                        promotions_impliquees: parsedData.promotions_impliquees || 0
-                    };
-                    
-                    // Mettre à jour les statistiques affichées
-                    updateStatsSummary();
-                    
-                    // Mettre à jour les graphiques
-                    initCharts();
-                    
-                    // Mettre à jour les filtres
-                    populateFilters();
-                    
-                    showNotification('success', 'Données actualisées avec succès !');
-                } catch (e) {
-                    console.error("Erreur lors du parsing des données actualisées:", e);
-                    showNotification('error', 'Erreur lors de l\'actualisation des données');
-                }
-            } else {
-                console.warn("Aucune donnée stat trouvée dans la réponse");
-                showNotification('warning', 'Aucune nouvelle donnée disponible');
-            }
-        },
-        error: function() {
-            showNotification('error', 'Erreur lors de la communication avec le serveur');
-        },
-        complete: function() {
-            // Restaurer le bouton
-            $('.btn-warning').html(originalBtn).prop('disabled', false);
-        }
-    });
 }
 
 // Fonction pour générer des couleurs pour les graphiques
 function generateColors(count) {
-    const baseColors = [
-        '#2f0d73', '#7c50de', '#ac54c7', '#f56960', '#ffb43c', '#3cbebe',
-        '#8b5fbf', '#ff6b6b', '#4dabf7', '#20c997', '#ff922b', '#5f3dc4'
-    ];
-    
-    if (count <= baseColors.length) {
-        return baseColors.slice(0, count);
-    }
-    
-    const colors = [...baseColors];
-    
-    // Générer des couleurs supplémentaires si nécessaire
-    for (let i = baseColors.length; i < count; i++) {
-        const r = Math.floor(Math.random() * 200) + 55; // Éviter les couleurs trop sombres
-        const g = Math.floor(Math.random() * 200) + 55;
-        const b = Math.floor(Math.random() * 200) + 55;
-        colors.push(`rgb(${r}, ${g}, ${b})`);
-    }
-    
-    return colors;
+const baseColors = [
+    '#2f0d73', '#7c50de', '#ac54c7', '#f56960', '#ffb43c', '#3cbebe',
+    '#8b5fbf', '#ff6b6b', '#4dabf7', '#20c997', '#ff922b', '#5f3dc4'
+];
+
+if (count <= baseColors.length) {
+    return baseColors.slice(0, count);
 }
-// Fonction pour afficher une notification visuelle
+
+const colors = [...baseColors];
+
+// Générer des couleurs supplémentaires si nécessaire
+for (let i = baseColors.length; i < count; i++) {
+    const r = Math.floor(Math.random() * 200) + 55; // Éviter les couleurs trop sombres
+    const g = Math.floor(Math.random() * 200) + 55;
+    const b = Math.floor(Math.random() * 200) + 55;
+    colors.push(`rgb(${r}, ${g}, ${b})`);
+}
+
+return colors;
+}
+
+// Fonction pour valider le formulaire
+function validateForm() {
+// Vérifier les champs obligatoires
+const requiredFields = [
+    { id: 'annee', name: 'Année' },
+    { id: 'promotion', name: 'Promotion' },
+    { id: 'semestre', name: 'Semestre' },
+    { id: 'type_activite', name: 'Type d\'activité' }
+];
+
+let isValid = true;
+
+// Vérifier chaque champ obligatoire
+requiredFields.forEach(field => {
+    const input = $(`#${field.id}`);
+    if (!input.val()) {
+        showNotification('error', `Le champ "${field.name}" est obligatoire.`);
+        input.addClass('is-invalid');
+        isValid = false;
+    } else {
+        input.removeClass('is-invalid');
+    }
+});
+
+// Vérifier le cas spécial de "Autre type"
+if ($('#type_activite').val() === 'Autre' && !$('#autre_type').val()) {
+    showNotification('error', 'Veuillez préciser le type d\'activité.');
+    $('#autre_type').addClass('is-invalid');
+    isValid = false;
+} else {
+    $('#autre_type').removeClass('is-invalid');
+}
+
+// Vérifier qu'au moins un type d'heures est spécifié
+const heuresCM = parseInt($('#heures_cm').val()) || 0;
+const heuresTD = parseInt($('#heures_td').val()) || 0;
+const heuresTP = parseInt($('#heures_tp').val()) || 0;
+
+if (heuresCM === 0 && heuresTD === 0 && heuresTP === 0) {
+    showNotification('error', 'Veuillez spécifier au moins un type d\'heures (CM, TD ou TP).');
+    $('#heures_cm, #heures_td, #heures_tp').addClass('is-invalid');
+    isValid = false;
+} else {
+    $('#heures_cm, #heures_td, #heures_tp').removeClass('is-invalid');
+}
+
+return isValid;
+}
+
+// Fonction pour afficher une notification
 function showNotification(type, message) {
-    const alertClass = type === 'success' ? 'alert-success' : 
-                      type === 'warning' ? 'alert-warning' : 'alert-danger';
-    const iconClass = type === 'success' ? 'fa-check-circle' : 
-                     type === 'warning' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle';
-    
-    const notification = `
-        <div class="alert ${alertClass} alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;">
-            <i class="fas ${iconClass} mr-2"></i>
-            ${message}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    `;
-    
-    $('body').append(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        $('.alert').fadeOut('slow', function() {
-            $(this).remove();
-        });
-    }, 3000);
+const alertClass = type === 'success' ? 'alert-success' : 
+                  type === 'warning' ? 'alert-warning' : 'alert-danger';
+const iconClass = type === 'success' ? 'fa-check-circle' : 
+                 type === 'warning' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle';
+
+const notification = `
+    <div class="alert ${alertClass} alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;">
+        <i class="fas ${iconClass} mr-2"></i>
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+`;
+
+$('body').append(notification);
+
+// Auto-remove after 3 seconds
+setTimeout(() => {
+    $('.alert').fadeOut('slow', function() {
+        $(this).remove();
+    });
+}, 3000);
 }
 </script>
 {% endblock %}
