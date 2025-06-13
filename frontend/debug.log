@@ -8186,3 +8186,290 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /api/rse-format-cours/ HTTP/1.1" 200 106
 "GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
 Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96679
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 98073
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99626
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99789
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99632
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99853
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 100826
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 100819
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 101179
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96492
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 100057
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99328
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 99023
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96899
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96542
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96449
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96409
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96151
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96177
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96212
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 96177
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95120
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95178
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=FIA5 HTTP/1.1" 200 135
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95166
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95284
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95284
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95284
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95284
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364

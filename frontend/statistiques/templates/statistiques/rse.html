@@ -94,8 +94,9 @@
      }
 
     .action-buttons {
-    position: relative;
-    z-index: 3;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
      }
 
       /* NOUVEAUX STYLES POUR LES BOUTONS */
@@ -109,9 +110,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 200px;
-    height: 50px;
     margin-right: 15px;
+    white-space: nowrap;
      }
 
     .btn-add {
@@ -347,7 +347,7 @@
                 <p>Pilotage des actions RSE et gestion des heures dédiées à la responsabilité sociétale de l'école</p>
             </div>
             <div class="action-buttons d-flex flex-wrap">
-                <button class="action-button btn-add" data-toggle="modal" data-target="#addDataModal">
+                <button class="action-button btn-add mr-2" data-toggle="modal" data-target="#addDataModal">
                     <i class="fas fa-plus mr-2"></i>Ajouter des données
                 </button>
                 <button class="action-button btn-import" data-toggle="modal" data-target="#uploadCSVModal">
