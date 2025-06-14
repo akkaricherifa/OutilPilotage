@@ -54,15 +54,201 @@
     
     .dashboard-header {
         background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);
+        position: relative;
+        overflow: hidden;
         color: white;
-        padding: 30px;
+        padding: 35px;
         border-radius: 15px;
         margin-bottom: 30px;
+        box-shadow: 0 8px 24px rgba(47, 13, 115, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    <!-- CSS à ajouter dans la section <style> de votre fichier heures_enseignement.html -->
+    /* Style amélioré pour l'en-tête du dashboard */
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);
+        position: relative;
+        overflow: hidden;
+        color: white;
+        padding: 35px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 24px rgba(47, 13, 115, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    /* Animation d'arrière-plan */
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        bottom: -50%;
+        left: -50%;
+        background: linear-gradient(
+            45deg,
+            rgba(124, 80, 222, 0.1) 0%,
+            rgba(172, 84, 199, 0.1) 25%,
+            rgba(245, 105, 96, 0.1) 50%,
+            rgba(255, 180, 60, 0.1) 75%,
+            rgba(60, 190, 190, 0.1) 100%
+        );
+        transform: rotate(15deg);
+        z-index: 0;
+        animation: gradientMove 15s ease infinite;
+    }
+    
+    @keyframes gradientMove {
+        0% {
+            transform: rotate(15deg) translateY(-10%);
+        }
+        50% {
+            transform: rotate(10deg) translateY(10%);
+        }
+        100% {
+            transform: rotate(15deg) translateY(-10%);
+        }
+    }
+    
+    /* Contenu de l'en-tête */
+    .dashboard-header .header-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .dashboard-header h1 {
         margin: 0;
-        font-weight: 300;
+        font-weight: 700;
+        font-size: 2.5rem;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-header p {
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+    }
+    
+    /* Icône d'horloge améliorée */
+    .dashboard-header .clock-icon {
+        font-size: 2.5rem;
+        margin-right: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Titre et sous-titre */
+    .dashboard-header .title-container {
+        display: flex;
+        align-items: center;
+    }
+    
+    .dashboard-header .text-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Boutons d'action améliorés */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-dashboard {
+        padding: 12px 22px;
+        font-weight: 600;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-dashboard:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-dashboard i {
+        margin-right: 10px;
+        font-size: 1.1rem;
+    }
+    
+    .btn-add {
+        background-color: white;
+        color: var(--isis-purple-dark);
+    }
+    
+    .btn-add:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .btn-import {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+    
+    .btn-import:hover {
+        background: linear-gradient(135deg, #2fd155 0%, #26dba6 100%);
+    }
+    
+    /* Animation pour les boutons */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .dashboard-header {
+            padding: 25px;
+        }
+        
+        .dashboard-header .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-header p {
+            font-size: 1rem;
+        }
+        
+        .dashboard-header .clock-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.8rem;
+        }
     }
     
     .stats-grid {
@@ -146,6 +332,14 @@
         .filter-form .form-group {
             margin-bottom: 10px;
         }
+        .dataTables_wrapper {
+        font-size: 14px; /* Réduire la taille de la police */
+        }
+    
+    /* Ajuster la hauteur des lignes */
+    .heures-table tr {
+        line-height: 1.2; /* Réduit l'espacement vertical */
+    }
     }
 </style>
 {% endblock %}
@@ -153,20 +347,22 @@
 {% block content %}
 <!-- En-tête du dashboard -->
 <div class="dashboard-header">
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h1><i class="fas fa-clock mr-3"></i>Heures d'Enseignement</h1>
-            <p class="mb-0">Analyse détaillée des heures d'enseignement par catégorie</p>
+    <div class="header-content">
+        <div class="title-container">
+            <div class="clock-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="text-container">
+                <h1>Heures d'Enseignement</h1>
+                <p>Analyse détaillée des heures d'enseignement par catégorie</p>
+            </div>
         </div>
-        <div class="action-buttons d-flex flex-wrap">
-            <button class="btn btn-light btn-lg mr-2" data-toggle="modal" data-target="#addDataModal">
-                <i class="fas fa-plus mr-2"></i>Ajouter des données
+        <div class="action-buttons">
+            <button class="btn btn-dashboard btn-add" data-toggle="modal" data-target="#addDataModal">
+                <i class="fas fa-plus"></i>Ajouter des données
             </button>
-            <button class="btn btn-success btn-lg mr-2" data-toggle="modal" data-target="#uploadCSVModal">
-                <i class="fas fa-file-upload mr-2"></i>Importer CSV/Excel
-            </button>
-            <button class="btn btn-warning btn-lg" onclick="refreshAllCharts()">
-                <i class="fas fa-sync mr-2"></i>Actualiser
+            <button class="btn btn-dashboard btn-import" data-toggle="modal" data-target="#uploadCSVModal">
+                <i class="fas fa-file-upload"></i>Importer CSV/Excel
             </button>
         </div>
     </div>
@@ -252,12 +448,6 @@
             <p class="mb-0">Unités d'Enseignement</p>
         </div>
     </div>
-    <div class="card stat-card stat-card-matieres">
-        <div class="card-body text-center">
-            <h3 style="color: var(--isis-coral-light);" id="statMatieres">0</h3>
-            <p class="mb-0">Matières</p>
-        </div>
-    </div>
     <div class="card stat-card stat-card-intervenants">
         <div class="card-body text-center">
             <h3 style="color: var(--isis-teal);" id="statIntervenants">0</h3>
@@ -297,6 +487,7 @@
 <div class="chart-container" style="height: auto;">
     <h5><i class="fas fa-table mr-2"></i>Données Détaillées des Heures d'Enseignement</h5>
     <div class="table-responsive">
+     <!-- Filtre par niveau -->
         <table class="table table-striped table-hover heures-table" id="heuresTable">
             <thead>
                 <tr>
@@ -304,7 +495,6 @@
                     <th>Niveau</th>
                     <th>Semestre</th>
                     <th>UE</th>
-                    <th>Matière</th>
                     <th>Intervenant</th>
                     <th>CM</th>
                     <th>TD</th>
@@ -505,7 +695,7 @@
 
 <!-- Modal Upload CSV/Excel -->
 <div class="modal fade" id="uploadCSVModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header modal-header-custom">
                 <h5 class="modal-title">Importer un fichier CSV/Excel</h5>
@@ -514,6 +704,7 @@
                 </button>
             </div>
             <form id="uploadForm" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Fichier CSV/Excel <span class="text-danger">*</span></label>
@@ -522,75 +713,12 @@
                             <label class="custom-file-label" for="csvFile">Choisir un fichier...</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Année de début <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="annee_debut" required min="2000" max="2030" value="2024">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Année de fin <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="annee_fin" required min="2000" max="2030" value="2025">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Niveau <span class="text-danger">*</span></label>
-                                <select class="form-control" name="niveau" required>
-                                    <option value="">Sélectionnez un niveau</option>
-                                    <option value="FIE1">FIE1</option>
-                                    <option value="FIE2">FIE2</option>
-                                    <option value="FIE3">FIE3</option>
-                                    <option value="FIE4">FIE4</option>
-                                    <option value="FIE5">FIE5</option>
-                                    <option value="FIA3">FIA3</option>
-                                    <option value="FIA5">FIA5</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Semestre <span class="text-danger">*</span></label>
-                                <select class="form-control" name="semestre" required>
-                                    <option value="">Sélectionnez un semestre</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
-                                    <option value="S4">S4</option>
-                                    <option value="S5">S5</option>
-                                    <option value="S6">S6</option>
-                                    <option value="S7">S7</option>
-                                    <option value="S8">S8</option>
-                                    <option value="S9">S9</option>
-                                    <option value="S10">S10</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Description (optionnelle)</label>
-                                <textarea class="form-control" name="description" rows="2" placeholder="Description des données importées..."></textarea>
-                            </div>
-                        </div>
-                    </div>
                     
                     <div class="alert alert-info">
-                        <h6><i class="fas fa-info-circle mr-2"></i>Format attendu pour Excel :</h6>
+                        <h6><i class="fas fa-info-circle mr-2"></i>Format attendu pour le CSV :</h6>
                         <p>Le fichier doit contenir les colonnes suivantes :</p>
-                        <ul>
-                            <li>Colonne 1: Code UE (ex: E1-INFO1)</li>
-                            <li>Colonne 2: Nom UE/Matière</li>
-                            <li>Colonne 3: ECTS</li>
-                            <li>Colonne 4: Intervenant</li>
-                            <li>Colonnes 5-7: Heures CM (HM, HP, HR)</li>
-                            <li>Colonnes 9-11: Heures TD (HM, HP, HR)</li>
-                            <li>Colonnes 13-15: Heures TP (HM, HP, HR)</li>
-                        </ul>
-                        <p><small>Note: Le système détecte automatiquement les UE (lignes commençant par "E1-", "E2-", etc.) et les matières qui leur sont associées.</small></p>
+                        <code>code_ue,nom_matiere,ects,intervenant,niveau,semestre,cm_hm,cm_hp,cm_hr,td_hm,td_hp,td_hr,tp_hm,tp_hp,tp_hr</code>
+                        <p><small>Note: Le niveau et le semestre doivent être spécifiés dans le fichier CSV.</small></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -661,21 +789,20 @@ $(document).ready(function() {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
         },
         "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
-        "pageLength": 10,
+        "pageLength": 5,
         "responsive": true,
         "columns": [
-            { "data": "annee" },
-            { "data": "niveau" },
-            { "data": "semestre" },
-            { "data": "ue" },
-            { "data": "matiere" },
-            { "data": "intervenant" },
-            { "data": "cm" },
-            { "data": "td" },
-            { "data": "tp" },
-            { "data": "total" },
-            { "data": "actions", "orderable": false }
-        ]
+            { "data": "annee", "width": "80px" },
+            { "data": "niveau", "width": "60px" },
+            { "data": "semestre", "width": "60px" },
+            { "data": "ue", "width": "180px" },
+            { "data": "intervenant", "width": "150px" },
+            { "data": "cm", "width": "50px" },
+            { "data": "td", "width": "50px" },
+            { "data": "tp", "width": "50px" },
+            { "data": "total", "width": "60px" },
+            { "data": "actions", "width": "60px", "orderable": false }
+        ],
     });
 
     // Charger les données initiales
@@ -710,6 +837,16 @@ $(document).ready(function() {
     $('#confirmDelete').on('click', function() {
         deleteHeuresData();
     });
+
+    $('#levelFilter').on('change', function() {
+    const selectedNiveau = $(this).val();
+    
+    if (selectedNiveau === 'all') {
+        heuresDataTable.column(1).search('').draw();
+    } else {
+        heuresDataTable.column(1).search(selectedNiveau, true, false).draw();
+    }
+    });
 });
 
 // Charger les statistiques des heures d'enseignement
@@ -741,7 +878,11 @@ function loadHeuresEnseignementStats() {
         success: function(response) {
             // Mettre à jour les statistiques
             updateStats(response);
-            
+            const tableData = transformDataForTable(response);
+            heuresDataTable.clear();
+            heuresDataTable.rows.add(tableData);
+            heuresDataTable.draw();
+            populateNiveauFilter();
             // Charger les graphiques
             loadCharts(response);
         },
@@ -828,32 +969,34 @@ function transformDataForTable(data) {
             const total = totalCM + totalTD + totalTP;
             
             tableData.push({
-                annee: anneeAcademique,
-                niveau: niveau,
-                semestre: semestre,
-                ue: `${ue.code} - ${ue.nom}`,
-                matiere: matiere.nom,
-                intervenant: matiere.intervenant || '-',
-                cm: totalCM,
-                td: totalTD,
-                tp: totalTP,
-                total: total,
+                annee: `<span class="text-ellipsis col-annee">${anneeAcademique}</span>`,
+                niveau: `<span class="text-ellipsis col-niveau">${niveau}</span>`,
+                semestre: `<span class="text-ellipsis col-semestre">${semestre}</span>`,
+                ue: `<span class="text-ellipsis col-ue" title="${ue.code} - ${ue.nom}">${ue.code} - ${ue.nom}</span>`,
+                matiere: `<span class="text-ellipsis col-matiere" title="${matiere.nom}">${matiere.nom}</span>`,
+                intervenant: `<span class="text-ellipsis col-intervenant" title="${matiere.intervenant || '-'}">${matiere.intervenant || '-'}</span>`,
+                cm: `<span class="col-heures">${totalCM}</span>`,
+                td: `<span class="col-heures">${totalTD}</span>`,
+                tp: `<span class="col-heures">${totalTP}</span>`,
+                total: `<span class="col-total">${total}</span>`,
                 actions: `
-                    <button class="btn btn-sm btn-outline-primary edit-btn" 
-                            data-ue="${ue.code}" 
-                            data-matiere="${matiere.nom}"
-                            data-annee="${anneeAcademique}"
-                            data-niveau="${niveau}"
-                            data-semestre="${semestre}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger delete-btn"
-                            data-ue="${ue.code}" 
-                            data-annee="${anneeAcademique}"
-                            data-niveau="${niveau}"
-                            data-semestre="${semestre}">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="col-actions">
+                        <button class="btn btn-sm btn-outline-primary edit-btn" 
+                                data-ue="${ue.code}" 
+                                data-matiere="${matiere.nom}"
+                                data-annee="${anneeAcademique}"
+                                data-niveau="${niveau}"
+                                data-semestre="${semestre}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-btn"
+                                data-ue="${ue.code}" 
+                                data-annee="${anneeAcademique}"
+                                data-niveau="${niveau}"
+                                data-semestre="${semestre}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 `
             });
         });
@@ -1256,10 +1399,15 @@ function saveHeuresData() {
 }
 
 // Uploader un fichier CSV/Excel
+// Uploader un fichier CSV/Excel
 function uploadHeuresFile() {
     // Récupérer le formulaire
     const form = $('#uploadForm')[0];
     const formData = new FormData(form);
+    
+    // Récupérer le token d'authentification
+    const token = getApiToken();
+    console.log("Token utilisé:", token); // Pour le débogage
     
     // Envoyer les données à l'API
     $.ajax({
@@ -1269,29 +1417,54 @@ function uploadHeuresFile() {
         processData: false,
         contentType: false,
         headers: {
-            'Authorization': `Bearer ${getApiToken()}`
+            'Authorization': `Bearer ${token}`
         },
         success: function(response) {
             $('#uploadCSVModal').modal('hide');
-            showNotification('success', 'Fichier importé avec succès!');
+            showNotification('success', `Fichier importé avec succès! ${response.records_inserted} enregistrements insérés.`);
+            
+            // Réinitialiser le formulaire
+            $('#uploadForm')[0].reset();
+            $('.custom-file-label').text('Choisir un fichier...');
             
             // Actualiser les données
             loadHeuresEnseignementStats();
             loadHeuresEnseignement();
         },
-        error: function(xhr) {
+        error: function(xhr, status, error) {
+            console.log("Erreur AJAX:", status, error);
+            console.log("Réponse:", xhr.responseText);
+            
             let message = 'Erreur lors de l\'importation du fichier';
             
-            try {
-                const response = JSON.parse(xhr.responseText);
-                message = response.error || message;
-            } catch (e) {}
+            if (xhr.status === 401) {
+                message = 'Erreur d\'authentification. Veuillez vous reconnecter.';
+                // Optionnel : rediriger vers la page de connexion
+                // window.location.href = '/login/';
+            } else {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.warning) {
+                        message = response.warning;
+                    } else if (response.error) {
+                        message = response.error;
+                    }
+                } catch (e) {
+                    console.log("Erreur de parsing de la réponse:", e);
+                }
+            }
             
             showNotification('error', message);
         }
     });
 }
 
+// Fonction pour récupérer le token API
+function getApiToken() {
+    // Récupérer le token depuis la session ou d'une variable globale
+    // Cette fonction doit être adaptée selon la façon dont vous stockez le token
+    return '{{ request.session.api_token }}';
+}
 // Supprimer des données
 function deleteHeuresData() {
     // Vérifier que les données de suppression sont définies
@@ -1472,7 +1645,160 @@ $('#uploadCSVModal').on('hidden.bs.modal', function () {
     $('#uploadForm')[0].reset();
     $('.custom-file-label').text('Choisir un fichier...');
 });
+function loadHeuresData() {
+    // Récupérer le token d'authentification (à adapter selon votre méthode de stockage)
+    const token = sessionStorage.getItem('api_token') || localStorage.getItem('api_token');
+    
+    // Appel à l'API pour récupérer les données
+    fetch('/api/heures-enseignement/data', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Données récupérées:", data);
+        afficherDonnees(data);
+        populerFiltre(data);
+    })
+    .catch(error => {
+        console.error('Erreur lors de la récupération des données:', error);
+        // Afficher un message d'erreur à l'utilisateur
+        document.getElementById('heuresTableBody').innerHTML = `
+            <tr>
+                <td colspan="11" class="text-center">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        Impossible de charger les données. Veuillez réessayer plus tard.
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+}
 
+// Fonction pour afficher les données dans le tableau
+function afficherDonnees(data) {
+    const tableBody = document.getElementById('heuresTableBody');
+    tableBody.innerHTML = '';
+    
+    let totalCM = 0;
+    let totalTD = 0;
+    let totalTP = 0;
+    
+    // Vérifier si les données sont vides
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="11" class="text-center">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Aucune donnée disponible. Veuillez ajouter des heures d'enseignement.
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Parcourir les données et créer les lignes du tableau
+    data.forEach(item => {
+        const ue = item.unite_enseignement;
+        
+        ue.matieres.forEach(matiere => {
+            // Calculer les totaux pour CM, TD, TP
+            const cmTotal = (matiere.heures_cm.hm || 0) + (matiere.heures_cm.hp || 0) + (matiere.heures_cm.hr || 0);
+            const tdTotal = (matiere.heures_td.hm || 0) + (matiere.heures_td.hp || 0) + (matiere.heures_td.hr || 0);
+            const tpTotal = (matiere.heures_tp.hm || 0) + (matiere.heures_tp.hp || 0) + (matiere.heures_tp.hr || 0);
+            const rowTotal = cmTotal + tdTotal + tpTotal;
+            
+            // Créer la ligne du tableau
+            const row = document.createElement('tr');
+            row.dataset.niveau = item.niveau; // Ajouter l'attribut pour le filtrage
+            
+            row.innerHTML = `
+                <td>${item.annee || '-'}</td>
+                <td>${item.niveau || '-'}</td>
+                <td>${item.semestre || '-'}</td>
+                <td title="${ue.code || ''}">
+                    ${ue.nom || '-'}
+                </td>
+                <td>${matiere.nom || '-'}</td>
+                <td>${matiere.intervenant || '-'}</td>
+                <td>${cmTotal}</td>
+                <td>${tdTotal}</td>
+                <td>${tpTotal}</td>
+                <td>${rowTotal}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="editRow(this)" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRow(this)" title="Supprimer">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            
+            tableBody.appendChild(row);
+            
+            // Mettre à jour les statistiques
+            totalCM += cmTotal;
+            totalTD += tdTotal;
+            totalTP += tpTotal;
+        });
+    });
+    
+    // Mettre à jour les cartes de statistiques si elles existent
+    if (document.getElementById('statCM')) document.getElementById('statCM').textContent = totalCM;
+    if (document.getElementById('statTD')) document.getElementById('statTD').textContent = totalTD;
+    if (document.getElementById('statTP')) document.getElementById('statTP').textContent = totalTP;
+}
+
+function populateNiveauFilter() {
+    // Récupérer les données du DataTable
+    const data = heuresDataTable.data().toArray();
+    
+    // Extraire les niveaux uniques
+    const niveaux = new Set();
+    data.forEach(item => {
+        if (item.niveau) {
+            niveaux.add(item.niveau);
+        }
+    });
+    
+    // Remplir le filtre
+    const levelFilter = $('#levelFilter');
+    
+    // Conserver l'option "Tous les niveaux"
+    levelFilter.empty().append('<option value="all">Tous les niveaux</option>');
+    
+    // Ajouter les options de niveau
+    Array.from(niveaux).sort().forEach(niveau => {
+        levelFilter.append(`<option value="${niveau}">${niveau}</option>`);
+    });
+}
+// Fonctions pour les actions sur les lignes
+function editRow(button) {
+    const row = button.closest('tr');
+    console.log("Éditer ligne:", row);
+    // Implémenter la fonctionnalité d'édition
+}
+
+function deleteRow(button) {
+    const row = button.closest('tr');
+    console.log("Supprimer ligne:", row);
+    
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette entrée ?')) {
+        // Implémenter la suppression
+    }
+}
 // Fonction pour afficher une notification
 function showNotification(type, message) {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';

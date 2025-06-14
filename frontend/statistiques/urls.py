@@ -1,5 +1,3 @@
-# statistiques/urls.py
-
 from django.urls import path
 from . import views
 
@@ -23,10 +21,6 @@ urlpatterns = [
     
     # API Status (AJAX)
     path('api/status/', views.api_status, name='api_status'),
-
-
-
-
     # Nouvelles routes pour les effectifs étudiants
     path('effectifs-etudiants/', views.effectifs_etudiants, name='effectifs_etudiants'),
     path('effectifs-etudiants/add/', views.update_data, name='effectifs_add_data'),
@@ -40,30 +34,27 @@ urlpatterns = [
 
     # Ajoutez cette ligne dans la liste urlpatterns
     path('heures-enseignement/', views.heures_enseignement, name='heures_enseignement'),
-
+    path('api/heures-enseignement/data', views.get_heures_enseignement_data, name='heures_enseignement_data'),
+    path('heures-enseignement/upload-csv/', views.heures_enseignement_upload_csv, name='heures_enseignement_upload_csv'),
     #RSE
     path('rse/', views.rse_view, name='rse'),
     path('rse/add/', views.rse_add_data, name='rse_add_data'),
     path('rse/delete/<str:rse_id>/', views.rse_delete_data, name='rse_delete_data'),
     path('rse/upload-csv/', views.rse_upload_csv, name='rse_upload_csv'),
-    # Ajouter ces routes dans le fichier urls.py
     path('api/rse-data/', views.get_rse_data, name='get_rse_data'),
     path('api/rse-evolution/', views.get_rse_evolution_data, name='get_rse_evolution_data'),
     path('api/rse-activity-types/', views.get_rse_activity_types, name='get_rse_activity_types'),
     path('api/rse-format-cours/', views.get_rse_format_cours, name='get_rse_format_cours'),
     path('api/rse-hours-by-promotion/', views.get_rse_hours_by_promotion, name='get_rse_hours_by_promotion'),
 
-
+    #ARION
     path('arion/', views.arion, name='arion'),
-      # Si vous utilisez la redirection API, ajoutez ces URLs
     path('api/arion/data', views.arion_api_redirect, name='arion_api_data'),
     path('api/arion/stats', views.arion_api_redirect, name='arion_api_stats'),
     path('api/arion/add', views.arion_api_redirect, name='arion_api_add'),
     path('api/arion/upload', views.arion_api_redirect, name='arion_api_upload'),
     path('api/arion/delete/<str:item_id>/', views.arion_api_delete, name='arion_api_delete'),
-    # Dans statistiques/urls.py
     path('api/arion/status-stats/', views.arion_status_stats, name='arion_status_stats'),
-    # Dans statistiques/urls.py
     path('api/arion/monthly_stats', views.arion_monthly_stats, name='arion_monthly_stats'),
 ]
     

@@ -478,6 +478,26 @@ def effectifs_etudiants(request):
 
 ######################################## CATEGORIE ENSEIGNEMENT ##############################################
 @api_authenticated_required
+def heures_enseignement(request):
+    """Vue pour la page des heures d'enseignement"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Essayer de récupérer des statistiques de base pour s'assurer que l'API est accessible
+        response = requests.get(f"{settings.API_URL}/heures-enseignement/stats", headers=headers, timeout=10)
+        if response.status_code != 200:
+            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API heures_enseignement: {e}")
+        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques.")
+    
+    return render(request, 'statistiques/heures_enseignement.html', {
+        'user_info': request.session.get('user_info', {}),
+        'settings': settings  # Passer les paramètres de configuration au template
+    })
+
+@api_authenticated_required
 def enseignement(request):
     """Vue principale pour l'enseignement et la pédagogie"""
     token = request.session.get('api_token')
@@ -654,9 +674,6 @@ def enseignement_delete_data(request, annee, semestre):
         logger.error(f"Erreur API enseignement_delete_data: {e}")
         return JsonResponse({"error": "Erreur de connexion lors de la suppression des données."}, status=500)
     
-
-
-
 @api_authenticated_required
 def categories_enseignement(request):
     """Vue pour les catégories d'enseignement"""
@@ -749,24 +766,82 @@ def categories_enseignement(request):
         'user_info': request.session.get('user_info', {})
     })
 @api_authenticated_required
-def heures_enseignement(request):
-    """Vue pour la page des heures d'enseignement"""
+def heures_enseignement_upload_csv(request):
+    """Vue pour importer un fichier CSV/Excel des heures d'enseignement"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+        
+    # Vérifier si un fichier a été envoyé
+    if 'file' not in request.FILES:
+        return JsonResponse({"error": "Aucun fichier n'a été envoyé"}, status=400)
+    
+    file = request.FILES['file']
+    
+    # Vérifier l'extension du fichier
+    if not (file.name.endswith('.csv') or file.name.endswith('.xlsx')):
+        return JsonResponse({"error": "Seuls les fichiers CSV et Excel sont acceptés"}, status=400)
+    
+    try:
+        # Préparer le fichier pour l'envoi à l'API Flask
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}'}
+        
+        # Envoyer le fichier et les données du formulaire
+        files = {'file': (file.name, file.read(), 'application/octet-stream')}
+        
+        # Vous n'envoyez plus les paramètres supplémentaires, car ils seront extraits du fichier
+        response = requests.post(
+            f"{settings.API_URL}/heures-enseignement/upload",
+            files=files,
+            headers=headers,
+            timeout=60  # Délai plus long pour les fichiers volumineux
+        )
+        
+        logger.info(f"Réponse API: Status {response.status_code}")
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            logger.info(f"Importation réussie: {api_response}")
+            return JsonResponse({
+                "success": True,
+                "message": api_response.get('message', 'Fichier importé avec succès!'),
+                "records_inserted": api_response.get('records_inserted', 0)
+            })
+        else:
+            error_message = "Erreur lors de l'importation du fichier"
+            try:
+                api_response = response.json()
+                logger.warning(f"Erreur API: {api_response}")
+                error_message = api_response.get('error', error_message)
+                if api_response.get('warning'):
+                    return JsonResponse({"warning": api_response.get('warning')}, status=400)
+            except Exception as e:
+                logger.error(f"Erreur lors du parsing de la réponse API: {e}")
+                
+            return JsonResponse({"error": error_message}, status=response.status_code)
+            
+    except Exception as e:
+        logger.error(f"Erreur lors de l'importation du fichier: {str(e)}")
+        return JsonResponse({"error": f"Erreur lors de l'importation: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def get_heures_enseignement_data(request):
+    """API pour récupérer les données des heures d'enseignement"""
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
     
     try:
-        # Essayer de récupérer des statistiques de base pour s'assurer que l'API est accessible
-        response = requests.get(f"{settings.API_URL}/heures-enseignement/stats", headers=headers, timeout=10)
-        if response.status_code != 200:
-            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
+        # Récupérer les données depuis l'API principale
+        response = requests.get(f"{settings.API_URL}/heures-enseignement/data", headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            return JsonResponse(response.json(), safe=False)
+        else:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données'}, status=response.status_code)
+            
     except requests.exceptions.RequestException as e:
-        logger.error(f"Erreur API heures_enseignement: {e}")
-        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques.")
-    
-    return render(request, 'statistiques/heures_enseignement.html', {
-        'user_info': request.session.get('user_info', {}),
-        'settings': settings  # Passer les paramètres de configuration au template
-    })
+        logger.error(f"Erreur API heures_enseignement_data: {e}")
+        return JsonResponse({'error': 'Erreur de connexion à API'}, status=500)
 ############################rse rse rse rse #################
 @api_authenticated_required
 def rse_view(request):

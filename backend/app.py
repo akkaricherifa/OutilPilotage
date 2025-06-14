@@ -617,7 +617,6 @@ def get_users(current_user):
         return jsonify({"error": f"Erreur lors de la récupération des utilisateurs: {str(e)}"}), 500
     
 ################################################################### route heures enseignement ######################
-
 @app.route('/api/heures-enseignement/upload', methods=['POST'])
 @token_required
 def upload_heures_enseignement_file(current_user):
@@ -636,13 +635,22 @@ def upload_heures_enseignement_file(current_user):
     
     if file and (file.filename.endswith('.csv') or file.filename.endswith('.xlsx')):
         try:
-            # Récupérer des paramètres supplémentaires
-            annee_debut = request.form.get('annee_debut', '2020')
-            annee_fin = request.form.get('annee_fin', '2021')
-            niveau = request.form.get('niveau', 'FIE1')
-            semestre = request.form.get('semestre', 'S1')
+            # Log plus d'information sur le fichier
+            print(f"Traitement du fichier: {file.filename}")
             
+            # Récupérer des paramètres supplémentaires depuis le nom du fichier
+            import re
+            annee_match = re.search(r'(20\d{2})[-_](20\d{2})', file.filename)
+            if annee_match:
+                annee_debut = annee_match.group(1)
+                annee_fin = annee_match.group(2)
+            else:
+                # Valeurs par défaut
+                annee_debut = '2020'
+                annee_fin = '2021'
+                
             annee_academique = f"{annee_debut}-{annee_fin}"
+            print(f"Année académique détectée: {annee_academique}")
             
             # Lecture du fichier
             if file.filename.endswith('.csv'):
@@ -650,123 +658,225 @@ def upload_heures_enseignement_file(current_user):
             else:  # Excel
                 df = pd.read_excel(file)
             
-            # Traitement des données et conversion en structure MongoDB
-            # Cette partie dépendra de la structure exacte de votre fichier
-            # Exemple de structure pour le traitement
+            print(f"Dimensions du DataFrame: {df.shape}")
+            print("Colonnes dans le fichier:", df.columns.tolist())
             
-            # 1. Identifier les lignes d'unités d'enseignement et de matières
-            # 2. Extraire les données d'heures
-            # 3. Construire la structure hiérarchique
+            # Vérification des colonnes requises
+            required_columns = ['code_ue', 'nom_matiere']
+            missing_columns = [col for col in required_columns if col not in df.columns]
             
-            # Exemple simplifié (à adapter selon votre fichier exact)
-            unites_enseignement = {}
-            current_ue = None
+            if missing_columns:
+                return jsonify({
+                    "error": f"Format du fichier non reconnu. Colonnes essentielles manquantes: {', '.join(missing_columns)}",
+                    "success": False
+                }), 400
+            
+            # Information de débogage
+            print("Valeurs de niveau:", df['niveau'].unique() if 'niveau' in df.columns else "Colonne niveau absente")
+            print("Valeurs de semestre:", df['semestre'].unique() if 'semestre' in df.columns else "Colonne semestre absente")
+            
+            # Vérifier que les colonnes 'niveau' et 'semestre' sont présentes
+            if 'niveau' not in df.columns:
+                print("Colonne 'niveau' manquante, ajout d'une valeur par défaut 'FIE1'")
+                df['niveau'] = 'FIE1'
+            
+            if 'semestre' not in df.columns:
+                print("Colonne 'semestre' manquante, ajout d'une valeur par défaut 'S1'")
+                df['semestre'] = 'S1'
+            
+            # Prétraitement - Convertir les valeurs non numériques en 0
+            for col in ['cm_hm', 'cm_hp', 'cm_hr', 'td_hm', 'td_hp', 'td_hr', 'tp_hm', 'tp_hp', 'tp_hr']:
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+            
+            # Prétraitement - Remplacer les NaN par des valeurs par défaut
+            default_values = {
+                'ects': 0,
+                'intervenant': '',
+                'cm_hm': 0, 'cm_hp': 0, 'cm_hr': 0,
+                'td_hm': 0, 'td_hp': 0, 'td_hr': 0,
+                'tp_hm': 0, 'tp_hp': 0, 'tp_hr': 0
+            }
+            
+            for col, default_val in default_values.items():
+                if col in df.columns:
+                    df[col] = df[col].fillna(default_val)
+                else:
+                    df[col] = default_val
+            
+            # Traiter chaque ligne en respectant son niveau et semestre spécifiques
             records_to_insert = []
+            matiere_count = 0
             
-            # Parcourir le DataFrame
-            for index, row in df.iterrows():
-                # Détecter si c'est une UE (par exemple, si commence par "E1-" pour FIE1)
-                ue_prefix = f"E{niveau[-1]}-" if niveau.startswith('FIE') else f"A{niveau[-1]}-"
+            # Grouper par niveau et semestre pour traiter chaque groupe séparément
+            for _, group_df in df.groupby(['niveau', 'semestre']):
+                # Pour chaque groupe niveau-semestre, traiter les UE
+                ue_dict = {}
+                current_ue = None
                 
-                # Si la valeur dans la colonne 1 (ou autre, à adapter) commence par le préfixe d'UE
-                if isinstance(row.get(1), str) and row.get(1).startswith(ue_prefix):
-                    current_ue = {
-                        "code": row.get(1),
-                        "nom": row.get(2, ""),
-                        "matieres": []
-                    }
-                    unites_enseignement[current_ue["code"]] = current_ue
+                # Obtenir le niveau et semestre de ce groupe
+                niveau = str(group_df['niveau'].iloc[0]).strip()
+                semestre = str(group_df['semestre'].iloc[0]).strip()
                 
-                # Si c'est une matière (ligne avec des heures)
-                elif current_ue and pd.notna(row.get(5)) and not pd.isna(row.get(3)):
-                    # Extraire les heures (CM, TD, TP)
-                    try:
-                        ects = float(row.get(3, 0)) if pd.notna(row.get(3)) else 0
-                        intervenant = row.get(4, "") if pd.notna(row.get(4)) else ""
+                print(f"Traitement du groupe: niveau={niveau}, semestre={semestre}")
+                
+                # Parcourir les lignes du groupe
+                for index, row in group_df.iterrows():
+                    # Extraire les valeurs
+                    code_ue = str(row['code_ue']).strip() if not pd.isna(row['code_ue']) else ''
+                    nom_matiere = str(row['nom_matiere']).strip() if not pd.isna(row['nom_matiere']) else 'Sans nom'
+                    
+                    # Debug
+                    if index < 5:
+                        print(f"Ligne {index}: code_ue='{code_ue}', nom_matiere='{nom_matiere}'")
+                    
+                    # Forcer la création d'une UE pour chaque ligne ayant un code_ue
+                    if code_ue and not code_ue.isspace():
+                        # Créer une clé unique qui inclut niveau et semestre
+                        ue_key = f"{niveau}_{semestre}_{code_ue}"
                         
-                        # Heures CM
-                        hm_cm = float(row.get(5, 0)) if pd.notna(row.get(5)) else 0
-                        hp_cm = float(row.get(6, 0)) if pd.notna(row.get(6)) else 0
-                        hr_cm = float(row.get(7, 0)) if pd.notna(row.get(7)) else 0
-                        
-                        # Heures TD
-                        hm_td = float(row.get(9, 0)) if pd.notna(row.get(9)) else 0
-                        hp_td = float(row.get(10, 0)) if pd.notna(row.get(10)) else 0
-                        hr_td = float(row.get(11, 0)) if pd.notna(row.get(11)) else 0
-                        
-                        # Heures TP
-                        hm_tp = float(row.get(13, 0)) if pd.notna(row.get(13)) else 0
-                        hp_tp = float(row.get(14, 0)) if pd.notna(row.get(14)) else 0
-                        hr_tp = float(row.get(15, 0)) if pd.notna(row.get(15)) else 0
-                        
-                        matiere = {
-                            "nom": str(row.get(2, "Matière non nommée")),
-                            "ects": ects,
-                            "intervenant": intervenant,
-                            "heures_cm": {
-                                "hm": hm_cm,
-                                "hp": hp_cm,
-                                "hr": hr_cm
-                            },
-                            "heures_td": {
-                                "hm": hm_td,
-                                "hp": hp_td,
-                                "hr": hr_td
-                            },
-                            "heures_tp": {
-                                "hm": hm_tp,
-                                "hp": hp_tp,
-                                "hr": hr_tp
+                        # Vérifier si cette UE existe déjà dans ce groupe
+                        if ue_key not in ue_dict:
+                            ue_dict[ue_key] = {
+                                "code": code_ue,
+                                "nom": nom_matiere,
+                                "matieres": []
                             }
-                        }
-                        
-                        current_ue["matieres"].append(matiere)
-                    except Exception as e:
-                        print(f"Erreur lors du traitement d'une ligne: {e}")
-            
-            # Préparer les données pour MongoDB
-            for ue_code, ue_data in unites_enseignement.items():
-                if ue_data["matieres"]:  # Ne pas insérer les UE sans matières
+                        current_ue = ue_dict[ue_key]
+                    
+                    # Si pas de code_ue mais qu'on a un nom_matiere et une UE courante, c'est une matière de cette UE
+                    if not code_ue and nom_matiere and current_ue:
+                        # Traiter comme une matière de l'UE courante
+                        pass
+                    
+                    # Si on a une UE courante, on peut ajouter une matière
+                    if current_ue:
+                        try:
+                            # Convertir les valeurs en nombres avec gestion d'erreurs
+                            def safe_convert(val, default=0):
+                                try:
+                                    if pd.isna(val):
+                                        return default
+                                    return float(val)
+                                except (ValueError, TypeError):
+                                    return default
+                            
+                            ects = safe_convert(row.get('ects', 0))
+                            intervenant = str(row.get('intervenant', '')) if not pd.isna(row.get('intervenant', '')) else ''
+                            
+                            # Heures CM, TD, TP
+                            cm_hm = safe_convert(row.get('cm_hm', 0))
+                            cm_hp = safe_convert(row.get('cm_hp', 0))
+                            cm_hr = safe_convert(row.get('cm_hr', 0))
+                            
+                            td_hm = safe_convert(row.get('td_hm', 0))
+                            td_hp = safe_convert(row.get('td_hp', 0))
+                            td_hr = safe_convert(row.get('td_hr', 0))
+                            
+                            tp_hm = safe_convert(row.get('tp_hm', 0))
+                            tp_hp = safe_convert(row.get('tp_hp', 0))
+                            tp_hr = safe_convert(row.get('tp_hr', 0))
+                            
+                            # Ajouter la matière même si les heures sont toutes à 0
+                            matiere = {
+                                "nom": nom_matiere if nom_matiere != current_ue["nom"] else f"{nom_matiere} (cours)",
+                                "ects": ects,
+                                "intervenant": intervenant,
+                                "heures_cm": {
+                                    "hm": cm_hm,
+                                    "hp": cm_hp,
+                                    "hr": cm_hr
+                                },
+                                "heures_td": {
+                                    "hm": td_hm,
+                                    "hp": td_hp,
+                                    "hr": td_hr
+                                },
+                                "heures_tp": {
+                                    "hm": tp_hm,
+                                    "hp": tp_hp,
+                                    "hr": tp_hr
+                                }
+                            }
+                            current_ue["matieres"].append(matiere)
+                            matiere_count += 1
+                            
+                        except Exception as e:
+                            print(f"Erreur lors du traitement de la ligne {index}: {e}")
+                
+                # Préparer les documents pour MongoDB pour ce groupe
+                for ue_key, ue_data in ue_dict.items():
+                    # Extraire niveau et semestre de la clé
+                    parts = ue_key.split('_', 2)  # Diviser en 3 parties: niveau, semestre, code_ue
+                    record_niveau = parts[0]
+                    record_semestre = parts[1]
+                    
+                    # Créer l'enregistrement
                     record = {
                         "annee_academique": annee_academique,
                         "annee_debut": int(annee_debut),
                         "annee_fin": int(annee_fin),
-                        "niveau": niveau,
-                        "semestre": semestre,
+                        "niveau": record_niveau,
+                        "semestre": record_semestre,
                         "unite_enseignement": ue_data,
                         "uploaded_by": current_user['username'],
                         "uploaded_at": datetime.utcnow()
                     }
                     records_to_insert.append(record)
             
-            # Supprimer les données existantes pour cette combinaison
-            heures_enseignement_collection.delete_many({
-                "annee_academique": annee_academique,
-                "niveau": niveau,
-                "semestre": semestre
-            })
+            print(f"Total des matières traitées: {matiere_count}")
+            print(f"Enregistrements à insérer: {len(records_to_insert)}")
             
-            # Insérer les nouvelles données
-            if records_to_insert:
-                result = heures_enseignement_collection.insert_many(records_to_insert)
+            # MODIFICATION IMPORTANTE : Ne pas supprimer les données existantes
+            # Au lieu de cela, vérifier pour chaque UE si elle existe déjà
+            
+            # Pour chaque enregistrement à insérer, vérifier s'il existe déjà
+            inserted_count = 0
+            updated_count = 0
+            
+            for record in records_to_insert:
+                # Vérifier si cet enregistrement existe déjà (même UE, niveau, semestre, année)
+                existing = heures_enseignement_collection.find_one({
+                    "annee_academique": record["annee_academique"],
+                    "niveau": record["niveau"],
+                    "semestre": record["semestre"],
+                    "unite_enseignement.code": record["unite_enseignement"]["code"]
+                })
                 
-                return jsonify({
-                    "message": "Données d'heures d'enseignement importées avec succès",
-                    "records_inserted": len(result.inserted_ids),
-                    "success": True
-                }), 200
-            else:
-                return jsonify({
-                    "warning": "Aucune donnée valide trouvée dans le fichier",
-                    "success": False
-                }), 400
+                if existing:
+                    # Si l'enregistrement existe, générer un nouveau code UE unique
+                    original_code = record["unite_enseignement"]["code"]
+                    # Ajouter un horodatage pour rendre le code unique
+                    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                    new_code = f"{original_code}_{timestamp}"
+                    
+                    # Mettre à jour le code UE dans l'enregistrement
+                    record["unite_enseignement"]["code"] = new_code
+                    print(f"UE existante trouvée: {original_code}, nouveau code généré: {new_code}")
+                    
+                    # Insérer comme nouvel enregistrement
+                    heures_enseignement_collection.insert_one(record)
+                    inserted_count += 1
+                else:
+                    # Si l'enregistrement n'existe pas, l'insérer directement
+                    heures_enseignement_collection.insert_one(record)
+                    inserted_count += 1
+            
+            print(f"Enregistrements insérés: {inserted_count}")
+            
+            return jsonify({
+                "message": f"Données d'heures d'enseignement importées avec succès. {inserted_count} enregistrements insérés, aucune donnée supprimée.",
+                "records_inserted": inserted_count,
+                "success": True
+            }), 200
                 
         except Exception as e:
+            import traceback
+            traceback_str = traceback.format_exc()
+            print(f"Erreur détaillée: {traceback_str}")
             return jsonify({"error": f"Erreur lors du traitement du fichier: {str(e)}"}), 500
     
     return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV et Excel sont acceptés."}), 400
-
-
 @app.route('/api/heures-enseignement/form', methods=['POST'])
 @token_required
 def add_heures_enseignement_form(current_user):

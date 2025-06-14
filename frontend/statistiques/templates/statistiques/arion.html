@@ -124,6 +124,9 @@
         border-radius: 10px;
         margin-bottom: 20px;
     }
+    #arionTable {
+    font-size: 0.85rem; /* Taille de police réduite */
+    }
     
     .arion-info-fields {
         display: grid;
@@ -282,10 +285,10 @@
         <!-- Graphiques (optionnels, à adapter selon vos besoins) -->
         <div class="chart-grid">
             <!-- Graphique 1: Répartition par année -->
-            <div class="chart-container">
-                <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par année</h5>
-                <canvas id="yearDistributionChart"></canvas>
-            </div>
+                <div class="chart-container">
+                  <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Statut</h5>
+                    <canvas id="yearDistributionChart"></canvas>
+                </div>
 
             <!-- Graphique 2: Évolution mensuelle -->
             <div class="chart-container">
@@ -651,6 +654,7 @@ $(document).ready(function() {
     initCharts();
     // Charger les formateurs par statut
     loadFormateursByStatus(); 
+    loadAndUpdateStatusPieChart()
     
     // Gestion du nom de fichier pour l'upload CSV
     $('.custom-file-input').on('change', function() {
@@ -699,6 +703,7 @@ function loadArionStats() {
             
             // Mettre à jour les graphiques
             updateCharts(data.graphiques);
+            loadAndUpdateStatusPieChart();
             loadStatusStats();
         },
         error: function(xhr) {
@@ -708,7 +713,104 @@ function loadArionStats() {
         }
     });
 }
-
+function loadAndUpdateStatusPieChart() {
+    console.log("Chargement du graphique en camembert simplifié");
+    
+    // Si le graphique en barre existe et a des données, réutilisons-les
+    if (window.statusChart && window.statusChart.data && 
+        window.statusChart.data.labels && window.statusChart.data.datasets) {
+        
+        // Récupérer les labels et les valeurs du graphique en barre
+        const labels = window.statusChart.data.labels;
+        const values = window.statusChart.data.datasets[0].data;
+        
+        console.log("Données récupérées du graphique en barre:", labels, values);
+        
+        // Mettre à jour le graphique en camembert avec ces données
+        updateStatusPieChartSimple(labels, values);
+        return;
+    }
+}
+// Fonction pour mettre à jour le graphique en camembert avec les données de statut
+// Fonction pour mettre à jour le graphique en camembert avec les données de statut
+function updateStatusPieChart(labels, values) {
+    console.log("Mise à jour simple du graphique en camembert avec:", labels, values);
+    
+    const yearCtx = document.getElementById('yearDistributionChart');
+    if (!yearCtx) {
+        console.error("Canvas 'yearDistributionChart' introuvable");
+        return;
+    }
+    
+    // Détruire le graphique existant s'il existe
+    if (window.yearChart) {
+        window.yearChart.destroy();
+    }
+    
+    // Vérifier si nous avons des données valides
+    if (!labels || !values || labels.length === 0 || values.length === 0) {
+        console.warn("Pas de données pour le camembert");
+        window.yearChart = new Chart(yearCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Aucune donnée'],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ['#cccccc']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        return;
+    }
+    
+    // Couleurs pour les statuts
+    const colors = {
+        'Vacataires': '#f56960',
+        'Enseignants': '#7c50de',
+        'Personnels non enseignant': '#ffb43c',
+        'Non spécifié': '#cccccc'
+    };
+    
+    // Préparer les couleurs
+    const backgroundColors = labels.map(label => colors[label] || '#3cbebe');
+    
+    // Calculer les pourcentages
+    const total = values.reduce((sum, val) => sum + val, 0);
+    const percentages = values.map(val => Math.round((val / total) * 100));
+    
+    // Labels avec pourcentages
+    const labelsWithPercentages = labels.map((label, i) => 
+        `${label} (${percentages[i]}%)`
+    );
+    
+    // Créer le graphique
+    window.yearChart = new Chart(yearCtx, {
+        type: 'pie',
+        data: {
+            labels: labelsWithPercentages,
+            datasets: [{
+                data: values,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+    
+    console.log("Graphique en camembert créé avec succès!");
+}
 function loadStatusStats() {
     console.log("Chargement des statistiques par statut...");
     $.ajax({
@@ -1649,12 +1751,15 @@ function editData(id) {
     
     // Récupérer les données de l'élément à modifier
     $.ajax({
-        url: `${API_BASE_URL}/arion/data?id=${id}`,
+        url: `${API_BASE_URL}/arion/data`,
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + getToken()
         },
+        data: { id: id },  // Ajouter l'ID comme paramètre de requête
         success: function(data) {
+            console.log("Données reçues pour édition:", data);
+            
             // Vérifier que des données ont été trouvées
             if (data && data.length > 0) {
                 const item = data[0];
@@ -1692,25 +1797,49 @@ function editData(id) {
         },
         error: function(xhr) {
             showNotification('error', 'Erreur lors de la récupération des données');
-            console.error(xhr.responseText);
+            console.error("Erreur lors de la récupération des données:", xhr.responseText);
         }
     });
 }
 
 // Fonction pour confirmer la suppression
-function confirmDelete(id, activite, formateur, date) {
-    // Mettre à jour le texte de confirmation
-    const details = activite && formateur && date 
-        ? `${activite} - ${formateur} (${date})` 
-        : `ID: ${id}`;
+function confirmDelete(id) {
+    console.log("Demande de suppression de l'élément ID:", id);
     
-    $('#deleteDetails').text(details);
-    
-    // Configurer le formulaire de suppression
-    $('#deleteForm').data('id', id);
-    
-    // Afficher la modal de confirmation
-    $('#deleteModal').modal('show');
+    // Récupérer les informations de l'élément à supprimer pour l'afficher dans la confirmation
+    $.ajax({
+        url: `${API_BASE_URL}/arion/data`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
+        data: { id: id },  // Ajouter l'ID comme paramètre de requête
+        success: function(data) {
+            if (data && data.length > 0) {
+                const item = data[0];
+                
+                // Mettre à jour le texte de confirmation avec les détails de l'élément
+                const details = `${item.activite || 'Activité inconnue'} - ${item.formateur || 'Formateur inconnu'} (${item.date || 'Date inconnue'})`;
+                $('#deleteDetails').text(details);
+                
+                // Stocker l'ID à supprimer dans le formulaire
+                $('#deleteForm').data('id', id);
+                
+                // Afficher la modal de confirmation
+                $('#deleteModal').modal('show');
+            } else {
+                showNotification('error', 'Élément introuvable');
+            }
+        },
+        error: function(xhr) {
+            // En cas d'erreur, afficher quand même la confirmation
+            $('#deleteDetails').text(`ID: ${id}`);
+            $('#deleteForm').data('id', id);
+            $('#deleteModal').modal('show');
+            
+            console.error("Erreur lors de la récupération des détails pour la suppression:", xhr.responseText);
+        }
+    });
 }
 
 // Fonction pour supprimer des données
@@ -1720,6 +1849,8 @@ function deleteArionData(form) {
         showNotification('error', 'ID manquant pour la suppression');
         return;
     }
+    
+    console.log("Suppression de l'élément ID:", id);
     
     // Afficher un indicateur de chargement
     const submitBtn = form.find('button[type="submit"]');
@@ -1755,6 +1886,7 @@ function deleteArionData(form) {
             } catch (e) {
                 showNotification('error', 'Erreur lors de la suppression des données');
             }
+            console.error("Erreur lors de la suppression:", xhr.responseText);
         },
         complete: function() {
             // Restaurer le bouton
@@ -1779,6 +1911,7 @@ function refreshData() {
         loadArionStats();
         loadStatusStats(); // Ajoutez cette ligne
         loadFormateursByStatus();
+        loadAndUpdateStatusPieChart()
         showNotification('success', 'Données actualisées avec succès !');
     }, 100); // Juste un petit délai pour l'effet visuel
 }
