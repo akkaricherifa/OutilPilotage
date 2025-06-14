@@ -56,6 +56,15 @@ urlpatterns = [
     path('api/arion/delete/<str:item_id>/', views.arion_api_delete, name='arion_api_delete'),
     path('api/arion/status-stats/', views.arion_status_stats, name='arion_status_stats'),
     path('api/arion/monthly_stats', views.arion_monthly_stats, name='arion_monthly_stats'),
+
+
+    # Routes pour les vacataires
+    path('vacataire/', views.vacataire, name='vacataire'),
+    path('vacataire/add-data/', views.vacataire_add_data, name='vacataire_add_data'),
+    path('vacataire/upload-csv/', views.vacataire_upload_csv, name='vacataire_upload_csv'),
+    path('vacataire/delete/<str:id>/', views.vacataire_delete, name='vacataire_delete'),
+    path('vacataire/update/<str:id>/', views.vacataire_update, name='vacataire_update'),
+    path('vacataire/stats/', views.vacataire_stats, name='vacataire_stats'),
 ]
     
 

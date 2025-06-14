@@ -37,8 +37,7 @@ try:
     heures_enseignement_collection = db['heures_enseignement_detaillees']
     rse_collection = db[MONGO_COLLECTION_RSE]
     arion_collection = db[MONGO_COLLECTION_ARION]
-
-
+    vacataire_collection = db[MONGO_COLLECTION_VACATAIRE]
     print(f"Connexion à la base {MONGO_DB} réussie!")
     print("Collections disponibles:", db.list_collection_names())
     
@@ -2229,6 +2228,261 @@ def get_arion_monthly_stats():
     except Exception as e:
         app.logger.error(f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}")
         return jsonify({"error": "Erreur lors de la récupération des statistiques mensuelles"}), 500
+######################### Routes pour VACATAIRES ###################################
+@app.route('/api/vacataire/data', methods=['GET'])
+@token_required
+def get_vacataire_data(current_user):
+    """Endpoint pour récupérer les données des vacataires"""
+    try:
+        # Paramètres de filtrage optionnels
+        nom = request.args.get('nom')
+        prenom = request.args.get('prenom')
+        email = request.args.get('email')
+        profession = request.args.get('profession')
+        pays = request.args.get('pays')
+        etat = request.args.get('etat')
+        
+        # Construire le filtre en fonction des paramètres fournis
+        filter_query = {}
+        
+        if nom:
+            filter_query["nom"] = {"$regex": nom, "$options": "i"}
+        if prenom:
+            filter_query["prenom"] = {"$regex": prenom, "$options": "i"}
+        if email:
+            filter_query["email"] = {"$regex": email, "$options": "i"}
+        if profession:
+            filter_query["type_profession"] = {"$regex": profession, "$options": "i"}
+        if pays:
+            filter_query["pays"] = {"$regex": pays, "$options": "i"}
+        if etat:
+            filter_query["etat_recrutement"] = {"$regex": etat, "$options": "i"}
+        
+        # Récupérer les données
+        cursor = vacataire_collection.find(filter_query, {'_id': 0})
+        
+        # Convertir le curseur en liste et nettoyer les données
+        vacataires = []
+        for doc in cursor:
+            # Assurer que toutes les valeurs nulles ou NaN sont remplacées par des chaînes vides
+            for key, value in doc.items():
+                if value is None or (isinstance(value, float) and math.isnan(value)):
+                    doc[key] = ""
+            vacataires.append(doc)
+        
+        return jsonify(vacataires), 200
+        
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des données vacataires: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
+
+@app.route('/api/vacataire/add', methods=['POST'])
+@token_required
+def add_vacataire(current_user):
+    """Endpoint pour ajouter un vacataire manuellement"""
+    try:
+        data = request.json
+        
+        # Valider les données requises
+        required_fields = ['nom', 'prenom', 'email']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({"error": f"Le champ {field} est requis"}), 400
+        
+        # Générer un ID unique si non fourni
+        if not data.get('id'):
+            data['id'] = str(uuid.uuid4())
+            
+        # Ajouter la date de création
+        data['date_creation'] = datetime.now().isoformat()
+        data['cree_par'] = current_user.get('username', 'system')
+        
+        # Insérer dans la collection
+        result = vacataire_collection.insert_one(data)
+        
+        if result.inserted_id:
+            return jsonify({"message": "Vacataire ajouté avec succès", "id": data['id']}), 201
+        else:
+            return jsonify({"error": "Erreur lors de l'ajout du vacataire"}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Erreur lors de l'ajout d'un vacataire: {str(e)}")
+        return jsonify({"error": f"Erreur lors de l'ajout: {str(e)}"}), 500
+
+@app.route('/api/vacataire/upload-csv', methods=['POST'])
+@token_required
+def upload_vacataire_csv(current_user):
+    """Endpoint pour uploader un fichier CSV de vacataires"""
+    try:
+        if 'file' not in request.files:
+            return jsonify({"error": "Aucun fichier n'a été envoyé"}), 400
+            
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
+            
+        if file and file.filename.endswith('.csv'):
+            # Lire le contenu du fichier
+            content = file.read().decode('utf-8')
+            
+            # Utiliser pandas pour lire le CSV
+            df = pd.read_csv(io.StringIO(content))
+            
+            # Validation des colonnes minimales
+            required_columns = ['nom', 'prenom', 'email']
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            
+            if missing_columns:
+                return jsonify({
+                    "error": f"Colonnes manquantes dans le CSV: {', '.join(missing_columns)}"
+                }), 400
+                
+            # Préparer les données pour insertion
+            records = []
+            for _, row in df.iterrows():
+                record = row.to_dict()
+                
+                # Convertir les valeurs NaN en chaînes vides
+                for key, value in record.items():
+                    if pd.isna(value):
+                        record[key] = ""
+                
+                # Générer un ID unique
+                record['id'] = str(uuid.uuid4())
+                
+                # Ajouter métadonnées
+                record['date_creation'] = datetime.now().isoformat()
+                record['cree_par'] = current_user.get('username', 'system')
+                
+                records.append(record)
+                
+            # Insérer les données dans MongoDB
+            if records:
+                result = vacataire_collection.insert_many(records)
+                return jsonify({
+                    "message": "Import CSV réussi",
+                    "records_inserted": len(result.inserted_ids)
+                }), 200
+            else:
+                return jsonify({"message": "Aucun enregistrement à importer"}), 200
+        else:
+            return jsonify({"error": "Le fichier doit être au format CSV"}), 400
+            
+    except Exception as e:
+        app.logger.error(f"Erreur lors de l'upload CSV vacataire: {str(e)}")
+        return jsonify({"error": f"Erreur lors de l'import: {str(e)}"}), 500
+
+@app.route('/api/vacataire/delete/<string:id>', methods=['DELETE'])
+@token_required
+def delete_vacataire(current_user, id):
+    """Endpoint pour supprimer un vacataire"""
+    try:
+        result = vacataire_collection.delete_one({"id": id})
+        
+        if result.deleted_count:
+            return jsonify({"message": "Vacataire supprimé avec succès"}), 200
+        else:
+            return jsonify({"error": "Vacataire non trouvé"}), 404
+            
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la suppression d'un vacataire: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la suppression: {str(e)}"}), 500
+
+@app.route('/api/vacataire/update/<string:id>', methods=['PUT'])
+@token_required
+def update_vacataire(current_user, id):
+    """Endpoint pour mettre à jour un vacataire"""
+    try:
+        data = request.json
+        
+        # Vérifier si le vacataire existe
+        existing = vacataire_collection.find_one({"id": id})
+        if not existing:
+            return jsonify({"error": "Vacataire non trouvé"}), 404
+            
+        # Ajouter les métadonnées de mise à jour
+        data['date_modification'] = datetime.now().isoformat()
+        data['modifie_par'] = current_user.get('username', 'system')
+        
+        # Mettre à jour le document
+        result = vacataire_collection.update_one(
+            {"id": id},
+            {"$set": data}
+        )
+        
+        if result.modified_count:
+            return jsonify({"message": "Vacataire mis à jour avec succès"}), 200
+        else:
+            return jsonify({"message": "Aucune modification effectuée"}), 200
+            
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la mise à jour d'un vacataire: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la mise à jour: {str(e)}"}), 500
+
+@app.route('/api/vacataire/stats', methods=['GET'])
+@token_required
+def get_vacataire_stats(current_user):
+    """Endpoint pour récupérer les statistiques des vacataires"""
+    try:
+        # Statistiques par pays
+        pays_pipeline = [
+            {"$group": {"_id": "$pays", "count": {"$sum": 1}}},
+            {"$match": {"_id": {"$ne": ""}}},
+            {"$sort": {"count": -1}}
+        ]
+        pays_stats = list(vacataire_collection.aggregate(pays_pipeline))
+        
+        # Statistiques par profession
+        profession_pipeline = [
+            {"$group": {"_id": "$type_profession", "count": {"$sum": 1}}},
+            {"$match": {"_id": {"$ne": ""}}},
+            {"$sort": {"count": -1}}
+        ]
+        profession_stats = list(vacataire_collection.aggregate(profession_pipeline))
+        
+        # Statistiques par état de recrutement
+        etat_pipeline = [
+            {"$group": {"_id": "$etat_recrutement", "count": {"$sum": 1}}},
+            {"$match": {"_id": {"$ne": ""}}},
+            {"$sort": {"count": -1}}
+        ]
+        etat_stats = list(vacataire_collection.aggregate(etat_pipeline))
+        
+        # Statistiques d'heures par vacataire
+        heures_pipeline = [
+            {"$match": {"nombre_heures": {"$exists": True, "$ne": ""}}},
+            {"$project": {"nom": 1, "prenom": 1, "nombre_heures": {"$toDouble": "$nombre_heures"}}},
+            {"$sort": {"nombre_heures": -1}},
+            {"$limit": 10}
+        ]
+        heures_stats = list(vacataire_collection.aggregate(heures_pipeline))
+        
+        # Préparer le résultat
+        result = {
+            "pays": {
+                "labels": [item["_id"] for item in pays_stats],
+                "values": [item["count"] for item in pays_stats]
+            },
+            "profession": {
+                "labels": [item["_id"] for item in profession_stats],
+                "values": [item["count"] for item in profession_stats]
+            },
+            "etat_recrutement": {
+                "labels": [item["_id"] for item in etat_stats],
+                "values": [item["count"] for item in etat_stats]
+            },
+            "heures": {
+                "labels": [f"{item['prenom']} {item['nom']}" for item in heures_stats],
+                "values": [item["nombre_heures"] for item in heures_stats]
+            },
+            "total_vacataires": vacataire_collection.count_documents({})
+        }
+        
+        return jsonify(result), 200
+        
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des statistiques vacataires: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la récupération des statistiques: {str(e)}"}), 500
 ############################################################ Routes pour les templates (si nécessaire)
 @app.route('/')
 def home():

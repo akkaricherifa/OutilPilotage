@@ -9127,3 +9127,204 @@ C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloa
 Watching for file changes with StatReloader
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
 Watching for file changes with StatReloader
+"GET /heures-enseignement/ HTTP/1.1" 200 80870
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 12645
+"GET /heures-enseignement/ HTTP/1.1" 200 80870
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 12645
+"GET /heures-enseignement/ HTTP/1.1" 200 80870
+"GET /heures-enseignement/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49668
+"GET /heures-enseignement/ HTTP/1.1" 200 80870
+"GET /heures-enseignement/ HTTP/1.1" 200 81415
+"GET /heures-enseignement/ HTTP/1.1" 200 80870
+"GET /heures-enseignement/ HTTP/1.1" 200 79560
+"GET /heures-enseignement/ HTTP/1.1" 200 79560
+"GET /heures-enseignement/ HTTP/1.1" 200 79560
+"GET /heures-enseignement/ HTTP/1.1" 200 79560
+"GET /heures-enseignement/ HTTP/1.1" 200 80752
+"GET /heures-enseignement/ HTTP/1.1" 200 80395
+"GET /heures-enseignement/ HTTP/1.1" 200 80117
+"GET /heures-enseignement/ HTTP/1.1" 200 80356
+"GET /heures-enseignement/ HTTP/1.1" 200 80282
+"GET /heures-enseignement/ HTTP/1.1" 200 80958
+"GET /heures-enseignement/ HTTP/1.1" 200 81184
+"GET /heures-enseignement/ HTTP/1.1" 200 81185
+"GET /heures-enseignement/ HTTP/1.1" 200 81184
+"GET /heures-enseignement/ HTTP/1.1" 200 81184
+"GET /heures-enseignement/ HTTP/1.1" 200 81184
+"GET /heures-enseignement/ HTTP/1.1" 200 81131
+"GET /heures-enseignement/ HTTP/1.1" 200 81131
+"GET /heures-enseignement/ HTTP/1.1" 200 85817
+"GET /heures-enseignement/ HTTP/1.1" 200 85741
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Données vacataires récupérées: 0 enregistrements
+Internal Server Error: /vacataire/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1812, in vacataire
+    return render(request, 'statistiques/vacataire.html', {
+        'user_info': request.session.get('user_info', {}),
+        'vacataires_data': json.dumps(vacataires_data)
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 228, in do_block
+    raise TemplateSyntaxError(
+        "'%s' tag with name '%s' appears more than once" % (bits[0], block_name)
+    )
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'extra_css' appears more than once
+"GET /vacataire/ HTTP/1.1" 500 193618
+Données vacataires récupérées: 0 enregistrements
+Internal Server Error: /vacataire/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1812, in vacataire
+    return render(request, 'statistiques/vacataire.html', {
+        'user_info': request.session.get('user_info', {}),
+        'vacataires_data': json.dumps(vacataires_data)
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 5: 'block'. Looking for one of: endblock.
+"GET /vacataire/ HTTP/1.1" 500 181394
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 58141
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49653
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 58141
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 60863
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61351
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Watching for file changes with StatReloader

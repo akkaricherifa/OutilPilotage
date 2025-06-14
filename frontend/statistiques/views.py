@@ -1786,3 +1786,172 @@ def arion_monthly_stats(request):
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}")
         return JsonResponse({"error": f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}"}, status=500)
+    
+###################################### VACATAIRE ####################################
+@api_authenticated_required
+def vacataire(request):
+    """Vue pour la page des vacataires"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données des vacataires depuis l'API
+        response = requests.get(f"{settings.API_URL}/vacataire/data", headers=headers, timeout=10)
+        if response.status_code == 200:
+            vacataires_data = response.json()
+            logger.info(f"Données vacataires récupérées: {len(vacataires_data)} enregistrements")
+        else:
+            vacataires_data = []
+            logger.warning(f"Impossible de récupérer les données vacataires: Code {response.status_code}")
+            messages.warning(request, "Impossible de récupérer les données des vacataires.")
+    except requests.exceptions.RequestException as e:
+        vacataires_data = []
+        logger.error(f"Erreur API vacataire: {e}")
+        messages.error(request, "Erreur de connexion à l'API pour récupérer les données des vacataires.")
+    
+    return render(request, 'statistiques/vacataire.html', {
+        'user_info': request.session.get('user_info', {}),
+        'vacataires_data': json.dumps(vacataires_data)
+    })
+
+@api_authenticated_required
+def vacataire_add_data(request):
+    """Vue pour ajouter un vacataire manuellement"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données du formulaire
+        data = request.POST.dict()
+        
+        # Envoyer les données à l'API
+        response = requests.post(
+            f"{settings.API_URL}/vacataire/add",
+            headers=headers,
+            json=data,
+            timeout=10
+        )
+        
+        if response.status_code == 201:
+            return JsonResponse({"success": True, "message": "Vacataire ajouté avec succès"})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_add_data: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de l'ajout du vacataire."}, status=500)
+
+@api_authenticated_required
+def vacataire_upload_csv(request):
+    """Vue pour uploader un fichier CSV de vacataires"""
+    if request.method != 'POST' or not request.FILES.get('csvFile'):
+        return JsonResponse({"error": "Fichier CSV requis"}, status=400)
+    
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    csv_file = request.FILES['csvFile']
+    
+    try:
+        # Vérifier l'extension du fichier
+        if not csv_file.name.endswith('.csv'):
+            return JsonResponse({"error": "Le fichier doit être au format CSV"}, status=400)
+        
+        # Envoyer le fichier à l'API
+        files = {'file': (csv_file.name, csv_file.file, 'text/csv')}
+        
+        response = requests.post(
+            f"{settings.API_URL}/vacataire/upload-csv",
+            headers=headers,
+            files=files,
+            timeout=30  # Délai plus long pour l'upload
+        )
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            return JsonResponse({"success": True, "message": f"{api_response.get('records_inserted', 0)} enregistrements ajoutés."})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur upload API vacataire: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de l'upload du fichier."}, status=500)
+    finally:
+        csv_file.file.close()
+
+@api_authenticated_required
+def vacataire_delete(request, id):
+    """Vue pour supprimer un vacataire"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        response = requests.delete(
+            f"{settings.API_URL}/vacataire/delete/{id}",
+            headers=headers,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return JsonResponse({"success": True, "message": "Vacataire supprimé avec succès"})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur lors de la suppression')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_delete: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de la suppression du vacataire."}, status=500)
+
+@api_authenticated_required
+def vacataire_update(request, id):
+    """Vue pour mettre à jour un vacataire"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données du formulaire
+        data = request.POST.dict()
+        
+        # Envoyer les données à l'API
+        response = requests.put(
+            f"{settings.API_URL}/vacataire/update/{id}",
+            headers=headers,
+            json=data,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return JsonResponse({"success": True, "message": "Vacataire mis à jour avec succès"})
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_update: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de la mise à jour du vacataire."}, status=500)
+
+@api_authenticated_required
+def vacataire_stats(request):
+    """Vue pour récupérer les statistiques des vacataires"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        response = requests.get(f"{settings.API_URL}/vacataire/stats", headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            stats_data = response.json()
+            return JsonResponse(stats_data)
+        else:
+            return JsonResponse({"error": "Impossible de récupérer les statistiques"}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_stats: {e}")
+        return JsonResponse({"error": "Erreur de connexion lors de la récupération des statistiques."}, status=500)
