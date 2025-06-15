@@ -892,15 +892,14 @@
         $('#addDataModal').modal('show');
     });
     
-    $(document).on('click', '.btn-import', function(e) {
-        e.preventDefault();
-        console.log("Bouton Import CSV cliqué");
-
-        $('#csvUploadForm')[0].reset();
-        $('.custom-file-label').html('Choisir un fichier');
-        
-        $('#importCsvModal').modal('show');
-    });
+    $('.btn-import').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // Empêche la propagation de l'événement
+    console.log("Bouton Import CSV cliqué avec stopPropagation");
+    $('#csvUploadForm')[0].reset();
+    $('.custom-file-label').html('Choisir un fichier');
+    $('#importCsvModal').modal('show');
+});
     
     // Gérer la fermeture des modals avec le bouton Annuler
     $(document).on('click', '.modal .btn-secondary', function() {

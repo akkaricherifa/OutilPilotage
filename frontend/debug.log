@@ -9624,3 +9624,385 @@ Données vacataires récupérées: 3070 enregistrements
 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
 Watching for file changes with StatReloader
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68534
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats HTTP/1.1" 301 0
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 69801
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 69955
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68534
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68561
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68560
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68569
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68542
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71474
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71474
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71472
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71475
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+Internal Server Error: /vacataire/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        template_name,
+        ^^^^^^^^^^^^^^
+        skip=history,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 1812, in vacataire
+    return render(request, 'statistiques/vacataire.html', {
+        'user_info': request.session.get('user_info', {}),
+        'vacataires_data': json.dumps(vacataires_data)
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+"GET /vacataire/ HTTP/1.1" 500 213172
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71521
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71530
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71530
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71530
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71141
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71539
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71544
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71543
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71348
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71283
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71243
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71738
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71911
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72440
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72614
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72647
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72646
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72650
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72646
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72652
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72647
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71899
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71899
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71899
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72075
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 71910
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72024
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72024
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 73636
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72024
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72023
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72089
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72094
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72094
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 74638
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 74754
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Internal Server Error: /api/vacataire/stats/
+"GET /api/vacataire/stats/ HTTP/1.1" 500 63
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 74634
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 74634
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 74634
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72141
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72146
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72058
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72410
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72420
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72420
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879

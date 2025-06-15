@@ -666,130 +666,157 @@
         <div class="categories-grid">
             <!-- Carte 1: Heures d'enseignement -->
             <div class="category-card heures-card">
-                <div class="category-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <h3 class="category-title">Heures d'Enseignement</h3>
-                <div class="category-stat">{{ categories_stats.heures.total }} h</div>
-                <p class="category-desc">
-                    Gestion et suivi des heures d'enseignement réparties entre CM, TD, TP et projets. 
-                    Visualisez les différentes répartitions et l'évolution du volume horaire sur les dernières années.
-                </p>
-                <div class="category-footer">
-                      <a href="{% url 'heures_enseignement' %}" class="category-button">
+    <div class="category-icon">
+        <i class="fas fa-clock"></i>
+    </div>
+    <h3 class="category-title">Heures d'Enseignement</h3>
+    <p class="category-desc">
+        Gestion et suivi des heures d'enseignement réparties entre CM, TD, TP et projets. 
+        Visualisez les différentes répartitions et l'évolution du volume horaire sur les dernières années.
+    </p>
+    <div class="category-footer">
+        <button onclick="window.location.href='{% url 'heures_enseignement' %}'" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
-        </a>
-                    <div class="category-trend {% if categories_stats.heures.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
-                        <i class="fas fa-arrow-{% if categories_stats.heures.trend == 'up' %}up{% else %}down{% endif %}"></i>
-                        <span>{% if categories_stats.heures.evolution > 0 %}+{% endif %}{{ categories_stats.heures.evolution }}%</span>
-                    </div>
-                </div>
-            </div>
+        </button>
+        <div class="category-trend {% if categories_stats.heures.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
+            <i class="fas fa-arrow-{% if categories_stats.heures.trend == 'up' %}up{% else %}down{% endif %}"></i>
+            <span>{% if categories_stats.heures.evolution > 0 %}+{% endif %}{{ categories_stats.heures.evolution }}%</span>
+        </div>
+    </div>
+</div>
 
             <!-- Carte 2: RSE -->
             <div class="category-card rse-card">
-                <div class="category-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <h3 class="category-title">RSE - Responsabilité Sociétale</h3>
-                <div class="category-stat">{{ categories_stats.rse.total }} h</div>
-                <p class="category-desc">
-                    Modules et projets dédiés à la Responsabilité Sociétale des Entreprises (RSE). 
-                    Sensibilisation aux enjeux environnementaux et sociaux dans le domaine numérique.
-                </p>
-                <div class="category-footer">
-                    <a href="{% url 'rse' %}" class="category-button">
+    <div class="category-icon">
+        <i class="fas fa-leaf"></i>
+    </div>
+    <h3 class="category-title">RSE - Responsabilité Sociétale</h3>
+    <p class="category-desc">
+        Modules et projets dédiés à la Responsabilité Sociétale des Entreprises (RSE). 
+        Sensibilisation aux enjeux environnementaux et sociaux dans le domaine numérique.
+    </p>
+    <div class="category-footer">
+        <button onclick="window.location.href='{% url 'rse' %}'" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
-        </a>
-                    <div class="category-trend {% if categories_stats.rse.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
-                        <i class="fas fa-arrow-{% if categories_stats.rse.trend == 'up' %}up{% else %}down{% endif %}"></i>
-                        <span>{% if categories_stats.rse.evolution > 0 %}+{% endif %}{{ categories_stats.rse.evolution }}%</span>
-                    </div>
-                </div>
-            </div>
+        </button>
+        <div class="category-trend {% if categories_stats.rse.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
+            <i class="fas fa-arrow-{% if categories_stats.rse.trend == 'up' %}up{% else %}down{% endif %}"></i>
+            <span>{% if categories_stats.rse.evolution > 0 %}+{% endif %}{{ categories_stats.rse.evolution }}%</span>
+        </div>
+    </div>
+</div>
 
             <!-- Carte 3: ARION -->
             <div class="category-card arion-card">
-                <div class="category-icon">
-                    <i class="fas fa-microscope"></i>
-                </div>
-                <h3 class="category-title">ARION - Recherche</h3>
-                <div class="category-stat">{{ categories_stats.arion.total }} h</div>
-                <p class="category-desc">
-                    Plateforme de Recherche ARION dédiée à l'innovation en santé numérique. 
-                    Projets de recherche associés aux formations et collaborations avec des chercheurs.
-                </p>
-                <div class="category-footer">
-                      <a href="{% url 'arion' %}" class="category-button">
+    <div class="category-icon">
+        <i class="fas fa-microscope"></i>
+    </div>
+    <h3 class="category-title">ARION - Recherche</h3>
+    <p class="category-desc">
+        Plateforme de Recherche ARION dédiée à l'innovation en santé numérique. 
+        Projets de recherche associés aux formations et collaborations avec des chercheurs.
+    </p>
+    <div class="category-footer">
+        <button onclick="window.location.href='{% url 'arion' %}'" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
-        </a>
-                    <div class="category-trend {% if categories_stats.arion.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
-                        <i class="fas fa-arrow-{% if categories_stats.arion.trend == 'up' %}up{% else %}down{% endif %}"></i>
-                        <span>{% if categories_stats.arion.evolution > 0 %}+{% endif %}{{ categories_stats.arion.evolution }}%</span>
-                    </div>
-                </div>
-            </div>
+        </button>
+        <div class="category-trend {% if categories_stats.arion.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
+            <i class="fas fa-arrow-{% if categories_stats.arion.trend == 'up' %}up{% else %}down{% endif %}"></i>
+            <span>{% if categories_stats.arion.evolution > 0 %}+{% endif %}{{ categories_stats.arion.evolution }}%</span>
+        </div>
+    </div>
+</div>
 
             <!-- Carte 4: Vacataires -->
             <div class="category-card vacataires-card">
-                <div class="category-icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <h3 class="category-title">Intervenants Vacataires</h3>
-                <div class="category-stat">{{ categories_stats.vacataires.total }}</div>
-                <p class="category-desc">
-                    Gestion des enseignants vacataires et professionnels externes. 
-                    Suivi des partenariats avec les entreprises et les intervenants du milieu professionnel.
-                </p>
-                <div class="category-footer">
-                    <a href="{% url 'vacataire' %}" class="category-button">
+    <div class="category-icon">
+        <i class="fas fa-user-tie"></i>
+    </div>
+    <h3 class="category-title">Intervenants Vacataires</h3>
+    <p class="category-desc">
+        Gestion des enseignants vacataires et professionnels externes. 
+        Suivi des partenariats avec les entreprises et les intervenants du milieu professionnel.
+    </p>
+    <div class="category-footer">
+        <button onclick="window.location.href='{% url 'vacataire' %}'" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
-        </a>
-                    <div class="category-trend {% if categories_stats.vacataires.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
-                        <i class="fas fa-arrow-{% if categories_stats.vacataires.trend == 'up' %}up{% else %}down{% endif %}"></i>
-                        <span>{% if categories_stats.vacataires.evolution > 0 %}+{% endif %}{{ categories_stats.vacataires.evolution }}%</span>
-                    </div>
-                </div>
-            </div>
+        </button>
+        <div class="category-trend {% if categories_stats.vacataires.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
+            <i class="fas fa-arrow-{% if categories_stats.vacataires.trend == 'up' %}up{% else %}down{% endif %}"></i>
+            <span>{% if categories_stats.vacataires.evolution > 0 %}+{% endif %}{{ categories_stats.vacataires.evolution }}%</span>
+        </div>
+    </div>
+</div>
 
             <!-- Carte 5: Autres -->
             <div class="category-card autres-card">
-                <div class="category-icon">
-                    <i class="fas fa-shapes"></i>
-                </div>
-                <h3 class="category-title">Catégories Spéciales</h3>
-                <div class="category-stat">{{ categories_stats.autres.total }} h</div>
-                <p class="category-desc">
-                    Autres types d'enseignements spécifiques : projets transversaux, ateliers d'innovation, 
-                    hackathons, conférences et interventions ponctuelles non catégorisées.
-                </p>
-                <div class="category-footer">
-                    <button class="category-button">
-                        <i class="fas fa-arrow-right mr-1"></i>Explorer
-                    </button>
-                    <div class="category-trend {% if categories_stats.autres.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
-                        <i class="fas fa-arrow-{% if categories_stats.autres.trend == 'up' %}up{% else %}down{% endif %}"></i>
-                        <span>{% if categories_stats.autres.evolution > 0 %}+{% endif %}{{ categories_stats.autres.evolution }}%</span>
-                    </div>
-                </div>
-            </div>
+    <div class="category-icon">
+        <i class="fas fa-shapes"></i>
+    </div>
+    <h3 class="category-title">Catégories Spéciales</h3>
+    <p class="category-desc">
+        Autres types d'enseignements spécifiques : projets transversaux, ateliers d'innovation, 
+        hackathons, conférences et interventions ponctuelles non catégorisées.
+    </p>
+    <div class="category-footer">
+        <button onclick="window.location.href='#'" class="category-button">
+            <i class="fas fa-arrow-right mr-1"></i>Explorer
+        </button>
+        <div class="category-trend {% if categories_stats.autres.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">
+            <i class="fas fa-arrow-{% if categories_stats.autres.trend == 'up' %}up{% else %}down{% endif %}"></i>
+            <span>{% if categories_stats.autres.evolution > 0 %}+{% endif %}{{ categories_stats.autres.evolution }}%</span>
+        </div>
+    </div>
+</div>
 
         <!-- Informations complémentaires -->
-        <div class="card mt-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0"><i class="fas fa-info-circle mr-2"></i>À propos des catégories d'enseignement</h5>
+        <div class="category-card new-category-card mt-4" style="border-left-color: var(--isis-purple-dark);">
+    <div class="category-icon" style="background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);">
+        <i class="fas fa-plus"></i>
+    </div>
+    <h3 class="category-title">Ajouter une catégorie</h3>
+    <p class="category-desc">
+        Créez une nouvelle catégorie d'enseignement pour mieux organiser et suivre vos activités pédagogiques.
+    </p>
+    <div class="category-footer">
+        <button id="addCategoryBtn" class="category-button" style="background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);">
+            <i class="fas fa-plus mr-1"></i>Ajouter
+        </button>
+    </div>
+</div>
+<div id="newCategoryForm" class="card mt-4" style="display: none;">
+    <div class="card-header bg-light">
+        <h5 class="mb-0"><i class="fas fa-plus-circle mr-2"></i>Nouvelle catégorie d'enseignement</h5>
+    </div>
+    <div class="card-body">
+        <form id="categoryForm">
+            <div class="form-group">
+                <label for="categoryName">Nom de la catégorie</label>
+                <input type="text" class="form-control" id="categoryName" placeholder="Entrez le nom de la catégorie">
             </div>
-            <div class="card-body">
-                <p>
-                    Les catégories d'enseignement représentent la répartition des heures et activités pédagogiques 
-                    au sein de l'école d'ingénieurs ISIS. Le pilotage de ces catégories permet d'optimiser la qualité 
-                    de l'enseignement et d'assurer l'adéquation avec les besoins du secteur de la santé numérique.
-                </p>
-                <p class="mb-0">
-                    <strong>Dernière mise à jour des données :</strong> 15 mai 2025
-                </p>
+            <div class="form-group">
+                <label for="categoryIcon">Icône</label>
+                <select class="form-control" id="categoryIcon">
+                    <option value="fa-book">Livre</option>
+                    <option value="fa-laptop-code">Code</option>
+                    <option value="fa-brain">Cerveau</option>
+                    <option value="fa-network-wired">Réseau</option>
+                    <option value="fa-chart-line">Graphique</option>
+                </select>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="categoryDesc">Description</label>
+                <textarea class="form-control" id="categoryDesc" rows="3" placeholder="Description de la catégorie"></textarea>
+            </div>
+            <button type="button" id="submitCategory" class="btn" style="background: linear-gradient(135deg, var(--isis-purple) 0%, var(--isis-purple-dark) 100%); color: white;">
+                <i class="fas fa-check mr-1"></i>Valider
+            </button>
+            <button type="button" id="cancelCategory" class="btn btn-light ml-2">
+                <i class="fas fa-times mr-1"></i>Annuler
+            </button>
+        </form>
+    </div>
+</div>
     </main>
 </div>
 {% endblock %}
@@ -901,5 +928,71 @@ function refreshDashboard() {
         }, 3000);
     }, 1500);
 }
+$(document).ready(function() {
+    // Afficher le formulaire quand on clique sur le bouton Ajouter
+    $('#addCategoryBtn').click(function() {
+        $('#newCategoryForm').slideDown();
+        $('.new-category-card').hide();
+    });
+    
+    // Masquer le formulaire quand on clique sur Annuler
+    $('#cancelCategory').click(function() {
+        $('#newCategoryForm').slideUp();
+        $('.new-category-card').show();
+    });
+    
+    // Traiter le formulaire quand on clique sur Valider
+    $('#submitCategory').click(function() {
+        const categoryName = $('#categoryName').val();
+        const categoryIcon = $('#categoryIcon').val();
+        const categoryDesc = $('#categoryDesc').val();
+        
+        if (!categoryName) {
+            alert('Veuillez entrer un nom pour la catégorie');
+            return;
+        }
+        
+        // Créer une nouvelle card pour la catégorie
+        const newCard = `
+        <div class="category-card" style="border-left-color: var(--isis-purple-dark);">
+            <div class="category-icon" style="background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);">
+                <i class="fas ${categoryIcon}"></i>
+            </div>
+            <h3 class="category-title">${categoryName}</h3>
+            <p class="category-desc">${categoryDesc || 'Aucune description fournie.'}</p>
+            <div class="category-footer">
+                <button onclick="window.location.href='#'" class="category-button" style="background: linear-gradient(135deg, var(--isis-purple-dark) 0%, var(--isis-purple) 100%);">
+                    <i class="fas fa-arrow-right mr-1"></i>Explorer
+                </button>
+            </div>
+        </div>
+        `;
+        
+        // Ajouter la nouvelle card à la grille
+        $('.categories-grid').append(newCard);
+        
+        // Réinitialiser et masquer le formulaire
+        $('#categoryForm')[0].reset();
+        $('#newCategoryForm').slideUp();
+        $('.new-category-card').show();
+        
+        // Notification de succès
+        const notification = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+                <i class="fas fa-check-circle mr-2"></i>Catégorie "${categoryName}" ajoutée avec succès !
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+        
+        $('body').append(notification);
+        
+        // Supprimer la notification après 3 secondes
+        setTimeout(() => {
+            $('.alert').alert('close');
+        }, 3000);
+    });
+});
 </script>
 {% endblock %}

@@ -341,6 +341,20 @@
         line-height: 1.2; /* Réduit l'espacement vertical */
     }
     }
+    #heuresTable {
+    font-size: 0.85rem; /* Taille réduite pour tout le tableau */
+    }
+    #heuresTable thead th {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap; /* Évite le retour à la ligne dans les en-têtes */
+     }
+
+     /* Pour améliorer la structure et l'apparence */
+      #heuresTable td {
+    padding: 0.5rem 0.75rem; /* Padding réduit */
+    vertical-align: middle;
+     }
 </style>
 {% endblock %}
 
@@ -788,6 +802,7 @@ $(document).ready(function() {
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
         },
+        
         "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
         "pageLength": 5,
         "responsive": true,
