@@ -3,6 +3,8 @@ from flask_cors import CORS
 from config import *
 import os
 import json
+import io
+import uuid
 import pandas as pd
 from pymongo import MongoClient
 import matplotlib.pyplot as plt
@@ -2229,53 +2231,6 @@ def get_arion_monthly_stats():
         app.logger.error(f"Erreur lors de la récupération des statistiques mensuelles: {str(e)}")
         return jsonify({"error": "Erreur lors de la récupération des statistiques mensuelles"}), 500
 ######################### Routes pour VACATAIRES ###################################
-@app.route('/api/vacataire/data', methods=['GET'])
-@token_required
-def get_vacataire_data(current_user):
-    """Endpoint pour récupérer les données des vacataires"""
-    try:
-        # Paramètres de filtrage optionnels
-        nom = request.args.get('nom')
-        prenom = request.args.get('prenom')
-        email = request.args.get('email')
-        profession = request.args.get('profession')
-        pays = request.args.get('pays')
-        etat = request.args.get('etat')
-        
-        # Construire le filtre en fonction des paramètres fournis
-        filter_query = {}
-        
-        if nom:
-            filter_query["nom"] = {"$regex": nom, "$options": "i"}
-        if prenom:
-            filter_query["prenom"] = {"$regex": prenom, "$options": "i"}
-        if email:
-            filter_query["email"] = {"$regex": email, "$options": "i"}
-        if profession:
-            filter_query["type_profession"] = {"$regex": profession, "$options": "i"}
-        if pays:
-            filter_query["pays"] = {"$regex": pays, "$options": "i"}
-        if etat:
-            filter_query["etat_recrutement"] = {"$regex": etat, "$options": "i"}
-        
-        # Récupérer les données
-        cursor = vacataire_collection.find(filter_query, {'_id': 0})
-        
-        # Convertir le curseur en liste et nettoyer les données
-        vacataires = []
-        for doc in cursor:
-            # Assurer que toutes les valeurs nulles ou NaN sont remplacées par des chaînes vides
-            for key, value in doc.items():
-                if value is None or (isinstance(value, float) and math.isnan(value)):
-                    doc[key] = ""
-            vacataires.append(doc)
-        
-        return jsonify(vacataires), 200
-        
-    except Exception as e:
-        app.logger.error(f"Erreur lors de la récupération des données vacataires: {str(e)}")
-        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
-
 @app.route('/api/vacataire/add', methods=['POST'])
 @token_required
 def add_vacataire(current_user):
@@ -2308,7 +2263,29 @@ def add_vacataire(current_user):
     except Exception as e:
         app.logger.error(f"Erreur lors de l'ajout d'un vacataire: {str(e)}")
         return jsonify({"error": f"Erreur lors de l'ajout: {str(e)}"}), 500
-
+@app.route('/api/vacataire/data', methods=['GET'])
+@token_required
+def get_vacataire_data(current_user):
+    """Endpoint pour récupérer les données des vacataires"""
+    try:
+        # Récupérer tous les documents de la collection vacataire
+        cursor = vacataire_collection.find({}, {'_id': 0})
+        
+        # Convertir le curseur en liste
+        vacataires = list(cursor)
+        
+        # Nettoyer les données (remplacer None et NaN par des chaînes vides)
+        for doc in vacataires:
+            for key, value in doc.items():
+                if value is None or (isinstance(value, float) and math.isnan(value)):
+                    doc[key] = ""
+        
+        return jsonify(vacataires), 200
+        
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des données vacataires: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
+    
 @app.route('/api/vacataire/upload-csv', methods=['POST'])
 @token_required
 def upload_vacataire_csv(current_user):
@@ -2325,53 +2302,115 @@ def upload_vacataire_csv(current_user):
             # Lire le contenu du fichier
             content = file.read().decode('utf-8')
             
-            # Utiliser pandas pour lire le CSV
-            df = pd.read_csv(io.StringIO(content))
-            
-            # Validation des colonnes minimales
-            required_columns = ['nom', 'prenom', 'email']
-            missing_columns = [col for col in required_columns if col not in df.columns]
-            
-            if missing_columns:
-                return jsonify({
-                    "error": f"Colonnes manquantes dans le CSV: {', '.join(missing_columns)}"
-                }), 400
+            try:
+                # Utiliser pandas pour lire le CSV avec des options tolérantes aux erreurs
+                df = pd.read_csv(io.StringIO(content), on_bad_lines='skip', sep=None, engine='python')
                 
-            # Préparer les données pour insertion
-            records = []
-            for _, row in df.iterrows():
-                record = row.to_dict()
+                app.logger.info(f"Colonnes détectées dans le CSV: {df.columns.tolist()}")
                 
-                # Convertir les valeurs NaN en chaînes vides
-                for key, value in record.items():
-                    if pd.isna(value):
-                        record[key] = ""
+                # Préparer les données pour insertion exactement comme elles sont
+                records = []
+                for idx, row in df.iterrows():
+                    # Créer un dictionnaire avec toutes les colonnes du CSV
+                    record = {}
+                    
+                    # Parcourir toutes les colonnes et ajouter leurs valeurs
+                    for col in df.columns:
+                        if not pd.isna(row[col]):
+                            record[col] = str(row[col])
+                        else:
+                            record[col] = ""  # Valeur vide pour les champs NA/NaN
+                    
+                    # Ajouter un ID unique s'il n'existe pas
+                    if 'id' not in record:
+                        record['id'] = str(uuid.uuid4())
+                    
+                    # Ajouter les métadonnées de base
+                    record['date_creation'] = datetime.now().isoformat()
+                    record['cree_par'] = current_user.get('username', 'system')
+                    
+                    records.append(record)
                 
-                # Générer un ID unique
-                record['id'] = str(uuid.uuid4())
+                # Insérer les données dans MongoDB exactement comme elles sont
+                if records:
+                    result = vacataire_collection.insert_many(records)
+                    app.logger.info(f"Import CSV réussi: {len(result.inserted_ids)} enregistrements insérés")
+                    return jsonify({
+                        "message": "Import CSV réussi",
+                        "records_inserted": len(result.inserted_ids)
+                    }), 200
+                else:
+                    return jsonify({"message": "Aucun enregistrement à importer"}), 200
+                    
+            except Exception as e:
+                app.logger.error(f"Erreur lors du traitement du CSV: {str(e)}")
                 
-                # Ajouter métadonnées
-                record['date_creation'] = datetime.now().isoformat()
-                record['cree_par'] = current_user.get('username', 'system')
-                
-                records.append(record)
-                
-            # Insérer les données dans MongoDB
-            if records:
-                result = vacataire_collection.insert_many(records)
-                return jsonify({
-                    "message": "Import CSV réussi",
-                    "records_inserted": len(result.inserted_ids)
-                }), 200
-            else:
-                return jsonify({"message": "Aucun enregistrement à importer"}), 200
+                # Essayer avec une approche plus simple si pandas échoue
+                try:
+                    app.logger.info("Tentative avec une approche plus simple...")
+                    
+                    # Lire les lignes du fichier
+                    lines = content.strip().split('\n')
+                    
+                    if not lines:
+                        return jsonify({"error": "Le fichier CSV est vide"}), 400
+                    
+                    # Traiter manuellement le CSV
+                    records = []
+                    
+                    # Détecter le séparateur (virgule, point-virgule, tabulation)
+                    sep = ','  # Séparateur par défaut
+                    for potential_sep in [',', ';', '\t']:
+                        if potential_sep in lines[0]:
+                            sep = potential_sep
+                            app.logger.info(f"Séparateur détecté: {sep}")
+                            break
+                    
+                    # Extraire les en-têtes
+                    headers = [h.strip() for h in lines[0].split(sep)]
+                    
+                    # Créer un enregistrement pour chaque ligne de données
+                    for line in lines[1:]:
+                        if not line.strip():
+                            continue  # Ignorer les lignes vides
+                            
+                        # Initialiser l'enregistrement avec l'ID et les métadonnées
+                        record = {
+                            'id': str(uuid.uuid4()),
+                            'date_creation': datetime.now().isoformat(),
+                            'cree_par': current_user.get('username', 'system')
+                        }
+                        
+                        # Remplir avec les valeurs disponibles
+                        values = line.split(sep)
+                        for i, val in enumerate(values):
+                            if i < len(headers):
+                                header = headers[i].strip()
+                                if header:  # S'assurer que l'en-tête n'est pas vide
+                                    record[header] = val.strip()
+                        
+                        records.append(record)
+                    
+                    # Insérer les données dans MongoDB
+                    if records:
+                        result = vacataire_collection.insert_many(records)
+                        app.logger.info(f"Import CSV réussi (méthode alternative): {len(result.inserted_ids)} enregistrements insérés")
+                        return jsonify({
+                            "message": "Import CSV réussi",
+                            "records_inserted": len(result.inserted_ids)
+                        }), 200
+                    else:
+                        return jsonify({"message": "Aucun enregistrement à importer"}), 200
+                        
+                except Exception as inner_e:
+                    app.logger.error(f"Échec de l'approche alternative: {str(inner_e)}")
+                    return jsonify({"error": f"Erreur lors du traitement du CSV: {str(e)}"}), 400
         else:
             return jsonify({"error": "Le fichier doit être au format CSV"}), 400
             
     except Exception as e:
         app.logger.error(f"Erreur lors de l'upload CSV vacataire: {str(e)}")
         return jsonify({"error": f"Erreur lors de l'import: {str(e)}"}), 500
-
 @app.route('/api/vacataire/delete/<string:id>', methods=['DELETE'])
 @token_required
 def delete_vacataire(current_user, id):
@@ -2424,61 +2463,69 @@ def update_vacataire(current_user, id):
 def get_vacataire_stats(current_user):
     """Endpoint pour récupérer les statistiques des vacataires"""
     try:
-        # Statistiques par pays
-        pays_pipeline = [
-            {"$group": {"_id": "$pays", "count": {"$sum": 1}}},
-            {"$match": {"_id": {"$ne": ""}}},
-            {"$sort": {"count": -1}}
-        ]
-        pays_stats = list(vacataire_collection.aggregate(pays_pipeline))
+        # Récupérer tous les documents de la collection vacataire
+        cursor = vacataire_collection.find({}, {'_id': 0})
+        vacataires = list(cursor)
         
         # Statistiques par profession
-        profession_pipeline = [
-            {"$group": {"_id": "$type_profession", "count": {"$sum": 1}}},
-            {"$match": {"_id": {"$ne": ""}}},
-            {"$sort": {"count": -1}}
-        ]
-        profession_stats = list(vacataire_collection.aggregate(profession_pipeline))
+        professions = {}
+        pays = {}
+        etats_recrutement = {}
         
-        # Statistiques par état de recrutement
-        etat_pipeline = [
-            {"$group": {"_id": "$etat_recrutement", "count": {"$sum": 1}}},
-            {"$match": {"_id": {"$ne": ""}}},
-            {"$sort": {"count": -1}}
-        ]
-        etat_stats = list(vacataire_collection.aggregate(etat_pipeline))
+        for v in vacataires:
+            # Compter par profession
+            profession = v.get('Type de profession', '')
+            if profession:
+                professions[profession] = professions.get(profession, 0) + 1
+                
+            # Compter par pays
+            pays_val = v.get('Pays', '')
+            if pays_val:
+                pays[pays_val] = pays.get(pays_val, 0) + 1
+                
+            # Compter par état de recrutement
+            etat = v.get('État recrutement', '')
+            if etat:
+                etats_recrutement[etat] = etats_recrutement.get(etat, 0) + 1
         
-        # Statistiques d'heures par vacataire
-        heures_pipeline = [
-            {"$match": {"nombre_heures": {"$exists": True, "$ne": ""}}},
-            {"$project": {"nom": 1, "prenom": 1, "nombre_heures": {"$toDouble": "$nombre_heures"}}},
-            {"$sort": {"nombre_heures": -1}},
-            {"$limit": 10}
-        ]
-        heures_stats = list(vacataire_collection.aggregate(heures_pipeline))
+        # Préparer les données pour les heures
+        vacataires_heures = []
+        for v in vacataires:
+            try:
+                heures = float(v.get('Nombre d\'heures estimées', 0))
+                if heures > 0:
+                    vacataires_heures.append({
+                        'nom': f"{v.get('Prénom', '')} {v.get('Nom', '')}",
+                        'heures': heures
+                    })
+            except:
+                pass
         
-        # Préparer le résultat
-        result = {
-            "pays": {
-                "labels": [item["_id"] for item in pays_stats],
-                "values": [item["count"] for item in pays_stats]
-            },
+        # Trier et prendre les 10 premiers
+        vacataires_heures.sort(key=lambda x: x['heures'], reverse=True)
+        top_10_heures = vacataires_heures[:10]
+        
+        # Formatter les résultats
+        stats = {
             "profession": {
-                "labels": [item["_id"] for item in profession_stats],
-                "values": [item["count"] for item in profession_stats]
+                "labels": list(professions.keys()),
+                "values": list(professions.values())
+            },
+            "pays": {
+                "labels": list(pays.keys()),
+                "values": list(pays.values())
             },
             "etat_recrutement": {
-                "labels": [item["_id"] for item in etat_stats],
-                "values": [item["count"] for item in etat_stats]
+                "labels": list(etats_recrutement.keys()),
+                "values": list(etats_recrutement.values())
             },
             "heures": {
-                "labels": [f"{item['prenom']} {item['nom']}" for item in heures_stats],
-                "values": [item["nombre_heures"] for item in heures_stats]
-            },
-            "total_vacataires": vacataire_collection.count_documents({})
+                "labels": [v['nom'] for v in top_10_heures],
+                "values": [v['heures'] for v in top_10_heures]
+            }
         }
         
-        return jsonify(result), 200
+        return jsonify(stats), 200
         
     except Exception as e:
         app.logger.error(f"Erreur lors de la récupération des statistiques vacataires: {str(e)}")

@@ -60,11 +60,12 @@ urlpatterns = [
 
     # Routes pour les vacataires
     path('vacataire/', views.vacataire, name='vacataire'),
-    path('vacataire/add-data/', views.vacataire_add_data, name='vacataire_add_data'),
-    path('vacataire/upload-csv/', views.vacataire_upload_csv, name='vacataire_upload_csv'),
-    path('vacataire/delete/<str:id>/', views.vacataire_delete, name='vacataire_delete'),
-    path('vacataire/update/<str:id>/', views.vacataire_update, name='vacataire_update'),
-    path('vacataire/stats/', views.vacataire_stats, name='vacataire_stats'),
+    path('api/vacataire/data/', views.vacataire_data, name='vacataire_data'),
+    path('api/vacataire/add-data/', views.vacataire_add_data, name='vacataire_add_data'),
+    path('api/vacataire/upload-csv/', views.vacataire_upload_csv, name='vacataire_upload_csv'),
+    path('api/vacataire/delete/<str:id>/', views.vacataire_delete, name='vacataire_delete'),
+    path('api/vacataire/update/<str:id>/', views.vacataire_update, name='vacataire_update'),
+    path('api/vacataire/stats/', views.vacataire_stats, name='vacataire_stats'),
 ]
     
 

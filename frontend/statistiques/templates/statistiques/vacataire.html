@@ -136,14 +136,16 @@
 
     /* Conteneurs de graphiques */
     .chart-container {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: var(--card-shadow);
-        margin-bottom: 30px;
-        border: 1px solid #e9ecef;
-        height: 400px;
-        transition: all var(--transition-speed) ease;
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+    border: 1px solid var(--isis-purple-light);
+    height: 600px; /* Hauteur fixe pour toutes les cartes */
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
     }
 
     .chart-container:hover {
@@ -152,11 +154,13 @@
     }
 
     .chart-container h5 {
-        color: var(--isis-purple-dark);
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
+    color: var(--isis-purple-dark);
+    border-bottom: 2px solid var(--isis-purple);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+     }
 
     /* Grille des graphiques */
     .chart-grid {
@@ -279,6 +283,7 @@
         font-weight: 500;
         color: #495057;
         margin-bottom: 8px;
+        
     }
 
     .btn-primary-custom {
@@ -485,7 +490,7 @@
         }
         
         .chart-container {
-            height: 350px;
+            height: 450px;
         }
     }
 
@@ -522,6 +527,54 @@
         z-index: 1;
         position: relative;
     }
+    
+
+      
+    #vacatairesTable {
+    font-size: 0.85rem; /* Taille réduite pour tout le tableau */
+    }
+
+    #vacatairesTable thead th {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap; /* Évite le retour à la ligne dans les en-têtes */
+     }
+
+     /* Pour améliorer la structure et l'apparence */
+      #vacatairesTable td {
+    padding: 0.5rem 0.75rem; /* Padding réduit */
+    vertical-align: middle;
+     }
+
+     /* Pour les badges d'état de recrutement */
+     .badge-recruitment {
+    font-size: 0.75rem;
+     }
+     #vacatairesTable {
+    border-collapse: separate;
+    border-spacing: 0;
+     }
+
+     #vacatairesTable thead th {
+    background-color: rgba(124, 80, 222, 0.1);
+    color: var(--isis-purple-dark);
+    border-bottom: 2px solid var(--isis-purple);
+     }
+
+     #vacatairesTable tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+     }
+
+      #vacatairesTable tbody tr:hover {
+    background-color: rgba(124, 80, 222, 0.05);
+      }
+
+      /* Pour les actions (boutons) */
+     .action-buttons .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+      }
+          
 </style>
 {% endblock %}
 {% block content %}
@@ -545,58 +598,72 @@
         </div>
     </div>
     
-    <!-- Tableau des vacataires -->
-    <div class="data-table-container">
-        <h4><i class="fas fa-table mr-2"></i>Liste des Vacataires</h4>
-        <div class="table-responsive">
-            <table id="vacatairesTable" class="table table-striped table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Email</th>
-                        <th>Affectation</th>
-                        <th>Téléphone</th>
-                        <th>Nombre d'heures</th>
-                        <th>Type de profession</th>
-                        <th>Date d'intervention</th>
-                        <th>Pays</th>
-                        <th>État de recrutement</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Le tableau sera rempli dynamiquement -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
     <!-- Section des graphiques -->
     <h4 class="mb-4"><i class="fas fa-chart-bar mr-2"></i>Analyse des Données</h4>
     <div class="chart-grid">
         <!-- Graphique par type de profession -->
         <div class="chart-container">
-            <h5>Répartition par Type de Profession</h5>
-            <canvas id="professionChart"></canvas>
-        </div>
+    <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Type de Profession</h5>
+    <div class="chart-inner-container">
+        <canvas id="professionChart"></canvas>
+    </div>
+</div>
         
         <!-- Graphique par pays -->
         <div class="chart-container">
-            <h5>Répartition par Pays</h5>
+            <h5><i class="fas fa-map-marker-alt mr-2"></i>Répartition par Pays</h5>
             <canvas id="paysChart"></canvas>
         </div>
         
         <!-- Graphique par état de recrutement -->
         <div class="chart-container">
-            <h5>État de Recrutement</h5>
+            <h5><i class="fas fa-tasks mr-2"></i>État de Recrutement</h5>
             <canvas id="recrutementChart"></canvas>
         </div>
         
         <!-- Graphique des heures d'intervention -->
         <div class="chart-container">
-            <h5>Top 10 Vacataires par Nombre d'Heures</h5>
+            <h5><i class="fas fa-clock mr-2"></i>Top 10 Vacataires par Nombre d'Heures</h5>
             <canvas id="heuresChart"></canvas>
+        </div>
+    </div>
+    <!-- Tableau des vacataires -->
+     
+    <div class="data-table-container">
+        
+        <h4><i class="fas fa-table mr-2"></i>Liste des Vacataires</h4>
+        <div class="table-responsive">
+            <div class="row mb-3">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="filterAnnee">Filtrer par année:</label>
+            <select id="filterAnnee" class="form-control">
+                <option value="">Toutes les années</option>
+                <!-- Les options seront remplies dynamiquement -->
+            </select>
+        </div>
+    </div>
+</div>
+            <table id="vacatairesTable" class="table table-striped table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Année</th>  <!-- Nouvelle colonne Année -->
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Affectation</th>
+            <th>Nombre d'heures</th>
+            <th>Type de profession</th>
+            <th>Date d'intervention et Nom du recruteur</th>
+            <th>Pays</th>
+            <th>État de recrutement</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+                    <!-- Le tableau sera rempli dynamiquement -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -622,14 +689,26 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="nom">Nom *</label>
-                                <input type="text" class="form-control" id="nom" name="nom" required>
+                                <label for="annee">Année</label>
+                                <input type="text" class="form-control" id="annee" name="Année" placeholder="ex: 2021-2022">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                <label for="nom">Nom</label>
+                                <input type="text" class="form-control" id="nom" name="Nom" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="prenom">Prénom *</label>
                                 <input type="text" class="form-control" id="prenom" name="prenom" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="prenom">Recruteur *</label>
+                                <input type="text" class="form-control" id="recruteur" name="recruteur" required>
                             </div>
                         </div>
                     </div>
@@ -784,14 +863,12 @@
     
     // Initialisation au chargement du document
     $(document).ready(function() {
-        console.log("Document prêt - Initialisation...");
-        
         // Assurez-vous que les modals s'ouvrent correctement
         setupModalButtons();
         
         // Initialiser le tableau DataTables
         initDataTable();
-        
+        loadVacatairesData();
         // Initialiser les graphiques
         initCharts();
         
@@ -801,42 +878,40 @@
     
     // Configuration des boutons pour les modals
     function setupModalButtons() {
-        // S'assurer que les boutons des modals fonctionnent
-        $('.btn-add').on('click', function(e) {
-            e.preventDefault();
-            console.log("Bouton Ajouter cliqué");
-            
-            // Réinitialiser le formulaire
-            $('#vacataireForm')[0].reset();
-            $('#vacataireId').val('');
-            $('#addDataModalTitle').html('<i class="fas fa-plus-circle mr-2"></i> Ajouter un Vacataire');
-            
-            // Ouvrir le modal
-            $('#addDataModal').modal('show');
-        });
+    // S'assurer que les boutons des modals fonctionnent
+    $(document).on('click', '.btn-add', function(e) {
+        e.preventDefault();
+        console.log("Bouton Ajouter cliqué");
         
-        $('.btn-import').on('click', function(e) {
-            e.preventDefault();
-            console.log("Bouton Import CSV cliqué");
-            
-            // Réinitialiser le formulaire
-            $('#csvUploadForm')[0].reset();
-            $('.custom-file-label').html('Choisir un fichier');
-            
-            // Ouvrir le modal
-            $('#importCsvModal').modal('show');
-        });
+        // Réinitialiser le formulaire
+        $('#vacataireForm')[0].reset();
+        $('#vacataireId').val('');
+        $('#addDataModalTitle').html('<i class="fas fa-plus-circle mr-2"></i> Ajouter un Vacataire');
         
-        // Gérer la fermeture des modals avec le bouton Annuler
-        $('.modal .btn-secondary').on('click', function() {
-            $(this).closest('.modal').modal('hide');
-        });
+        // Ouvrir le modal
+        $('#addDataModal').modal('show');
+    });
+    
+    $(document).on('click', '.btn-import', function(e) {
+        e.preventDefault();
+        console.log("Bouton Import CSV cliqué");
+
+        $('#csvUploadForm')[0].reset();
+        $('.custom-file-label').html('Choisir un fichier');
         
-        // Gérer la fermeture des modals avec le bouton X
-        $('.modal .close').on('click', function() {
-            $(this).closest('.modal').modal('hide');
-        });
-    }
+        $('#importCsvModal').modal('show');
+    });
+    
+    // Gérer la fermeture des modals avec le bouton Annuler
+    $(document).on('click', '.modal .btn-secondary', function() {
+        $(this).closest('.modal').modal('hide');
+    });
+    
+    // Gérer la fermeture des modals avec le bouton X
+    $(document).on('click', '.modal .close', function() {
+        $(this).closest('.modal').modal('hide');
+    });
+}
     
     // Fonction pour initialiser DataTable avec des traductions françaises directes
     function initDataTable() {
@@ -847,8 +922,6 @@
                 "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
                 "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
                 "sInfoPostFix":    "",
-                "sInfoThousands":  ",",
-                "sLengthMenu":     "Afficher _MENU_ éléments",
                 "sLoadingRecords": "Chargement...",
                 "sProcessing":     "Traitement...",
                 "sSearch":         "Rechercher :",
@@ -869,7 +942,6 @@
                 { data: 'prenom' },
                 { data: 'email' },
                 { data: 'affectation' },
-                { data: 'telephone' },
                 { data: 'nombre_heures' },
                 { data: 'type_profession' },
                 { data: 'date_intervention' },
@@ -902,29 +974,164 @@
                 }
             ],
             order: [[0, 'asc']],
-            pageLength: 10,
+            pageLength: 7,
             responsive: true
         });
     }
+// Fonction pour mettre à jour le filtre des années
+function updateYearFilter() {
+    // Récupérer toutes les années uniques
+    const years = new Set();
     
-    // Fonction pour charger les données des vacataires depuis l'API
-    function loadVacatairesData() {
-        $.ajax({
-            url: `${API_BASE_URL}vacataire/data`,
-            type: 'GET',
-            success: function(data) {
-                // Vider et recharger le tableau
-                vacatairesTable.clear();
-                vacatairesTable.rows.add(data);
-                vacatairesTable.draw();
-            },
-            error: function(xhr) {
-                console.error('Erreur lors du chargement des données:', xhr.responseText);
-                // Afficher une interface vide en attendant l'implémentation de l'API
-                vacatairesTable.clear().draw();
+    // Si la table existe et a des données
+    if ($.fn.DataTable.isDataTable('#vacatairesTable')) {
+        const table = $('#vacatairesTable').DataTable();
+        const data = table.data();
+        
+        // Parcourir toutes les lignes
+        data.each(function(row) {
+            if (row.Année && row.Année.trim() !== '') {
+                years.add(row.Année);
             }
         });
+        
+        // Vider et remplir le sélecteur
+        const select = $('#filterAnnee');
+        const currentValue = select.val();
+        select.empty();
+        select.append('<option value="">Toutes les années</option>');
+        
+        // Ajouter les années dans l'ordre décroissant
+        [...years].sort().reverse().forEach(function(year) {
+            select.append(`<option value="${year}">${year}</option>`);
+        });
+        
+        // Restaurer la valeur sélectionnée si possible
+        if (currentValue && [...years].includes(currentValue)) {
+            select.val(currentValue);
+        }
     }
+}
+// Fonction pour charger les données des vacataires depuis l'API
+ function loadVacatairesData() {
+    $.ajax({
+        url: `${API_BASE_URL}vacataire/data/`,
+        type: 'GET',
+        success: function(response) {
+            // Si DataTable existe déjà, le détruire avant de le recréer
+            if ($.fn.DataTable.isDataTable('#vacatairesTable')) {
+                $('#vacatairesTable').DataTable().destroy();
+            }
+            
+            // Initialiser le tableau avec les nouvelles données
+            vacatairesTable = $('#vacatairesTable').DataTable({
+                data: response,
+                columns: [
+                    // Définir les colonnes dans le même ordre que le HTML
+                    { 
+                        data: 'Année', 
+                        defaultContent: '',  // Valeur par défaut si la colonne n'existe pas
+                        render: function(data) {
+                            return data || '';  // Afficher une chaîne vide si null
+                        }
+                    },
+                    { 
+                        data: 'Nom', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'Prénom', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'Email', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'Affectation', 
+                        defaultContent: '' 
+                    },
+            
+                    { 
+                        data: 'Nombre d\'heures estimées', 
+                        defaultContent: '0' 
+                    },
+                    { 
+                        data: 'Type de profession', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'Date de 1ère intervention et nom du recruteur', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'Pays', 
+                        defaultContent: '' 
+                    },
+                    { 
+                        data: 'État recrutement', 
+                        defaultContent: '' 
+                    },
+                    {
+                        // Colonne d'actions (boutons modifier/supprimer)
+                        data: null,
+                        orderable: false,
+                        render: function(data, type, row) {
+                            return `
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-info edit-icon" data-id="${row.id}" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-icon" data-id="${row.id}" title="Supprimer">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                dom: '<"row"<"col-sm-12"f>>' +
+                     '<"row"<"col-sm-12"tr>>' +
+                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                language: {
+                    // Configuration en français de DataTables
+                    "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                    "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                    "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                    "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                    "sInfoPostFix":    "",
+                    "sInfoThousands":  ",",
+                    "sLengthMenu":     "Afficher _MENU_ éléments",
+                    "sLoadingRecords": "Chargement...",
+                    "sProcessing":     "Traitement...",
+                    "sSearch":         "Rechercher :",
+                    "sZeroRecords":    "Aucun élément correspondant trouvé",
+                    "oPaginate": {
+                        "sFirst":    "Premier",
+                        "sLast":     "Dernier",
+                        "sNext":     "Suivant",
+                        "sPrevious": "Précédent"
+                    },
+                    "oAria": {
+                        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                    }
+                },
+                responsive: true,
+                order: [[0, 'desc']], // Trier par défaut par la colonne Année en ordre décroissant
+                pageLength: 4 // Nombre d'entrées par page
+            });
+            updateYearFilter();  // Ajoutez cette ligne
+            
+            // Charger les statistiques
+            loadStatistiques();
+        },
+        
+        error: function(xhr) {
+            alert("Erreur lors du chargement des données: " + xhr.statusText);
+        }
+    });
+}
     
     // Fonction pour initialiser les graphiques
     function initCharts() {
@@ -940,33 +1147,98 @@
                         '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
                         '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
                     ],
-                    borderWidth: 1
+                    borderWidth: 3,
+                    hoverBorderWidth: 5,  // Bordure plus épaisse au survol
+                    hoverOffset: 15
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '20%', // Faire un donut avec un trou de 30%
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    font: {
+                        size: 10,
+                        weight: 'bold'
+                    },
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const label = context.label || '';
+                        const value = context.formattedValue;
+                        const dataset = context.dataset;
+                        const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                        const percentage = Math.round((context.raw / total) * 100);
+                        return `${label}: ${value} (${percentage}%)`;
                     }
+                },
+                bodyFont: {
+                    size: 14
+                },
+                padding: 15,
+                backgroundColor: 'rgba(47, 13, 115, 0.8)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                borderColor: 'white',
+                borderWidth: 1,
+                displayColors: true,
+                boxWidth: 15,
+                boxHeight: 15,
+                boxPadding: 5
+            },
+            datalabels: {
+                color: 'white',
+                font: {
+                    weight: 'bold',
+                    size: 13
+                },
+                formatter: (value, ctx) => {
+                    const dataset = ctx.dataset;
+                    const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                    const percentage = Math.round((value / total) * 100);
+                    return percentage + '%';
                 }
             }
-        });
+        },
+        layout: {
+            padding: {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
+            }
+        },
+        animation: {
+            animateRotate: true,
+            animateScale: true,
+            duration: 1500,
+            easing: 'easeOutQuart'
+        }
+    }
+});
         
         // Graphique des pays
         const paysCtx = document.getElementById('paysChart').getContext('2d');
         charts.pays = new Chart(paysCtx, {
-            type: 'doughnut',
+            type: 'line',
             data: {
                 labels: [],
                 datasets: [{
+                    label: 'Nombre de vacataires',
                     data: [],
                     backgroundColor: [
                         '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
                         '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
                     ],
-                    borderWidth: 1
+                    borderWidth: 5
                 }]
             },
             options: {
@@ -1119,7 +1391,22 @@
                 });
             }
         });
+        $('#filterAnnee').on('change', function() {
+        const selectedYear = $(this).val();
         
+        if ($.fn.DataTable.isDataTable('#vacatairesTable')) {
+            const table = $('#vacatairesTable').DataTable();
+            
+            // Filtrer le tableau par année
+            if (selectedYear) {
+                // Rechercher une correspondance exacte pour l'année dans la première colonne (0)
+                table.column(0).search('^' + $.fn.dataTable.util.escapeRegex(selectedYear) + '$', true, false).draw();
+            } else {
+                // Réinitialiser le filtre
+                table.column(0).search('').draw();
+            }
+        }
+    });
         // Soumission du formulaire d'import CSV
         $('#csvUploadForm').on('submit', function(e) {
             e.preventDefault();
@@ -1172,16 +1459,18 @@
             
             // Remplir le formulaire
             $('#vacataireId').val(id);
-            $('#nom').val(rowData.nom);
-            $('#prenom').val(rowData.prenom);
-            $('#email').val(rowData.email);
-            $('#affectation').val(rowData.affectation);
-            $('#telephone').val(rowData.telephone);
-            $('#nombre_heures').val(rowData.nombre_heures);
-            $('#type_profession').val(rowData.type_profession);
-            $('#date_intervention').val(rowData.date_intervention);
-            $('#pays').val(rowData.pays);
-            $('#etat_recrutement').val(rowData.etat_recrutement);
+            $('#annee').val(rowData.Année || '');  // Nouveau champ Année
+            $('#numero_vacataire').val(rowData['Numero vacataire'] || '');
+            $('#nom').val(rowData.Nom || '');
+            $('#prenom').val(rowData.Prénom || '');
+            $('#email').val(rowData.Email || '');
+            $('#affectation').val(rowData.Affectation || '');
+            $('#telephone').val(rowData.Téléphone || '');
+            $('#nombre_heures').val(rowData['Nombre d\'heures estimées'] || '0');
+            $('#type_profession').val(rowData['Type de profession'] || '');
+            $('#date_intervention').val(rowData['Date de 1ère intervention et nom du recruteur'] || '');
+            $('#pays').val(rowData.Pays || '');
+            $('#etat_recrutement').val(rowData['État recrutement'] || '');
             
             // Changer le titre du modal
             $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i> Modifier un Vacataire');

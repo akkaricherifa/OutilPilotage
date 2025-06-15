@@ -9328,3 +9328,299 @@ Données vacataires récupérées: 0 enregistrements
 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
 Watching for file changes with StatReloader
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61347
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 58749
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 58617
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 58482
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 14231
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 14234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61377
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61335
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 404 14253
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61335
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61335
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Watching for file changes with StatReloader
+"GET /vacataire/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40510
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49653
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61335
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61335
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14321
+Not Found: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 404 14253
+Not Found: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 404 14253
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Internal Server Error: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 500 62
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Contenu du fichier CSV (début): "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""
+Envoi du fichier à l'API: http://localhost:5000/api/vacataire/upload-csv
+Réponse de l'API: Status 500
+Erreur API (JSON): Erreur lors de l'import: name 'io' is not defined
+Internal Server Error: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 500 62
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /vacataire/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40733
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35407
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49653
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""...
+Réponse API upload CSV: Status 400
+Erreur API: Erreur lors du traitement du CSV: name 'io' is not defined
+Bad Request: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 400 71
+Réponse API upload CSV: Status 400
+Erreur API: Erreur lors du traitement du CSV: name 'io' is not defined
+Bad Request: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 400 71
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""...
+Réponse API upload CSV: Status 400
+Erreur API: Erreur lors du traitement du CSV: name 'uuid' is not defined
+Bad Request: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 400 73
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 65
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 65
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Données vacataires récupérées: 4031 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: "Numero vacataire,""Nom"",""Prenom"",""Email"",""Etat recrutement"",""Affectation"",""Recruteur"",""Cycle"",""Semestre"",""Date de 1ere intervention et nom du recruteur"""
+"3051,""ABRANTES DELMAS"",""...
+Réponse API upload CSV: Status 404
+Réponse API non-JSON: <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Not Found: /api/vacataire/upload-csv/
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 404 32
+Données vacataires récupérées: 0 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Début du contenu CSV: Numero vacataire,Nom,Prénom,Email,État recrutement,Affectation,Recruteur,Date de 1ère intervention et nom du recruteur,Nombre d'heures estimées,Type de profession
+"3051,""ABRANTES DELMAS"",""KATIA"","...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 65
+Not Found: /api/vacataire/stats
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Début du contenu CSV: Numero vacataire,Nom,Prénom,Email,État recrutement,Affectation,Recruteur,Date de 1ère intervention et nom du recruteur,Nombre d'heures estimées,Type de profession
+3051,ABRANTES DELMAS,KATIA,katia.abra...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 65
+Not Found: /api/vacataire/data
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Début du contenu CSV: Année,Numero vacataire,Nom,Prénom,Email,État recrutement,Affectation,Recruteur,Date de 1ère intervention et nom du recruteur,Nombre d'heures estimées,Type de profession,Organisme,Employeur,INSEE,Clé I...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Début du contenu CSV: Année,Numero vacataire,Nom,Prénom,Email,État recrutement,Affectation,Recruteur,Date de 1ère intervention et nom du recruteur,Nombre d'heures estimées,Type de profession,Organisme,Employeur,INSEE,Clé I...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/data
+Not Found: /api/vacataire/stats
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+Début du contenu CSV: Année,Numero vacataire,Nom,Prénom,Email,État recrutement,Affectation,Recruteur,Date de 1ère intervention et nom du recruteur,Nombre d'heures estimées,Type de profession,Organisme,Employeur,INSEE,Clé I...
+Réponse API upload CSV: Status 200
+"POST /api/vacataire/upload-csv/ HTTP/1.1" 200 66
+Not Found: /api/vacataire/stats
+Not Found: /api/vacataire/data
+"GET /api/vacataire/stats HTTP/1.1" 404 13977
+"GET /api/vacataire/data HTTP/1.1" 404 13974
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 61234
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 65884
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 66552
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 66505
+Not Found: /api/vacataire/data/
+"GET /api/vacataire/data/ HTTP/1.1" 404 13977
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14064
+Not Found: /api/vacataire/data/
+"GET /api/vacataire/data/ HTTP/1.1" 404 13977
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 66505
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 66525
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 68517
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Watching for file changes with StatReloader

@@ -1813,7 +1813,62 @@ def vacataire(request):
         'user_info': request.session.get('user_info', {}),
         'vacataires_data': json.dumps(vacataires_data)
     })
-
+@api_authenticated_required
+def vacataire_data(request):
+    """Vue pour récupérer les données des vacataires"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données des vacataires depuis l'API
+        response = requests.get(f"{settings.API_URL}/vacataire/data", headers=headers, timeout=10)
+        if response.status_code == 200:
+            vacataires_data = response.json()
+            logger.info(f"Données vacataires récupérées: {len(vacataires_data)} enregistrements")
+            return JsonResponse(vacataires_data, safe=False)
+        else:
+            logger.warning(f"Impossible de récupérer les données vacataires: Code {response.status_code}")
+            return JsonResponse([], safe=False)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_data: {e}")
+        return JsonResponse([], safe=False)
+    
+@api_authenticated_required
+def vacataire_stats(request):
+    """Vue pour récupérer les statistiques des vacataires"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les statistiques des vacataires depuis l'API
+        response = requests.get(f"{settings.API_URL}/vacataire/stats", headers=headers, timeout=10)
+        if response.status_code == 200:
+            stats_data = response.json()
+            logger.info("Statistiques vacataires récupérées avec succès")
+            return JsonResponse(stats_data)
+        else:
+            logger.warning(f"Impossible de récupérer les statistiques vacataires: Code {response.status_code}")
+            
+            # Créer des statistiques vides si l'API ne renvoie pas de données
+            empty_stats = {
+                "profession": {"labels": [], "values": []},
+                "pays": {"labels": [], "values": []},
+                "etat_recrutement": {"labels": [], "values": []},
+                "heures": {"labels": [], "values": []}
+            }
+            return JsonResponse(empty_stats)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API vacataire_stats: {e}")
+        
+        # Créer des statistiques vides en cas d'erreur
+        empty_stats = {
+            "profession": {"labels": [], "values": []},
+            "pays": {"labels": [], "values": []},
+            "etat_recrutement": {"labels": [], "values": []},
+            "heures": {"labels": [], "values": []}
+        }
+        return JsonResponse(empty_stats)
+    
 @api_authenticated_required
 def vacataire_add_data(request):
     """Vue pour ajouter un vacataire manuellement"""
@@ -1860,28 +1915,53 @@ def vacataire_upload_csv(request):
         if not csv_file.name.endswith('.csv'):
             return JsonResponse({"error": "Le fichier doit être au format CSV"}, status=400)
         
+        # Lire les premières lignes du fichier pour le log
+        file_content = csv_file.read(1024).decode('utf-8', errors='replace')
+        logger.info(f"Début du contenu CSV: {file_content[:200]}...")
+        
+        # Réinitialiser le pointeur du fichier
+        csv_file.seek(0)
+        
         # Envoyer le fichier à l'API
-        files = {'file': (csv_file.name, csv_file.file, 'text/csv')}
+        files = {'file': (csv_file.name, csv_file, 'text/csv')}
         
         response = requests.post(
             f"{settings.API_URL}/vacataire/upload-csv",
             headers=headers,
             files=files,
-            timeout=30  # Délai plus long pour l'upload
+            timeout=60  # Délai plus long pour l'upload
         )
+        
+        logger.info(f"Réponse API upload CSV: Status {response.status_code}")
         
         if response.status_code == 200:
             api_response = response.json()
-            return JsonResponse({"success": True, "message": f"{api_response.get('records_inserted', 0)} enregistrements ajoutés."})
+            return JsonResponse({
+                "success": True, 
+                "message": f"{api_response.get('records_inserted', 0)} enregistrements ajoutés."
+            })
         else:
-            api_response = response.json()
-            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            try:
+                api_response = response.json()
+                error_msg = api_response.get('error', 'Erreur inconnue')
+                logger.error(f"Erreur API: {error_msg}")
+                return JsonResponse({"error": error_msg}, status=response.status_code)
+            except:
+                logger.error(f"Réponse API non-JSON: {response.text}")
+                return JsonResponse({"error": f"Erreur serveur: {response.status_code}"}, status=response.status_code)
             
+    except UnicodeDecodeError as e:
+        logger.error(f"Erreur d'encodage: {e}")
+        return JsonResponse({"error": "Le fichier CSV a un problème d'encodage. Assurez-vous qu'il est encodé en UTF-8."}, status=400)
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur upload API vacataire: {e}")
         return JsonResponse({"error": "Erreur de connexion lors de l'upload du fichier."}, status=500)
+    except Exception as e:
+        logger.error(f"Erreur inattendue: {e}")
+        return JsonResponse({"error": f"Une erreur inattendue s'est produite: {str(e)}"}, status=500)
     finally:
-        csv_file.file.close()
+        if hasattr(csv_file, 'file') and hasattr(csv_file.file, 'close'):
+            csv_file.file.close()
 
 @api_authenticated_required
 def vacataire_delete(request, id):
