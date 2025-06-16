@@ -10006,3 +10006,97 @@ Données vacataires récupérées: 3070 enregistrements
 Données vacataires récupérées: 3070 enregistrements
 "GET /api/vacataire/data/ HTTP/1.1" 200 3303937
 "GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72420
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72547
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72466
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 14616
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 49440
+"GET /heures-enseignement/ HTTP/1.1" 200 85741
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 48524
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 50282
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 53053
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95323
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /arion/ HTTP/1.1" 200 93803
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 93536
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /arion/ HTTP/1.1" 200 93477
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /heures-enseignement/ HTTP/1.1" 200 85741
+"GET /heures-enseignement/ HTTP/1.1" 200 85842
+"GET /heures-enseignement/ HTTP/1.1" 200 86167
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 97116
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 53053
+"GET /arion/ HTTP/1.1" 200 96520
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data?id=arion_1749716067 HTTP/1.1" 200 564
+"POST /arion/ HTTP/1.1" 200 96520
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
