@@ -643,24 +643,17 @@
         </div>
 
         <!-- Statistiques rapides -->
-        <div class="quick-stats">
+        {% comment %} <div class="quick-stats">
             <div class="stat-card" style="border-bottom-color: var(--isis-purple);">
                 <span class="stat-number">{{ quick_stats.heures_totales }}</span>
                 <span class="stat-label">Heures totales</span>
-            </div>
-            <div class="stat-card" style="border-bottom-color: var(--isis-coral);">
-                <span class="stat-number">{{ quick_stats.satisfaction }}%</span>
-                <span class="stat-label">Taux de satisfaction</span>
             </div>
             <div class="stat-card" style="border-bottom-color: var(--isis-teal);">
                 <span class="stat-number">{{ quick_stats.intervenants }}</span>
                 <span class="stat-label">Intervenants</span>
             </div>
-            <div class="stat-card" style="border-bottom-color: var(--isis-coral-light);">
-                <span class="stat-number">{{ quick_stats.innovations }}</span>
-                <span class="stat-label">Innovations pédagogiques</span>
-            </div>
-        </div>
+            
+        </div> {% endcomment %}
 
         <!-- Cards des catégories d'enseignement -->
         <div class="categories-grid">
@@ -759,7 +752,7 @@
         hackathons, conférences et interventions ponctuelles non catégorisées.
     </p>
     <div class="category-footer">
-        <button onclick="window.location.href='#'" class="category-button">
+        <button onclick="window.location.href='{% url 'cat_special' %}'" class="category-button">
             <i class="fas fa-arrow-right mr-1"></i>Explorer
         </button>
         <div class="category-trend {% if categories_stats.autres.trend == 'up' %}trend-up{% else %}trend-down{% endif %}">

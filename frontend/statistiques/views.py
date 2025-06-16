@@ -2073,3 +2073,10 @@ def vacataire_stats(request):
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur API vacataire_stats: {e}")
         return JsonResponse({"error": "Erreur de connexion lors de la récupération des statistiques."}, status=500)
+
+
+
+@api_authenticated_required
+def cat_special(request):
+    """Vue pour l'interface des catégories spéciales"""
+    return render(request, 'statistiques/catSpecial.html')

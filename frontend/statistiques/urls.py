@@ -67,6 +67,11 @@ urlpatterns = [
     path('api/vacataire/delete/<str:id>/', views.vacataire_delete, name='vacataire_delete'),
     path('api/vacataire/update/<str:id>/', views.vacataire_update, name='vacataire_update'),
     path('api/vacataire/stats/', views.vacataire_stats, name='vacataire_stats'),
+
+
+    # Routes pour les categoriees spéciales
+    path('cat-special/', views.cat_special, name='cat_special'),
+
 ]
     
 
