@@ -776,7 +776,6 @@
 <!-- DataTables JS -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-
 <script>
 // Variables globales
 // Variables globales
@@ -790,13 +789,20 @@ let deleteData = {
     code_ue: null
 };
 const chartColors = {
-    cm: 'rgba(75, 48, 163, 0.8)',    // Violet foncé
-    td: 'rgba(124, 80, 222, 0.8)',    // Violet
-    tp: 'rgba(158, 128, 236, 0.8)',   // Violet clair
+    // Bleu principal (violet foncé dans la charte)
+    cm: 'rgba(47, 13, 115, 0.8)',      // RVB: 47-13-115, Hex: #2f0d73
+    
+    // Dégradé principal (violet dans la charte)
+    td: 'rgba(124, 80, 222, 0.8)',      // RVB: 124-80-222, Hex: #7c50de
+    
+    // Dégradé principal (violet clair dans la charte)
+    tp: 'rgba(172, 84, 199, 0.8)',      // RVB: 172-84-199, Hex: #ac54c7
+    
+    // Couleurs de bordure plus foncées pour améliorer le contraste
     border: {
-        cm: 'rgba(75, 48, 163, 1)',
-        td: 'rgba(124, 80, 222, 1)',
-        tp: 'rgba(158, 128, 236, 1)'
+        cm: 'rgba(47, 13, 115, 1)',     // RVB: 47-13-115
+        td: 'rgba(124, 80, 222, 1)',    // RVB: 124-80-222
+        tp: 'rgba(172, 84, 199, 1)'     // RVB: 172-84-199
     }
 };
 // Définir l'URL de base de l'API
