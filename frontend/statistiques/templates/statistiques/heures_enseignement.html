@@ -779,6 +779,8 @@
 
 <script>
 // Variables globales
+// Variables globales
+let typesHeuresChart, evolutionHeuresChart, heuresNiveauChart, heuresSemestreChart;
 let charts = {};
 let heuresDataTable;
 let deleteData = {
@@ -787,7 +789,16 @@ let deleteData = {
     semestre: null,
     code_ue: null
 };
-
+const chartColors = {
+    cm: 'rgba(75, 48, 163, 0.8)',    // Violet foncé
+    td: 'rgba(124, 80, 222, 0.8)',    // Violet
+    tp: 'rgba(158, 128, 236, 0.8)',   // Violet clair
+    border: {
+        cm: 'rgba(75, 48, 163, 1)',
+        td: 'rgba(124, 80, 222, 1)',
+        tp: 'rgba(158, 128, 236, 1)'
+    }
+};
 // Définir l'URL de base de l'API
 const API_BASE_URL = '{{ settings.API_URL }}';
 
@@ -820,6 +831,9 @@ $(document).ready(function() {
         ],
     });
 
+    // Initialiser les graphiques
+    initCharts();
+
     // Charger les données initiales
     loadHeuresEnseignementStats();
     loadHeuresEnseignement();
@@ -834,6 +848,7 @@ $(document).ready(function() {
     $('#applyFilters').on('click', function() {
         loadHeuresEnseignementStats();
         loadHeuresEnseignement();
+        loadChartData(); // Ajout: charger les données des graphiques
     });
     
     // Soumission du formulaire d'ajout de données
@@ -854,13 +869,24 @@ $(document).ready(function() {
     });
 
     $('#levelFilter').on('change', function() {
-    const selectedNiveau = $(this).val();
-    
-    if (selectedNiveau === 'all') {
-        heuresDataTable.column(1).search('').draw();
-    } else {
-        heuresDataTable.column(1).search(selectedNiveau, true, false).draw();
-    }
+        const selectedNiveau = $(this).val();
+        
+        if (selectedNiveau === 'all') {
+            heuresDataTable.column(1).search('').draw();
+        } else {
+            heuresDataTable.column(1).search(selectedNiveau, true, false).draw();
+        }
+    });
+
+    // Ajouter les événements aux sélecteurs pour le chargement automatique des graphiques
+    $('#anneesFilter').on('change', function() {
+        loadChartData();
+    });
+    $('#niveauFilter').on('change', function() {
+        loadChartData();
+    });
+    $('#semestreFilter').on('change', function() {
+        loadChartData();
     });
 });
 
@@ -899,12 +925,247 @@ function loadHeuresEnseignementStats() {
             heuresDataTable.draw();
             populateNiveauFilter();
             // Charger les graphiques
-            loadCharts(response);
+            prepareAndUpdateCharts(response);
         },
         error: function(xhr) {
             showNotification('error', 'Erreur lors du chargement des statistiques');
             console.error('Erreur API:', xhr.responseText);
         }
+    });
+}
+
+// Préparer les données pour les graphiques et mettre à jour les graphiques
+function prepareAndUpdateCharts(data) {
+    // Préparer les données pour les graphiques à partir des statistiques
+    if (!data) return;
+
+    // Préparer les données pour le graphique en camembert (répartition des heures par type)
+    const pieChartData = {
+        labels: ['CM', 'TD', 'TP'],
+        data: [
+            data.heures_totales.cm.hm || 0,
+            data.heures_totales.td.hm || 0,
+            data.heures_totales.tp.hm || 0
+        ]
+    };
+
+    // Préparer les données pour les graphiques d'évolution par année
+    // Comme nous n'avons pas ces données dans la réponse, nous devons les calculer à partir des données brutes
+    // Nous allons utiliser les données pour les autres graphiques aussi
+    prepareChartDataFromAPI(data);
+}
+
+// Fonction pour charger les données des graphiques
+function loadChartData() {
+    // Récupérer les valeurs des filtres
+    const anneeFilter = $('#anneesFilter').val();
+    const niveau = $('#niveauFilter').val();
+    const semestre = $('#semestreFilter').val();
+    
+    let anneeDebut = '';
+    let anneeFin = '';
+    
+    if (anneeFilter) {
+        [anneeDebut, anneeFin] = anneeFilter.split('-');
+    }
+    
+    // Construire l'URL avec les paramètres
+    let url = '/api/heures-enseignement/graph-data/?';
+    const params = [];
+    
+    if (anneeDebut && anneeFin) {
+        params.push(`annee_debut=${anneeDebut}`);
+        params.push(`annee_fin=${anneeFin}`);
+    }
+    
+    if (niveau) {
+        params.push(`niveau=${niveau}`);
+    }
+    
+    if (semestre) {
+        params.push(`semestre=${semestre}`);
+    }
+    
+    url += params.join('&');
+    
+    // Afficher un indicateur de chargement
+    showLoader();
+    
+    // Appeler l'API
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des données');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Mettre à jour les graphiques avec les données reçues
+            updateCharts(data);
+            // Cacher l'indicateur de chargement
+            hideLoader();
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            showNotification('error', 'Erreur lors du chargement des données des graphiques');
+            hideLoader();
+            
+            // En cas d'erreur, préparer les graphiques à partir des statistiques déjà chargées
+            // Cela permet d'avoir une visualisation même si l'API graph-data n'est pas disponible
+            $.ajax({
+                url: `${API_BASE_URL}/heures-enseignement?${new URLSearchParams(params).toString()}`,
+                type: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${getApiToken()}`
+                },
+                success: function(response) {
+                    prepareChartDataFromAPI(response);
+                },
+                error: function(xhr) {
+                    console.error('Erreur lors de la récupération des données alternatives:', xhr.responseText);
+                }
+            });
+        });
+}
+
+// Préparer les données des graphiques à partir des données API brutes
+function prepareChartDataFromAPI(data) {
+    if (!Array.isArray(data)) return;
+    
+    // Préparer les données pour le graphique camembert
+    let totalCM = 0;
+    let totalTD = 0;
+    let totalTP = 0;
+    
+    // Pour le graphique d'évolution par année
+    const annees = {};
+    
+    // Pour le graphique par niveau
+    const niveaux = {};
+    
+    // Pour le graphique par semestre
+    const semestres = {};
+    
+    // Parcourir les données
+    data.forEach(record => {
+        const anneeAcademique = record.annee_academique;
+        const niveau = record.niveau;
+        const semestre = record.semestre;
+        
+        // Initialiser les structures si nécessaire
+        if (!annees[anneeAcademique]) {
+            annees[anneeAcademique] = { cm: 0, td: 0, tp: 0 };
+        }
+        
+        if (!niveaux[niveau]) {
+            niveaux[niveau] = { cm: 0, td: 0, tp: 0 };
+        }
+        
+        if (!semestres[semestre]) {
+            semestres[semestre] = { cm: 0, td: 0, tp: 0 };
+        }
+        
+        // Parcourir les matières pour accumuler les heures
+        const ue = record.unite_enseignement;
+        ue.matieres.forEach(matiere => {
+            const cmHeures = matiere.heures_cm.hm || 0;
+            const tdHeures = matiere.heures_td.hm || 0;
+            const tpHeures = matiere.heures_tp.hm || 0;
+            
+            // Ajouter aux totaux globaux
+            totalCM += cmHeures;
+            totalTD += tdHeures;
+            totalTP += tpHeures;
+            
+            // Ajouter aux données par année
+            annees[anneeAcademique].cm += cmHeures;
+            annees[anneeAcademique].td += tdHeures;
+            annees[anneeAcademique].tp += tpHeures;
+            
+            // Ajouter aux données par niveau
+            niveaux[niveau].cm += cmHeures;
+            niveaux[niveau].td += tdHeures;
+            niveaux[niveau].tp += tpHeures;
+            
+            // Ajouter aux données par semestre
+            semestres[semestre].cm += cmHeures;
+            semestres[semestre].td += tdHeures;
+            semestres[semestre].tp += tpHeures;
+        });
+    });
+    
+    // Formater les données pour le graphique camembert
+    const pieChartData = {
+        labels: ['CM', 'TD', 'TP'],
+        data: [totalCM, totalTD, totalTP]
+    };
+    
+    // Formater les données pour le graphique d'évolution par année
+    const anneesKeys = Object.keys(annees).sort();
+    const lineChartData = {
+        labels: anneesKeys,
+        datasets: [
+            {
+                label: 'CM',
+                data: anneesKeys.map(annee => annees[annee].cm)
+            },
+            {
+                label: 'TD',
+                data: anneesKeys.map(annee => annees[annee].td)
+            },
+            {
+                label: 'TP',
+                data: anneesKeys.map(annee => annees[annee].tp)
+            }
+        ]
+    };
+    
+    // Formater les données pour le graphique par niveau
+    const niveauxKeys = Object.keys(niveaux).sort();
+    const barChartNiveauData = {
+        labels: niveauxKeys,
+        datasets: [
+            {
+                label: 'CM',
+                data: niveauxKeys.map(niveau => niveaux[niveau].cm)
+            },
+            {
+                label: 'TD',
+                data: niveauxKeys.map(niveau => niveaux[niveau].td)
+            },
+            {
+                label: 'TP',
+                data: niveauxKeys.map(niveau => niveaux[niveau].tp)
+            }
+        ]
+    };
+    
+    // Formater les données pour le graphique par semestre
+    const semestresKeys = Object.keys(semestres).sort();
+    const barChartSemestreData = {
+        labels: semestresKeys,
+        datasets: [
+            {
+                label: 'CM',
+                data: semestresKeys.map(semestre => semestres[semestre].cm)
+            },
+            {
+                label: 'TD',
+                data: semestresKeys.map(semestre => semestres[semestre].td)
+            },
+            {
+                label: 'TP',
+                data: semestresKeys.map(semestre => semestres[semestre].tp)
+            }
+        ]
+    };
+    
+    // Mise à jour des graphiques avec les données préparées
+    updateCharts({
+        pie_chart: pieChartData,
+        line_chart: lineChartData,
+        bar_chart_niveau: barChartNiveauData,
+        bar_chart_semestre: barChartSemestreData
     });
 }
 
@@ -1020,36 +1281,31 @@ function transformDataForTable(data) {
     return tableData;
 }
 
-// Charger les graphiques
-function loadCharts(stats) {
-    // Détruire les graphiques existants s'ils existent
-    Object.values(charts).forEach(chart => {
-        if (chart && typeof chart.destroy === 'function') {
-            chart.destroy();
-        }
-    });
-    
-    // Réinitialiser l'objet charts
-    charts = {};
-    
-    // 1. Graphique camembert - Répartition des types d'heures
-    const ctxTypes = document.getElementById('typesHeuresChart').getContext('2d');
-    charts.types = new Chart(ctxTypes, {
+// Fonction d'initialisation des graphiques
+function initCharts() {
+    // Graphique 1: Répartition des heures par type (Camembert)
+    const typesHeuresCtx = document.getElementById('typesHeuresChart').getContext('2d');
+    typesHeuresChart = new Chart(typesHeuresCtx, {
         type: 'pie',
         data: {
-            labels: ['Cours Magistraux (CM)', 'Travaux Dirigés (TD)', 'Travaux Pratiques (TP)'],
+            labels: ['CM', 'TD', 'TP'],
             datasets: [{
-                data: [
-                    stats.heures_totales.cm.hm,
-                    stats.heures_totales.td.hm,
-                    stats.heures_totales.tp.hm
+                data: [0, 0, 0],
+                backgroundColor: [
+                    chartColors.cm,
+                    chartColors.td,
+                    chartColors.tp
                 ],
-                backgroundColor: ['#2f0d73', '#7c50de', '#ac54c7']
+                borderColor: [
+                    chartColors.border.cm,
+                    chartColors.border.td,
+                    chartColors.border.tp
+                ],
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'right',
@@ -1057,11 +1313,10 @@ function loadCharts(stats) {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            const label = context.label || '';
-                            const value = context.parsed;
-                            const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
-                            const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                            return `${label}: ${value}h (${percentage}%)`;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const value = context.raw;
+                            const percentage = Math.round((value / total) * 100);
+                            return `${context.label}: ${value.toFixed(1)}h (${percentage}%)`;
                         }
                     }
                 }
@@ -1069,145 +1324,51 @@ function loadCharts(stats) {
         }
     });
     
-    // 2. Graphique en courbe - Évolution des heures par année académique
-    // Pour ce graphique, nous aurions besoin de données d'évolution par année
-    // Mais comme nous n'avons pas ces données dans la réponse actuelle, nous créons un graphique fictif
-    const ctxEvolution = document.getElementById('evolutionHeuresChart').getContext('2d');
-    
-    // Données fictives pour l'exemple
-    // En production, ces données devraient être récupérées via une API dédiée
-    const annees = ['2020-2021', '2021-2022', '2022-2023', '2023-2024', '2024-2025'];
-    const heuresCM = [320, 350, 380, 360, 400];
-    const heuresTD = [450, 480, 500, 520, 530];
-    const heuresTP = [280, 300, 320, 350, 370];
-    
-    charts.evolution = new Chart(ctxEvolution, {
-        type: 'line',
-        data: {
-            labels: annees,
-            datasets: [
-                {
-                    label: 'CM',
-                    data: heuresCM,
-                    borderColor: '#2f0d73',
-                    backgroundColor: 'rgba(47, 13, 115, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                },
-                {
-                    label: 'TD',
-                    data: heuresTD,
-                    borderColor: '#7c50de',
-                    backgroundColor: 'rgba(124, 80, 222, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                },
-                {
-                    label: 'TP',
-                    data: heuresTP,
-                    borderColor: '#ac54c7',
-                    backgroundColor: 'rgba(172, 84, 199, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Nombre d\'heures'
-                    }
-                }
-            }
-        }
-    });
-    
-    // 3. Graphique en barres - Répartition des heures par niveau
-    // Données fictives pour l'exemple
-    const niveaux = ['FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIA3', 'FIA5'];
-    const heuresParNiveau = [
-        {
-            cm: 150,
-            td: 200,
-            tp: 150
-        },
-        {
-            cm: 180,
-            td: 230,
-            tp: 170
-        },
-        {
-            cm: 200,
-            td: 250,
-            tp: 200
-        },
-        {
-            cm: 170,
-            td: 220,
-            tp: 180
-        },
-        {
-            cm: 120,
-            td: 180,
-            tp: 150
-        },
-        {
-            cm: 100,
-            td: 120,
-            tp: 100
-        },
-        {
-            cm: 80,
-            td: 100,
-            tp: 80
-        }
-    ];
-    
-    const ctxNiveau = document.getElementById('heuresNiveauChart').getContext('2d');
-    charts.niveaux = new Chart(ctxNiveau, {
+    // Graphique 2: Évolution des heures par année (Courbe)
+    const evolutionHeuresCtx = document.getElementById('evolutionHeuresChart').getContext('2d');
+    evolutionHeuresChart = new Chart(evolutionHeuresCtx, {
         type: 'bar',
         data: {
-            labels: niveaux,
+            labels: [],
             datasets: [
                 {
                     label: 'CM',
-                    data: heuresParNiveau.map(item => item.cm),
-                    backgroundColor: '#2f0d73'
+                    data: [],
+                    backgroundColor: chartColors.cm,
+                    borderColor: chartColors.border.cm,
+                    borderWidth: 2,
+                    tension: 0.3
                 },
                 {
                     label: 'TD',
-                    data: heuresParNiveau.map(item => item.td),
-                    backgroundColor: '#7c50de'
+                    data: [],
+                    backgroundColor: chartColors.td,
+                    borderColor: chartColors.border.td,
+                    borderWidth: 2,
+                    tension: 0.3
                 },
                 {
                     label: 'TP',
-                    data: heuresParNiveau.map(item => item.tp),
-                    backgroundColor: '#ac54c7'
+                    data: [],
+                    backgroundColor: chartColors.tp,
+                    borderColor: chartColors.border.tp,
+                    borderWidth: 2,
+                    tension: 0.3
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'top',
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw.toFixed(1)}h`;
+                        }
+                    }
                 }
             },
             scales: {
-                x: {
-                    stacked: false,
-                },
                 y: {
                     beginAtZero: true,
                     title: {
@@ -1219,96 +1380,48 @@ function loadCharts(stats) {
         }
     });
     
-    // 4. Graphique en barres - Types d'heures par semestre
-    const semestres = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10'];
-    const heuresParSemestre = [
-        {
-            cm: 120,
-            td: 150,
-            tp: 120
-        },
-        {
-            cm: 130,
-            td: 160,
-            tp: 130
-        },
-        {
-            cm: 140,
-            td: 170,
-            tp: 140
-        },
-        {
-            cm: 150,
-            td: 180,
-            tp: 150
-        },
-        {
-            cm: 160,
-            td: 190,
-            tp: 160
-        },
-        {
-            cm: 150,
-            td: 180,
-            tp: 150
-        },
-        {
-            cm: 140,
-            td: 170,
-            tp: 140
-        },
-        {
-            cm: 130,
-            td: 160,
-            tp: 130
-        },
-        {
-            cm: 120,
-            td: 150,
-            tp: 120
-        },
-        {
-            cm: 110,
-            td: 140,
-            tp: 110
-        }
-    ];
-    
-    const ctxSemestre = document.getElementById('heuresSemestreChart').getContext('2d');
-    charts.semestres = new Chart(ctxSemestre, {
+    // Graphique 3: Répartition des heures par niveau (Histogramme)
+    const heuresNiveauCtx = document.getElementById('heuresNiveauChart').getContext('2d');
+    heuresNiveauChart = new Chart(heuresNiveauCtx, {
         type: 'bar',
         data: {
-            labels: semestres,
+            labels: [],
             datasets: [
                 {
                     label: 'CM',
-                    data: heuresParSemestre.map(item => item.cm),
-                    backgroundColor: '#2f0d73'
+                    data: [],
+                    backgroundColor: chartColors.cm,
+                    borderColor: chartColors.border.cm,
+                    borderWidth: 1
                 },
                 {
                     label: 'TD',
-                    data: heuresParSemestre.map(item => item.td),
-                    backgroundColor: '#7c50de'
+                    data: [],
+                    backgroundColor: chartColors.td,
+                    borderColor: chartColors.border.td,
+                    borderWidth: 1
                 },
                 {
                     label: 'TP',
-                    data: heuresParSemestre.map(item => item.tp),
-                    backgroundColor: '#ac54c7'
+                    data: [],
+                    backgroundColor: chartColors.tp,
+                    borderColor: chartColors.border.tp,
+                    borderWidth: 1
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'top',
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw.toFixed(1)}h`;
+                        }
+                    }
                 }
             },
             scales: {
-                x: {
-                    stacked: false,
-                },
                 y: {
                     beginAtZero: true,
                     title: {
@@ -1319,6 +1432,119 @@ function loadCharts(stats) {
             }
         }
     });
+    
+    // Graphique 4: Types d'heures par semestre (Barres groupées)
+    const heuresSemestreCtx = document.getElementById('heuresSemestreChart').getContext('2d');
+    heuresSemestreChart = new Chart(heuresSemestreCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'CM',
+                    data: [],
+                    backgroundColor: chartColors.cm,
+                    borderColor: chartColors.border.cm,
+                    borderWidth: 1
+                },
+                {
+                    label: 'TD',
+                    data: [],
+                    backgroundColor: chartColors.td,
+                    borderColor: chartColors.border.td,
+                    borderWidth: 1
+                },
+                {
+                    label: 'TP',
+                    data: [],
+                    backgroundColor: chartColors.tp,
+                    borderColor: chartColors.border.tp,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw.toFixed(1)}h`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre d\'heures'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Fonction pour mettre à jour les graphiques avec les données reçues
+function updateCharts(data) {
+    // Mettre à jour le graphique camembert (Types d'heures)
+    if (data.pie_chart) {
+        typesHeuresChart.data.labels = data.pie_chart.labels;
+        typesHeuresChart.data.datasets[0].data = data.pie_chart.data;
+        typesHeuresChart.update();
+    }
+    
+    // Mettre à jour le graphique de ligne (Évolution par année)
+    if (data.line_chart) {
+        evolutionHeuresChart.data.labels = data.line_chart.labels;
+        
+        // Mettre à jour chaque dataset
+        data.line_chart.datasets.forEach((dataset, index) => {
+            evolutionHeuresChart.data.datasets[index].data = dataset.data;
+        });
+        
+        evolutionHeuresChart.update();
+    }
+    
+    // Mettre à jour le graphique à barres (Par niveau)
+    if (data.bar_chart_niveau) {
+        heuresNiveauChart.data.labels = data.bar_chart_niveau.labels;
+        
+        // Mettre à jour chaque dataset
+        data.bar_chart_niveau.datasets.forEach((dataset, index) => {
+            heuresNiveauChart.data.datasets[index].data = dataset.data;
+        });
+        
+        heuresNiveauChart.update();
+    }
+    
+    // Mettre à jour le graphique à barres (Par semestre)
+    if (data.bar_chart_semestre) {
+        heuresSemestreChart.data.labels = data.bar_chart_semestre.labels;
+        
+        // Mettre à jour chaque dataset
+        data.bar_chart_semestre.datasets.forEach((dataset, index) => {
+            heuresSemestreChart.data.datasets[index].data = dataset.data;
+        });
+        
+        heuresSemestreChart.update();
+    }
+}
+
+// Afficher un indicateur de chargement
+function showLoader() {
+    // Implémenter selon votre design
+    console.log('Chargement...');
+    // Vous pourriez ajouter un spinner ou autre indicateur visuel ici
+}
+
+// Cacher l'indicateur de chargement
+function hideLoader() {
+    // Implémenter selon votre design
+    console.log('Chargement terminé');
+    // Supprimer le spinner ou autre indicateur visuel ici
 }
 
 // Sauvegarder les données du formulaire
@@ -1384,6 +1610,7 @@ function saveHeuresData() {
     };
     
     // Envoyer les données à l'API
+// Envoyer les données à l'API
     $.ajax({
         url: `${API_BASE_URL}/heures-enseignement/form`,
         type: 'POST',
@@ -1399,6 +1626,8 @@ function saveHeuresData() {
             // Actualiser les données
             loadHeuresEnseignementStats();
             loadHeuresEnseignement();
+            // Recharger les données des graphiques
+            loadChartData();
         },
         error: function(xhr) {
             let message = 'Erreur lors de l\'enregistrement des données';
@@ -1413,7 +1642,6 @@ function saveHeuresData() {
     });
 }
 
-// Uploader un fichier CSV/Excel
 // Uploader un fichier CSV/Excel
 function uploadHeuresFile() {
     // Récupérer le formulaire
@@ -1445,6 +1673,8 @@ function uploadHeuresFile() {
             // Actualiser les données
             loadHeuresEnseignementStats();
             loadHeuresEnseignement();
+            // Recharger les données des graphiques
+            loadChartData();
         },
         error: function(xhr, status, error) {
             console.log("Erreur AJAX:", status, error);
@@ -1474,12 +1704,6 @@ function uploadHeuresFile() {
     });
 }
 
-// Fonction pour récupérer le token API
-function getApiToken() {
-    // Récupérer le token depuis la session ou d'une variable globale
-    // Cette fonction doit être adaptée selon la façon dont vous stockez le token
-    return '{{ request.session.api_token }}';
-}
 // Supprimer des données
 function deleteHeuresData() {
     // Vérifier que les données de suppression sont définies
@@ -1504,6 +1728,8 @@ function deleteHeuresData() {
             // Actualiser les données
             loadHeuresEnseignementStats();
             loadHeuresEnseignement();
+            // Recharger les données des graphiques
+            loadChartData();
         },
         error: function(xhr) {
             let message = 'Erreur lors de la suppression des données';
@@ -1626,6 +1852,7 @@ function prepareDelete(anneeAcademique, niveau, semestre, ueCode) {
 function refreshAllCharts() {
     loadHeuresEnseignementStats();
     loadHeuresEnseignement();
+    loadChartData();
     showNotification('success', 'Données actualisées!');
 }
 
@@ -1660,6 +1887,7 @@ $('#uploadCSVModal').on('hidden.bs.modal', function () {
     $('#uploadForm')[0].reset();
     $('.custom-file-label').text('Choisir un fichier...');
 });
+
 function loadHeuresData() {
     // Récupérer le token d'authentification (à adapter selon votre méthode de stockage)
     const token = sessionStorage.getItem('api_token') || localStorage.getItem('api_token');
@@ -1784,7 +2012,11 @@ function populateNiveauFilter() {
     const niveaux = new Set();
     data.forEach(item => {
         if (item.niveau) {
-            niveaux.add(item.niveau);
+            // Extraire le texte du HTML
+            const niveau = $(item.niveau).text();
+            if (niveau) {
+                niveaux.add(niveau);
+            }
         }
     });
     
@@ -1799,6 +2031,7 @@ function populateNiveauFilter() {
         levelFilter.append(`<option value="${niveau}">${niveau}</option>`);
     });
 }
+
 // Fonctions pour les actions sur les lignes
 function editRow(button) {
     const row = button.closest('tr');
@@ -1814,6 +2047,7 @@ function deleteRow(button) {
         // Implémenter la suppression
     }
 }
+
 // Fonction pour afficher une notification
 function showNotification(type, message) {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';

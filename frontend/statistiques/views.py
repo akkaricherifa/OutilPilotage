@@ -842,6 +842,44 @@ def get_heures_enseignement_data(request):
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur API heures_enseignement_data: {e}")
         return JsonResponse({'error': 'Erreur de connexion à API'}, status=500)
+
+@api_authenticated_required
+def get_heures_enseignement_graph_data(request):
+    """Vue pour récupérer les données des graphiques des heures d'enseignement"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    # Récupérer les paramètres de filtrage
+    annee_debut = request.GET.get('annee_debut', '')
+    annee_fin = request.GET.get('annee_fin', '')
+    niveau = request.GET.get('niveau', '')
+    semestre = request.GET.get('semestre', '')
+    
+    try:
+        # Construire l'URL avec les paramètres
+        url = f"{settings.API_URL}/heures-enseignement/graph-data"
+        params = {}
+        
+        if annee_debut:
+            params['annee_debut'] = annee_debut
+        if annee_fin:
+            params['annee_fin'] = annee_fin
+        if niveau:
+            params['niveau'] = niveau
+        if semestre:
+            params['semestre'] = semestre
+        
+        # Appeler l'API
+        response = requests.get(url, headers=headers, params=params, timeout=10)
+        
+        if response.status_code == 200:
+            return JsonResponse(response.json(), safe=False)
+        else:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données graphiques'}, status=response.status_code)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur API graph_data: {e}")
+        return JsonResponse({'error': 'Erreur de connexion à l\'API'}, status=500)
 ############################rse rse rse rse #################
 @api_authenticated_required
 def rse_view(request):

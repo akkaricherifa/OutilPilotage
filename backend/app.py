@@ -1171,6 +1171,179 @@ def get_niveaux(current_user):
     except Exception as e:
         return jsonify({"error": f"Erreur lors de la récupération des niveaux: {str(e)}"}), 500
 
+@app.route('/api/heures-enseignement/graph-data', methods=['GET'])
+@token_required
+def get_heures_enseignement_graph_data(current_user):
+    """Endpoint pour récupérer les données formatées pour les graphiques"""
+    try:
+        # Paramètres de filtrage
+        annee_debut = request.args.get('annee_debut')
+        annee_fin = request.args.get('annee_fin')
+        niveau = request.args.get('niveau')
+        semestre = request.args.get('semestre')
+        
+        # Construire le filtre en fonction des paramètres fournis
+        filter_query = {}
+        
+        if annee_debut and annee_fin:
+            filter_query["annee_academique"] = f"{annee_debut}-{annee_fin}"
+        elif annee_debut:
+            filter_query["annee_debut"] = int(annee_debut)
+        
+        if niveau:
+            filter_query["niveau"] = niveau
+            
+        if semestre:
+            filter_query["semestre"] = semestre
+        
+        # Récupérer les données
+        data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
+        
+        if not data:
+            return jsonify({"error": "Aucune donnée trouvée avec ces filtres"}), 404
+        
+        # Préparation des données pour les graphiques
+        graph_data = {
+            "pie_chart": prepare_pie_chart_data(data),
+            "line_chart": prepare_line_chart_data(data),
+            "bar_chart_niveau": prepare_bar_chart_niveau_data(data),
+            "bar_chart_semestre": prepare_bar_chart_semestre_data(data)
+        }
+        
+        return jsonify(graph_data), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
+
+def prepare_pie_chart_data(data):
+    """Prépare les données pour le graphique camembert des types d'heures"""
+    total_cm = 0
+    total_td = 0
+    total_tp = 0
+    
+    for record in data:
+        ue = record.get('unite_enseignement', {})
+        for matiere in ue.get('matieres', []):
+            # Additionner les heures maquette (hm) de chaque type
+            total_cm += matiere.get('heures_cm', {}).get('hm', 0)
+            total_td += matiere.get('heures_td', {}).get('hm', 0)
+            total_tp += matiere.get('heures_tp', {}).get('hm', 0)
+    
+    return {
+        "labels": ["CM", "TD", "TP"],
+        "data": [total_cm, total_td, total_tp]
+    }
+
+def prepare_line_chart_data(data):
+    """Prépare les données pour le graphique d'évolution des heures par année"""
+    # Regrouper les données par année académique
+    annees = {}
+    
+    for record in data:
+        annee = record.get('annee_academique')
+        if not annee in annees:
+            annees[annee] = {'cm': 0, 'td': 0, 'tp': 0}
+        
+        ue = record.get('unite_enseignement', {})
+        for matiere in ue.get('matieres', []):
+            annees[annee]['cm'] += matiere.get('heures_cm', {}).get('hm', 0)
+            annees[annee]['td'] += matiere.get('heures_td', {}).get('hm', 0)
+            annees[annee]['tp'] += matiere.get('heures_tp', {}).get('hm', 0)
+    
+    # Trier les années
+    sorted_annees = sorted(annees.keys())
+    
+    return {
+        "labels": sorted_annees,
+        "datasets": [
+            {
+                "label": "CM",
+                "data": [annees[annee]['cm'] for annee in sorted_annees]
+            },
+            {
+                "label": "TD",
+                "data": [annees[annee]['td'] for annee in sorted_annees]
+            },
+            {
+                "label": "TP",
+                "data": [annees[annee]['tp'] for annee in sorted_annees]
+            }
+        ]
+    }
+
+def prepare_bar_chart_niveau_data(data):
+    """Prépare les données pour le graphique à barres des heures par niveau"""
+    # Regrouper les données par niveau
+    niveaux = {}
+    
+    for record in data:
+        niveau = record.get('niveau')
+        if not niveau in niveaux:
+            niveaux[niveau] = {'cm': 0, 'td': 0, 'tp': 0}
+        
+        ue = record.get('unite_enseignement', {})
+        for matiere in ue.get('matieres', []):
+            niveaux[niveau]['cm'] += matiere.get('heures_cm', {}).get('hm', 0)
+            niveaux[niveau]['td'] += matiere.get('heures_td', {}).get('hm', 0)
+            niveaux[niveau]['tp'] += matiere.get('heures_tp', {}).get('hm', 0)
+    
+    # Obtenir la liste des niveaux
+    niveau_labels = list(niveaux.keys())
+    
+    return {
+        "labels": niveau_labels,
+        "datasets": [
+            {
+                "label": "CM",
+                "data": [niveaux[niveau]['cm'] for niveau in niveau_labels]
+            },
+            {
+                "label": "TD",
+                "data": [niveaux[niveau]['td'] for niveau in niveau_labels]
+            },
+            {
+                "label": "TP",
+                "data": [niveaux[niveau]['tp'] for niveau in niveau_labels]
+            }
+        ]
+    }
+
+def prepare_bar_chart_semestre_data(data):
+    """Prépare les données pour le graphique à barres des heures par semestre"""
+    # Regrouper les données par semestre
+    semestres = {}
+    
+    for record in data:
+        semestre = record.get('semestre')
+        if not semestre in semestres:
+            semestres[semestre] = {'cm': 0, 'td': 0, 'tp': 0}
+        
+        ue = record.get('unite_enseignement', {})
+        for matiere in ue.get('matieres', []):
+            semestres[semestre]['cm'] += matiere.get('heures_cm', {}).get('hm', 0)
+            semestres[semestre]['td'] += matiere.get('heures_td', {}).get('hm', 0)
+            semestres[semestre]['tp'] += matiere.get('heures_tp', {}).get('hm', 0)
+    
+    # Trier les semestres
+    semestre_labels = sorted(semestres.keys())
+    
+    return {
+        "labels": semestre_labels,
+        "datasets": [
+            {
+                "label": "CM",
+                "data": [semestres[semestre]['cm'] for semestre in semestre_labels]
+            },
+            {
+                "label": "TD",
+                "data": [semestres[semestre]['td'] for semestre in semestre_labels]
+            },
+            {
+                "label": "TP",
+                "data": [semestres[semestre]['tp'] for semestre in semestre_labels]
+            }
+        ]
+    }
 ###################################### routes RSE #########################
 @app.route('/api/rse/stats', methods=['GET'])
 @token_required

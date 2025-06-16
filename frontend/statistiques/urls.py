@@ -36,6 +36,7 @@ urlpatterns = [
     path('heures-enseignement/', views.heures_enseignement, name='heures_enseignement'),
     path('api/heures-enseignement/data', views.get_heures_enseignement_data, name='heures_enseignement_data'),
     path('heures-enseignement/upload-csv/', views.heures_enseignement_upload_csv, name='heures_enseignement_upload_csv'),
+    path('api/heures-enseignement/graph-data/', views.get_heures_enseignement_graph_data, name='heures_enseignement_graph_data'),
     #RSE
     path('rse/', views.rse_view, name='rse'),
     path('rse/add/', views.rse_add_data, name='rse_add_data'),

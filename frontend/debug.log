@@ -10100,3 +10100,17 @@ Unauthorized: /api/arion/stats
 "GET /api/arion/data HTTP/1.1" 200 1242285
 "GET /api/arion/data HTTP/1.1" 200 1242285
 "GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43525
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 53053
+"GET /heures-enseignement/ HTTP/1.1" 200 86167
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
