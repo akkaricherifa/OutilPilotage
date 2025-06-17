@@ -10857,3 +10857,49 @@ Unauthorized: /api/arion/stats
 "GET /api/arion/data HTTP/1.1" 200 1241724
 "GET /api/arion/data HTTP/1.1" 200 1241724
 Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35409
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+"GET /arion/ HTTP/1.1" 200 96522
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /arion/ HTTP/1.1" 200 96522
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+"GET /arion/ HTTP/1.1" 200 96582
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /arion/ HTTP/1.1" 200 98564
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170

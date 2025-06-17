@@ -143,10 +143,16 @@
     margin-bottom: 30px;
     border: 1px solid var(--isis-purple-light);
     height: 600px; /* Hauteur fixe pour toutes les cartes */
+    min-height: 400px;  /* Hauteur minimale mais peut s'étendre */
     transition: all var(--transition-speed) ease;
     display: flex;
     flex-direction: column;
+    
     }
+    #evolutionAnnuelleChart {
+    max-height: 100%;
+    max-width: 100%;
+     }
 
     .chart-container:hover {
         box-shadow: var(--card-shadow-hover);
@@ -574,6 +580,72 @@
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
       }
+      .trend-summary {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+     }
+
+     .trend-summary .badge {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+     }
+
+     .trend-summary .badge i {
+    margin-right: 3px;
+     }
+
+    .trend-summary .trend-text {
+    color: #666;
+     }
+
+     .badge-up {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+     }
+
+     .badge-down {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+     }
+
+     .badge-neutral {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+     }
+
+    /* Animation du graphique */
+     @keyframes growUp {
+    from {
+        opacity: 0;
+        transform: scaleY(0.5);
+        transform-origin: bottom;
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+      }
+
+       #evolutionAnnuelleChart {
+    animation: growUp 1.2s ease-out;
+        }
+
+         /* Style pour les boutons de type de graphique */
+        .btn-group .btn-outline-secondary {
+    border-color: #7c50de;
+    color: #7c50de;
+       }
+
+          .btn-group .btn-outline-secondary:hover,
+          .btn-group .btn-outline-secondary.active {
+    background-color: #7c50de;
+    border-color: #7c50de;
+    color: white;
+    }
           
 </style>
 {% endblock %}
@@ -608,7 +680,33 @@
         <canvas id="professionChart"></canvas>
     </div>
 </div>
-        
+      <!-- Graphique d'évolution par année -->
+<div class="chart-container">
+    <h5><i class="fas fa-chart-line mr-2"></i>Évolution du nombre de vacataires par année</h5>
+    <div class="chart-info mb-3">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="trend-summary">
+                    <span id="evolution-trend-badge" class="badge badge-pill mr-2">
+                        <i class="fas fa-arrow-up"></i> +2.1%
+                    </span>
+                    <span class="trend-text">par rapport à l'année précédente</span>
+                </div>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-secondary active" data-view="line">
+                        <i class="fas fa-chart-line"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" data-view="bar">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <canvas id="evolutionAnnuelleChart"></canvas>
+</div>
         <!-- Graphique par pays -->
         <div class="chart-container">
             <h5><i class="fas fa-map-marker-alt mr-2"></i>Répartition par Pays</h5>
@@ -855,29 +953,29 @@
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-    // Variables globales
-    let vacatairesTable;
-    let charts = {};
-    // Utilisez une URL relative pour l'API - à modifier selon votre configuration
-    const API_BASE_URL = "/api/"; 
+  // Variables globales
+let vacatairesTable;
+let charts = {};
+// Utilisez une URL relative pour l'API - à modifier selon votre configuration
+const API_BASE_URL = "/api/"; 
+
+// Initialisation au chargement du document
+$(document).ready(function() {
+    // Assurez-vous que les modals s'ouvrent correctement
+    setupModalButtons();
     
-    // Initialisation au chargement du document
-    $(document).ready(function() {
-        // Assurez-vous que les modals s'ouvrent correctement
-        setupModalButtons();
-        
-        // Initialiser le tableau DataTables
-        initDataTable();
-        loadVacatairesData();
-        // Initialiser les graphiques
-        initCharts();
-        
-        // Initialiser les gestionnaires d'événements
-        initEventHandlers();
-    });
+    // Initialiser le tableau DataTables
+    initDataTable();
+    loadVacatairesData();
+    // Initialiser les graphiques
+    initCharts();
     
-    // Configuration des boutons pour les modals
-    function setupModalButtons() {
+    // Initialiser les gestionnaires d'événements
+    initEventHandlers();
+});
+
+// Configuration des boutons pour les modals
+function setupModalButtons() {
     // S'assurer que les boutons des modals fonctionnent
     $(document).on('click', '.btn-add', function(e) {
         e.preventDefault();
@@ -893,13 +991,13 @@
     });
     
     $('.btn-import').on('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation(); // Empêche la propagation de l'événement
-    console.log("Bouton Import CSV cliqué avec stopPropagation");
-    $('#csvUploadForm')[0].reset();
-    $('.custom-file-label').html('Choisir un fichier');
-    $('#importCsvModal').modal('show');
-});
+        e.preventDefault();
+        e.stopPropagation(); // Empêche la propagation de l'événement
+        console.log("Bouton Import CSV cliqué avec stopPropagation");
+        $('#csvUploadForm')[0].reset();
+        $('.custom-file-label').html('Choisir un fichier');
+        $('#importCsvModal').modal('show');
+    });
     
     // Gérer la fermeture des modals avec le bouton Annuler
     $(document).on('click', '.modal .btn-secondary', function() {
@@ -911,72 +1009,73 @@
         $(this).closest('.modal').modal('hide');
     });
 }
-    
-    // Fonction pour initialiser DataTable avec des traductions françaises directes
-    function initDataTable() {
-        vacatairesTable = $('#vacatairesTable').DataTable({
-            language: {
-                "sEmptyTable":     "Aucune donnée disponible dans le tableau",
-                "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
-                "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
-                "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
-                "sInfoPostFix":    "",
-                "sLoadingRecords": "Chargement...",
-                "sProcessing":     "Traitement...",
-                "sSearch":         "Rechercher :",
-                "sZeroRecords":    "Aucun élément correspondant trouvé",
-                "oPaginate": {
-                    "sFirst":    "Premier",
-                    "sLast":     "Dernier",
-                    "sNext":     "Suivant",
-                    "sPrevious": "Précédent"
-                },
-                "oAria": {
-                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                    "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+
+// Fonction pour initialiser DataTable avec des traductions françaises directes
+function initDataTable() {
+    vacatairesTable = $('#vacatairesTable').DataTable({
+        language: {
+            "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+            "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+            "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+            "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+            "sInfoPostFix":    "",
+            "sLoadingRecords": "Chargement...",
+            "sProcessing":     "Traitement...",
+            "sSearch":         "Rechercher :",
+            "sZeroRecords":    "Aucun élément correspondant trouvé",
+            "oPaginate": {
+                "sFirst":    "Premier",
+                "sLast":     "Dernier",
+                "sNext":     "Suivant",
+                "sPrevious": "Précédent"
+            },
+            "oAria": {
+                "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+            }
+        },
+        columns: [
+            { data: 'nom' },
+            { data: 'prenom' },
+            { data: 'email' },
+            { data: 'affectation' },
+            { data: 'nombre_heures' },
+            { data: 'type_profession' },
+            { data: 'date_intervention' },
+            { data: 'pays' },
+            { 
+                data: 'etat_recrutement',
+                render: function(data) {
+                    let badgeClass = 'badge-pending';
+                    if (data === 'Confirmé') {
+                        badgeClass = 'badge-confirmed';
+                    } else if (data === 'En cours de traitement') {
+                        badgeClass = 'badge-processing';
+                    } else if (data === 'Refusé') {
+                        badgeClass = 'badge-rejected';
+                    }
+                    return `<span class="badge badge-recruitment ${badgeClass}">${data || 'En attente'}</span>`;
                 }
             },
-            columns: [
-                { data: 'nom' },
-                { data: 'prenom' },
-                { data: 'email' },
-                { data: 'affectation' },
-                { data: 'nombre_heures' },
-                { data: 'type_profession' },
-                { data: 'date_intervention' },
-                { data: 'pays' },
-                { 
-                    data: 'etat_recrutement',
-                    render: function(data) {
-                        let badgeClass = 'badge-pending';
-                        if (data === 'Confirmé') {
-                            badgeClass = 'badge-confirmed';
-                        } else if (data === 'En cours de traitement') {
-                            badgeClass = 'badge-processing';
-                        } else if (data === 'Refusé') {
-                            badgeClass = 'badge-rejected';
-                        }
-                        return `<span class="badge badge-recruitment ${badgeClass}">${data || 'En attente'}</span>`;
-                    }
+            { 
+                data: null,
+                render: function(data) {
+                    return `
+                        <div class="d-flex">
+                            <i class="fas fa-edit action-icon edit-icon mr-2" data-id="${data?.id || ''}" title="Modifier"></i>
+                            <i class="fas fa-trash-alt action-icon delete-icon" data-id="${data?.id || ''}" title="Supprimer"></i>
+                        </div>
+                    `;
                 },
-                { 
-                    data: null,
-                    render: function(data) {
-                        return `
-                            <div class="d-flex">
-                                <i class="fas fa-edit action-icon edit-icon mr-2" data-id="${data?.id || ''}" title="Modifier"></i>
-                                <i class="fas fa-trash-alt action-icon delete-icon" data-id="${data?.id || ''}" title="Supprimer"></i>
-                            </div>
-                        `;
-                    },
-                    orderable: false
-                }
-            ],
-            order: [[0, 'asc']],
-            pageLength: 7,
-            responsive: true
-        });
-    }
+                orderable: false
+            }
+        ],
+        order: [[0, 'asc']],
+        pageLength: 7,
+        responsive: true
+    });
+}
+
 // Fonction pour mettre à jour le filtre des années
 function updateYearFilter() {
     // Récupérer toutes les années uniques
@@ -1011,8 +1110,9 @@ function updateYearFilter() {
         }
     }
 }
+
 // Fonction pour charger les données des vacataires depuis l'API
- function loadVacatairesData() {
+function loadVacatairesData() {
     $.ajax({
         url: `${API_BASE_URL}vacataire/data/`,
         type: 'GET',
@@ -1131,266 +1231,590 @@ function updateYearFilter() {
         }
     });
 }
-    
-    // Fonction pour initialiser les graphiques
-    function initCharts() {
-        // Graphique des types de profession
-        const professionCtx = document.getElementById('professionChart').getContext('2d');
-        charts.profession = new Chart(professionCtx, {
-            type: 'pie',
-            data: {
-                labels: [],
-                datasets: [{
-                    data: [],
-                    backgroundColor: [
-                        '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
-                        '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
-                    ],
-                    borderWidth: 3,
-                    hoverBorderWidth: 5,  // Bordure plus épaisse au survol
-                    hoverOffset: 15
-                }]
-            },
-            options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '30%', // Faire un donut avec un trou de 30%
-        plugins: {
-            legend: {
-                position: 'right',
-                labels: {
-                    font: {
-                        size: 10,
-                        weight: 'bold'
-                    },
-                    padding: 20,
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        const label = context.label || '';
-                        const value = context.formattedValue;
-                        const dataset = context.dataset;
-                        const total = dataset.data.reduce((acc, data) => acc + data, 0);
-                        const percentage = Math.round((context.raw / total) * 100);
-                        return `${label}: ${value} (${percentage}%)`;
+
+// Fonction pour initialiser les graphiques
+function initCharts() {
+    // Graphique des types de profession
+    const professionCtx = document.getElementById('professionChart').getContext('2d');
+    charts.profession = new Chart(professionCtx, {
+        type: 'pie',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: [
+                    '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
+                    '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
+                ],
+                borderWidth: 3,
+                hoverBorderWidth: 5,  // Bordure plus épaisse au survol
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '30%', // Faire un donut avec un trou de 30%
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
                     }
                 },
-                bodyFont: {
-                    size: 14
-                },
-                padding: 15,
-                backgroundColor: 'rgba(47, 13, 115, 0.8)',
-                titleColor: 'white',
-                bodyColor: 'white',
-                borderColor: 'white',
-                borderWidth: 1,
-                displayColors: true,
-                boxWidth: 15,
-                boxHeight: 15,
-                boxPadding: 5
-            },
-            datalabels: {
-                color: 'white',
-                font: {
-                    weight: 'bold',
-                    size: 13
-                },
-                formatter: (value, ctx) => {
-                    const dataset = ctx.dataset;
-                    const total = dataset.data.reduce((acc, data) => acc + data, 0);
-                    const percentage = Math.round((value / total) * 100);
-                    return percentage + '%';
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.formattedValue;
+                            const dataset = context.dataset;
+                            const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                            const percentage = Math.round((context.raw / total) * 100);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    },
+                    bodyFont: {
+                        size: 14
+                    },
+                    padding: 15,
+                    backgroundColor: 'rgba(47, 13, 115, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    borderColor: 'white',
+                    borderWidth: 1,
+                    displayColors: true,
+                    boxWidth: 15,
+                    boxHeight: 15,
+                    boxPadding: 5
                 }
+            },
+            layout: {
+                padding: {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1500,
+                easing: 'easeOutQuart'
             }
-        },
-        layout: {
-            padding: {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20
-            }
-        },
-        animation: {
-            animateRotate: true,
-            animateScale: true,
-            duration: 1500,
-            easing: 'easeOutQuart'
         }
-    }
-});
-        
-        // Graphique des pays
-        const paysCtx = document.getElementById('paysChart').getContext('2d');
-        charts.pays = new Chart(paysCtx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Nombre de vacataires',
-                    data: [],
-                    backgroundColor: [
-                        '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
-                        '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
-                    ],
-                    borderWidth: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                }
-            }
-        });
-        
-        // Graphique des états de recrutement
-        const recrutementCtx = document.getElementById('recrutementChart').getContext('2d');
-        charts.recrutement = new Chart(recrutementCtx, {
-            type: 'pie',
-            data: {
-                labels: [],
-                datasets: [{
-                    data: [],
-                    backgroundColor: [
-                        '#28a745', '#ffc107', '#3cbebe', '#dc3545', '#7c50de'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                }
-            }
-        });
-        
-        // Graphique des heures d'intervention
-        const heuresCtx = document.getElementById('heuresChart').getContext('2d');
-        charts.heures = new Chart(heuresCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: "Nombre d'heures",
-                    data: [],
-                    backgroundColor: 'rgba(124, 80, 222, 0.7)',
-                    borderColor: 'rgba(124, 80, 222, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: "Nombre d'heures"
-                        }
+    });
+    
+    // Graphique d'évolution annuelle
+    const evolutionAnnuelleCtx = document.getElementById('evolutionAnnuelleChart').getContext('2d');
+    const gradientFill = evolutionAnnuelleCtx.createLinearGradient(0, 0, 0, 400);
+    gradientFill.addColorStop(0, 'rgba(124, 80, 222, 0.6)');
+    gradientFill.addColorStop(1, 'rgba(124, 80, 222, 0.1)');
+
+    charts.evolutionAnnuelle = new Chart(evolutionAnnuelleCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Nombre de vacataires uniques',
+                data: [],
+                backgroundColor: gradientFill,
+                borderColor: 'rgba(124, 80, 222, 1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: 'rgba(124, 80, 222, 1)',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Nombre de vacataires uniques'
                     },
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Vacataires"
+                    ticks: {
+                        precision: 0
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Année académique'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(47, 13, 115, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    padding: 15,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `Vacataires uniques: ${context.raw}`;
+                        },
+                        afterLabel: function(context) {
+                            const index = context.dataIndex;
+                            if (index > 0) {
+                                const currentValue = context.dataset.data[index];
+                                const previousValue = context.dataset.data[index - 1];
+                                const evolution = currentValue - previousValue;
+                                const percentage = (evolution / previousValue * 100).toFixed(1);
+                                
+                                const sign = evolution > 0 ? '+' : '';
+                                return `Évolution: ${sign}${evolution} (${sign}${percentage}%)`;
+                            }
+                            return '';
                         }
                     }
                 }
-            }
-        });
-    }
-    
-    // Fonction pour charger les statistiques depuis l'API
-    function loadStatistiques() {
-        $.ajax({
-            url: `${API_BASE_URL}vacataire/stats`,
-            type: 'GET',
-            success: function(data) {
-                // Mettre à jour le graphique des professions
-                updateChart(charts.profession, data.profession.labels, data.profession.values);
-                
-                // Mettre à jour le graphique des pays
-                updateChart(charts.pays, data.pays.labels, data.pays.values);
-                
-                // Mettre à jour le graphique des états de recrutement
-                updateChart(charts.recrutement, data.etat_recrutement.labels, data.etat_recrutement.values);
-                
-                // Mettre à jour le graphique des heures
-                updateChart(charts.heures, data.heures.labels, data.heures.values);
             },
-            error: function(xhr) {
-                console.error('Erreur lors du chargement des statistiques:', xhr.responseText);
-                // Laisser les graphiques vides en attendant l'implémentation de l'API
+            interaction: {
+                intersect: false,
+                mode: 'index'
             }
-        });
-    }
+        }
+    });  
     
-    // Fonction pour mettre à jour un graphique
-    function updateChart(chart, labels, values) {
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = values;
-        chart.update();
-    }
+    // Graphique des pays
+    const paysCtx = document.getElementById('paysChart').getContext('2d');
+    charts.pays = new Chart(paysCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Nombre de vacataires',
+                data: [],
+                backgroundColor: [
+                    '#7c50de', '#f56960', '#3cbebe', '#ac54c7', '#ffb43c',
+                    '#2f0d73', '#d84c44', '#2b9292', '#943bb0', '#e9a329'
+                ],
+                borderWidth: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
     
-    // Fonction pour initialiser les gestionnaires d'événements
-    function initEventHandlers() {
-        // Soumission du formulaire d'ajout/modification
-        $('#vacataireForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            const vacataireId = $('#vacataireId').val();
-            const formData = $(this).serialize();
-            
-            // Si l'ID est présent, c'est une mise à jour, sinon c'est un ajout
-            if (vacataireId) {
-                // Mise à jour
-                $.ajax({
-                    url: `${API_BASE_URL}vacataire/update/${vacataireId}/`,
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        $('#addDataModal').modal('hide');
-                        alert(response.message || 'Vacataire mis à jour avec succès');
-                        loadVacatairesData();
-                        loadStatistiques();
-                    },
-                    error: function(xhr) {
-                        const errorMsg = xhr.responseJSON?.error || 'Erreur lors de la mise à jour du vacataire';
-                        alert(errorMsg);
+    // Graphique des états de recrutement
+    const recrutementCtx = document.getElementById('recrutementChart').getContext('2d');
+    charts.recrutement = new Chart(recrutementCtx, {
+        type: 'pie',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: [
+                    '#28a745', '#ffc107', '#3cbebe', '#dc3545', '#7c50de'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+    
+    // Graphique des heures d'intervention
+    const heuresCtx = document.getElementById('heuresChart').getContext('2d');
+    charts.heures = new Chart(heuresCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "Nombre d'heures",
+                data: [],
+                backgroundColor: 'rgba(124, 80, 222, 0.7)',
+                borderColor: 'rgba(124, 80, 222, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Nombre d'heures"
                     }
-                });
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Vacataires"
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Fonction pour charger les statistiques depuis l'API
+function loadStatistiques() {
+    $.ajax({
+        url: `${API_BASE_URL}vacataire/stats`,
+        type: 'GET',
+        success: function(data) {
+            // Mettre à jour le graphique des professions
+            updateChart(charts.profession, data.profession.labels, data.profession.values);
+            
+            // Mettre à jour le graphique des pays
+            updateChart(charts.pays, data.pays.labels, data.pays.values);
+            
+            // Mettre à jour le graphique des états de recrutement
+            updateChart(charts.recrutement, data.etat_recrutement.labels, data.etat_recrutement.values);
+            
+            // Mettre à jour le graphique des heures
+            updateChart(charts.heures, data.heures.labels, data.heures.values);
+            
+            // Pour l'évolution annuelle, nous devons récupérer toutes les données
+            $.ajax({
+                url: `${API_BASE_URL}vacataire/data/`,
+                type: 'GET',
+                success: function(vacatairesData) {
+                    // Préparer les données d'évolution annuelle
+                    const evolutionData = prepareEvolutionAnnuelleData(vacatairesData);
+                    
+                    // Mettre à jour le graphique d'évolution annuelle
+                    updateChart(charts.evolutionAnnuelle, evolutionData.labels, evolutionData.values);
+                    
+                    // Réattacher les gestionnaires d'événements pour les boutons
+                    reattachChartTypeButtons();
+                },
+                error: function(xhr) {
+                    console.error('Erreur lors du chargement des données pour l\'évolution annuelle:', xhr.responseText);
+                }
+            });
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des statistiques:', xhr.responseText);
+            // Laisser les graphiques vides en attendant l'implémentation de l'API
+        }
+    });
+}
+
+// Fonction pour mettre à jour le badge de tendance
+function updateTrendBadge(values) {
+    if (!values || values.length < 2) return;
+    
+    const lastValue = values[values.length - 1];
+    const previousValue = values[values.length - 2];
+    const difference = lastValue - previousValue;
+    const percentage = (difference / previousValue * 100).toFixed(1);
+    
+    const badgeElement = document.getElementById('evolution-trend-badge');
+    if (!badgeElement) return;
+    
+    // Réinitialiser les classes
+    badgeElement.classList.remove('badge-up', 'badge-down', 'badge-neutral');
+    
+    let icon, badgeClass;
+    if (difference > 0) {
+        icon = '<i class="fas fa-arrow-up"></i>';
+        badgeClass = 'badge-up';
+    } else if (difference < 0) {
+        icon = '<i class="fas fa-arrow-down"></i>';
+        badgeClass = 'badge-down';
+    } else {
+        icon = '<i class="fas fa-equals"></i>';
+        badgeClass = 'badge-neutral';
+    }
+    
+    // Mettre à jour le badge
+    badgeElement.className = `badge badge-pill mr-2 ${badgeClass}`;
+    badgeElement.innerHTML = `${icon} ${difference > 0 ? '+' : ''}${percentage}%`;
+}
+
+// Fonction pour mettre à jour un graphique
+function updateChart(chart, labels, values) {
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.update();
+}
+
+// Fonction pour réattacher les gestionnaires d'événements aux boutons de type de graphique
+function reattachChartTypeButtons() {
+    console.log("Réattachement des boutons de type de graphique");
+    
+    // Détacher d'abord tous les gestionnaires existants
+    $('button[data-view]').off('click');
+    
+    // Rattacher les gestionnaires pour chaque bouton
+    $('button[data-view="line"]').on('click', function(e) {
+        e.preventDefault();
+        console.log("Changement vers graphique en ligne");
+        updateChartType('line');
+    });
+    
+    $('button[data-view="bar"]').on('click', function(e) {
+        e.preventDefault();
+        console.log("Changement vers graphique en barres");
+        updateChartType('bar');
+    });
+}
+
+// Fonction pour mettre à jour le type de graphique
+function updateChartType(type) {
+    if (!charts.evolutionAnnuelle) {
+        console.error("Le graphique d'évolution annuelle n'existe pas");
+        return;
+    }
+    
+    console.log(`Mise à jour du graphique vers le type: ${type}`);
+    
+    // Mettre à jour l'état actif des boutons
+    $('button[data-view]').removeClass('active');
+    $(`button[data-view="${type}"]`).addClass('active');
+    
+    // Sauvegarder les données actuelles
+    const currentData = JSON.parse(JSON.stringify(charts.evolutionAnnuelle.data));
+    
+    // Détruire le graphique existant
+    charts.evolutionAnnuelle.destroy();
+    
+    // Récupérer le contexte pour le nouveau graphique
+    const ctx = document.getElementById('evolutionAnnuelleChart').getContext('2d');
+    
+    // Adapter les styles en fonction du type
+    if (type === 'bar') {
+        // Style pour graphique en barres
+        const barColors = [
+            'rgba(124, 80, 222, 0.7)',
+            'rgba(172, 84, 199, 0.7)',
+            'rgba(245, 105, 96, 0.7)',
+            'rgba(255, 180, 60, 0.7)',
+            'rgba(60, 190, 190, 0.7)'
+        ];
+        
+        // Créer un tableau de couleurs de la même longueur que les données
+        const backgroundColors = [];
+        for (let i = 0; i < currentData.labels.length; i++) {
+            backgroundColors.push(barColors[i % barColors.length]);
+        }
+        
+        currentData.datasets[0].backgroundColor = backgroundColors;
+        currentData.datasets[0].borderColor = 'rgba(0, 0, 0, 0.1)';
+        currentData.datasets[0].borderWidth = 1;
+        currentData.datasets[0].tension = 0;
+        currentData.datasets[0].fill = false;
+    } else {
+        // Style pour graphique en ligne
+        const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientFill.addColorStop(0, 'rgba(124, 80, 222, 0.6)');
+        gradientFill.addColorStop(1, 'rgba(124, 80, 222, 0.1)');
+        
+        currentData.datasets[0].backgroundColor = gradientFill;
+        currentData.datasets[0].borderColor = 'rgba(124, 80, 222, 1)';
+        currentData.datasets[0].borderWidth = 3;
+        currentData.datasets[0].tension = 0.4;
+        currentData.datasets[0].fill = true;
+    }
+    
+    // Créer le nouveau graphique
+    charts.evolutionAnnuelle = new Chart(ctx, {
+        type: type,
+        data: currentData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Nombre de vacataires uniques'
+                    },
+                    ticks: {
+                        precision: 0
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Année académique'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(47, 13, 115, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    padding: 10,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `Vacataires uniques: ${context.raw}`;
+                        },
+                        afterLabel: function(context) {
+                            const index = context.dataIndex;
+                            if (index > 0) {
+                                const currentValue = context.dataset.data[index];
+                                const previousValue = context.dataset.data[index - 1];
+                                const evolution = currentValue - previousValue;
+                                const percentage = (evolution / previousValue * 100).toFixed(1);
+                                
+                                const sign = evolution > 0 ? '+' : '';
+                                return `Évolution: ${sign}${evolution} (${sign}${percentage}%)`;
+                            }
+                            return '';
+                        }
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+}
+
+// Fonction pour préparer les données d'évolution annuelle sans redondance
+function prepareEvolutionAnnuelleData(data) {
+    // Stockage des vacataires uniques par année
+    const vacatairesByYear = {};
+    
+    // Parcourir toutes les données
+    data.forEach(item => {
+        // Vérifier si l'année existe
+        if (item.Année && item.Année.trim() !== '') {
+            const annee = item.Année.trim();
+            
+            // Identifier le vacataire de manière unique:
+            // Priorité 1: Par email (le plus fiable)
+            // Priorité 2: Par combinaison nom+prénom
+            let identifiantUnique;
+            
+            if (item.Email && item.Email.trim() !== '') {
+                // Si email disponible, utiliser l'email comme identifiant
+                identifiantUnique = item.Email.trim().toLowerCase();
             } else {
-                // Ajout
-                $.ajax({
-                    url: `${API_BASE_URL}vacataire/add-data/`,
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        $('#addDataModal').modal('hide');
-                        alert(response.message || 'Vacataire ajouté avec succès');
-                        loadVacatairesData();
-                        loadStatistiques();
-                    },
-                    error: function(xhr) {
-                        const errorMsg = xhr.responseJSON?.error || 'Erreur lors de l\'ajout du vacataire';
-                        alert(errorMsg);
-                    }
-                });
+                // Sinon, utiliser nom+prénom
+                identifiantUnique = `${(item.Nom || '').trim().toLowerCase()}_${(item.Prénom || '').trim().toLowerCase()}`;
+                
+                // Ignorer les entrées sans nom/prénom valides
+                if (identifiantUnique === '_' || identifiantUnique.length < 3) {
+                    return;
+                }
             }
-        });
-        $('#filterAnnee').on('change', function() {
+            
+            // Initialiser l'ensemble pour cette année si nécessaire
+            if (!vacatairesByYear[annee]) {
+                vacatairesByYear[annee] = new Set();
+            }
+            
+            // Ajouter le vacataire à l'ensemble pour cette année
+            vacatairesByYear[annee].add(identifiantUnique);
+        }
+    });
+    
+    // Trier les années
+    const years = Object.keys(vacatairesByYear).sort();
+    
+    // Préparer les labels et valeurs pour le graphique
+    const labels = years;
+    const values = years.map(year => vacatairesByYear[year].size); // .size donne le nombre d'éléments uniques dans le Set
+    
+    console.log("Vacataires uniques par année:", Object.fromEntries(
+        Object.entries(vacatairesByYear).map(([year, set]) => [year, set.size])
+    ));
+    console.log("Labels:", labels);
+    console.log("Values:", values);
+    
+    // Mettre à jour le badge de tendance
+    updateTrendBadge(values);
+    
+    return { labels, values };
+}
+
+// Fonction pour initialiser les gestionnaires d'événements
+function initEventHandlers() {
+    // Soumission du formulaire d'ajout/modification
+    $('#vacataireForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const vacataireId = $('#vacataireId').val();
+        const formData = $(this).serialize();
+        
+        // Si l'ID est présent, c'est une mise à jour, sinon c'est un ajout
+        if (vacataireId) {
+            // Mise à jour
+            $.ajax({
+                url: `${API_BASE_URL}vacataire/update/${vacataireId}/`,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#addDataModal').modal('hide');
+                    alert(response.message || 'Vacataire mis à jour avec succès');
+                    loadVacatairesData();
+                    loadStatistiques();
+                },
+                error: function(xhr) {
+                    const errorMsg = xhr.responseJSON?.error || 'Erreur lors de la mise à jour du vacataire';
+                    alert(errorMsg);
+                }
+            });
+        } else {
+            // Ajout
+            $.ajax({
+                url: `${API_BASE_URL}vacataire/add-data/`,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#addDataModal').modal('hide');
+                    alert(response.message || 'Vacataire ajouté avec succès');
+                    loadVacatairesData();
+                    loadStatistiques();
+                },
+                error: function(xhr) {
+                    const errorMsg = xhr.responseJSON?.error || 'Erreur lors de l\'ajout du vacataire';
+                    alert(errorMsg);
+                }
+            });
+        }
+    });
+    
+    // Filtrage par année
+    $('#filterAnnee').on('change', function() {
         const selectedYear = $(this).val();
         
         if ($.fn.DataTable.isDataTable('#vacatairesTable')) {
@@ -1406,98 +1830,109 @@ function updateYearFilter() {
             }
         }
     });
-        // Soumission du formulaire d'import CSV
-        $('#csvUploadForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            $.ajax({
-                url: `${API_BASE_URL}vacataire/upload-csv/`,
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function() {
-                    // Désactiver le bouton de soumission pendant le traitement
-                    $('#csvUploadForm').find('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Importation en cours...');
-                },
-                success: function(response) {
-                    $('#importCsvModal').modal('hide');
-                    alert(response.message || 'Import CSV réussi');
-                    loadVacatairesData();
-                    loadStatistiques();
-                    
-                    // Réinitialiser le formulaire
-                    $('#csvUploadForm')[0].reset();
-                    $('.custom-file-label').html('Choisir un fichier');
-                },
-                error: function(xhr) {
-                    const errorMsg = xhr.responseJSON?.error || 'Erreur lors de l\'import du fichier CSV';
-                    alert(errorMsg);
-                },
-                complete: function() {
-                    // Réactiver le bouton de soumission
-                    $('#csvUploadForm').find('button[type="submit"]').prop('disabled', false).html('Importer');
-                }
-            });
-        });
+    
+    // Soumission du formulaire d'import CSV
+    $('#csvUploadForm').on('submit', function(e) {
+        e.preventDefault();
         
-        // Afficher le nom du fichier sélectionné
-        $('#csvFile').on('change', function() {
-            const fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').html(fileName || 'Choisir un fichier');
-        });
+        const formData = new FormData(this);
         
-        // Gérer le clic sur le bouton d'édition
-        $('#vacatairesTable').on('click', '.edit-icon', function() {
-            const id = $(this).data('id');
-            
-            // Récupérer les données du vacataire
-            const rowData = vacatairesTable.row($(this).closest('tr')).data();
-            
-            // Remplir le formulaire
-            $('#vacataireId').val(id);
-            $('#annee').val(rowData.Année || '');  // Nouveau champ Année
-            $('#numero_vacataire').val(rowData['Numero vacataire'] || '');
-            $('#nom').val(rowData.Nom || '');
-            $('#prenom').val(rowData.Prénom || '');
-            $('#email').val(rowData.Email || '');
-            $('#affectation').val(rowData.Affectation || '');
-            $('#telephone').val(rowData.Téléphone || '');
-            $('#nombre_heures').val(rowData['Nombre d\'heures estimées'] || '0');
-            $('#type_profession').val(rowData['Type de profession'] || '');
-            $('#date_intervention').val(rowData['Date de 1ère intervention et nom du recruteur'] || '');
-            $('#pays').val(rowData.Pays || '');
-            $('#etat_recrutement').val(rowData['État recrutement'] || '');
-            
-            // Changer le titre du modal
-            $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i> Modifier un Vacataire');
-            
-            // Afficher le modal
-            $('#addDataModal').modal('show');
-        });
-        
-        // Gérer le clic sur le bouton de suppression
-        $('#vacatairesTable').on('click', '.delete-icon', function() {
-            const id = $(this).data('id');
-            
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce vacataire ?')) {
-                $.ajax({
-                    url: `${API_BASE_URL}vacataire/delete/${id}/`,
-                    type: 'POST',
-                    success: function(response) {
-                        alert(response.message || 'Vacataire supprimé avec succès');
-                        loadVacatairesData();
-                        loadStatistiques();
-                    },
-                    error: function(xhr) {
-                        const errorMsg = xhr.responseJSON?.error || 'Erreur lors de la suppression du vacataire';
-                        alert(errorMsg);
-                    }
-                });
+        $.ajax({
+            url: `${API_BASE_URL}vacataire/upload-csv/`,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                // Désactiver le bouton de soumission pendant le traitement
+                $('#csvUploadForm').find('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Importation en cours...');
+            },
+            success: function(response) {
+                $('#importCsvModal').modal('hide');
+                alert(response.message || 'Import CSV réussi');
+                loadVacatairesData();
+                loadStatistiques();
+                
+                // Réinitialiser le formulaire
+                $('#csvUploadForm')[0].reset();
+                $('.custom-file-label').html('Choisir un fichier');
+            },
+            error: function(xhr) {
+                const errorMsg = xhr.responseJSON?.error || 'Erreur lors de l\'import du fichier CSV';
+                alert(errorMsg);
+            },
+            complete: function() {
+                // Réactiver le bouton de soumission
+                $('#csvUploadForm').find('button[type="submit"]').prop('disabled', false).html('Importer');
             }
         });
-    }
+    });
+    
+    // Afficher le nom du fichier sélectionné
+    $('#csvFile').on('change', function() {
+        const fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').html(fileName || 'Choisir un fichier');
+    });
+    
+    // Gérer le clic sur le bouton d'édition
+    $('#vacatairesTable').on('click', '.edit-icon', function() {
+        const id = $(this).data('id');
+        
+        // Récupérer les données du vacataire
+        const rowData = vacatairesTable.row($(this).closest('tr')).data();
+        
+        // Remplir le formulaire
+        $('#vacataireId').val(id);
+        $('#annee').val(rowData.Année || '');  // Nouveau champ Année
+        $('#numero_vacataire').val(rowData['Numero vacataire'] || '');
+        $('#nom').val(rowData.Nom || '');
+        $('#prenom').val(rowData.Prénom || '');
+        $('#email').val(rowData.Email || '');
+        $('#affectation').val(rowData.Affectation || '');
+        $('#telephone').val(rowData.Téléphone || '');
+        $('#nombre_heures').val(rowData['Nombre d\'heures estimées'] || '0');
+        $('#type_profession').val(rowData['Type de profession'] || '');
+        $('#date_intervention').val(rowData['Date de 1ère intervention et nom du recruteur'] || '');
+        $('#pays').val(rowData.Pays || '');
+        $('#etat_recrutement').val(rowData['État recrutement'] || '');
+        
+        // Changer le titre du modal
+        $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i> Modifier un Vacataire');
+        
+        // Afficher le modal
+        $('#addDataModal').modal('show');
+    });
+    
+    // Gérer le clic sur le bouton de suppression
+    $('#vacatairesTable').on('click', '.delete-icon', function() {
+        const id = $(this).data('id');
+        
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce vacataire ?')) {
+            $.ajax({
+                url: `${API_BASE_URL}vacataire/delete/${id}/`,
+                type: 'POST',
+                success: function(response) {
+                    alert(response.message || 'Vacataire supprimé avec succès');
+                    loadVacatairesData();
+                    loadStatistiques();
+                },
+                error: function(xhr) {
+                    const errorMsg = xhr.responseJSON?.error || 'Erreur lors de la suppression du vacataire';
+                    alert(errorMsg);
+                }
+            });
+        }
+    });
+    
+}
+
+// Cette fonction sera appelée après chaque chargement de données
+// pour s'assurer que les boutons de type de graphique fonctionnent correctement
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialiser les boutons dès que le DOM est prêt
+    setTimeout(() => {
+        reattachChartTypeButtons();
+    }, 500); // Un petit délai pour s'assurer que tous les éléments sont chargés
+});
 </script>
 {% endblock %}
