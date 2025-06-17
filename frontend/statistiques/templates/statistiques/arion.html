@@ -929,7 +929,6 @@ function loadStatusStats() {
 
 // Fonction pour charger les années disponibles
 function loadAvailableYears() {
-    // Extraire les années uniques des données
     $.ajax({
         url: `${API_BASE_URL}/arion/data`,
         type: 'GET',
@@ -937,28 +936,65 @@ function loadAvailableYears() {
             'Authorization': 'Bearer ' + getToken()
         },
         success: function(data) {
+            console.log("Données reçues pour extraction des années:", data);
             const years = new Set();
+            const academicYears = new Set(); // Pour stocker les années académiques complètes
             
-            // Extraire l'année de chaque enregistrement
+            // Extraire les années de chaque enregistrement
             data.forEach(item => {
-                if (item.annee && typeof item.annee === 'string') {
-                    // Si l'année est au format "2023-2024", prenons la première partie
-                    const yearPart = item.annee.split('-')[0];
-                    if (!isNaN(yearPart)) {
-                        years.add(yearPart);
+                if (item.annee) {
+                    // Stocker l'année académique complète (ex: "2023-2024")
+                    if (typeof item.annee === 'string' && item.annee.includes('-')) {
+                        academicYears.add(item.annee);
+                    }
+                    
+                    // Extraire les années individuelles
+                    if (typeof item.annee === 'string') {
+                        // Pour le format "2023-2024"
+                        if (item.annee.includes('-')) {
+                            const parts = item.annee.split('-');
+                            if (parts.length === 2) {
+                                const startYear = parts[0].trim();
+                                const endYear = parts[1].trim();
+                                
+                                if (!isNaN(startYear) && startYear.length === 4) {
+                                    years.add(startYear);
+                                }
+                                
+                                if (!isNaN(endYear) && endYear.length === 4) {
+                                    years.add(endYear);
+                                }
+                            }
+                        } else if (!isNaN(item.annee) && item.annee.length === 4) {
+                            // Pour les années simples en format string
+                            years.add(item.annee);
+                        }
+                    } else if (typeof item.annee === 'number') {
+                        // Pour les années en format nombre
+                        years.add(item.annee.toString());
                     }
                 }
             });
             
             // Convertir en tableau et trier
             availableYears = Array.from(years).sort();
-            console.log("Années disponibles:", availableYears);
+            console.log("Années individuelles extraites:", availableYears);
+            console.log("Années académiques complètes:", Array.from(academicYears));
             
-            // Populer la liste déroulante
+            // Si aucune année trouvée, ajouter des années par défaut
+            if (availableYears.length === 0) {
+                availableYears = ["2023", "2024", "2025"];
+                console.log("Aucune année trouvée, utilisation des années par défaut:", availableYears);
+            }
+            
+            // Peupler la liste déroulante
             populateYearFilter(availableYears);
         },
         error: function(xhr) {
             console.error('Erreur lors du chargement des années:', xhr.responseText);
+            // Fallback vers des années par défaut en cas d'erreur
+            availableYears = ["2023", "2024", "2025"];
+            populateYearFilter(availableYears);
         }
     });
 }

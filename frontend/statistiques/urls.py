@@ -70,7 +70,10 @@ urlpatterns = [
 
 
     # Routes pour les categoriees spéciales
+    # Ajoutez ces lignes à urlpatterns
     path('cat-special/', views.cat_special, name='cat_special'),
+    path('cat-special/upload-csv/', views.cat_special_upload_csv, name='cat_special_upload_csv'),
+    path('cat-special/data/', views.get_cat_special_data, name='get_cat_special_data'),
 
 ]
     

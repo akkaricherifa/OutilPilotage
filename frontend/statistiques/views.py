@@ -2075,8 +2075,92 @@ def vacataire_stats(request):
         return JsonResponse({"error": "Erreur de connexion lors de la récupération des statistiques."}, status=500)
 
 
-
+################################################## cat special########################
 @api_authenticated_required
 def cat_special(request):
-    """Vue pour l'interface des catégories spéciales"""
-    return render(request, 'statistiques/catSpecial.html')
+    """Vue principale pour les catégories spéciales"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    return render(request, 'statistiques/catSpecial.html', {
+        'user_info': request.session.get('user_info', {}),
+        'settings': settings
+    })
+
+@api_authenticated_required
+def cat_special_upload_csv(request):
+    """Vue pour importer un fichier CSV des catégories spéciales"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+        
+    # Vérifier si un fichier a été envoyé
+    if 'file' not in request.FILES:
+        return JsonResponse({"error": "Aucun fichier n'a été envoyé"}, status=400)
+    
+    file = request.FILES['file']
+    
+    # Vérifier l'extension du fichier
+    if not file.name.endswith('.csv'):
+        return JsonResponse({"error": "Seuls les fichiers CSV sont acceptés"}, status=400)
+    
+    try:
+        # Préparer le fichier pour l'envoi à l'API Flask
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}'}
+        
+        # Envoyer le fichier à l'API
+        files = {'file': (file.name, file.read(), 'application/octet-stream')}
+        
+        response = requests.post(
+            f"{settings.API_URL}/cat-special/upload",
+            files=files,
+            headers=headers,
+            timeout=60  # Délai plus long pour les fichiers volumineux
+        )
+        
+        logger.info(f"Réponse API: Status {response.status_code}")
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            logger.info(f"Importation réussie: {api_response}")
+            return JsonResponse({
+                "success": True,
+                "message": api_response.get('message', 'Fichier importé avec succès!'),
+                "records_inserted": api_response.get('records_inserted', 0)
+            })
+        else:
+            try:
+                error_msg = response.json().get('error', 'Erreur inconnue')
+                logger.error(f"Erreur API: {error_msg}")
+                return JsonResponse({"error": error_msg}, status=response.status_code)
+            except:
+                logger.error(f"Erreur API non-JSON: {response.text}")
+                return JsonResponse({"error": f"Erreur lors de l'importation (Code: {response.status_code})"}, status=500)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur lors de l'envoi de la requête API: {e}")
+        return JsonResponse({"error": f"Erreur de connexion à l'API: {str(e)}"}, status=500)
+    except Exception as e:
+        logger.error(f"Erreur imprévue: {e}")
+        return JsonResponse({"error": f"Erreur lors du traitement du fichier: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def get_cat_special_data(request):
+    """Vue pour récupérer les données des catégories spéciales"""
+    try:
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}'}
+        
+        # Ajout du préfixe /api si nécessaire
+        response = requests.get(
+            f"{settings.API_URL}/api/cat-special",  # Notez le /api ajouté ici
+            headers=headers,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            return JsonResponse(response.json())
+        else:
+            return JsonResponse({"error": "Erreur lors de la récupération des données"}, status=response.status_code)
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des données: {e}")
+        return JsonResponse({"error": str(e)}, status=500)

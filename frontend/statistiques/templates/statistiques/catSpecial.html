@@ -2,17 +2,1589 @@
 
 {% block title %}Catégories Spéciales - AppISIS{% endblock %}
 
+{% block extra_css %}
+<style>
+/* Variables de couleurs basées sur la charte graphique */
+:root {
+    /* Couleurs principales (RVB) */
+    --primary-color: #2f0d73; /* Bleu principal: RVB: 47-13-115, Hex: 2f0d73 */
+    --secondary-color: #7c50de; /* Bleu secondaire: RVB: 124-80-220, Hex: 7c50de */
+    --accent-color: #ac54c7; /* Dégradé principal: RVB: 47-13-115, Hex: ac54c7 */
+    --danger-color: #f56960; /* Rouge: RVB: 245-105-96, Hex: f56960 */
+    --warning-color: #ffb43c; /* Orange: RVB: 255-180-60, Hex: ffb43c */
+    --success-color: #3cbebe; /* Turquoise: RVB: 60-190-190, Hex: 3cbebe */
+    
+    /* Couleurs de fond et de texte */
+    --background-color: #f7f9fa;
+    --text-color: #333;
+    --light-color: #ecf0f1;
+    --dark-color: #2f0d73; /* Même que primary-color pour cohérence */
+}
+
+/* Style pour l'en-tête */
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.header h1 {
+    font-weight: 600;
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.header p {
+    opacity: 0.8;
+    margin: 10px 0 0 0;
+}
+
+/* Style pour les boutons d'action */
+.action-btn {
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-success:hover {
+    background-color: #34a6a6; /* Version légèrement plus foncée */
+    border-color: #34a6a6;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+/* Style pour les cartes */
+.card {
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    padding: 20px 25px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* Style pour les formulaires */
+.form-control, .form-select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(47, 13, 115, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--dark-color);
+}
+
+/* Style pour les modals */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 15px 15px 0 0;
+    border-bottom: none;
+    padding: 20px 25px;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 25px;
+}
+
+/* Style pour le tableau */
+.table {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.table thead th {
+    border-bottom: none;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(47, 13, 115, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(47, 13, 115, 0.1);
+}
+
+/* Style pour les containers de graphiques */
+.chart-container {
+    position: relative;
+    height: 350px;
+    margin-bottom: 30px;
+}
+
+/* Style pour l'upload de fichiers */
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.file-upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: pointer;
+    display: block;
+}
+
+.file-upload-label {
+    display: block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+    background-color: #f9f9f9;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(47, 13, 115, 0.05);
+}
+
+/* Style pour les notifications */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alert {
+    animation: fadeIn 0.5s ease-out;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background-color: rgba(60, 190, 190, 0.1);
+    color: var(--success-color);
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-danger {
+    background-color: rgba(245, 105, 96, 0.1);
+    color: var(--danger-color);
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    background-color: rgba(255, 180, 60, 0.1);
+    color: var(--warning-color);
+    border-left: 4px solid var(--warning-color);
+}
+
+/* Style pour le loader */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid var(--primary-color);
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Style pour les boutons d'action dans le tableau */
+.btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+}
+
+.edit-btn, .delete-btn {
+    margin: 0 3px;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">Catégories Spéciales</h1>
-            <div class="card">
-                <div class="card-body">
-                    <p>Interface vide prête à être développée.</p>
+<!-- Header -->
+<div class="header text-center">
+    <h1>Gestion des Catégories Spéciales</h1>
+    <p>Gestion des données, importation et visualisation</p>
+</div>
+
+<div class="container">
+    <!-- Boutons d'action -->
+    <div class="row mb-4 text-center">
+        <div class="col-md-12">
+            <button class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#addDataModal">
+                <i class="fas fa-plus-circle me-2"></i> Ajouter des données
+            </button>
+            <button class="btn btn-success action-btn" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                <i class="fas fa-file-import me-2"></i> Importer CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="alert" style="display: none;" role="alert"></div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader"></div>
+
+    <!-- Tableau de données -->
+    <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Données des catégories spéciales</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="catSpecialTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Établissement</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Date Création</th>
+                        <th>Créé par</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les données seront chargées dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    <!-- Section pour les graphiques -->
+<div class="row">
+    <!-- Graphique type de fichier -->
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Répartition par type de fichier</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-pie pt-4">
+                    <canvas id="fileTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Graphique établissements -->
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Répartition par établissement</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <canvas id="establishmentChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal d'importation CSV -->
+<div class="modal fade" id="importCSVModal" tabindex="-1" aria-labelledby="importCSVModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importCSVModalLabel">Importer un fichier CSV</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <form id="importCSVForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="csvFile" class="form-label">Fichier CSV <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="csvFile" name="file" accept=".csv" required>
+                            <label class="input-group-text custom-file-label" for="csvFile">Choisir un fichier...</label>
+                        </div>
+                        <div class="form-text">Sélectionnez un fichier CSV contenant les données à importer.</div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Format attendu pour le CSV :</h6>
+                        <p>Le fichier doit contenir les colonnes suivantes :</p>
+                        <ul>
+                            <li>Pour les enseignants sous convention : <code>Prénom, Nom, Etablissement, Adresse mail, Nombre d'heures ETD année, Nombre d'heures ETD semestres pairs, Recrutement créé dans REVE, Documents manquants dossier RH, Dossier validé REVE, PECHE, statut</code></li>
+                            <li>Pour les enseignants vacataires : <code>Prénom, Nom, Etablissement, Adresse mail, Nombre d'heures ETD année, Nombre d'heures ETD semestres pairs, Recrutement créé dans REVE, Documents manquants contrat, Dossier validé/ vérifié administrativement REVE, PECHE, Unnamed: 11, statut</code></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-file-import me-2"></i> Importer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajouter des données (vide pour le moment) -->
+<div class="modal fade" id="addDataModal" tabindex="-1" aria-labelledby="addDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataModalLabel">Ajouter des données</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <form id="addDataForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="prenom" name="prenom" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nom" name="nom" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="etablissement" class="form-label">Établissement <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="etablissement" name="etablissement" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="heures_etd" class="form-label">Nombre d'heures ETD année</label>
+                                <input type="number" class="form-control" id="heures_etd" name="heures_etd">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="heures_etd_semestre" class="form-label">Nombre d'heures ETD semestres pairs</label>
+                                <input type="number" class="form-control" id="heures_etd_semestre" name="heures_etd_semestre">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="recrutement_reve" class="form-label">Recrutement créé dans REVE</label>
+                                <select class="form-select" id="recrutement_reve" name="recrutement_reve">
+                                    <option value="">Sélectionner</option>
+                                    <option value="Oui">Oui</option>
+                                    <option value="Non">Non</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="statut" class="form-label">Statut <span class="text-danger">*</span></label>
+                                <select class="form-select" id="statut" name="statut" required>
+                                    <option value="">Sélectionner</option>
+                                    <option value="convention">Convention</option>
+                                    <option value="vacataire">Vacataire</option>
+                                    <option value="titre-gracieux">Titre gracieux</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet enregistrement ? Cette action est irréversible.</p>
+                <input type="hidden" id="deleteId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash me-2"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+$(document).ready(function() {
+    console.log("Page chargée, initialisation...");
+    
+    // Vérifier si Bootstrap est correctement chargé
+    if (typeof bootstrap === 'undefined') {
+        console.error('La bibliothèque Bootstrap 5 n\'est pas chargée correctement.');
+    }
+    
+    // Améliorer la taille des conteneurs de graphiques
+    $('.chart-pie, .chart-bar').css({
+        'height': '400px',
+        'margin-bottom': '30px'
+    });
+    
+    // Initialiser le tableau avec la bonne configuration
+    dataTable = $('#catSpecialTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        "responsive": true,
+        "pageLength": 10,
+        "order": [[1, 'asc']], // Trier par nom par défaut
+        "columnDefs": [
+            { "className": "dt-center", "targets": "_all" } // Centrer tout le texte
+        ]
+    });
+    
+    console.log("DataTable initialisé");
+    
+    // Initialiser les graphiques AVANT de charger les données
+    try {
+        initCharts();
+        console.log("Graphiques initialisés");
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation des graphiques:", error);
+    }
+    
+    // Charger les données
+    loadDataFromServer();
+    
+    // Événement pour afficher le nom du fichier
+    $('#csvFile').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').html(fileName);
+    });{% block extra_js %}
+<!-- DataTables JS -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+<script>
+// Constants
+const API_BASE_URL = '/api';
+let dataTable;
+
+// Configuration de Toastr
+toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "timeOut": "3000"
+};
+
+// Palette de couleurs basée sur la charte graphique
+const BRAND_COLORS = {
+    // Couleurs RVB (pour les écrans) avec leurs équivalents hexadécimaux
+    bleuPrincipal: { rgb: "47-13-115", hex: "#2f0d73", cmjn: "100-100-20-20" },
+    bleuSecondaire: { rgb: "124-80-220", hex: "#7c50de", cmjn: "75-75-0-0" },
+    degradePrincipal: { rgb: "47-13-115", hex: "#ac54c7", cmjn: "50-75-0-0" },
+    rouge: { rgb: "245-105-96", hex: "#f56960", cmjn: "0-70-60-0" },
+    orange: { rgb: "255-180-60", hex: "#ffb43c", cmjn: "0-35-85-0" },
+    turquoise: { rgb: "60-190-190", hex: "#3cbebe", cmjn: "65-0-30-0" }
+};
+
+// Initialisation au chargement de la page
+$(document).ready(function() {
+    console.log("Page chargée, initialisation...");
+    
+    // Vérifier si Bootstrap est correctement chargé
+    if (typeof bootstrap === 'undefined') {
+        console.error('La bibliothèque Bootstrap 5 n\'est pas chargée correctement.');
+    }
+    
+    // Initialiser le tableau avec la bonne configuration
+    dataTable = $('#catSpecialTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        "responsive": true,
+        "pageLength": 10
+    });
+    
+    console.log("DataTable initialisé");
+    
+    // Initialiser les graphiques AVANT de charger les données
+    try {
+        initCharts();
+        console.log("Graphiques initialisés");
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation des graphiques:", error);
+    }
+    
+    // Charger les données (une seule méthode pour éviter les doublons)
+    loadDataFromServer();
+    
+    // Événement pour afficher le nom du fichier
+    $('#csvFile').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').html(fileName);
+    });
+
+    // Soumission du formulaire d'importation CSV
+    $('#importCSVForm').on('submit', function(e) {
+        e.preventDefault();
+        uploadCSVFile();
+    });
+
+    // Bouton d'actualisation
+    $('#refreshDataBtn').on('click', function() {
+        loadDataFromServer();
+    });
+    
+    // Soumission du formulaire d'ajout/modification
+    $('#addDataForm').on('submit', function(e) {
+        e.preventDefault();
+        saveData();
+    });
+    
+    // Événements pour les boutons d'édition et suppression (corrigé pour catSpecialTable)
+    $('#catSpecialTable tbody').on('click', '.edit-btn', function() {
+        const data = dataTable.row($(this).parents('tr')).data();
+        openEditModal(data);
+    });
+    
+    $('#catSpecialTable tbody').on('click', '.delete-btn', function() {
+        const data = dataTable.row($(this).parents('tr')).data();
+        openDeleteModal(data);
+    });
+    
+    // Confirmation de suppression
+    $('#confirmDeleteBtn').on('click', function() {
+        deleteData();
+    });
+});
+
+// Fonction unifiée pour charger les données
+function loadDataFromServer() {
+    console.log("Chargement des données depuis le serveur...");
+    
+    // Afficher le loader
+    $('#loader').show();
+    
+    // Liste d'URLs à essayer, dans l'ordre - priorité à la collection donnees_vac
+    const urlsToTry = [
+        '/api/donnees_vac',                   // Collection MongoDB donnees_vac (prioritaire)
+        '/statistiques/api/donnees_vac',      // Autre format possible pour donnees_vac
+        '/api/cat-special',                   // Fallback vers cat-special
+        '/statistiques/cat-special/data/'     // Autre format possible
+    ];
+    
+    // Fonction pour essayer la prochaine URL
+    function tryNextUrl(index) {
+        if (index >= urlsToTry.length) {
+            // Toutes les URLs ont échoué
+            console.error("Impossible d'accéder aux données de la base de données.");
+            showNotification('error', "Erreur critique : Impossible d'accéder aux données de la base de données MongoDB (collection donnees_vac). Vérifiez la connexion à la base de données et les permissions.");
+            $('#loader').hide();
+            return;
+        }
+        
+        const currentUrl = urlsToTry[index];
+        console.log(`Tentative de connexion à MongoDB avec l'URL: ${currentUrl}`);
+        
+        $.ajax({
+            url: currentUrl,
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                'Authorization': `Bearer ${getApiToken()}`
+            },
+            success: function(response) {
+                console.log("Réponse reçue de MongoDB:", response);
+                
+                if (response.success && response.data && response.data.length > 0) {
+                    // Traitement des données de MongoDB
+                    processData(response.data);
+                    showNotification('success', `${response.data.length} enregistrements chargés depuis la base de données MongoDB.`);
+                } else if (response.data && response.data.length > 0) {
+                    // Format de réponse différent mais avec des données
+                    processData(response.data);
+                    showNotification('success', `${response.data.length} enregistrements chargés depuis la base de données MongoDB.`);
+                } else {
+                    // Réponse valide mais sans données
+                    console.warn("La collection MongoDB est vide ou inaccessible:", response);
+                    showNotification('warning', 'Aucune donnée disponible dans la collection MongoDB. Vérifiez que la collection donnees_vac contient des données.');
+                }
+                
+                // Cacher le loader
+                $('#loader').hide();
+            },
+            error: function(xhr, status, error) {
+                console.error(`Échec de connexion à MongoDB avec l'URL ${currentUrl}:`, error);
+                // Essayer l'URL suivante
+                tryNextUrl(index + 1);
+            }
+        });
+    }
+    
+    // Commencer avec la première URL
+    tryNextUrl(0);
+}
+
+// Fonction pour traiter les données reçues de MongoDB
+function processData(data) {
+    console.log("Traitement des données MongoDB:", data);
+    
+    // Si aucune donnée n'est disponible, afficher un message et arrêter
+    if (!data || data.length === 0) {
+        showNotification('warning', 'Aucune donnée disponible dans la collection MongoDB.');
+        return;
+    }
+    
+    // Nettoyer et normaliser les données
+    data = data.map(record => {
+        // Convertir l'ID MongoDB si nécessaire
+        if (record._id && typeof record._id === 'object' && record._id.$oid) {
+            record._id = record._id.$oid;
+        }
+        
+        // Remplacer les valeurs NaN, null ou undefined par des valeurs par défaut
+        Object.keys(record).forEach(key => {
+            if (typeof record[key] === 'number' && isNaN(record[key])) {
+                record[key] = 0;
+            }
+            if (record[key] === null || record[key] === undefined) {
+                if (typeof record[key] === 'number') {
+                    record[key] = 0;
+                } else {
+                    record[key] = '';
+                }
+            }
+        });
+        
+        // S'assurer que tous les champs essentiels existent (normalisation des champs)
+        record['Prénom'] = record['Prénom'] || record['prenom'] || record['Prenom'] || '';
+        record['Nom'] = record['Nom'] || record['nom'] || '';
+        record['Etablissement'] = record['Etablissement'] || record['etablissement'] || '';
+        record['Adresse mail'] = record['Adresse mail'] || record['email'] || record['mail'] || record['Email'] || '';
+        record['file_type'] = record['file_type'] || record['statut'] || record['type'] || 'Non spécifié';
+        
+        // Uniformiser le format pour file_type
+        if (record['file_type'].toLowerCase().includes('vac')) {
+            record['file_type'] = 'Vacataire';
+        } else if (record['file_type'].toLowerCase().includes('conv')) {
+            record['file_type'] = 'Convention';
+        } else if (record['file_type'].toLowerCase().includes('grac')) {
+            record['file_type'] = 'Titre gracieux';
+        }
+        
+        // Ajouter des dates de création si manquantes
+        if (!record.created_at) {
+            record.created_at = new Date().toISOString();
+        }
+        
+        // Ajouter un créateur par défaut si manquant
+        if (!record.created_by) {
+            record.created_by = 'Système';
+        }
+        
+        return record;
+    });
+    
+    console.log("Données MongoDB normalisées:", data);
+    
+    // Mettre à jour le tableau
+    populateTable(data);
+    
+    // Mettre à jour les graphiques
+    updateCharts(data);
+}
+
+// Log des erreurs de connexion à la base de données
+function logDatabaseError(error) {
+    console.error("Erreur de connexion à la base de données MongoDB:", error);
+    
+    // Préparer un message d'erreur détaillé pour l'administrateur
+    let errorDetails = "Impossible d'accéder à la collection donnees_vac dans la base de données MongoDB.";
+    
+    // Ajouter des détails supplémentaires si disponibles
+    if (error && error.status) {
+        errorDetails += ` Code d'erreur: ${error.status}`;
+    }
+    if (error && error.statusText) {
+        errorDetails += ` - ${error.statusText}`;
+    }
+    
+    // Ajouter des suggestions de dépannage
+    errorDetails += "\n\nSuggestions de dépannage:";
+    errorDetails += "\n1. Vérifiez que le service MongoDB est en cours d'exécution";
+    errorDetails += "\n2. Vérifiez les logs du serveur Flask/Django";
+    errorDetails += "\n3. Vérifiez les droits d'accès à la collection";
+    errorDetails += "\n4. Vérifiez la configuration de connexion dans settings.py";
+    
+    console.log(errorDetails);
+    return errorDetails;
+}
+
+// Fonction pour remplir le tableau
+function populateTable(records) {
+    console.log("Remplissage du tableau avec", records.length, "enregistrements");
+    
+    // Récupérer la référence au tableau
+    const table = $('#catSpecialTable').DataTable();
+    
+    // Vider le tableau
+    table.clear();
+    
+    // Ajouter les données
+    records.forEach(record => {
+        // Formater la date si elle existe
+        let dateCreation = 'N/A';
+        if (record.created_at) {
+            try {
+                dateCreation = new Date(record.created_at).toLocaleString('fr-FR', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                console.warn("Erreur de formatage de date:", e);
+            }
+        }
+        
+        // Créer une rangée avec les données
+        table.row.add([
+            record.Prénom || '',
+            record.Nom || '',
+            record.Etablissement || '',
+            record['Adresse mail'] || '',
+            record.file_type || 'N/A',
+            dateCreation,
+            record.created_by || 'N/A'
+        ]);
+    });
+    
+    // Redessiner le tableau
+    table.draw();
+    
+    // Ajuster le style du tableau après le chargement
+    $('#catSpecialTable').addClass('table-hover');
+    $('#catSpecialTable thead th').css({
+        'background-color': BRAND_COLORS.bleuPrincipal.hex,
+        'color': 'white',
+        'font-weight': 'bold',
+        'text-align': 'center'
+    });
+    
+    console.log("Tableau mis à jour");
+}
+
+// Fonction pour initialiser les graphiques
+function initCharts() {
+    console.log("Initialisation des graphiques...");
+    
+    // Vérifier que les éléments canvas existent
+    const fileTypeCanvas = document.getElementById('fileTypeChart');
+    const establishmentCanvas = document.getElementById('establishmentChart');
+    
+    if (!fileTypeCanvas) {
+        console.error("Élément canvas 'fileTypeChart' introuvable dans le DOM");
+        return;
+    }
+    
+    if (!establishmentCanvas) {
+        console.error("Élément canvas 'establishmentChart' introuvable dans le DOM");
+        return;
+    }
+    
+    // Adapter la hauteur des graphiques pour les rendre plus grands
+    fileTypeCanvas.height = 400; // Augmenter la hauteur (était généralement 350px)
+    establishmentCanvas.height = 400;
+    
+    // Graphique de répartition par type de fichier
+    const fileTypeCtx = fileTypeCanvas.getContext('2d');
+    window.fileTypeChart = new Chart(fileTypeCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Aucune donnée'],
+            datasets: [{
+                data: [1],
+                backgroundColor: [BRAND_COLORS.bleuPrincipal.hex],
+                hoverBackgroundColor: [darkenColor(BRAND_COLORS.bleuPrincipal.hex, 10)]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 14 // Police plus grande
+                        },
+                        padding: 20 // Plus d'espacement
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition par type de fichier',
+                    font: {
+                        size: 18, // Titre plus grand
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                }
+            }
+        }
+    });
+    
+    // Graphique de répartition par établissement
+    const establishmentCtx = establishmentCanvas.getContext('2d');
+    window.establishmentChart = new Chart(establishmentCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Aucune donnée'],
+            datasets: [{
+                label: 'Nombre de personnes',
+                data: [0],
+                backgroundColor: BRAND_COLORS.bleuSecondaire.hex,
+                borderColor: BRAND_COLORS.bleuPrincipal.hex,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        font: {
+                            size: 12 // Police plus grande
+                        }
+                    },
+                    gridLines: {
+                        color: 'rgba(0, 0, 0, 0.1)',
+                        zeroLineColor: 'rgba(0, 0, 0, 0.25)'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        font: {
+                            size: 12 // Police plus grande
+                        }
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition par établissement',
+                    font: {
+                        size: 18, // Titre plus grand
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                }
+            }
+        }
+    });
+    
+    console.log("Graphiques initialisés avec des données vides");
+}
+
+// Fonction pour mettre à jour les graphiques
+function updateCharts(data) {
+    console.log("Mise à jour des graphiques avec", data.length, "enregistrements");
+    
+    // Vérifier que les graphiques sont initialisés
+    if (!window.fileTypeChart || !window.establishmentChart) {
+        console.error("Les graphiques ne sont pas initialisés");
+        return;
+    }
+    
+    // Répartition par type de fichier
+    const fileTypes = {};
+    data.forEach(item => {
+        const fileType = item.file_type || 'Non spécifié';
+        fileTypes[fileType] = (fileTypes[fileType] || 0) + 1;
+    });
+    
+    const fileTypeLabels = Object.keys(fileTypes);
+    const fileTypeData = Object.values(fileTypes);
+    
+    // Utiliser les couleurs de la charte graphique
+    const chartColors = [
+        BRAND_COLORS.bleuPrincipal.hex,
+        BRAND_COLORS.bleuSecondaire.hex,
+        BRAND_COLORS.degradePrincipal.hex,
+        BRAND_COLORS.rouge.hex,
+        BRAND_COLORS.orange.hex,
+        BRAND_COLORS.turquoise.hex
+    ];
+    
+    // Générer des couleurs supplémentaires si nécessaire en modifiant légèrement les couleurs existantes
+    const backgroundColors = [];
+    const hoverColors = [];
+    
+    for (let i = 0; i < fileTypeLabels.length; i++) {
+        // Utiliser les couleurs de la charte ou les modifier légèrement si pas assez
+        if (i < chartColors.length) {
+            backgroundColors.push(chartColors[i]);
+        } else {
+            // Modifier légèrement une couleur existante
+            const baseIndex = i % chartColors.length;
+            const baseColor = chartColors[baseIndex];
+            // Ajuster légèrement la teinte pour créer une variation
+            const modifiedColor = adjustHue(baseColor, (i - baseIndex) * 15);
+            backgroundColors.push(modifiedColor);
+        }
+        
+        // Version plus foncée pour le hover
+        const hoverColor = darkenColor(backgroundColors[i], 10);
+        hoverColors.push(hoverColor);
+    }
+    
+    // Mettre à jour le graphique des types de fichiers
+    window.fileTypeChart.data.labels = fileTypeLabels;
+    window.fileTypeChart.data.datasets[0].data = fileTypeData;
+    window.fileTypeChart.data.datasets[0].backgroundColor = backgroundColors;
+    window.fileTypeChart.data.datasets[0].hoverBackgroundColor = hoverColors;
+    window.fileTypeChart.update();
+    
+    // Répartition par établissement
+    const establishments = {};
+    data.forEach(item => {
+        const establishment = item.Etablissement || 'Non spécifié';
+        establishments[establishment] = (establishments[establishment] || 0) + 1;
+    });
+    
+    // Trier les établissements par nombre décroissant pour une meilleure lisibilité
+    const sortedEstablishments = Object.entries(establishments)
+        .sort((a, b) => b[1] - a[1])
+        .reduce((acc, [key, value]) => {
+            acc[key] = value;
+            return acc;
+        }, {});
+    
+    const establishmentLabels = Object.keys(sortedEstablishments);
+    const establishmentData = Object.values(sortedEstablishments);
+    
+    // Créer un dégradé de couleurs pour les barres basé sur les couleurs de la charte graphique
+    const gradientColors = [];
+    for (let i = 0; i < establishmentLabels.length; i++) {
+        const colorIndex = i % chartColors.length;
+        gradientColors.push(chartColors[colorIndex]);
+    }
+    
+    // Mettre à jour le graphique des établissements
+    window.establishmentChart.data.labels = establishmentLabels;
+    window.establishmentChart.data.datasets[0].data = establishmentData;
+    window.establishmentChart.data.datasets[0].backgroundColor = gradientColors;
+    window.establishmentChart.data.datasets[0].borderColor = BRAND_COLORS.bleuPrincipal.hex;
+    window.establishmentChart.update();
+    
+    console.log("Graphiques mis à jour");
+}
+
+// Fonction utilitaire pour assombrir une couleur hex
+function darkenColor(hex, percent) {
+    // Enlever le # si présent
+    hex = hex.replace('#', '');
+    
+    // Convertir en RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    // Assombrir
+    const factor = 1 - percent / 100;
+    const dr = Math.round(r * factor);
+    const dg = Math.round(g * factor);
+    const db = Math.round(b * factor);
+    
+    // Convertir en hex et retourner
+    return `#${dr.toString(16).padStart(2, '0')}${dg.toString(16).padStart(2, '0')}${db.toString(16).padStart(2, '0')}`;
+}
+
+// Fonction pour ajuster légèrement la teinte d'une couleur
+function adjustHue(hex, degrees) {
+    // Enlever le # si présent
+    hex = hex.replace('#', '');
+    
+    // Convertir en RGB
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+    
+    // Convertir RGB en HSL
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+    
+    if (max === min) {
+        h = s = 0; // achromatique
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        
+        h /= 6;
+    }
+    
+    // Ajuster la teinte
+    h = (h * 360 + degrees) % 360;
+    if (h < 0) h += 360;
+    h /= 360;
+    
+    // Convertir HSL en RGB
+    let r1, g1, b1;
+    
+    if (s === 0) {
+        r1 = g1 = b1 = l; // achromatique
+    } else {
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        };
+        
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        
+        r1 = hue2rgb(p, q, h + 1/3);
+        g1 = hue2rgb(p, q, h);
+        b1 = hue2rgb(p, q, h - 1/3);
+    }
+    
+    // Convertir en hex
+    const toHex = x => {
+        const hex = Math.round(x * 255).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    };
+    
+    return `#${toHex(r1)}${toHex(g1)}${toHex(b1)}`;
+}
+
+// Fonction pour télécharger le fichier CSV
+function uploadCSVFile() {
+    console.log("Téléchargement du fichier CSV...");
+    
+    // Récupérer le formulaire
+    const form = $('#importCSVForm')[0];
+    const formData = new FormData(form);
+    
+    // Vérifier qu'un fichier a été sélectionné
+    if (!formData.get('file') || formData.get('file').size === 0) {
+        showNotification('error', 'Veuillez sélectionner un fichier CSV valide');
+        return;
+    }
+    
+    // Afficher le loader
+    $('#loader').show();
+    
+    // Cacher la notification
+    $('#notification').hide();
+    
+    // Envoyer le fichier à l'API
+    $.ajax({
+        url: `/cat-special/upload-csv/`,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRFToken': getCsrfToken()
+        },
+        success: function(response) {
+            console.log("Fichier importé avec succès:", response);
+            
+            // Fermer le modal
+            const importModal = bootstrap.Modal.getInstance(document.getElementById('importCSVModal'));
+            if (importModal) importModal.hide();
+            
+            // Réinitialiser le formulaire
+            form.reset();
+            $('.custom-file-label').html('Choisir un fichier...');
+            
+            // Afficher une notification
+            showNotification('success', `Fichier importé avec succès! ${response.records_inserted || 0} enregistrements insérés.`);
+            
+            // Recharger les données
+            loadDataFromServer();
+        },
+        error: function(xhr) {
+            console.error("Erreur lors de l'importation:", xhr);
+            
+            let message = 'Erreur lors de l\'importation du fichier';
+            
+            try {
+                const response = JSON.parse(xhr.responseText);
+                message = response.error || message;
+            } catch (e) {}
+            
+            showNotification('error', message);
+            
+            // Cacher le loader
+            $('#loader').hide();
+        }
+    });
+}
+
+// Fonction pour enregistrer les données
+function saveData() {
+    console.log("Enregistrement des données...");
+    
+    // Récupérer le formulaire
+    const form = $('#addDataForm')[0];
+    const formData = new FormData(form);
+    
+    // Convertir FormData en objet
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+    
+    // Vérifier les champs obligatoires
+    if (!data.prenom || !data.nom || !data.etablissement || !data.email || !data.statut) {
+        showNotification('error', 'Veuillez remplir tous les champs obligatoires');
+        return;
+    }
+    
+    // Ajouter le type de fichier
+    if (data.statut === 'convention') {
+        data.file_type = 'convention';
+    } else if (data.statut === 'vacataire' || data.statut === 'titre-gracieux') {
+        data.file_type = 'vacataires';
+    } else {
+        data.file_type = 'autre';
+    }
+    
+    // Renommer les champs pour correspondre à la structure CSV
+    data['Prénom'] = data.prenom;
+    data['Nom'] = data.nom;
+    data['Etablissement'] = data.etablissement;
+    data['Adresse mail'] = data.email;
+    data['Nombre d\'heures ETD année'] = data.heures_etd || 0;
+    data['Nombre d\'heures ETD semestres pairs'] = data.heures_etd_semestre || 0;
+    data['Recrutement créé dans REVE'] = data.recrutement_reve || 'Non';
+    
+    // Supprimer les anciens champs
+    delete data.prenom;
+    delete data.nom;
+    delete data.etablissement;
+    delete data.email;
+    delete data.heures_etd;
+    delete data.heures_etd_semestre;
+    delete data.recrutement_reve;
+    
+    // Afficher le loader
+    $('#loader').show();
+    
+    // Cacher la notification
+    $('#notification').hide();
+    
+    // Récupérer l'ID pour l'édition
+    const id = $('#addDataForm').data('id');
+    
+    // URL et méthode
+    let url = `${API_BASE_URL}/cat-special`;
+    let method = 'POST';
+    
+    // Si ID présent, c'est une édition
+    if (id) {
+        url += `/${id}`;
+        method = 'PUT';
+    }
+    
+    // Récupérer le token d'authentification
+    const token = getApiToken();
+    
+    // Envoyer les données à l'API
+    $.ajax({
+        url: url,
+        type: method,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'X-CSRFToken': getCsrfToken()
+        },
+        success: function(response) {
+            console.log("Données enregistrées avec succès:", response);
+            
+            // Fermer le modal
+            const addDataModal = bootstrap.Modal.getInstance(document.getElementById('addDataModal'));
+            if (addDataModal) addDataModal.hide();
+            
+            // Réinitialiser le formulaire
+            form.reset();
+            $('#addDataForm').removeData('id');
+            
+            // Afficher une notification
+            showNotification('success', id ? 'Données mises à jour avec succès!' : 'Données ajoutées avec succès!');
+            
+            // Recharger les données
+            loadDataFromServer();
+        },
+        error: function(xhr) {
+            console.error("Erreur lors de l'enregistrement:", xhr);
+            
+            let message = 'Erreur lors de l\'enregistrement des données';
+            
+            try {
+                const response = JSON.parse(xhr.responseText);
+                message = response.error || message;
+            } catch (e) {}
+            
+            showNotification('error', message);
+            
+            // Cacher le loader
+            $('#loader').hide();
+        }
+    });
+}
+
+// Fonction pour ouvrir le modal d'édition
+function openEditModal(data) {
+    console.log("Ouverture du modal d'édition avec les données:", data);
+    
+    // Remplir le formulaire avec les données
+    $('#prenom').val(data[0]); // Prénom
+    $('#nom').val(data[1]); // Nom
+    $('#etablissement').val(data[2]); // Établissement
+    $('#email').val(data[3]); // Email
+    
+    // Ces champs peuvent ne pas être présents dans les données du tableau
+    $('#heures_etd').val('');
+    $('#heures_etd_semestre').val('');
+    $('#recrutement_reve').val('');
+    
+    // Déterminer le statut à partir du type de fichier
+    let statut = 'autre';
+    if (data[4] === 'convention') {
+        statut = 'convention';
+    } else if (data[4] === 'vacataires') {
+        statut = 'vacataire';
+    } else if (data[4] === 'titre-gracieux') {
+        statut = 'titre-gracieux';
+    }
+    $('#statut').val(statut);
+    
+    // Stocker l'ID pour l'édition (si disponible)
+    const id = data._id || data.id;
+    if (id) {
+        $('#addDataForm').data('id', id);
+    } else {
+        $('#addDataForm').removeData('id');
+    }
+    
+    // Changer le titre du modal
+    $('#addDataModalLabel').text('Modifier les données');
+    
+    // Ouvrir le modal
+    const addDataModal = new bootstrap.Modal(document.getElementById('addDataModal'));
+    addDataModal.show();
+}
+
+// Fonction pour ouvrir le modal de suppression
+function openDeleteModal(data) {
+    console.log("Ouverture du modal de suppression avec les données:", data);
+    
+    // Récupérer l'ID
+    const id = data._id || data.id;
+    
+    if (!id) {
+        showNotification('error', 'ID introuvable pour la suppression');
+        return;
+    }
+    
+    // Stocker l'ID pour la suppression
+    $('#deleteId').val(id);
+    
+    // Ouvrir le modal
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    deleteModal.show();
+}
+
+// Fonction pour supprimer les données
+function deleteData() {
+    console.log("Suppression des données...");
+    
+    // Récupérer l'ID
+    const id = $('#deleteId').val();
+    
+    if (!id) {
+        showNotification('error', 'ID manquant pour la suppression');
+        return;
+    }
+    
+    // Afficher le loader
+    $('#loader').show();
+    
+    // Récupérer le token d'authentification
+    const token = getApiToken();
+    
+    // Envoyer la requête de suppression
+    $.ajax({
+        url: `${API_BASE_URL}/cat-special/${id}`,
+        type: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'X-CSRFToken': getCsrfToken()
+        },
+        success: function(response) {
+            console.log("Données supprimées avec succès:", response);
+            
+            // Fermer le modal
+            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            if (deleteModal) deleteModal.hide();
+            
+            // Afficher une notification
+            showNotification('success', 'Enregistrement supprimé avec succès!');
+            
+            // Recharger les données
+            loadDataFromServer();
+        },
+        error: function(xhr) {
+            console.error("Erreur lors de la suppression:", xhr);
+            
+            let message = 'Erreur lors de la suppression';
+            
+            try {
+                const response = JSON.parse(xhr.responseText);
+                message = response.error || message;
+            } catch (e) {}
+            
+            showNotification('error', message);
+            
+            // Cacher le loader
+            $('#loader').hide();
+        }
+    });
+}
+
+// Fonction pour afficher une notification
+function showNotification(type, message) {
+    console.log(`Notification [${type}]: ${message}`);
+    
+    // Utiliser Toastr si disponible
+    if (typeof toastr !== 'undefined') {
+        switch (type) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+            case 'info':
+                toastr.info(message);
+                break;
+            default:
+                toastr.info(message);
+        }
+        return;
+    }
+    
+    // Fallback si Toastr n'est pas disponible
+    const notification = $('#notification');
+    
+    if (notification.length === 0) {
+        console.warn("Élément de notification non trouvé dans le DOM");
+        alert(`${type.toUpperCase()}: ${message}`);
+        return;
+    }
+    
+    // Définir le type de notification
+    notification.removeClass('alert-success alert-warning alert-danger alert-info');
+    
+    switch (type) {
+        case 'success':
+            notification.addClass('alert-success');
+            break;
+        case 'warning':
+            notification.addClass('alert-warning');
+            break;
+        case 'error':
+            notification.addClass('alert-danger');
+            break;
+        case 'info':
+            notification.addClass('alert-info');
+            break;
+    }
+    
+    // Définir le message
+    notification.html(`<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i> ${message}`);
+    
+    // Afficher la notification
+    notification.show();
+    
+    // Cacher la notification après 5 secondes
+    setTimeout(() => {
+        notification.fadeOut();
+    }, 5000);
+}
+
+// Fonction pour récupérer le token d'authentification
+function getApiToken() {
+    return sessionStorage.getItem('api_token') || localStorage.getItem('api_token') || '';
+}
+
+// Fonction pour récupérer le token CSRF
+function getCsrfToken() {
+    const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+    return tokenInput ? tokenInput.value : '';
+}
+</script>
+{% endblock %}
+
+

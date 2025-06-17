@@ -10246,3 +10246,614 @@ C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloa
 Watching for file changes with StatReloader
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
 Watching for file changes with StatReloader
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /catEnseug/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 763, in categories_enseignement
+    return render(request, 'statistiques/catEnseug.html', {
+        'categories_stats': categories_stats,
+        'quick_stats': quick_stats,
+        'user_info': request.session.get('user_info', {})
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'cat-special' not found. 'cat-special' is not a valid view function or pattern name.
+"GET /catEnseug/ HTTP/1.1" 500 185571
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /catEnseug/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 763, in categories_enseignement
+    return render(request, 'statistiques/catEnseug.html', {
+        'categories_stats': categories_stats,
+        'quick_stats': quick_stats,
+        'user_info': request.session.get('user_info', {})
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'cat-special' not found. 'cat-special' is not a valid view function or pattern name.
+"GET /catEnseug/ HTTP/1.1" 500 185434
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52127
+"GET /cat-special/ HTTP/1.1" 200 19137
+"GET /heures-enseignement/ HTTP/1.1" 200 95124
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /arion/ HTTP/1.1" 200 96520
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95323
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=FIE1 HTTP/1.1" 200 134
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72466
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+"GET /cat-special/ HTTP/1.1" 200 59818
+"GET /cat-special/ HTTP/1.1" 200 65406
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15188
+"GET / HTTP/1.1" 200 35407
+- Broken pipe from ('127.0.0.1', 64429)
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /admin-users/ HTTP/1.1" 200 43106
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET /register/ HTTP/1.1" 200 42431
+"POST /register/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40514
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43529
+"GET /dashboard/ HTTP/1.1" 200 43026
+"GET /dashboard/ HTTP/1.1" 200 43025
+"GET /dashboard/ HTTP/1.1" 200 43025
+"GET /dashboard/ HTTP/1.1" 200 43025
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95325
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /arion/ HTTP/1.1" 200 96522
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/data HTTP/1.1" 200 1242285
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
+"GET /arion/ HTTP/1.1" 200 96522
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+"GET /heures-enseignement/ HTTP/1.1" 200 95128
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3 HTTP/1.1" 200 582
+Not Found: /api/heures-enseignement/graph-data/
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3&semestre=S3 HTTP/1.1" 404 81
+Not Found: /api/heures-enseignement/graph-data/
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3&semestre=S3 HTTP/1.1" 404 81
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3&semestre=S5 HTTP/1.1" 200 549
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3&semestre=S5 HTTP/1.1" 200 549
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3 HTTP/1.1" 200 582
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021&niveau=FIE3 HTTP/1.1" 200 582
+"GET /dashboard/ HTTP/1.1" 200 43024
+"GET /admin-users/ HTTP/1.1" 200 46936
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35409
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+"GET /cat-special/ HTTP/1.1" 200 65408
+"GET /cat-special/ HTTP/1.1" 200 66240
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 68406
+"GET /cat-special/ HTTP/1.1" 200 53243
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 53243
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15475
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15374
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15482
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15372
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15480
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /cat-special/
+"GET /cat-special/ HTTP/1.1" 404 15369
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15477
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 53243
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15475
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+"GET /cat-special/ HTTP/1.1" 200 53833
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15475
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+"GET /cat-special/ HTTP/1.1" 200 53934
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15475
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+"GET /cat-special/ HTTP/1.1" 200 53934
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+Réponse API: Status 200
+Importation réussie: {'message': 'Importation réussie! 24 enregistrements insérés.', 'records_inserted': 24, 'success': True}
+"POST /cat-special/upload-csv/ HTTP/1.1" 200 119
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+Réponse API: Status 200
+Importation réussie: {'message': 'Importation réussie! 51 enregistrements insérés.', 'records_inserted': 51, 'success': True}
+"POST /cat-special/upload-csv/ HTTP/1.1" 200 119
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+"GET /cat-special/ HTTP/1.1" 200 53934
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15376
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 59476
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15650
+"GET /cat-special/ HTTP/1.1" 200 59165
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15650
+"GET /cat-special/ HTTP/1.1" 200 59461
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15650
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+"GET /cat-special/ HTTP/1.1" 200 48398
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15692
+Internal Server Error: /cat-special/
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        template_name,
+        ^^^^^^^^^^^^^^
+        skip=history,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 181, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py", line 2085, in cat_special
+    return render(request, 'statistiques/catSpecial.html', {
+        'user_info': request.session.get('user_info', {}),
+        'settings': settings
+    })
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 109, in render
+    reraise(exc, self.backend)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cakkari\Desktop\outilISIS\ISIS-VENV\Lib\site-packages\django\template\backends\django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+"GET /cat-special/ HTTP/1.1" 500 139725
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+"GET /cat-special/ HTTP/1.1" 200 27945
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+"GET /cat-special/ HTTP/1.1" 200 59461
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15650
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+"GET /cat-special/ HTTP/1.1" 200 59539
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15650
+"GET /cat-special/ HTTP/1.1" 200 59141
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15692
+"GET /cat-special/ HTTP/1.1" 200 58581
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15692
+"GET /cat-special/ HTTP/1.1" 200 58635
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15692
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 58635
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15749
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15692
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cat-special/ HTTP/1.1" 200 58635
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+"GET /cat-special/ HTTP/1.1" 200 59124
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+"GET /cat-special/ HTTP/1.1" 200 59150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+Not Found: /cat-special/data/
+"GET /cat-special/data/ HTTP/1.1" 404 70
+"GET /cat-special/ HTTP/1.1" 200 58919
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+Not Found: /cat-special/data/
+"GET /cat-special/data/ HTTP/1.1" 404 70
+"GET /cat-special/ HTTP/1.1" 200 63443
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15655
+Not Found: /cat-special/data/
+"GET /cat-special/data/ HTTP/1.1" 404 70
+Not Found: /statistiques/cat-special/data/
+"GET /statistiques/cat-special/data/ HTTP/1.1" 404 15700
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+"GET /cat-special/ HTTP/1.1" 200 70488
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15655
+Not Found: /api/donnees_vac
+"GET /api/donnees_vac HTTP/1.1" 404 15655
+Not Found: /statistiques/api/donnees_vac
+"GET /statistiques/api/donnees_vac HTTP/1.1" 404 15694
+Not Found: /cat-special/data/
+"GET /cat-special/data/ HTTP/1.1" 404 70
+Not Found: /statistiques/cat-special/data/
+"GET /statistiques/cat-special/data/ HTTP/1.1" 404 15700
+Not Found: /statistiques/cat-special/data
+"GET /statistiques/cat-special/data HTTP/1.1" 404 15697
+"GET /cat-special/ HTTP/1.1" 200 71703
+Not Found: /api/donnees_vac
+"GET /api/donnees_vac HTTP/1.1" 404 15655
+Not Found: /statistiques/api/donnees_vac
+"GET /statistiques/api/donnees_vac HTTP/1.1" 404 15694
+Not Found: /api/cat-special
+"GET /api/cat-special HTTP/1.1" 404 15655
+Not Found: /statistiques/cat-special/data/
+"GET /statistiques/cat-special/data/ HTTP/1.1" 404 15700
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+"GET /heures-enseignement/ HTTP/1.1" 200 95128
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95325
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /arion/ HTTP/1.1" 200 96522
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 66844
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 66844
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+"GET /heures-enseignement/ HTTP/1.1" 200 95128
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+Stats RSE récupérées: dict_keys(['annees_disponibles', 'donnees_par_element', 'etudiants_impliques', 'evolution_annuelle', 'format_cours_pourcentage', 'graphiques', 'promotions_disponibles', 'promotions_impliquees', 'repartition_par_promotion', 'repartition_par_type', 'total_activites', 'total_heures_rse'])
+Données RSE récupérées: 8 enregistrements
+Promotions disponibles: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /rse/ HTTP/1.1" 200 95325
+"GET /api/rse-data/?promotion=all HTTP/1.1" 200 194
+"GET /api/rse-evolution/ HTTP/1.1" 200 82
+"GET /api/rse-activity-types/ HTTP/1.1" 200 384
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-format-cours/ HTTP/1.1" 200 106
+"GET /api/rse-hours-by-promotion/ HTTP/1.1" 200 364
+"GET /api/rse-data/?promotion=FIE1 HTTP/1.1" 200 134
+"GET /heures-enseignement/ HTTP/1.1" 200 95128
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+"GET /arion/ HTTP/1.1" 200 96522
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+"GET /arion/ HTTP/1.1" 200 96522
+- Broken pipe from ('127.0.0.1', 60470)
+"GET /api/arion/monthly_stats HTTP/1.1" 200 179
+Unauthorized: /api/arion/stats
+"GET /api/arion/stats HTTP/1.1" 401 44
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+"GET /api/arion/data HTTP/1.1" 200 1241724
+Watching for file changes with StatReloader

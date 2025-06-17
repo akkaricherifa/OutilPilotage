@@ -40,6 +40,7 @@ try:
     rse_collection = db[MONGO_COLLECTION_RSE]
     arion_collection = db[MONGO_COLLECTION_ARION]
     vacataire_collection = db[MONGO_COLLECTION_VACATAIRE]
+    donnees_vac_collection = db['donnees_vac']
     print(f"Connexion à la base {MONGO_DB} réussie!")
     print("Collections disponibles:", db.list_collection_names())
     
@@ -2703,6 +2704,105 @@ def get_vacataire_stats(current_user):
     except Exception as e:
         app.logger.error(f"Erreur lors de la récupération des statistiques vacataires: {str(e)}")
         return jsonify({"error": f"Erreur lors de la récupération des statistiques: {str(e)}"}), 500
+##############################################cat spécial#######################
+# Ajoutez cette route pour l'importation CSV des catégories spéciales
+@app.route('/api/cat-special/upload', methods=['POST'])
+@token_required
+def upload_cat_special_file(current_user):
+    """Endpoint pour uploader un fichier CSV des catégories spéciales"""
+    # Vérification des permissions
+    user_role = current_user['role']
+    if 'upload' not in PERMISSIONS.get(user_role, []):
+        return jsonify({"error": "Permissions insuffisantes"}), 403
+    
+    if 'file' not in request.files:
+        return jsonify({"error": "Aucun fichier n'a été envoyé"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
+    
+    if file and file.filename.endswith('.csv'):
+        try:
+            # Log plus d'information sur le fichier
+            print(f"Traitement du fichier: {file.filename}")
+            
+            # Déterminer le type de fichier selon le nom
+            file_type = None
+            if "vacataires" in file.filename.lower():
+                file_type = "vacataires"
+            elif "convention" in file.filename.lower():
+                file_type = "convention"
+            else:
+                file_type = "autre"  # Type par défaut si non reconnu
+                
+            print(f"Type de fichier détecté: {file_type}")
+            
+            # Lecture du fichier CSV
+            df = pd.read_csv(file, encoding='utf-8')
+            
+            print(f"Dimensions du DataFrame: {df.shape}")
+            print("Colonnes dans le fichier:", df.columns.tolist())
+            
+            # Vérification des colonnes requises selon le type
+            if file_type == "vacataires" or file_type == "convention":
+                required_columns = ['Prénom', 'Nom', 'Etablissement', 'Adresse mail']
+                missing_columns = [col for col in required_columns if col not in df.columns]
+                
+                if missing_columns:
+                    return jsonify({
+                        "error": f"Format du fichier non reconnu. Colonnes manquantes: {', '.join(missing_columns)}"
+                    }), 400
+            
+            # Conversion des données en dictionnaire pour MongoDB
+            records = df.to_dict('records')
+            
+            # Ajouter des champs supplémentaires
+            for record in records:
+                record['created_by'] = current_user['username']
+                record['created_at'] = datetime.utcnow().isoformat()
+                record['file_type'] = file_type
+            
+            # Insertion dans MongoDB
+            if records:
+                result = donnees_vac_collection.insert_many(records)
+                inserted_count = len(result.inserted_ids)
+                print(f"Documents insérés: {inserted_count}")
+                
+                return jsonify({
+                    "message": f"Importation réussie! {inserted_count} enregistrements insérés.",
+                    "records_inserted": inserted_count,
+                    "success": True
+                }), 200
+            else:
+                return jsonify({
+                    "error": "Aucun enregistrement trouvé dans le fichier CSV"
+                }), 400
+                
+        except Exception as e:
+            import traceback
+            traceback_str = traceback.format_exc()
+            print(f"Erreur détaillée: {traceback_str}")
+            return jsonify({"error": f"Erreur lors du traitement du fichier: {str(e)}"}), 500
+    
+    return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
+
+# Ajoutez cette route pour récupérer les données des catégories spéciales
+@app.route('/api/cat-special', methods=['GET'])
+@token_required
+def get_cat_special_data(current_user):
+    """Endpoint pour récupérer les données des catégories spéciales"""
+    try:
+        # Récupérer tous les enregistrements
+        records = list(donnees_vac_collection.find({}, {'_id': {'$toString': '$_id'}}))
+        
+        return jsonify({
+            "data": records,
+            "success": True,
+            "count": len(records)
+        }), 200
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
 ############################################################ Routes pour les templates (si nécessaire)
 @app.route('/')
 def home():
