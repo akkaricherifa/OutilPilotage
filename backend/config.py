@@ -9,7 +9,6 @@ SECRET_KEY = 'votre-cle-secrete-super-secure-pour-flask-jwt-2024'
 MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DB = 'AppISIS'  # Nouvelle base de données
 MONGO_COLLECTION_USERS = 'utilisateurs'  # Collection utilisateurs
-MONGO_COLLECTION_DATA = 'donnees_etudiants'  # Collection données
 MONGO_COLLECTION_ENSEIGNEMENT = 'donnees_enseignement'
 MONGO_COLLECTION_RSE = 'donnees_rse'  # Collection enseignement
 MONGO_COLLECTION_ARION = 'donnees_arion' # Collection pour les données ARION

@@ -409,7 +409,7 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form id="uploadForm" method="post" enctype="multipart/form-data" action="{% url 'upload_csv' %}">
+            <form id="uploadForm" method="post" enctype="multipart/form-data" action="{% url 'upload_csv_etudiants' %}">
                 {% csrf_token %}
                 <input type="hidden" name="source" value="effectifs">
                 <div class="modal-body">
@@ -420,15 +420,15 @@
                             <label class="custom-file-label" for="csvFile">Choisir un fichier...</label>
                         </div>
                     </div>
-                    <div class="alert alert-info">
-                        <h6><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV :</h6>
-                        <code>annee,nombre_fie1,nombre_fie2,nombre_fie3,taux_boursiers,nombre_diplomes,nombre_handicapes,nombre_etrangers,nombre_demissionnes,nombre_femmes,nombre_hommes</code>
-                        <hr>
-                        <h6>Exemple :</h6>
-                        <pre class="mb-0">2023,133,102,94,0.2,70,11,11,7,150,179
-2024,139,102,96,0.28,78,11,12,6,160,177
-2025,116,91,80,0.34,81,12,15,4,140,147</pre>
-                    </div>
+                   <div class="alert alert-info">
+    <h6><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV :</h6>
+    <p>Le système accepte les fichiers CSV contenant les données individuelles des étudiants avec les colonnes suivantes:</p>
+    <code>Nom,Prénom,Genre,Date de naissance,Nationalité,Unnamed:6,Etranger(ère),Boursier(ère),Adresse fixe,Code postal,Ville,Pays,Formation,...</code>
+    <hr>
+    <h6>Information importante:</h6>
+    <p>Le système détectera automatiquement les informations pertinentes comme le niveau (FIE1, FIE2, FIE3), le genre, et si l'étudiant est boursier ou étranger.</p>
+    <p>Le fichier CSV peut contenir également les colonnes "annee" et "niveau" pour une détection plus précise.</p>
+</div>
                     <div class="form-group">
                         <label>Nom du fichier</label>
                         <input type="text" class="form-control" name="name" placeholder="Effectifs 2025" required>
@@ -578,7 +578,7 @@ $(document).ready(function() {
         let formData = new FormData(this);
         
         $.ajax({
-            url: $(this).attr('action'),
+            url: "{% url 'upload_csv_etudiants' %}",
             type: 'POST',
             data: formData,
             processData: false,
@@ -1032,7 +1032,7 @@ function showNotification(type, message) {
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    `;
+    `
     
     // Ajouter à la page
     const container = document.createElement('div');

@@ -476,6 +476,73 @@ def effectifs_etudiants(request):
         'all_data': all_data
     })
 
+@api_authenticated_required
+def upload_csv_etudiants(request):
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    
+    if 'file' not in request.FILES:
+        return JsonResponse({"error": "Aucun fichier n'a été envoyé"}, status=400)
+    
+    file = request.FILES['file']
+    
+    if not file.name.endswith('.csv'):
+        return JsonResponse({"error": "Seuls les fichiers CSV sont acceptés"}, status=400)
+    
+    try:
+        # Lire le contenu du fichier CSV
+        file_content = file.read().decode('utf-8', errors='replace')
+        
+        # Diviser le contenu en lignes
+        lines = file_content.strip().split('\n')
+        
+        # La première ligne contient les en-têtes
+        headers = [h.strip() for h in lines[0].split(',')]
+        
+        # Traiter chaque ligne pour créer les documents étudiants
+        etudiants = []
+        for i in range(1, len(lines)):
+            line = lines[i].strip()
+            if not line:  # Ignorer les lignes vides
+                continue
+                
+            # Diviser la ligne en colonnes
+            columns = [col.strip() for col in line.split(',')]
+            
+            # Créer le document étudiant avec tous les champs du CSV
+            etudiant = {}
+            for j, col in enumerate(columns):
+                if j < len(headers):
+                    etudiant[headers[j]] = col
+            
+            etudiants.append(etudiant)
+        
+        # Envoyer les données à l'API
+        token = request.session.get('api_token')
+        headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
+        
+        response = requests.post(
+            f"{settings.API_URL}/etudiants/upload-data",
+            json={'etudiants': etudiants},
+            headers=headers,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            api_response = response.json()
+            return JsonResponse({
+                "success": True,
+                "message": f"Données d'étudiants importées avec succès! {len(etudiants)} étudiants traités.",
+                "records_inserted": api_response.get('records_inserted', 0)
+            })
+        else:
+            api_response = response.json()
+            return JsonResponse({"error": api_response.get('error', 'Erreur inconnue')}, status=response.status_code)
+            
+    except Exception as e:
+        logger.error(f"Erreur: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=500)
+    
 ######################################## CATEGORIE ENSEIGNEMENT ##############################################
 @api_authenticated_required
 def heures_enseignement(request):

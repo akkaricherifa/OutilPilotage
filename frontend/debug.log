@@ -10903,3 +10903,227 @@ Unauthorized: /api/arion/stats
 "GET /api/arion/monthly_stats?year=2024 HTTP/1.1" 200 171
 "GET /api/arion/data HTTP/1.1" 200 1241724
 "GET /api/arion/monthly_stats?year=2023 HTTP/1.1" 200 170
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72468
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 72694
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 76637
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 76635
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 78199
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET / HTTP/1.1" 200 35409
+"GET /dashboard/ HTTP/1.1" 200 43024
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 86519
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84131
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 15754
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84131
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84131
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84221
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+- Broken pipe from ('127.0.0.1', 61004)
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84203
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84204
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84204
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84279
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 84279
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 87128
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 86903
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /vacataire/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40510
+"GET /vacataire/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40510
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43527
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 66844
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35012
+"GET /static/images/isis.png HTTP/1.1" 304 0
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43527
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 66844
+"GET /effectifs-etudiants/ HTTP/1.1" 200 59041
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /effectifs-etudiants/ HTTP/1.1" 200 59041
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53274
+Erreur upload API: Expecting value: line 1 column 1 (char 0)
+"POST /upload-csv/ HTTP/1.1" 200 22342
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53434
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Bad Request: /upload-csv-etudiants/
+"POST /upload-csv-etudiants/ HTTP/1.1" 400 70
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Bad Request: /upload-csv-etudiants/
+"POST /upload-csv-etudiants/ HTTP/1.1" 400 70
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur avec détection auto: Expected 23 fields in line 3, saw 34
+Colonnes trouvées dans le fichier: ['Nom ', 'Prénom ', 'Genre', 'Date de naissance ', 'Nationalité', 'Unnamed: 6', 'Etranger(ère)', 'Boursier(ère)', 'Adresse fixe', 'Code postal', 'Ville', 'Pays\nDOM-TOM', ' tél  ', 'mail ', 'Adresse période universitaire', 'Code Postal', 'Ville.1', "Lycée d'origine ", 'Code Postal.1', 'Ville.2', 'Pays', 'Formation ', 'Spécialités en terminale', 'Unnamed: 25', 'Options', 'Mention ', 'Diplômes post Bac', 'Formation suivie - Concours ou Pré-Concours', "Etablissement l'année précédente", 'Année de recrutement ISIS', 'Groupe INSA', 'Autres provenances', 'annee', 'niveau']
+Données extraites du fichier Etudiants_FIE3_2021-2022 (1).csv:
+Année: 2025
+Niveaux: FIE1=0, FIE2=0, FIE3=30
+Genre: Femmes=15, Hommes=15
+Boursiers: 8 (26.67%)
+Étrangers: 1
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 436
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58844
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur avec détection auto: Expected 25 fields in line 3, saw 36
+Colonnes trouvées dans le fichier: ['Nom ', 'Prénom ', 'Genre', 'Date de naissance ', 'Nationalité', 'Unnamed: 6', 'Etranger(ère)', 'Boursier(ère)', 'Adresse fixe', 'Code postal', 'Ville', 'Pays\nDOM-TOM', ' tél  ', 'mail ', 'Adresse période universitaire', 'Code Postal', 'Ville.1', "Lycée d'origine ", 'Code Postal.1', 'Ville.2', 'Pays', 'Formation ', 'Spécialités en terminale', 'Unnamed: 25', 'Options', 'Unnamed: 27', 'Mention ', 'Diplômes post Bac', "Etablissement d'obtention du diplôme", 'Formation suivie - Concours ou Pré-Concours', "Etablissement l'année précédente", 'Année de recrutement ISIS', 'Groupe INSA', 'Autres provenances', 'annee', 'niveau']
+Données extraites du fichier Etudiants_FIE1_2021-2022 (1).csv:
+Année: 2025
+Niveaux: FIE1=22, FIE2=0, FIE3=0
+Genre: Femmes=15, Hommes=7
+Boursiers: 9 (40.91%)
+Étrangers: 2
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 433
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58828
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58828
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+En-têtes détectés: ['\ufeffNom ', 'Prénom ', 'Genre', 'Date de naissance ', 'Nationalité', 'Unnamed: 6', 'Etranger(ère)', 'Boursier(ère)', 'Adresse fixe', 'Code postal', 'Ville', '"Pays']
+Données extraites du fichier Etudiants_FIE1_2021-2022 (1).csv:
+Année: 2025
+Niveaux: FIE1=23, FIE2=0, FIE3=0
+Genre: Femmes=15, Hommes=8
+Boursiers: 9 (39.13%)
+Étrangers: 2
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 432
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58824
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
+Watching for file changes with StatReloader

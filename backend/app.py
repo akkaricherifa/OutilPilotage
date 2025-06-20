@@ -34,13 +34,14 @@ try:
     # Base de données AppISIS
     db = client[MONGO_DB]  
     users_collection = db[MONGO_COLLECTION_USERS]
-    data_collection = db[MONGO_COLLECTION_DATA]
     enseignement_collection = db[MONGO_COLLECTION_ENSEIGNEMENT]
     heures_enseignement_collection = db['heures_enseignement_detaillees']
     rse_collection = db[MONGO_COLLECTION_RSE]
     arion_collection = db[MONGO_COLLECTION_ARION]
     vacataire_collection = db[MONGO_COLLECTION_VACATAIRE]
     donnees_vac_collection = db['donnees_vac']
+    etudiants_collection = db['etudiants']
+
     print(f"Connexion à la base {MONGO_DB} réussie!")
     print("Collections disponibles:", db.list_collection_names())
     
@@ -177,73 +178,29 @@ def logout(current_user):
     """Endpoint pour la déconnexion"""
     return jsonify({"message": "Déconnexion réussie"}), 200
 
-# Routes pour les données
-@app.route('/api/upload', methods=['POST'])
+############################################################ Routes pour les données etudiants ######################################################################
+@app.route('/api/etudiants/upload-data', methods=['POST'])
 @token_required
-def upload_file(current_user):
-    """Endpoint pour uploader un fichier CSV"""
-    # Vérification des permissions
-    user_role = current_user['role']
-    if 'upload' not in PERMISSIONS.get(user_role, []):
-        return jsonify({"error": "Permissions insuffisantes"}), 403
-    
-    if 'file' not in request.files:
-        return jsonify({"error": "Aucun fichier n'a été envoyé"}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "Aucun fichier n'a été sélectionné"}), 400
-    
-    if file and file.filename.endswith('.csv'):
-        try:
-            # Lecture du fichier CSV
-            df = pd.read_csv(file)
-            
-            # Validation des colonnes requises
-            required_columns = ['annee', 'nombre_fie1', 'nombre_fie2', 'nombre_fie3', 
-                             'taux_boursiers', 'nombre_diplomes']
-            missing_columns = [col for col in required_columns if col not in df.columns]
-            
-            if missing_columns:
-                return jsonify({
-                    "error": f"Colonnes manquantes: {', '.join(missing_columns)}"
-                }), 400
-            
-            # Conversion du DataFrame en liste de dictionnaires pour MongoDB
-            records = df.to_dict('records')
-            
-            # Ajout de métadonnées
-            for record in records:
-                record['uploaded_by'] = current_user['username']
-                record['uploaded_at'] = datetime.utcnow()
-                # S'assurer que l'année est un entier
-                record['annee'] = int(record['annee'])
-            
-            # Enregistrer chaque ligne avec upsert pour éviter les doublons
-            updated = 0
-            inserted = 0
-            for record in records:
-                result = data_collection.update_one(
-                    {"annee": record['annee']}, 
-                    {"$set": record}, 
-                    upsert=True
-                )
-                if result.upserted_id:
-                    inserted += 1
-                else:
-                    updated += 1
-            
-            return jsonify({
-                "message": "Fichier traité avec succès", 
-                "records_inserted": inserted,
-                "records_updated": updated,
-                "success": True
-            }), 200
-            
-        except Exception as e:
-            return jsonify({"error": f"Erreur lors du traitement du fichier: {str(e)}"}), 500
-    
-    return jsonify({"error": "Format de fichier non pris en charge. Seuls les fichiers CSV sont acceptés."}), 400
+def upload_etudiants_data(current_user):
+    try:
+        data = request.json
+        if not data or 'etudiants' not in data:
+            return jsonify({"error": "Données invalides"}), 400
+        
+        # Collection pour les étudiants
+        etudiants_collection = db['etudiants']
+        
+        # Insérer les étudiants
+        result = etudiants_collection.insert_many(data['etudiants'])
+        
+        return jsonify({
+            "message": "Données d'étudiants importées avec succès",
+            "records_inserted": len(result.inserted_ids)
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"Erreur: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/update', methods=['POST'])
 @token_required
