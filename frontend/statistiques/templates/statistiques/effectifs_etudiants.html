@@ -752,6 +752,60 @@
         </div>
     </div>
 </div>
+<!-- Tableau des diplômés -->
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-graduation-cap mr-2"></i>Liste des étudiants diplômés</h5>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="diplomesFilter">Filtrer par niveau:</label>
+                    <select class="form-control" id="diplomesFilter">
+                        <option value="">Tous les diplômés</option>
+                        <option value="FIE5">Diplômés FIE5</option>
+                        <option value="FIA5">Diplômés FIA5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="diplomesAnneeFilter">Année de diplôme:</label>
+                    <select class="form-control" id="diplomesAnneeFilter">
+                        <option value="">Toutes les années</option>
+                        <!-- Options générées dynamiquement -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary-custom w-100" id="applyDiplomesFilters">
+                    <i class="fas fa-search mr-2"></i>Appliquer les filtres
+                </button>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="diplomesTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Genre</th>
+                        <th>Niveau</th>
+                        <th>Année</th>
+                        <th>Nationalité</th>
+                        <th>Boursier</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les données seront chargées par JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -765,6 +819,8 @@
 let dataTable;
 let etudiants = [];
 let charts = {};
+let diplomesTable;
+let diplomes = [];
 
 // Définir les couleurs pour respecter la charte graphique
 const chartColors = {
@@ -805,8 +861,11 @@ $(document).ready(function() {
         // Récupérer et parser les données JSON
         etudiants = JSON.parse('{{ etudiants|escapejs }}');
         console.log("Données étudiants chargées:", etudiants);
+        // Séparer les étudiants normaux et les diplômés
+        diplomes = extractDiplomes(etudiants);
+        const nonDiplomes = filterNonDiplomes(etudiants);
         console.log("Nombre d'étudiants:", etudiants.length);
-        
+        etudiants = nonDiplomes;
         // Afficher les propriétés du premier étudiant pour débogage
         if (etudiants.length > 0) {
             console.log("Premier étudiant:", etudiants[0]);
@@ -963,6 +1022,24 @@ $(document).ready(function() {
                 submitBtn.html(originalText).prop('disabled', false);
             }
         });
+    });
+    // Initialiser le tableau des diplômés
+    initializeDiplomesTable();
+    loadDiplomesTableData(diplomes);
+    
+    // Remplir le sélecteur d'années pour les diplômés
+    populateDiplomeYearSelector();
+    
+    // Gestionnaire pour le filtre des diplômés
+    $('#applyDiplomesFilters').click(function() {
+        applyDiplomesFilters();
+    });
+    
+    // Réinitialiser les filtres des diplômés
+    $('#resetDiplomesFilters').click(function() {
+        $('#diplomesFilter').val('');
+        $('#diplomesAnneeFilter').val('');
+        applyDiplomesFilters();
     });
 });
 
@@ -1957,5 +2034,154 @@ function showNotification(type, message) {
         $('.alert').alert('close');
     }, 5000);
 }
+// Fonction pour filtrer les données des étudiants pour exclure les diplômés
+function filterNonDiplomes(allStudents) {
+    // Retourne seulement les étudiants qui n'ont PAS de statut de diplômé
+    return allStudents.filter(etudiant => {
+        const statut = etudiant.statut || '';
+        return !statut.startsWith('Diplômé');
+    });
+}
+
+// Fonction pour extraire les diplômés
+function extractDiplomes(allStudents) {
+    // Retourne seulement les étudiants qui ont un statut de diplômé
+    return allStudents.filter(etudiant => {
+        const statut = etudiant.statut || '';
+        return statut.startsWith('Diplômé');
+    });
+}
+
+// Fonction pour obtenir les années de diplôme uniques
+function getDiplomeYears() {
+    const years = new Set();
+    
+    diplomes.forEach(function(etudiant) {
+        const statut = etudiant.statut || '';
+        // Extraire l'année de la chaîne "Diplômé FIXX 2024"
+        const match = statut.match(/\d{4}/);
+        if (match) {
+            years.add(match[0]);
+        }
+    });
+    
+    return Array.from(years).sort().reverse(); // Tri décroissant (plus récent d'abord)
+}
+
+// Fonction pour remplir le sélecteur d'années de diplôme
+function populateDiplomeYearSelector() {
+    const years = getDiplomeYears();
+    const selector = $('#diplomesAnneeFilter');
+    
+    // Vider le sélecteur sauf l'option par défaut
+    selector.find('option:not(:first)').remove();
+    
+    // Ajouter les années
+    years.forEach(year => {
+        selector.append(`<option value="${year}">${year}</option>`);
+    });
+}
+
+// Fonction pour initialiser le tableau des diplômés
+function initializeDiplomesTable() {
+    diplomesTable = $('#diplomesTable').DataTable({
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        responsive: true,
+        paging: true,
+        pageLength: 6,
+        pagingType: "full_numbers",
+        ordering: true,
+        searching: true,
+        info: true,
+        lengthChange: true,
+        lengthMenu: [[6, 12, 24, 48, -1], [6, 12, 24, 48, "Tous"]],
+        dom: '<"top"lf>rt<"bottom"ip>',
+        order: [
+            [0, 'asc']  // Trier par nom
+        ]
+    });
+}
+
+// Fonction pour charger les données dans le tableau des diplômés
+function loadDiplomesTableData(data) {
+    // Vider le tableau si déjà initialisé
+    if (diplomesTable) {
+        diplomesTable.clear();
+    }
+    
+    // Ajouter chaque diplômé au tableau
+    data.forEach(function(etudiant) {
+        const nom = etudiant.Nom || '';
+        const prenom = etudiant.Prénom || '';
+        const genre = etudiant.Genre || '';
+        const niveau = etudiant.niveau || '';
+        const annee = etudiant.annee || '';
+        const nationalite = etudiant.Nationalité || '';
+        const boursier = etudiant['Boursier(ère)'] || etudiant.Boursier || 'Non';
+        const tel = etudiant.tél || etudiant.tel || '';
+        const mail = etudiant.mail || etudiant.email || '';
+
+        // Créer un badge pour le statut boursier
+        let boursierBadge = '';
+        if (boursier.toLowerCase() === 'oui') {
+            boursierBadge = `<span class="badge badge-boursier">Boursier</span>`;
+        } else {
+            boursierBadge = `<span class="badge badge-non-boursier">Non-boursier</span>`;
+        }
+
+        // Ajouter la ligne au tableau avec des cellules améliorées
+        if (diplomesTable) {
+            diplomesTable.row.add([
+                `<span class="font-weight-bold">${nom}</span>`, 
+                prenom, 
+                genre === 'Masculin' ? `<i class="fas fa-mars text-primary mr-1"></i> ${genre}` : 
+                                    `<i class="fas fa-venus text-danger mr-1"></i> ${genre}`, 
+                `<span class="badge badge-primary">${niveau}</span>`, 
+                annee, 
+                `<span>${nationalite}</span>`, 
+                boursierBadge, 
+                tel ? `<a href="tel:${tel}" class="text-primary"><i class="fas fa-phone-alt mr-1"></i>${tel}</a>` : '', 
+                mail ? `<a href="mailto:${mail}" class="text-primary"><i class="fas fa-envelope mr-1"></i>${mail}</a>` : ''
+            ]);
+        }
+    });
+    
+    // Redessiner le tableau avec les nouvelles données
+    if (diplomesTable) {
+        diplomesTable.draw();
+        // Initialiser les tooltips après avoir dessiné le tableau
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+}
+
+// Fonction pour filtrer les diplômés
+function applyDiplomesFilters() {
+    const niveauFilter = $('#diplomesFilter').val();
+    const anneeFilter = $('#diplomesAnneeFilter').val();
+    
+    // Filtrer les données
+    let filteredData = diplomes.filter(function(etudiant) {
+        let matchNiveau = true;
+        let matchAnnee = true;
+        
+        if (niveauFilter) {
+            // Si le filtre est sur FIE5 ou FIA5, vérifier que le statut contient cette chaîne
+            matchNiveau = etudiant.statut && etudiant.statut.includes(niveauFilter);
+        }
+        
+        if (anneeFilter) {
+            // Vérifier que le statut contient l'année spécifiée
+            matchAnnee = etudiant.statut && etudiant.statut.includes(anneeFilter);
+        }
+        
+        return matchNiveau && matchAnnee;
+    });
+    
+    // Mettre à jour le tableau avec les données filtrées
+    loadDiplomesTableData(filteredData);
+}
+
 </script>
 {% endblock %}

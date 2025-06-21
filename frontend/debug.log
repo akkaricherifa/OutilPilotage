@@ -11788,3 +11788,201 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /effectifs-etudiants/ HTTP/1.1" 200 1567097
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
 Watching for file changes with StatReloader
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['', '2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA3', 'FIA5', 'FIE2']
+Niveaux récupérés: ['2021-2022', '2022-2023', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567161
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['', '2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA3', 'FIA5', 'FIE2']
+Niveaux récupérés: ['2021-2022', '2022-2023', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567883
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['', '2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA3', 'FIA5', 'FIE2']
+Niveaux récupérés: ['2022-2023', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567833
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA3', 'FIA5', 'FIE2']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567611
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA3', 'FIA5']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567459
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA5']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567359
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIA5', 'FIE5']
+Niveaux récupérés: ['2024-2025', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'Étudiant']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567507
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025', 'FIE5']
+Niveaux récupérés: ['2024-2025', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567327
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567165
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1569831
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1587007
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1587007
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1587007
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1587398
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1596286
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1596286
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1601064
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1602586
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1608400
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1608400
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1610553
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1613973
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1614013
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1615002
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1615119
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1617028
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1616181
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1624913
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1624913
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1624755
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1624709
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1625720
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 789 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1628566
