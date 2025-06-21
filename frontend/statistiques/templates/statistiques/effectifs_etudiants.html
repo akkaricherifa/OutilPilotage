@@ -674,6 +674,17 @@
         </div>
     </div>
 </div>
+<!-- Graphique 2: Répartition des diplômés par niveau -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Répartition des diplômés par niveau</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="diplomesNiveauChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
 <!-- Filtres -->
 <div class="filter-container">
     <h5><i class="fas fa-filter mr-2"></i>Filtres</h5>
@@ -821,6 +832,7 @@ let etudiants = [];
 let charts = {};
 let diplomesTable;
 let diplomes = [];
+let diplomesCharts = {};
 
 // Définir les couleurs pour respecter la charte graphique
 const chartColors = {
@@ -871,7 +883,13 @@ $(document).ready(function() {
             console.log("Premier étudiant:", etudiants[0]);
             console.log("Propriétés disponibles:", Object.keys(etudiants[0]));
         }
+        if (diplomes.length > 0) {
+        // Si vous avez une fonction qui initialise tous les graphiques
+        initializeDiplomesCharts();
         
+        // Ou appelez directement la fonction spécifique
+        // initializeDiplomesNiveauChart();
+          }
         // Initialiser DataTable avec les données
         initializeDataTable();
         
@@ -1042,7 +1060,10 @@ $(document).ready(function() {
         applyDiplomesFilters();
     });
 });
-
+function initializeDiplomesCharts() {
+    initializeDiplomesNiveauChart();
+    // Autres initialisations de graphiques...
+}
 // Fonction pour initialiser DataTable
 function initializeDataTable() {
     // Vérifier si les données sont disponibles
@@ -2042,7 +2063,59 @@ function filterNonDiplomes(allStudents) {
         return !statut.startsWith('Diplômé');
     });
 }
-
+// Fonction pour initialiser le graphique de répartition des diplômés par niveau (camembert)
+function initializeDiplomesNiveauChart() {
+    // Compter les diplômés par niveau
+    let fie5Count = 0;
+    let fia5Count = 0;
+    
+    diplomes.forEach(function(etudiant) {
+        const statut = etudiant.statut || '';
+        if (statut.includes('FIE5')) fie5Count++;
+        if (statut.includes('FIA5')) fia5Count++;
+    });
+    
+    // Créer le graphique
+    const ctx = document.getElementById('diplomesNiveauChart').getContext('2d');
+    diplomesCharts.niveau = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['FIE5', 'FIA5'],
+            datasets: [{
+                data: [fie5Count, fia5Count],
+                backgroundColor: [
+                    chartColors.primary[0],
+                    chartColors.primary[1]
+                ],
+                borderColor: [
+                    chartColors.borders[0],
+                    chartColors.borders[1]
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 // Fonction pour extraire les diplômés
 function extractDiplomes(allStudents) {
     // Retourne seulement les étudiants qui ont un statut de diplômé

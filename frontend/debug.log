@@ -11986,3 +11986,35 @@ Données étudiants récupérées: 789 étudiants
 Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
 Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
 "GET /effectifs-etudiants/ HTTP/1.1" 200 1628566
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 148
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 798 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1635675
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['', '2021-2022', '2022-2023', '2023-2024', '2024-2025', 'Candidature Directe']
+Niveaux récupérés: ['2024-2025', 'FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1657500
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1658323
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1666792
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1666733
