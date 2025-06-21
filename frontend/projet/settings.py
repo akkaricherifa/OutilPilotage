@@ -115,6 +115,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Configuration API Flask Backend
 API_BASE_URL = 'http://localhost:5000'
 API_URL = f'{API_BASE_URL}/api'
+# Dans settings.py
+
 
 # Configuration des messages
 from django.contrib.messages import constants as messages

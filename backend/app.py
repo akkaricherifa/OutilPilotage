@@ -40,8 +40,11 @@ try:
     arion_collection = db[MONGO_COLLECTION_ARION]
     vacataire_collection = db[MONGO_COLLECTION_VACATAIRE]
     donnees_vac_collection = db['donnees_vac']
-    etudiants_collection = db['etudiants']
+    etudiants_collection = db[MONGO_COLLECTION_ETUDIANT]
 
+# Test simple pour vérifier l'accès aux données
+    count = etudiants_collection.count_documents({})
+    print(f"Nombre d'étudiants dans la collection: {count}")
     print(f"Connexion à la base {MONGO_DB} réussie!")
     print("Collections disponibles:", db.list_collection_names())
     
@@ -179,6 +182,163 @@ def logout(current_user):
     return jsonify({"message": "Déconnexion réussie"}), 200
 
 ############################################################ Routes pour les données etudiants ######################################################################
+# Endpoints pour la gestion des étudiants individuels
+@app.route('/etudiants/save', methods=['POST'])
+@token_required
+def save_etudiant(current_user):
+    """Endpoint pour enregistrer (ajouter ou modifier) un étudiant"""
+    try:
+        data = request.json
+        
+        # Si l'ID est fourni, c'est une modification
+        if 'id' in data and data['id']:
+            # Vérifier si l'étudiant existe
+            etudiant = etudiants_collection.find_one({"id": data['id']})
+            
+            if not etudiant:
+                return jsonify({"error": "Étudiant non trouvé"}), 404
+            
+            # Mettre à jour les données
+            data['updated_by'] = current_user['username']
+            data['updated_at'] = datetime.utcnow().isoformat()
+            
+            result = etudiants_collection.update_one(
+                {"id": data['id']},
+                {"$set": data}
+            )
+            
+            if result.modified_count == 0:
+                return jsonify({"error": "Aucune modification effectuée"}), 400
+                
+            return jsonify({
+                "message": "Étudiant mis à jour avec succès",
+                "id": data['id']
+            }), 200
+        else:
+            # C'est un ajout
+            # Générer un ID unique
+            data['id'] = str(uuid.uuid4())
+            
+            # Ajouter des métadonnées
+            data['created_by'] = current_user['username']
+            data['created_at'] = datetime.utcnow().isoformat()
+            
+            # Insérer dans la base de données
+            result = etudiants_collection.insert_one(data)
+            
+            if not result.inserted_id:
+                return jsonify({"error": "Erreur lors de l'ajout de l'étudiant"}), 500
+                
+            return jsonify({
+                "message": "Étudiant ajouté avec succès",
+                "id": data['id']
+            }), 201
+    
+    except Exception as e:
+        app.logger.error(f"Erreur lors de l'enregistrement de l'étudiant: {str(e)}")
+        import traceback
+        app.logger.error(traceback.format_exc())
+        return jsonify({"error": f"Erreur lors de l'enregistrement de l'étudiant: {str(e)}"}), 500
+@app.route('/etudiants/delete/<string:etudiant_id>', methods=['DELETE'])
+@token_required
+def delete_etudiant(current_user, etudiant_id):
+    """Endpoint pour supprimer un étudiant"""
+    try:
+        # Vérifier si l'étudiant existe
+        etudiant = etudiants_collection.find_one({"id": etudiant_id})
+        
+        if not etudiant:
+            return jsonify({"error": "Étudiant non trouvé"}), 404
+        
+        # Supprimer l'étudiant
+        result = etudiants_collection.delete_one({"id": etudiant_id})
+        
+        if result.deleted_count == 0:
+            return jsonify({"error": "Aucun étudiant supprimé"}), 400
+            
+        return jsonify({
+            "message": "Étudiant supprimé avec succès",
+            "id": etudiant_id
+        }), 200
+    
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la suppression de l'étudiant: {str(e)}")
+        import traceback
+        app.logger.error(traceback.format_exc())
+        return jsonify({"error": f"Erreur lors de la suppression de l'étudiant: {str(e)}"}), 500
+
+@app.route('/etudiants/liste', methods=['GET'])
+@token_required
+def get_etudiants_liste(current_user):
+    """Endpoint simple pour récupérer les étudiants de la base de données"""
+    try:
+        # Récupérer tous les étudiants de la collection
+        etudiants = list(etudiants_collection.find({}, {'_id': 0}))
+        
+        # Si aucun étudiant trouvé
+        if not etudiants:
+            return jsonify({"etudiants": [], "message": "Aucun étudiant trouvé"}), 200
+        
+        # Calculer les statistiques de base
+        total_etudiants = len(etudiants)
+        
+        # Récupérer les années uniques
+        annees = []
+        for etudiant in etudiants:
+            if 'annee' in etudiant and etudiant['annee'] and etudiant['annee'] not in annees:
+                annees.append(etudiant['annee'])
+        
+        # Comptage par niveau
+        niveaux = {}
+        for etudiant in etudiants:
+            niveau = etudiant.get('niveau', 'Non spécifié')
+            niveaux[niveau] = niveaux.get(niveau, 0) + 1
+        
+        # Comptage par genre
+        genres = {}
+        for etudiant in etudiants:
+            genre = etudiant.get('Genre', 'Non spécifié')
+            genres[genre] = genres.get(genre, 0) + 1
+        
+        # Comptage des boursiers
+        boursiers = {"Oui": 0, "Non": 0}
+        for etudiant in etudiants:
+            boursier = etudiant.get('Boursier(ère)', 'Non')
+            if boursier == 'Oui':
+                boursiers["Oui"] += 1
+            else:
+                boursiers["Non"] += 1
+        
+        # Comptage par nationalité
+        nationalites = {}
+        for etudiant in etudiants:
+            nationalite = etudiant.get('Nationalité', 'Non spécifiée')
+            nationalites[nationalite] = nationalites.get(nationalite, 0) + 1
+        
+        # Calcul du taux de boursiers
+        taux_boursiers = (boursiers["Oui"] / total_etudiants * 100) if total_etudiants > 0 else 0
+        
+        # Créer les statistiques
+        stats = {
+            "total_etudiants": total_etudiants,
+            "niveaux": niveaux,
+            "genres": genres,
+            "boursiers": boursiers,
+            "nationalites": nationalites,
+            "annees": sorted(annees),
+            "taux_boursiers": taux_boursiers
+        }
+        
+        return jsonify({
+            "etudiants": etudiants,
+            "stats": stats,
+            "message": "Données récupérées avec succès"
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des étudiants: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/etudiants/upload-data', methods=['POST'])
 @token_required
 def upload_etudiants_data(current_user):
@@ -190,354 +350,446 @@ def upload_etudiants_data(current_user):
         # Collection pour les étudiants
         etudiants_collection = db['etudiants']
         
+        # Ajouter des métadonnées à chaque étudiant
+        for etudiant in data['etudiants']:
+            etudiant['created_by'] = current_user['username']
+            etudiant['created_at'] = datetime.utcnow().isoformat()
+            
+            # Ajouter un ID si non fourni
+            if 'id' not in etudiant or not etudiant['id']:
+                etudiant['id'] = str(uuid.uuid4())
+        
         # Insérer les étudiants
         result = etudiants_collection.insert_many(data['etudiants'])
         
         return jsonify({
             "message": "Données d'étudiants importées avec succès",
-            "records_inserted": len(result.inserted_ids)
+            "records_inserted": len(result.inserted_ids),
+            "success": True
         }), 200
         
     except Exception as e:
         app.logger.error(f"Erreur: {str(e)}")
         return jsonify({"error": str(e)}), 500
+# Endpoint pour récupérer la liste des années disponibles
 
-@app.route('/api/update', methods=['POST'])
+@app.route('/api/etudiants/annees', methods=['GET'])
 @token_required
-def update_data(current_user):
-    """Endpoint pour mettre à jour les données"""
-    # Vérification des permissions
-    user_role = current_user['role']
-    if 'edit' not in PERMISSIONS.get(user_role, []):
-        return jsonify({"error": "Permissions insuffisantes"}), 403
-        
-    data = request.json
-    
-    if not data or 'annee' not in data:
-        return jsonify({"error": "Données invalides - année requise"}), 400
-    
+def get_etudiants_annees(current_user):
+    """Endpoint pour récupérer la liste des années académiques disponibles"""
     try:
-        # Conversion des types
-        for key in ['nombre_fie1', 'nombre_fie2', 'nombre_fie3', 'nombre_diplomes']:
-            if key in data:
-                data[key] = int(data[key])
+        # Récupération des données de la collection étudiants
+        etudiants = list(etudiants_collection.find({}, {'_id': 0, 'annee': 1}))
         
-        if 'taux_boursiers' in data:
-            data['taux_boursiers'] = float(data['taux_boursiers'])
-            
-        for key in ['nombre_handicapes', 'nombre_etrangers', 'nombre_demissionnes']:
-            if key in data and data[key]:
-                data[key] = int(data[key])
-            elif key in data and not data[key]:
-                data[key] = 0
+        if not etudiants:
+            return jsonify({"annees": []}), 200
         
-        # Recherche de l'enregistrement à mettre à jour
-        query = {"annee": int(data['annee'])}
+        # Convertir en DataFrame pandas
+        df = pd.DataFrame(etudiants)
         
-        # Ajout de métadonnées
-        data['updated_by'] = current_user['username']
-        data['updated_at'] = datetime.utcnow()
+        # Vérifier si la colonne 'annee' existe
+        if 'annee' not in df.columns:
+            return jsonify({"annees": []}), 200
         
-        # Mise à jour ou insertion si n'existe pas
-        result = data_collection.update_one(query, {"$set": data}, upsert=True)
+        # Récupérer les années uniques
+        annees = sorted(df['annee'].unique().tolist())
         
-        if result.upserted_id:
-            message = "Nouvelles données ajoutées avec succès"
+        return jsonify({"annees": annees}), 200
+    
+    except Exception as e:
+        app.logger.error(f"Erreur lors de la récupération des années: {str(e)}")
+        return jsonify({"error": f"Erreur lors de la récupération des années: {str(e)}"}), 500
+
+
+@app.route('/api/etudiants', methods=['GET'])
+def get_etudiants():  # J'ai supprimé le décorateur @token_required temporairement pour simplifier
+    """Endpoint pour récupérer tous les étudiants"""
+    try:
+        # Vérifier si une limite est spécifiée dans la requête
+        limit = request.args.get('limit', None)
+        
+        # Créer la requête de base
+        query = {}
+        
+        # Compter le nombre total de documents pour info
+        total_count = etudiants_collection.count_documents(query)
+        print(f"Nombre total d'étudiants dans la collection: {total_count}")
+        
+        # Récupérer tous les étudiants (sans limite par défaut)
+        if limit:
+            limit = int(limit)
+            cursor = etudiants_collection.find(query, {'_id': 0}).limit(limit)
         else:
-            message = "Données mises à jour avec succès"
-            
-        return jsonify({"message": message, "success": True}), 200
+            cursor = etudiants_collection.find(query, {'_id': 0})
         
+        etudiants = list(cursor)
+        
+        # Convertir les _id ObjectId en chaînes si nécessaire
+        for etudiant in etudiants:
+            if '_id' in etudiant:
+                etudiant['_id'] = str(etudiant['_id'])
+        
+        print(f"Nombre d'étudiants récupérés: {len(etudiants)}")
+        if etudiants:
+            print(f"Premier étudiant: {etudiants[0]}")
+        
+        return jsonify(etudiants), 200
+    
     except Exception as e:
-        return jsonify({"error": f"Erreur lors de la mise à jour: {str(e)}"}), 500
-
-@app.route('/api/data/delete/<int:annee>', methods=['DELETE'])
-@token_required
-def delete_data(current_user, annee):
-    """Endpoint pour supprimer des données par année"""
-    # Vérification des permissions
-    user_role = current_user['role']
-    if 'delete' not in PERMISSIONS.get(user_role, []):
-        return jsonify({"error": "Permissions insuffisantes"}), 403
-        
+        print(f"ERREUR lors de la récupération des étudiants: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({"error": f"Erreur lors de la récupération des étudiants: {str(e)}"}), 500
+@app.route('/api/etudiants/niveaux', methods=['GET'])
+def get_etudiants_niveaux():
+    """Endpoint pour récupérer tous les niveaux d'étudiants disponibles"""
     try:
-        # Suppression des données pour l'année spécifiée
-        result = data_collection.delete_one({"annee": annee})
+        # Utiliser distinct pour récupérer tous les niveaux uniques
+        niveaux = etudiants_collection.distinct("niveau")
         
-        if result.deleted_count == 0:
-            return jsonify({"error": f"Aucune donnée trouvée pour l'année {annee}"}), 404
-            
-        return jsonify({"message": f"Données pour l'année {annee} supprimées avec succès", "success": True}), 200
+        # Filtrer les valeurs None ou vides
+        niveaux = [niveau for niveau in niveaux if niveau]
         
+        # Trier les niveaux
+        niveaux.sort()
+        
+        print(f"Niveaux disponibles: {niveaux}")
+        
+        return jsonify({"niveaux": niveaux}), 200
+    
     except Exception as e:
-        return jsonify({"error": f"Erreur lors de la suppression: {str(e)}"}), 500
-
-# AJOUT: Endpoints spécifiques pour les effectifs étudiants
-@app.route('/api/effectifs', methods=['GET'])
+        print(f"ERREUR lors de la récupération des niveaux: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({"error": f"Erreur lors de la récupération des niveaux: {str(e)}"}), 500
+@app.route('/api/etudiants/add', methods=['POST'])
 @token_required
-def get_effectifs(current_user):
-    """Endpoint pour récupérer toutes les données d'effectifs étudiants"""
+def add_etudiant(current_user):
+    """Endpoint pour ajouter un étudiant"""
     try:
-        data = list(data_collection.find({}, {'_id': 0}).sort('annee', -1))
-        return jsonify(data), 200
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
-
-@app.route('/api/effectifs/stats', methods=['GET'])
-@token_required
-def get_effectifs_stats(current_user):
-    """Endpoint pour récupérer les statistiques d'effectifs étudiants"""
-    try:
-        data = list(data_collection.find({}, {'_id': 0}))
+        data = request.form.to_dict()
         
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
+        # Vérification des champs obligatoires
+        required_fields = ['Nom', 'Prénom', 'Genre', 'niveau', 'annee']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({"success": False, "message": f"Le champ '{field}' est obligatoire"}), 400
+        
+        # Ajout des métadonnées
+        data['created_by'] = current_user['username']
+        data['created_at'] = datetime.utcnow().isoformat()
+        
+        # Ajout d'un ID si non fourni
+        if 'id' not in data or not data['id']:
+            data['id'] = str(uuid.uuid4())
+        
+        # Insertion dans la base de données
+        result = etudiants_collection.insert_one(data)
+        
+        if result.inserted_id:
+            return jsonify({
+                "success": True,
+                "message": "Étudiant ajouté avec succès",
+                "id": data['id']
+            }), 201
+        else:
+            return jsonify({"success": False, "message": "Erreur lors de l'ajout de l'étudiant"}), 500
+    
+    except Exception as e:
+        app.logger.error(f"Erreur lors de l'ajout d'un étudiant: {str(e)}")
+        return jsonify({"success": False, "message": f"Erreur lors de l'ajout de l'étudiant: {str(e)}"}), 500
+   
+@app.route('/api/etudiants/stats', methods=['GET'])
+@token_required
+def get_etudiants_stats(current_user):
+    """Endpoint pour récupérer les statistiques des étudiants individuels"""
+    try:
+        # Récupération des données de la collection étudiants
+        etudiants = list(etudiants_collection.find({}, {'_id': 0}))
+        
+        if not etudiants:
+            return jsonify({"error": "Aucun étudiant trouvé dans la base de données"}), 404
         
         # Convertir en DataFrame pandas pour faciliter les calculs
-        df = pd.DataFrame(data)
+        df = pd.DataFrame(etudiants)
         
-        # Calculer les statistiques
-        stats = {
-            "total_students": {
-                "fie1": int(df['nombre_fie1'].sum()),
-                "fie2": int(df['nombre_fie2'].sum()),
-                "fie3": int(df['nombre_fie3'].sum()),
-            },
-            "avg_taux_boursiers": float(df['taux_boursiers'].mean() * 100),  # En pourcentage
-            "total_diplomes": int(df['nombre_diplomes'].sum()),
-            "evolution_annuelle": df.sort_values('annee', ascending=True).to_dict('records'),
-            "annees": sorted(df['annee'].unique().tolist())
-        }
+        # 1. Taux de boursiers
+        # Vérification de l'existence de la colonne "Boursier(ère)"
+        boursiers_data = {}
+        if 'Boursier(ère)' in df.columns:
+            # Remplacer les valeurs vides par 'Non'
+            df['Boursier(ère)'] = df['Boursier(ère)'].fillna('Non')
+            
+            # Compter les boursiers et non-boursiers
+            boursiers_count = (df['Boursier(ère)'].str.lower() == 'oui').sum()
+            non_boursiers_count = (df['Boursier(ère)'].str.lower() == 'non').sum()
+            total = boursiers_count + non_boursiers_count
+            
+            # Calculer les pourcentages
+            taux_boursiers = (boursiers_count / total * 100) if total > 0 else 0
+            taux_non_boursiers = (non_boursiers_count / total * 100) if total > 0 else 0
+            
+            boursiers_data = {
+                'boursiers': int(boursiers_count),
+                'non_boursiers': int(non_boursiers_count),
+                'taux_boursiers': float(taux_boursiers),
+                'taux_non_boursiers': float(taux_non_boursiers)
+            }
         
-        # Ajouter des statistiques supplémentaires si disponibles
-        if 'nombre_handicapes' in df.columns:
-            stats["total_handicapes"] = int(df['nombre_handicapes'].sum())
+        # 2. Répartition par niveau d'étude
+        niveaux_data = {}
+        if 'niveau' in df.columns:
+            # Compter les étudiants par niveau
+            niveau_counts = df['niveau'].value_counts().to_dict()
+            niveaux_data = {
+                'counts': niveau_counts,
+                'total': len(df)
+            }
         
-        if 'nombre_etrangers' in df.columns:
-            stats["total_etrangers"] = int(df['nombre_etrangers'].sum())
+        # 3. Répartition par genre
+        genre_data = {}
+        if 'Genre' in df.columns:
+            # Remplacer les valeurs nulles par une chaîne vide
+            df['Genre'] = df['Genre'].fillna('')
+            
+            # Compter les genres
+            masculin_count = (df['Genre'].str.lower() == 'masculin').sum()
+            feminin_count = (df['Genre'].str.lower() == 'féminin').sum()
+            total = masculin_count + feminin_count
+            
+            # Calculer les pourcentages
+            taux_masculin = (masculin_count / total * 100) if total > 0 else 0
+            taux_feminin = (feminin_count / total * 100) if total > 0 else 0
+            
+            genre_data = {
+                'masculin': int(masculin_count),
+                'feminin': int(feminin_count),
+                'taux_masculin': float(taux_masculin),
+                'taux_feminin': float(taux_feminin)
+            }
         
-        if 'nombre_demissionnes' in df.columns:
-            stats["total_demissionnes"] = int(df['nombre_demissionnes'].sum())
-        
-        return jsonify(stats), 200
-        
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors du calcul des statistiques: {str(e)}"}), 500
-
-# Endpoints pour les graphiques spécifiques aux effectifs
-@app.route('/api/effectifs/charts/<chart_type>', methods=['GET'])
-@token_required
-def get_effectifs_chart(current_user, chart_type):
-    """Endpoint pour générer des graphiques spécifiques aux effectifs"""
-    try:
-        data = list(data_collection.find({}, {'_id': 0}))
-        
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
-        
-        df = pd.DataFrame(data)
-        df = df.sort_values('annee')  # Trier par année
-        
-        plt.figure(figsize=(12, 8))
-        plt.style.use('seaborn-v0_8')
-        
-        if chart_type == 'evolution':
-            # Évolution du nombre d'étudiants par année et par niveau
-            df_melted = df.melt(id_vars=['annee'], 
-                                value_vars=['nombre_fie1', 'nombre_fie2', 'nombre_fie3'],
-                                var_name='niveau', value_name='nombre')
+        # 4. Taux d'étudiants étrangers par niveau
+        etrangers_data = {}
+        if 'Etranger(ère)' in df.columns and 'niveau' in df.columns:
+            # Remplacer les valeurs vides
+            df['Etranger(ère)'] = df['Etranger(ère)'].fillna('')
             
-            sns.lineplot(data=df_melted, x='annee', y='nombre', hue='niveau', marker='o')
-            plt.title('Évolution du nombre d\'étudiants par année et par niveau', fontsize=16)
-            plt.xlabel('Année', fontsize=12)
-            plt.ylabel('Nombre d\'étudiants', fontsize=12)
-            plt.legend(title='Niveau')
-            
-        elif chart_type == 'repartition_pie':
-            # Répartition par niveau (dernière année)
-            last_year = df.iloc[-1]
-            plt.pie([last_year['nombre_fie1'], last_year['nombre_fie2'], last_year['nombre_fie3']], 
-                   labels=['FIE1', 'FIE2', 'FIE3'],
-                   autopct='%1.1f%%',
-                   colors=['#2f0d73', '#7c50de', '#ac54c7'])
-            plt.title(f'Répartition des étudiants par niveau (Année {last_year["annee"]})', fontsize=16)
-            
-        elif chart_type == 'taux_boursiers':
-            # Taux de boursiers par année
-            sns.barplot(data=df, x='annee', y='taux_boursiers')
-            plt.title('Évolution du taux de boursiers par année', fontsize=16)
-            plt.xlabel('Année', fontsize=12)
-            plt.ylabel('Taux de boursiers', fontsize=12)
-            plt.xticks(rotation=45)
-            
-        elif chart_type == 'diplomes_bar':
-            # Nombre de diplômés par année
-            sns.barplot(data=df, x='annee', y='nombre_diplomes')
-            plt.title('Évolution du nombre de diplômés par année', fontsize=16)
-            plt.xlabel('Année', fontsize=12)
-            plt.ylabel('Nombre de diplômés', fontsize=12)
-            plt.xticks(rotation=45)
-            
-        elif chart_type == 'radar_comparison':
-            # Radar - Comparaison entre années
-            last_years = df.tail(3)
-            
-            # Création des données pour le radar
-            categories = ['FIE1', 'FIE2', 'FIE3', 'Diplômés', 'Boursiers (%)']
-            N = len(categories)
-            
-            # Calcul des angles pour le graphique radar
-            angles = [n / float(N) * 2 * np.pi for n in range(N)]
-            angles += angles[:1]  # Fermer le cercle
-            
-            # Création du graphique
-            fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
-            
-            # Ajouter les années au radar
-            for i, year_data in enumerate(last_years.iterrows()):
-                year = year_data[1]
-                values = [year['nombre_fie1'], year['nombre_fie2'], year['nombre_fie3'], 
-                         year['nombre_diplomes'], year['taux_boursiers'] * 100]
-                values += values[:1]  # Fermer le cercle
-                
-                ax.plot(angles, values, linewidth=2, linestyle='solid', label=f"Année {year['annee']}")
-                ax.fill(angles, values, alpha=0.1)
-            
-            # Ajouter les catégories
-            plt.xticks(angles[:-1], categories)
-            
-            # Ajouter une légende
-            plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
-            plt.title('Comparaison des indicateurs sur les dernières années', fontsize=16)
-            
-        elif chart_type == 'categories_speciales':
-            # Graphique pour catégories spéciales (handicapés, étrangers, démissions)
-            if all(col in df.columns for col in ['nombre_handicapes', 'nombre_etrangers', 'nombre_demissionnes']):
-                df_melted = df.melt(id_vars=['annee'], 
-                                   value_vars=['nombre_handicapes', 'nombre_etrangers', 'nombre_demissionnes'],
-                                   var_name='categorie', value_name='nombre')
-                
-                # Renommer les catégories pour l'affichage
-                categorie_map = {
-                    'nombre_handicapes': 'Handicapés',
-                    'nombre_etrangers': 'Étrangers',
-                    'nombre_demissionnes': 'Démissions'
-                }
-                df_melted['categorie'] = df_melted['categorie'].map(categorie_map)
-                
-                sns.barplot(data=df_melted, x='annee', y='nombre', hue='categorie')
-                plt.title('Évolution des catégories spéciales d\'étudiants', fontsize=16)
-                plt.xlabel('Année', fontsize=12)
-                plt.ylabel('Nombre d\'étudiants', fontsize=12)
-                plt.xticks(rotation=45)
-                plt.legend(title='Catégorie')
+            # Pour les valeurs vides, vérifier la nationalité
+            mask_vide = df['Etranger(ère)'] == ''
+            if 'Nationalité' in df.columns:
+                df.loc[mask_vide, 'Etranger(ère)'] = df.loc[mask_vide, 'Nationalité'].apply(
+                    lambda x: 'Non' if x == 'Française' else 'Oui' if x else 'Non'
+                )
             else:
-                return jsonify({"error": "Données manquantes pour ce graphique"}), 400
+                df.loc[mask_vide, 'Etranger(ère)'] = 'Non'
             
-        else:
-            return jsonify({"error": "Type de graphique non reconnu"}), 400
+            # Grouper par niveau et calculer le taux d'étrangers
+            etrangers_par_niveau = df.groupby('niveau').apply(
+                lambda x: {
+                    'total': len(x),
+                    'etrangers': (x['Etranger(ère)'].str.lower() == 'oui').sum(),
+                    'taux_etrangers': ((x['Etranger(ère)'].str.lower() == 'oui').sum() / len(x) * 100) if len(x) > 0 else 0
+                }
+            ).to_dict()
+            
+            etrangers_data = {
+                'par_niveau': etrangers_par_niveau,
+                'total_etrangers': (df['Etranger(ère)'].str.lower() == 'oui').sum(),
+                'taux_global': ((df['Etranger(ère)'].str.lower() == 'oui').sum() / len(df) * 100) if len(df) > 0 else 0
+            }
         
-        plt.tight_layout()
+        # 5. Évolution du nombre d'étudiants par niveau et par année
+        evolution_data = {}
+        if 'niveau' in df.columns and 'annee' in df.columns:
+            # Remplacer les valeurs manquantes
+            if df['annee'].dtype == 'object':
+                # Si annee est une chaîne de caractères, extraire l'année de début (ex: "2021-2022" -> "2021")
+                df['annee_start'] = df['annee'].str.split('-').str[0]
+            else:
+                df['annee_start'] = df['annee']
+            
+            # Grouper par année et niveau
+            evolution = df.groupby(['annee_start', 'niveau']).size().unstack(fill_value=0).to_dict()
+            evolution_data = {
+                'par_annee_niveau': evolution,
+                'annees': sorted(df['annee_start'].unique().tolist())
+            }
         
-        # Convertir le graphique en image base64
-        img = BytesIO()
-        plt.savefig(img, format='png', dpi=150, bbox_inches='tight')
-        img.seek(0)
-        plt.close()  # Fermer la figure pour libérer la mémoire
-        
-        # Encoder l'image en base64
-        encoded = base64.b64encode(img.getvalue()).decode('utf-8')
-        
-        return jsonify({"image": encoded}), 200
-        
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la génération du graphique: {str(e)}"}), 500
-
-# Routes standard
-@app.route('/api/statistics', methods=['GET'])
-@token_required
-def get_statistics(current_user):
-    """Endpoint pour récupérer les statistiques"""
-    try:
-        data = list(data_collection.find({}, {'_id': 0}))
-        
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
-        
-        # Convertir en DataFrame pandas pour faciliter les calculs
-        df = pd.DataFrame(data)
-        
-        # Calcul des statistiques de base
+        # Assembler toutes les statistiques
         stats = {
-            "total_students": {
-                "fie1": int(df['nombre_fie1'].sum()),
-                "fie2": int(df['nombre_fie2'].sum()),
-                "fie3": int(df['nombre_fie3'].sum()),
-            },
-            "avg_taux_boursiers": float(df['taux_boursiers'].mean()),
-            "total_diplomes": int(df['nombre_diplomes'].sum()),
-            "evolution_annuelle": df[['annee', 'nombre_fie1', 'nombre_fie2', 'nombre_fie3']].to_dict('records'),
-            "years_count": len(df['annee'].unique()),
-            "latest_year": int(df['annee'].max()) if not df.empty else None
+            'boursiers': boursiers_data,
+            'niveaux': niveaux_data,
+            'genre': genre_data,
+            'etrangers': etrangers_data,
+            'evolution': evolution_data,
+            'annees': sorted(df['annee'].unique().tolist()) if 'annee' in df.columns else []
         }
         
         return jsonify(stats), 200
-        
+    
     except Exception as e:
+        app.logger.error(f"Erreur lors du calcul des statistiques étudiants: {str(e)}")
         return jsonify({"error": f"Erreur lors du calcul des statistiques: {str(e)}"}), 500
 
-@app.route('/api/data', methods=['GET'])
+@app.route('/api/etudiants/chart/<chart_type>', methods=['GET'])
 @token_required
-def get_data(current_user):
-    """Endpoint pour récupérer toutes les données"""
+def get_etudiants_chart(current_user, chart_type):
+    """Endpoint pour générer des graphiques spécifiques aux étudiants"""
     try:
-        data = list(data_collection.find({}, {'_id': 0}))
-        return jsonify(data), 200
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la récupération des données: {str(e)}"}), 500
-
-@app.route('/api/chart/<chart_type>', methods=['GET'])
-@token_required
-def get_chart(current_user, chart_type):
-    """Endpoint pour générer un graphique"""
-    try:
-        data = list(data_collection.find({}, {'_id': 0}))
+        # Récupération des données de la collection étudiants
+        etudiants = list(etudiants_collection.find({}, {'_id': 0}))
         
-        if not data:
-            return jsonify({"error": "Aucune donnée trouvée"}), 404
+        if not etudiants:
+            return jsonify({"error": "Aucun étudiant trouvé dans la base de données"}), 404
         
-        df = pd.DataFrame(data)
+        # Convertir en DataFrame pandas pour faciliter les calculs
+        df = pd.DataFrame(etudiants)
         
+        # Paramètres du graphique
         plt.figure(figsize=(12, 8))
         plt.style.use('seaborn-v0_8')
         
-        if chart_type == 'evolution_etudiants':
-            # Évolution du nombre d'étudiants par année et par niveau
-            df_melted = df.melt(id_vars=['annee'], 
-                                value_vars=['nombre_fie1', 'nombre_fie2', 'nombre_fie3'],
-                                var_name='niveau', value_name='nombre')
+        if chart_type == 'boursiers_pie':
+            # Vérification de l'existence de la colonne "Boursier(ère)"
+            if 'Boursier(ère)' not in df.columns:
+                return jsonify({"error": "Données de boursiers non disponibles"}), 400
+                
+            # Remplacer les valeurs vides par 'Non'
+            df['Boursier(ère)'] = df['Boursier(ère)'].fillna('Non')
             
-            sns.lineplot(data=df_melted, x='annee', y='nombre', hue='niveau', marker='o')
-            plt.title('Évolution du nombre d\'étudiants par année et par niveau', fontsize=16)
+            # Compter les boursiers et non-boursiers
+            boursiers_count = (df['Boursier(ère)'].str.lower() == 'oui').sum()
+            non_boursiers_count = (df['Boursier(ère)'].str.lower() == 'non').sum()
+            
+            # Créer le camembert
+            plt.pie([boursiers_count, non_boursiers_count], 
+                   labels=['Boursiers', 'Non-boursiers'],
+                   autopct='%1.1f%%',
+                   colors=['#3366cc', '#dc3912'],
+                   startangle=90)
+            plt.title('Répartition des étudiants boursiers', fontsize=16)
+            
+        elif chart_type == 'niveaux_bar':
+            # Vérification de l'existence de la colonne "niveau"
+            if 'niveau' not in df.columns:
+                return jsonify({"error": "Données de niveau non disponibles"}), 400
+            
+            # Paramètre pour filtrer par année
+            annee_filter = request.args.get('annee')
+            
+            # Filtrer par année si spécifiée
+            if annee_filter and 'annee' in df.columns:
+                df = df[df['annee'] == annee_filter]
+            
+            # Compter les étudiants par niveau
+            niveau_counts = df['niveau'].value_counts().sort_index()
+            
+            # Créer le graphique en barres
+            bars = plt.bar(niveau_counts.index, niveau_counts.values, color='#3366cc')
+            
+            # Ajouter les valeurs sur les barres
+            for bar in bars:
+                height = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width()/2., height + 0.1,
+                        f'{int(height)}',
+                        ha='center', va='bottom', fontsize=12)
+            
+            plt.title('Nombre d\'étudiants par niveau', fontsize=16)
+            plt.xlabel('Niveau', fontsize=12)
+            plt.ylabel('Nombre d\'étudiants', fontsize=12)
+            plt.xticks(rotation=0)
+            
+        elif chart_type == 'genre_pie':
+            # Vérification de l'existence de la colonne "Genre"
+            if 'Genre' not in df.columns:
+                return jsonify({"error": "Données de genre non disponibles"}), 400
+                
+            # Remplacer les valeurs nulles par une chaîne vide
+            df['Genre'] = df['Genre'].fillna('')
+            
+            # Compter les genres
+            masculin_count = (df['Genre'].str.lower() == 'masculin').sum()
+            feminin_count = (df['Genre'].str.lower() == 'féminin').sum()
+            
+            # Créer le camembert
+            plt.pie([masculin_count, feminin_count], 
+                   labels=['Masculin', 'Féminin'],
+                   autopct='%1.1f%%',
+                   colors=['#3366cc', '#dc3912'],
+                   startangle=90)
+            plt.title('Répartition des étudiants par genre', fontsize=16)
+            
+        elif chart_type == 'etrangers_bar':
+            # Vérification de l'existence des colonnes nécessaires
+            if 'Etranger(ère)' not in df.columns or 'niveau' not in df.columns:
+                return jsonify({"error": "Données d'étrangers ou de niveau non disponibles"}), 400
+            
+            # Remplacer les valeurs vides
+            df['Etranger(ère)'] = df['Etranger(ère)'].fillna('')
+            
+            # Pour les valeurs vides, vérifier la nationalité
+            mask_vide = df['Etranger(ère)'] == ''
+            if 'Nationalité' in df.columns:
+                df.loc[mask_vide, 'Etranger(ère)'] = df.loc[mask_vide, 'Nationalité'].apply(
+                    lambda x: 'Non' if x == 'Française' else 'Oui' if x else 'Non'
+                )
+            else:
+                df.loc[mask_vide, 'Etranger(ère)'] = 'Non'
+            
+            # Créer une colonne pour identifier les étrangers
+            df['est_etranger'] = df['Etranger(ère)'].str.lower() == 'oui'
+            
+            # Grouper par niveau et calculer le taux d'étrangers
+            etrangers_data = df.groupby('niveau').apply(
+                lambda x: pd.Series({
+                    'total': len(x),
+                    'etrangers': x['est_etranger'].sum(),
+                    'taux_etrangers': (x['est_etranger'].sum() / len(x) * 100) if len(x) > 0 else 0
+                })
+            ).reset_index()
+            
+            # Créer le graphique en barres
+            bars = plt.bar(etrangers_data['niveau'], etrangers_data['taux_etrangers'], color='#3366cc')
+            
+            # Ajouter les valeurs sur les barres
+            for bar in bars:
+                height = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width()/2., height + 0.5,
+                        f'{height:.1f}%',
+                        ha='center', va='bottom', fontsize=12)
+            
+            plt.title('Taux d\'étudiants étrangers par niveau', fontsize=16)
+            plt.xlabel('Niveau', fontsize=12)
+            plt.ylabel('Taux d\'étrangers (%)', fontsize=12)
+            plt.xticks(rotation=0)
+            plt.ylim(0, 100)  # Limiter l'axe y à 100%
+            
+        elif chart_type == 'evolution_line':
+            # Vérification de l'existence des colonnes nécessaires
+            if 'niveau' not in df.columns or 'annee' not in df.columns:
+                return jsonify({"error": "Données de niveau ou d'année non disponibles"}), 400
+            
+            # Remplacer les valeurs manquantes
+            if df['annee'].dtype == 'object':
+                # Si annee est une chaîne de caractères, extraire l'année de début (ex: "2021-2022" -> "2021")
+                df['annee_start'] = df['annee'].str.split('-').str[0]
+            else:
+                df['annee_start'] = df['annee']
+            
+            # Grouper par année et niveau
+            evolution_data = df.groupby(['annee_start', 'niveau']).size().unstack(fill_value=0).reset_index()
+            evolution_data = evolution_data.sort_values('annee_start')
+            
+            # Créer le graphique en ligne
+            for col in evolution_data.columns[1:]:  # Ignorer la colonne annee_start
+                plt.plot(evolution_data['annee_start'], evolution_data[col], marker='o', linewidth=2, label=col)
+            
+            plt.title('Évolution du nombre d\'étudiants par niveau et par année', fontsize=16)
             plt.xlabel('Année', fontsize=12)
             plt.ylabel('Nombre d\'étudiants', fontsize=12)
+            plt.xticks(rotation=45)
             plt.legend(title='Niveau')
-            
-        elif chart_type == 'taux_boursiers':
-            # Évolution du taux de boursiers
-            sns.barplot(data=df, x='annee', y='taux_boursiers')
-            plt.title('Évolution du taux de boursiers par année', fontsize=16)
-            plt.xlabel('Année', fontsize=12)
-            plt.ylabel('Taux de boursiers', fontsize=12)
-            plt.xticks(rotation=45)
-            
-        elif chart_type == 'diplomes':
-            # Évolution du nombre de diplômés
-            sns.barplot(data=df, x='annee', y='nombre_diplomes')
-            plt.title('Évolution du nombre de diplômés par année', fontsize=16)
-            plt.xlabel('Année', fontsize=12)
-            plt.ylabel('Nombre de diplômés', fontsize=12)
-            plt.xticks(rotation=45)
+            plt.grid(True, linestyle='--', alpha=0.7)
             
         else:
             return jsonify({"error": "Type de graphique non reconnu"}), 400
@@ -556,7 +808,9 @@ def get_chart(current_user, chart_type):
         return jsonify({"image": encoded}), 200
         
     except Exception as e:
+        app.logger.error(f"Erreur lors de la génération du graphique: {str(e)}")
         return jsonify({"error": f"Erreur lors de la génération du graphique: {str(e)}"}), 500
+
 
 # Routes pour l'administration des utilisateurs
 @app.route('/api/users', methods=['GET'])

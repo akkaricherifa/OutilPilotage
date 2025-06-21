@@ -405,75 +405,67 @@ def admin_users(request):
 ###################cat etudiants ####################################
 @api_authenticated_required
 def effectifs_etudiants(request):
-    """Vue principale pour les effectifs étudiants - CORRIGÉE"""
+    """Vue pour afficher les étudiants existants"""
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
     
-    stats = None
-    all_data = []
+    etudiants = []
+    annees = []
+    niveaux = []
     
     try:
-        # Récupérer les statistiques depuis l'API
-        response = requests.get(f"{settings.API_URL}/effectifs/stats", headers=headers, timeout=10)
+        # Corriger l'URL pour récupérer tous les étudiants
+        api_url = f"{settings.API_BASE_URL}/api/etudiants"
+        logger.info(f"Appel à l'API: {api_url}")
+        
+        response = requests.get(api_url, headers=headers, timeout=30)  # Augmenter le timeout
+        logger.info(f"Réponse de l'API: Status {response.status_code}")
+        
         if response.status_code == 200:
-            stats = response.json()
-        else:
-            # Si l'endpoint n'existe pas, essayer l'endpoint général
-            logger.info("Endpoint /effectifs/stats non disponible, utilisation de /statistics")
+            # Récupérer la liste des étudiants
+            etudiants = response.json()
+            logger.info(f"Données étudiants récupérées: {len(etudiants)} étudiants")
             
-    except Exception as e:
-        logger.error(f"Erreur lors de la récupération des stats effectifs: {e}")
-    
-    try:
-        # Récupérer toutes les données pour le tableau
-        response = requests.get(f"{settings.API_URL}/effectifs", headers=headers, timeout=10)
-        if response.status_code == 200:
-            all_data = response.json()
-        else:
-            # Si l'endpoint n'existe pas, essayer l'endpoint général
-            logger.info("Endpoint /effectifs non disponible, utilisation de /data")
-            response = requests.get(f"{settings.API_URL}/data", headers=headers, timeout=10)
-            if response.status_code == 200:
-                all_data = response.json()
+            # Récupérer les années disponibles
+            annees_response = requests.get(f"{settings.API_BASE_URL}/api/etudiants/annees", headers=headers, timeout=15)
+            if annees_response.status_code == 200:
+                annees = annees_response.json().get('annees', [])
+                logger.info(f"Années récupérées: {annees}")
+            else:
+                logger.warning("Impossible de récupérer les années, extraction depuis les données étudiants")
+                # Extraire les années à partir des données étudiants
+                annees = sorted(list(set([etudiant.get('annee', '') for etudiant in etudiants if etudiant.get('annee')])))
                 
+            # Récupérer les niveaux disponibles
+            niveaux_response = requests.get(f"{settings.API_BASE_URL}/api/etudiants/niveaux", headers=headers, timeout=15)
+            if niveaux_response.status_code == 200:
+                niveaux = niveaux_response.json().get('niveaux', [])
+                logger.info(f"Niveaux récupérés: {niveaux}")
+            else:
+                logger.warning("Impossible de récupérer les niveaux, extraction depuis les données étudiants")
+                # Extraire les niveaux à partir des données étudiants
+                niveaux = sorted(list(set([etudiant.get('niveau', '') for etudiant in etudiants if etudiant.get('niveau')])))
+        else:
+            logger.error(f"Erreur API étudiants: {response.status_code} - {response.text}")
+            messages.error(request, "Erreur lors de la récupération des données étudiants.")
+            
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des données effectifs: {e}")
+        logger.error(f"Erreur: {str(e)}")
+        messages.error(request, f"Une erreur s'est produite: {str(e)}")
     
-    # Si stats est None mais all_data contient des données, générer des statistiques basiques
-    if stats is None and all_data:
-        try:
-            # Créer des statistiques basiques à partir de all_data
-            total_fie1 = sum(item.get('nombre_fie1', 0) for item in all_data)
-            total_fie2 = sum(item.get('nombre_fie2', 0) for item in all_data)
-            total_fie3 = sum(item.get('nombre_fie3', 0) for item in all_data)
-            total_diplomes = sum(item.get('nombre_diplomes', 0) for item in all_data)
-            
-            # Calculer la moyenne des taux de boursiers
-            taux_boursiers_list = [item.get('taux_boursiers', 0) for item in all_data if item.get('taux_boursiers') is not None]
-            avg_taux_boursiers = sum(taux_boursiers_list) / len(taux_boursiers_list) if taux_boursiers_list else 0
-            
-            # Créer un objet stats basique
-            stats = {
-                "total_students": {
-                    "fie1": total_fie1,
-                    "fie2": total_fie2,
-                    "fie3": total_fie3,
-                },
-                "avg_taux_boursiers": avg_taux_boursiers * 100,  # En pourcentage
-                "total_diplomes": total_diplomes,
-                "evolution_annuelle": sorted(all_data, key=lambda x: x.get('annee', 0))
-            }
-        except Exception as e:
-            logger.error(f"Erreur lors de la génération des statistiques: {e}")
-            messages.error(request, f"Erreur lors de la génération des statistiques: {str(e)}")
+    # Si aucune donnée n'est disponible
+    if not etudiants:
+        messages.info(request, "Aucun étudiant trouvé dans la base de données.")
     
-    # Si toujours pas de données, afficher un message d'information
-    if not stats and not all_data:
-        messages.info(request, "Aucune donnée d'effectifs disponible. Commencez par importer un fichier CSV ou ajouter des données manuellement.")
+    # Convertir les données en JSON pour le JavaScript
+    import json
+    etudiants_json = json.dumps(etudiants)
     
     return render(request, 'statistiques/effectifs_etudiants.html', {
-        'stats': stats,
-        'all_data': all_data
+        'etudiants': etudiants_json,
+        'annees': annees,
+        'niveaux': niveaux,  # Passer les niveaux au template
+        'api_url': settings.API_BASE_URL
     })
 
 @api_authenticated_required

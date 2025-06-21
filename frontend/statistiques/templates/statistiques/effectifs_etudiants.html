@@ -1,81 +1,25 @@
 {% extends 'statistiques/base.html' %}
 
-{% block title %}Effectifs Étudiants - Statistiques{% endblock %}
+{% block title %}Liste des Étudiants{% endblock %}
 
 {% block extra_css %}
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- DataTables CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
 <style>
-    .stat-card {
-        transition: transform 0.2s;
-        border-left: 4px solid;
-        margin-bottom: 20px;
-    }
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .stat-card-fie1 { border-left-color: #2f0d73; }
-    .stat-card-fie2 { border-left-color: #7c50de; }
-    .stat-card-fie3 { border-left-color: #ac54c7; }
-    .stat-card-total { border-left-color: #f56960; }
-    .stat-card-boursiers { border-left-color: #ffb43c; }
-    .stat-card-diplomes { border-left-color: #3cbebe; }
-    
-    .chart-container {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-        border: 1px solid #e9ecef;
-        height: 400px;
-    }
-    
-    .chart-container h5 {
-        color: #2f0d73;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-    
-    .dashboard-header {
+    .header-custom {
         background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
         color: white;
         padding: 30px;
-        border-radius: 15px;
-        margin-bottom: 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
     
-    .dashboard-header h1 {
-        margin: 0;
-        font-weight: 300;
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    
-    .chart-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-        gap: 30px;
-    }
-    
-    .modal-header-custom {
-        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
-        color: white;
-    }
-    
-    .form-control:focus {
-        border-color: #7c50de;
-        box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
+    .filter-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
     
     .btn-primary-custom {
@@ -86,224 +30,360 @@
     
     .btn-primary-custom:hover {
         background: linear-gradient(135deg, #7c50de 0%, #ac54c7 100%);
+        color: white;
     }
-
-    canvas {
-        max-height: 300px;
+    .header-custom {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
     
-    @media (max-width: 768px) {
-        .chart-grid {
-            grid-template-columns: 1fr;
-        }
+    .filter-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
+    
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        border: none;
+        color: white;
+    }
+    
+    .btn-primary-custom:hover {
+        background: linear-gradient(135deg, #7c50de 0%, #ac54c7 100%);
+        color: white;
+    }
+    
+    /* Ajoutez ces styles pour les graphiques */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+        color: white;
+    }
+    
+    canvas {
+        max-width: 100%;
+    }
+    .modal-header {
+    background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%);
+    color: white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+     }
+
+     .modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(47, 13, 115, 0.2);
+     }
+
+     .modal-footer {
+    border-top: none;
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+     }
+
+     /* Boutons dans les couleurs de la charte */
+     .btn-primary {
+    background: #2f0d73;
+    border-color: #2f0d73;
+      }
+
+     .btn-primary:hover {
+    background: #7c50de;
+    border-color: #7c50de;
+     }
+
+     .btn-success {
+    background: #3cbebe; /* La couleur turquoise de votre charte */
+    border-color: #3cbebe;
+     }
+
+     .btn-success:hover {
+    background: #60d0d0;
+    border-color: #60d0d0;
+     }
+
+     .btn-danger {
+    background: #f5696d; /* La couleur rouge de votre charte */
+    border-color: #f5696d;
+     }
+
+     .btn-danger:hover {
+    background: #ff7c80;
+    border-color: #ff7c80;
+     }
+
+     /* Design pour les formulaires */
+     .form-control:focus {
+    border-color: #7c50de;
+    box-shadow: 0 0 0 0.2rem rgba(124, 80, 222, 0.25);
+      }
+
+     /* Custom file input */
+     .custom-file-label::after {
+     background-color: #2f0d73;
+    color: white;
+       }
+
+     /* Animations pour les modals */
+     .modal.fade .modal-dialog {
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+     }
+
+     .modal.show .modal-dialog {
+    transform: scale(1);
+      }
+
+     /* Style pour la pagination DataTables */
+     .page-item.active .page-link {
+    background-color: #2f0d73;
+    border-color: #2f0d73;
+     }
+
+    .page-link {
+    color: #2f0d73;
+     }
+
+     .page-link:hover {
+    color: #7c50de;
+     }
+
+     /* Couleurs pour les notifications */
+     .alert-success {
+    background-color: rgba(60, 190, 190, 0.2);
+    border-color: #3cbebe;
+    color: #2a8a8a;
+     }
+
+     .alert-danger {
+    background-color: rgba(245, 105, 109, 0.2);
+    border-color: #f5696d;
+    color: #c54548;
+     }
+     #etudiantsTable {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#etudiantsTable thead th {
+    background-color: #2f0d73;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    font-weight: 500;
+}
+
+#etudiantsTable thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+#etudiantsTable thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+#etudiantsTable tbody tr {
+    transition: all 0.2s ease;
+}
+
+#etudiantsTable tbody tr:hover {
+    background-color: rgba(124, 80, 222, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#etudiantsTable tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+/* Pagination améliorée */
+.dataTables_paginate {
+    margin-top: 15px !important;
+}
+
+.dataTables_paginate .paginate_button {
+    margin: 0 3px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: rgba(124, 80, 222, 0.2) !important;
+    border: 1px solid #7c50de !important;
+}
+
+/* Badge pour les statuts (boursiers, etc) */
+.badge-boursier {
+    background-color: #3cbebe;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.badge-non-boursier {
+    background-color: #f5696d;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Info-bulles améliorées */
+.tooltip-inner {
+    background-color: #2f0d73;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+
+.tooltip.bs-tooltip-top .arrow::before {
+    border-top-color: #2f0d73;
+}
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(124, 80, 222, 0.2);
+    border-radius: 50%;
+    border-top: 5px solid #2f0d73;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animations d'entrée pour les graphiques */
+.chart-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.chart-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animation pour les notifications */
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.alert {
+    animation: slideDown 0.3s ease forwards;
+}
+.card-header select.form-control-sm {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.card-header select.form-control-sm:hover, 
+.card-header select.form-control-sm:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.card-header select.form-control-sm option {
+    background-color: #2f0d73;
+    color: white;
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- En-tête du dashboard -->
-<div class="dashboard-header">
+<!-- En-tête -->
+<div class="header-custom">
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h1><i class="fas fa-users mr-3"></i>Effectifs Étudiants</h1>
-            <p class="mb-0">Analyse complète des données d'effectifs par niveau</p>
+            <h1><i class="fas fa-users mr-3"></i>Liste des Étudiants</h1>
+            <p class="mb-0">Affichage des étudiants existants dans la base de données</p>
         </div>
-        <div class="action-buttons d-flex flex-wrap">
-            <button class="btn btn-light btn-lg mr-2" data-toggle="modal" data-target="#addDataModal">
-                <i class="fas fa-plus mr-2"></i>Ajouter des données
-            </button>
+        <div>
             <button class="btn btn-success btn-lg mr-2" data-toggle="modal" data-target="#uploadCSVModal">
                 <i class="fas fa-file-upload mr-2"></i>Importer CSV
             </button>
-            <button class="btn btn-warning btn-lg" onclick="refreshAllCharts()">
+            <button class="btn btn-primary btn-lg mr-2" id="addNewBtn">
+                <i class="fas fa-plus mr-2"></i>Ajouter un étudiant
+            </button>
+            <button class="btn btn-warning btn-lg" onclick="window.location.reload()">
                 <i class="fas fa-sync mr-2"></i>Actualiser
             </button>
         </div>
     </div>
 </div>
 
-{% if stats %}
-<!-- Statistiques résumées -->
-<div class="stats-grid">
-    <div class="card stat-card stat-card-fie1">
-        <div class="card-body text-center">
-            <h3 style="color: #2f0d73;">{{ stats.total_students.fie1 }}</h3>
-            <p class="mb-0">Étudiants FIE1</p>
-        </div>
-    </div>
-    <div class="card stat-card stat-card-fie2">
-        <div class="card-body text-center">
-            <h3 style="color: #7c50de;">{{ stats.total_students.fie2 }}</h3>
-            <p class="mb-0">Étudiants FIE2</p>
-        </div>
-    </div>
-    <div class="card stat-card stat-card-fie3">
-        <div class="card-body text-center">
-            <h3 style="color: #ac54c7;">{{ stats.total_students.fie3 }}</h3>
-            <p class="mb-0">Étudiants FIE3</p>
-        </div>
-    </div>
-    <div class="card stat-card stat-card-total">
-        <div class="card-body text-center">
-            <h3 style="color: #f56960;">{{ stats.total_students.fie1|add:stats.total_students.fie2|add:stats.total_students.fie3 }}</h3>
-            <p class="mb-0">Total Étudiants</p>
-        </div>
-    </div>
-    <div class="card stat-card stat-card-boursiers">
-        <div class="card-body text-center">
-            <h3 style="color: #ffb43c;">{{ stats.avg_taux_boursiers|floatformat:1 }}%</h3>
-            <p class="mb-0">Taux moyen boursiers</p>
-        </div>
-    </div>
-    <div class="card stat-card stat-card-diplomes">
-        <div class="card-body text-center">
-            <h3 style="color: #3cbebe;">{{ stats.total_diplomes }}</h3>
-            <p class="mb-0">Total diplômés</p>
-        </div>
-    </div>
-    <!-- Cartes statistiques pour le genre -->
-    <div class="card stat-card" style="border-left-color: #ff6b94;">
-        <div class="card-body text-center">
-            <h3 style="color: #ff6b94;">
-                {% for item in stats.evolution_annuelle %}
-                    {% if forloop.last %}{{ item.nombre_femmes|default:0 }}{% endif %}
-                {% endfor %}
-            </h3>
-            <p class="mb-0">Étudiantes (Dernière année)</p>
-        </div>
-    </div>
-    <div class="card stat-card" style="border-left-color: #4dabf7;">
-        <div class="card-body text-center">
-            <h3 style="color: #4dabf7;">
-                {% for item in stats.evolution_annuelle %}
-                    {% if forloop.last %}{{ item.nombre_hommes|default:0 }}{% endif %}
-                {% endfor %}
-            </h3>
-            <p class="mb-0">Étudiants (Dernière année)</p>
-        </div>
-    </div>
-</div>
-
-<!-- Graphiques -->
-<div class="chart-grid">
-    <!-- Graphique 1: Évolution des effectifs (Courbe) -->
-    <div class="chart-container">
-        <h5><i class="fas fa-chart-line mr-2"></i>Évolution des Effectifs par Niveau</h5>
-        <canvas id="evolutionChart"></canvas>
-    </div>
-
-    <!-- Graphique 2: Répartition par niveau (Camembert) -->
-    <div class="chart-container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5><i class="fas fa-chart-pie mr-2"></i>Répartition par Niveau</h5>
-            <select id="yearSelector" class="form-control" style="width: 150px;">
-                <option value="">Toutes les années</option>
-            </select>
-        </div>
-        <canvas id="pieChart"></canvas>
-    </div>
-
-    <!-- Graphique 3: Évolution du Total des Étudiants -->
-    <div class="chart-container">
-        <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Total des Étudiants</h5>
-        <canvas id="totalStudentsChart"></canvas>
-    </div>
-
-    <!-- Graphique 4: Taux de boursiers (Histogramme) -->
-    <div class="chart-container">
-        <h5><i class="fas fa-chart-bar mr-2"></i>Évolution du Taux de Boursiers</h5>
-        <canvas id="barChart"></canvas>
-    </div>
-
-    <!-- Graphique 5: Comparaison multicritères (Radar) -->
-    <div class="chart-container">
-        <h5><i class="fas fa-chart-area mr-2"></i>Comparaison Multicritères</h5>
-        <canvas id="radarChart"></canvas>
-    </div>
-
-    <!-- Graphique 6: Répartition par genre -->
-    <div class="chart-container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5><i class="fas fa-venus-mars mr-2"></i>Répartition par Genre</h5>
-            <select id="genderYearSelector" class="form-control" style="width: 150px;">
-                <option value="">Toutes les années</option>
-            </select>
-        </div>
-        <canvas id="genderChart"></canvas>
-    </div>
-</div>
-
-<!-- Tableau des données -->
-<div class="chart-container" style="height: auto;">
-    <h5><i class="fas fa-table mr-2"></i>Données Détaillées par Année</h5>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover" id="effectifsTable">
-            <thead style="background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%); color: white;">
-                <tr>
-                    <th>Année</th>
-                    <th>FIE1</th>
-                    <th>FIE2</th>
-                    <th>FIE3</th>
-                    <th>Total</th>
-                    <th>Taux Boursiers</th>
-                    <th>Diplômés</th>
-                    <th>Femmes</th>
-                    <th>Hommes</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in stats.evolution_annuelle %}
-                <tr>
-                    <td><strong>{{ item.annee }}</strong></td>
-                    <td>{{ item.nombre_fie1 }}</td>
-                    <td>{{ item.nombre_fie2 }}</td>
-                    <td>{{ item.nombre_fie3 }}</td>
-                    <td><strong>{{ item.nombre_fie1|add:item.nombre_fie2|add:item.nombre_fie3 }}</strong></td>
-                    <td>{{ item.taux_boursiers|floatformat:2 }}%</td>
-                    <td>{{ item.nombre_diplomes }}</td>
-                    <td>{{ item.nombre_femmes|default:0 }}</td>
-                    <td>{{ item.nombre_hommes|default:0 }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="editData({{ item|safe }})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete({{ item.annee }})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-{% else %}
-<!-- Message si pas de données -->
-<div class="chart-container" style="height: auto;">
-    <div class="text-center py-5">
-        <i class="fas fa-chart-line fa-5x text-muted mb-4"></i>
-        <h3>Aucune donnée disponible</h3>
-        <p class="text-muted mb-4">Commencez par ajouter des données d'effectifs étudiants.</p>
-        <div>
-            <button class="btn btn-primary btn-lg mr-3" data-toggle="modal" data-target="#addDataModal">
-                <i class="fas fa-plus mr-2"></i>Ajouter des données
-            </button>
-            <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#uploadCSVModal">
-                <i class="fas fa-file-upload mr-2"></i>Importer CSV
+<!-- Messages d'alerte -->
+<div class="alert-container mb-4">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Ajoutez ce bloc après la table des étudiants -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h3 class="mb-4"><i class="fas fa-chart-bar mr-2"></i>Visualisations des données</h3>
     </div>
 </div>
-{% endif %}
-
-<!-- Modal Ajouter/Modifier des données -->
 <div class="modal fade" id="addDataModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header modal-header-custom">
-                <h5 class="modal-title" id="addDataModalTitle">Ajouter des données</h5>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addDataModalTitle">Ajouter un étudiant</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
@@ -311,86 +391,112 @@
             <form id="dataForm" method="post" action="{% url 'update_data' %}">
                 {% csrf_token %}
                 <input type="hidden" name="source" value="effectifs">
+                <input type="hidden" name="id" id="etudiantId">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Année <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="annee" id="annee" required min="2000" max="2100">
+                                <label>Nom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Nom" id="nom" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre FIE1 <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="nombre_fie1" id="nombre_fie1" required min="0">
+                                <label>Prénom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Prénom" id="prenom" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre FIE2 <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="nombre_fie2" id="nombre_fie2" required min="0">
+                                <label>Genre <span class="text-danger">*</span></label>
+                                <select class="form-control" name="Genre" id="genre" required>
+                                    <option value="">Sélectionner...</option>
+                                    <option value="Masculin">Masculin</option>
+                                    <option value="Féminin">Féminin</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre FIE3 <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="nombre_fie3" id="nombre_fie3" required min="0">
+                                <label>Niveau <span class="text-danger">*</span></label>
+                                <select class="form-control" name="niveau" id="niveau" required>
+                                    <option value="">Sélectionner...</option>
+                                    <option value="FIE1">FIE1</option>
+                                    <option value="FIE2">FIE2</option>
+                                    <option value="FIE3">FIE3</option>
+                                    <option value="FIE4">FIE4</option>
+                                    <option value="FIE5">FIE5</option>
+                                    <option value="FIA3">FIA3</option>
+                                    <option value="FIA4">FIA4</option>
+                                    <option value="FIA5">FIA5</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Taux de boursiers (0-1) <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="taux_boursiers" id="taux_boursiers" 
-                                       required min="0" max="1" step="0.01">
+                                <label>Année académique <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="annee" id="annee" required placeholder="2024-2025">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre de diplômés <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="nombre_diplomes" id="nombre_diplomes" required min="0">
+                                <label>Nationalité <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Nationalité" id="nationalite" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre d'étudiants handicapés</label>
-                                <input type="number" class="form-control" name="nombre_handicapes" id="nombre_handicapes" min="0" value="0">
+                                <label>Boursier(ère)</label>
+                                <select class="form-control" name="Boursier(ère)" id="boursier">
+                                    <option value="Non">Non</option>
+                                    <option value="Oui">Oui</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre d'étudiants étrangers</label>
-                                <input type="number" class="form-control" name="nombre_etrangers" id="nombre_etrangers" min="0" value="0">
+                                <label>Étranger(ère)</label>
+                                <select class="form-control" name="Etranger(ère)" id="etranger">
+                                    <option value="Non">Non</option>
+                                    <option value="Oui">Oui</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre de démissions</label>
-                                <input type="number" class="form-control" name="nombre_demissionnes" id="nombre_demissionnes" min="0" value="0">
+                                <label>Pays</label>
+                                <input type="text" class="form-control" name="Pays" id="pays">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre d'étudiantes (Femme)</label>
-                                <input type="number" class="form-control" name="nombre_femmes" id="nombre_femmes" min="0" value="0">
+                                <label>Téléphone</label>
+                                <input type="tel" class="form-control" name="tél" id="tel">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nombre d'étudiants (Homme)</label>
-                                <input type="number" class="form-control" name="nombre_hommes" id="nombre_hommes" min="0" value="0">
+                                <label>Email</label>
+                                <input type="email" class="form-control" name="mail" id="mail">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Établissement précédent</label>
+                                <input type="text" class="form-control" name="Etablissement" id="etablissement">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary-custom">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save mr-1"></i>Enregistrer
                     </button>
                 </div>
@@ -399,12 +505,11 @@
     </div>
 </div>
 
-<!-- Modal Upload CSV -->
 <div class="modal fade" id="uploadCSVModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header modal-header-custom">
-                <h5 class="modal-title">Importer un fichier CSV</h5>
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-file-csv mr-2"></i>Importer un fichier CSV</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
@@ -414,27 +519,28 @@
                 <input type="hidden" name="source" value="effectifs">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Fichier CSV <span class="text-danger">*</span></label>
+                        <label><i class="fas fa-upload mr-1"></i>Fichier CSV <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="csvFile" name="file" accept=".csv" required>
                             <label class="custom-file-label" for="csvFile">Choisir un fichier...</label>
                         </div>
+                        <small class="form-text text-muted">Format accepté: .csv uniquement</small>
                     </div>
-                   <div class="alert alert-info">
-    <h6><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV :</h6>
-    <p>Le système accepte les fichiers CSV contenant les données individuelles des étudiants avec les colonnes suivantes:</p>
-    <code>Nom,Prénom,Genre,Date de naissance,Nationalité,Unnamed:6,Etranger(ère),Boursier(ère),Adresse fixe,Code postal,Ville,Pays,Formation,...</code>
-    <hr>
-    <h6>Information importante:</h6>
-    <p>Le système détectera automatiquement les informations pertinentes comme le niveau (FIE1, FIE2, FIE3), le genre, et si l'étudiant est boursier ou étranger.</p>
-    <p>Le fichier CSV peut contenir également les colonnes "annee" et "niveau" pour une détection plus précise.</p>
-</div>
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading"><i class="fas fa-info-circle mr-2"></i>Format attendu du fichier CSV</h6>
+                        <p class="mb-0">Le système accepte les fichiers CSV contenant les données individuelles des étudiants avec les colonnes suivantes:</p>
+                        <div class="mt-2 p-2 bg-light rounded">
+                            <code>Nom,Prénom,Genre,Date de naissance,Nationalité,Unnamed:6,Etranger(ère),Boursier(ère),Adresse fixe,Code postal,Ville,Pays,Formation,...</code>
+                        </div>
+                        <hr>
+                        <p class="mb-0"><strong>Note:</strong> Le système détectera automatiquement les informations pertinentes comme le niveau (FIE1, FIE2, FIE3), le genre, et si l'étudiant est boursier ou étranger.</p>
+                    </div>
                     <div class="form-group">
-                        <label>Nom du fichier</label>
+                        <label><i class="fas fa-tag mr-1"></i>Nom du fichier</label>
                         <input type="text" class="form-control" name="name" placeholder="Effectifs 2025" required>
                     </div>
                     <div class="form-group">
-                        <label>Description (optionnel)</label>
+                        <label><i class="fas fa-align-left mr-1"></i>Description (optionnel)</label>
                         <textarea class="form-control" name="description" rows="3" 
                                   placeholder="Description du fichier importé..."></textarea>
                     </div>
@@ -449,27 +555,200 @@
         </div>
     </div>
 </div>
-
 <!-- Modal de confirmation de suppression -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Confirmer la suppression</h5>
+                <h5 class="modal-title"><i class="fas fa-trash mr-2"></i>Confirmer la suppression</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer les données pour l'année <span id="deleteYear" class="font-weight-bold"></span> ?
-                <br><small class="text-muted">Cette action est irréversible.</small>
+                <p>Êtes-vous sûr de vouloir supprimer l'étudiant <span id="deleteYear" class="font-weight-bold"></span> ?</p>
+                <p class="text-danger mb-0"><small>Cette action est irréversible.</small></p>
+                <input type="hidden" id="deleteId">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-danger" onclick="deleteData()">
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
                     <i class="fas fa-trash mr-1"></i>Supprimer
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+<!-- Graphiques principaux en 2 colonnes -->
+<div class="row">
+    <!-- Évolution du nombre total d'étudiants par année -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Évolution des effectifs par année</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="evolutionChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Taux de boursiers par année -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Répartition des boursiers</h5>
+                <select id="boursierAnneeSelect" class="form-control form-control-sm" style="width: auto;">
+                    <option value="">Toutes les années</option>
+                    <!-- Les options seront remplies dynamiquement -->
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="boursiersPieChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deuxième rangée de graphiques -->
+<div class="row">
+    <!-- Nombre d'étudiants par niveau (par année) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Nombre d'étudiants par niveau</h5>
+                <select id="niveauAnneeSelect" class="form-control form-control-sm" style="width: auto;">
+                    <option value="">Toutes les années</option>
+                    <!-- Les options seront remplies dynamiquement -->
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="niveauxBarChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Répartition par nationalité -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Répartition par nationalité</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="nationalitePieChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Troisième rangée de graphiques -->
+<div class="row">
+    <!-- Répartition par genre (donut chart) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Répartition par genre (étudiants uniques)</h5>
+                <select id="genreDonutAnneeSelect" class="form-control form-control-sm" style="width: auto;">
+                    <option value="">Toutes les années</option>
+                    <!-- Les options seront remplies dynamiquement -->
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="genreDonutChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Nationalités étrangères par niveau -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Répartition des étudiants étrangers par niveau</h5>
+                <select id="etrangersBarAnneeSelect" class="form-control form-control-sm" style="width: auto;">
+                    <option value="">Toutes les années</option>
+                    <!-- Les options seront remplies dynamiquement -->
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="etrangersBarChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Filtres -->
+<div class="filter-container">
+    <h5><i class="fas fa-filter mr-2"></i>Filtres</h5>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="anneeFilter">Année académique:</label>
+                <select class="form-control" id="anneeFilter">
+                    <option value="">Toutes les années</option>
+                    {% for annee in annees %}
+                    <option value="{{ annee }}">{{ annee }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+         <div class="col-md-4">
+            <div class="form-group">
+                <label for="niveauFilter">Niveau:</label>
+                <select class="form-control" id="niveauFilter">
+                    <option value="">Tous les niveaux</option>
+                    {% for niveau in niveaux %}
+                    <option value="{{ niveau }}">{{ niveau }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="genreFilter">Genre:</label>
+                <select class="form-control" id="genreFilter">
+                    <option value="">Tous les genres</option>
+                    <option value="Masculin">Masculin</option>
+                    <option value="Féminin">Féminin</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button class="btn btn-primary-custom" id="applyFilters">
+                <i class="fas fa-search mr-2"></i>Appliquer les filtres
+            </button>
+            <button class="btn btn-secondary" id="resetFilters">
+                <i class="fas fa-undo mr-2"></i>Réinitialiser
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Tableau des étudiants -->
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-table mr-2"></i>Liste des étudiants</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="etudiantsTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Genre</th>
+                        <th>Niveau</th>
+                        <th>Année</th>
+                        <th>Nationalité</th>
+                        <th>Boursier</th>
+                        <th>Téléphone</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les données seront chargées par JavaScript -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -479,50 +758,124 @@
 <!-- DataTables JS -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
 <script>
 // Variables globales
-let deleteYear = null;
+let dataTable;
+let etudiants = [];
 let charts = {};
 
-// Récupère le token API depuis la session Django
-function getApiToken() {
-    return '{{ request.session.api_token }}';
-}
+// Définir les couleurs pour respecter la charte graphique
+const chartColors = {
+    primary: [
+        'rgba(47, 13, 115, 0.8)',  // Violet foncé
+        'rgba(124, 80, 222, 0.8)', // Violet clair
+        'rgba(172, 84, 199, 0.8)',  // Mauve
+        'rgba(199, 84, 172, 0.8)',  // Rose
+        'rgba(222, 80, 124, 0.8)',  // Rose foncé
+    ],
+    secondary: [
+        'rgba(33, 150, 243, 0.8)', // Bleu
+        'rgba(0, 188, 212, 0.8)',  // Cyan
+        'rgba(76, 175, 80, 0.8)',  // Vert
+        'rgba(255, 152, 0, 0.8)',  // Orange
+        'rgba(255, 87, 34, 0.8)',  // Orange foncé
+    ],
+    borders: [
+        'rgba(47, 13, 115, 1)',    // Violet foncé
+        'rgba(124, 80, 222, 1)',   // Violet clair
+        'rgba(172, 84, 199, 1)',   // Mauve
+        'rgba(199, 84, 172, 1)',   // Rose
+        'rgba(222, 80, 124, 1)',   // Rose foncé
+        'rgba(33, 150, 243, 1)',   // Bleu
+        'rgba(0, 188, 212, 1)',    // Cyan
+        'rgba(76, 175, 80, 1)',    // Vert
+        'rgba(255, 152, 0, 1)',    // Orange
+        'rgba(255, 87, 34, 1)',    // Orange foncé
+    ]
+};
 
 $(document).ready(function() {
-    // Initialiser DataTable
-    $('#effectifsTable').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
-        },
-        "order": [[0, "desc"]],
-        "pageLength": 10,
-        "responsive": true
-    });
+    // Log pour déboguer l'URL de l'API
+    console.log("URL de l'API:", "{{ api_url }}");
+    
+    // Récupérer les données depuis la variable Django
+    try {
+        // Récupérer et parser les données JSON
+        etudiants = JSON.parse('{{ etudiants|escapejs }}');
+        console.log("Données étudiants chargées:", etudiants);
+        console.log("Nombre d'étudiants:", etudiants.length);
+        
+        // Afficher les propriétés du premier étudiant pour débogage
+        if (etudiants.length > 0) {
+            console.log("Premier étudiant:", etudiants[0]);
+            console.log("Propriétés disponibles:", Object.keys(etudiants[0]));
+        }
+        
+        // Initialiser DataTable avec les données
+        initializeDataTable();
+        
+        // Initialiser les graphiques
+        initializeCharts();
+        
+        // Remplir les sélecteurs d'années
+        populateYearSelectors();
+        initializeAnimations();
+        
+        // Gestionnaire pour le filtre
+        $('#applyFilters').click(function() {
+            applyFilters();
+        });
+        
+        // Gestionnaire pour la réinitialisation des filtres
+        $('#resetFilters').click(function() {
+            $('#anneeFilter').val('');
+            $('#niveauFilter').val('');
+            $('#genreFilter').val('');
+            applyFilters();
+        });
 
-    // Charger les graphiques
-    {% if stats %}
-    loadCharts();
-    {% endif %}
+        $('#addNewBtn').click(function() {
+        // Réinitialiser le formulaire
+        $('#dataForm')[0].reset();
+        $('#etudiantId').val('');
+    
+        // Changer le titre du modal
+        $('#addDataModalTitle').text('Ajouter un étudiant');
+    
+        // Afficher le modal
+        $('#addDataModal').modal('show');
+        });
 
-    // Gestion du nom de fichier pour l'upload
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
-    });
+        // Gestionnaire pour le fichier CSV
+        $('#csvFile').on('change', function() {
+         const fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').html(fileName || 'Choisir un fichier...');
+        });
 
-    // Gestionnaire pour le changement d'année dans le pie chart
-    $(document).on('change', '#yearSelector', function() {
-        const evolutionData = {{ stats.evolution_annuelle|safe }};
-        updatePieChart(evolutionData);
-    });
-
-    // Gestionnaire pour le changement d'année dans le graphique genre
-    $(document).on('change', '#genderYearSelector', function() {
-        const evolutionData = {{ stats.evolution_annuelle|safe }};
-        updateGenderChart(evolutionData);
-    });
+        // Gestionnaires pour les sélecteurs d'années des graphiques
+        $('#boursierAnneeSelect').change(function() {
+            updateBoursiersPieChart($(this).val());
+        });
+        
+        $('#niveauAnneeSelect').change(function() {
+            updateNiveauxBarChart($(this).val());
+        });
+    } catch (e) {
+        console.error("Erreur lors du chargement des données:", e);
+        // Afficher un message d'erreur dans le tableau
+        $('#etudiantsTable tbody').html(`
+            <tr>
+                <td colspan="9" class="text-center">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Erreur lors du chargement des données: ${e.message}
+                    </div>
+                </td>
+            </tr>
+        `);
+    }
 
     // Soumission du formulaire de données via AJAX
     $('#dataForm').on('submit', function(e) {
@@ -613,44 +966,292 @@ $(document).ready(function() {
     });
 });
 
-// Charger tous les graphiques
-function loadCharts() {
-    // CORRECTION: Récupération sécurisée des données
-    const evolutionData = {{ stats.evolution_annuelle|safe }};
-    
-    if (!evolutionData || evolutionData.length === 0) {
-        console.warn('Aucune donnée disponible pour les graphiques');
+// Fonction pour initialiser DataTable
+function initializeDataTable() {
+    // Vérifier si les données sont disponibles
+    if (!etudiants || etudiants.length === 0) {
+        $('#etudiantsTable tbody').html(`
+            <tr>
+                <td colspan="10" class="text-center">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Aucune donnée disponible. Veuillez ajouter des étudiants ou vérifier la connexion à l'API.
+                    </div>
+                </td>
+            </tr>
+        `);
         return;
     }
+    
+    // Fonction de tri personnalisée pour les niveaux
+    $.fn.dataTable.ext.type.order['niveau-pre'] = function(data) {
+        // Ordre des niveaux
+        const niveauOrder = {
+            'FIE1': 1, 'FIE2': 2, 'FIE3': 3, 'FIE4': 4, 'FIE5': 5,
+            'FIA3': 6, 'FIA4': 7, 'FIA5': 8
+        };
+        
+        // Extraire le niveau du badge HTML
+        const match = data.match(/badge[^>]+>([^<]+)</);
+        const niveau = match ? match[1] : '';
+        
+        return niveauOrder[niveau] || 999;
+    };
+    
+    // Fonction de tri personnalisée pour les années académiques
+    $.fn.dataTable.ext.type.order['annee-pre'] = function(data) {
+        // Extraire l'année de début (par exemple "2021" de "2021-2022")
+        const match = data.match(/(\d{4})/);
+        if (match) {
+            return parseInt(match[1], 10);
+        }
+        return 0; // Valeur par défaut si le format n'est pas reconnu
+    };
+    
+    // Initialiser DataTable
+    dataTable = $('#etudiantsTable').DataTable({
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+        },
+        responsive: true,
+        paging: true,
+        pageLength: 6,
+        pagingType: "full_numbers",
+        ordering: true,
+        searching: true,
+        info: true,
+        lengthChange: true,
+        lengthMenu: [[6, 12, 24, 48, -1], [6, 12, 24, 48, "Tous"]],
+        dom: '<"top"lf>rt<"bottom"ip>',
+        columnDefs: [
+            {
+                orderDataType: "niveau-pre",
+                targets: 3
+            },
+            {
+                orderDataType: "annee-pre",
+                targets: 4
+            },
+            { orderable: false, targets: 9 }
+        ],
+        order: [
+            [3, 'asc'],  // Trier d'abord par niveau (colonne 3)
+            [4, 'desc'], // Puis par année décroissante (colonne 4)
+            [0, 'asc']   // Enfin par nom (colonne 0)
+        ]
+    });
+    
+    // Remplir le tableau avec les données
+    loadTableData(etudiants);
+}
 
-    // Peupler les sélecteurs d'années
-    populateYearSelector(evolutionData);
-    populateGenderYearSelector(evolutionData);
+// Fonction pour charger les données dans le tableau
+function loadTableData(data) {
+    // Vider le tableau si déjà initialisé
+    if (dataTable) {
+        dataTable.clear();
+    }
+    
+    // Ajouter chaque étudiant au tableau
+    data.forEach(function(etudiant) {
+        // Corriger les noms de champs pour correspondre à ceux de MongoDB
+        // Utiliser des valeurs par défaut pour les champs qui pourraient être manquants
+        const nom = etudiant.Nom || '';
+        const prenom = etudiant.Prénom || '';
+        const genre = etudiant.Genre || '';
+        const niveau = etudiant.niveau || '';
+        const annee = etudiant.annee || '';
+        const nationalite = etudiant.Nationalité || '';
+        // Gérer les différentes façons dont le champ Boursier pourrait être nommé
+        const boursier = etudiant['Boursier(ère)'] || etudiant.Boursier || 'Non';
+        // Gérer les différentes façons dont le téléphone pourrait être nommé
+        const tel = etudiant.tél || etudiant.tel || '';
+        const mail = etudiant.mail || etudiant.email || '';
+        // Créer un badge pour le statut boursier
+        let boursierBadge = '';
+        if (boursier.toLowerCase() === 'oui') {
+            boursierBadge = `<span class="badge badge-boursier">Boursier</span>`;
+        } else {
+            boursierBadge = `<span class="badge badge-non-boursier">Non-boursier</span>`;
+        }
+        // Créer les boutons d'action
+        const actionsHtml = `
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-primary btn-sm" onclick="editEtudiant('${etudiant.id || ''}', '${nom}', '${prenom}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteEtudiant('${etudiant.id || ''}', '${nom}', '${prenom}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
 
-    // 1. Graphique en courbe - Évolution des effectifs
-    const ctxEvolution = document.getElementById('evolutionChart').getContext('2d');
-    charts.evolution = new Chart(ctxEvolution, {
+        // Ajouter la ligne au tableau avec des cellules améliorées
+        if (dataTable) {
+            dataTable.row.add([
+                `<span class="font-weight-bold">${nom}</span>`, 
+                prenom, 
+                genre === 'Masculin' ? `<i class="fas fa-mars text-primary mr-1"></i> ${genre}` : 
+                                    `<i class="fas fa-venus text-danger mr-1"></i> ${genre}`, 
+                `<span class="badge badge-primary">${niveau}</span>`, 
+                annee, 
+                `<span>${nationalite}</span>`, 
+                boursierBadge, 
+                tel ? `<a href="tel:${tel}" class="text-primary"><i class="fas fa-phone-alt mr-1"></i>${tel}</a>` : '', 
+                mail ? `<a href="mailto:${mail}" class="text-primary"><i class="fas fa-envelope mr-1"></i>${mail}</a>` : '',
+                actionsHtml
+            ]);
+        }
+    });
+    
+    // Redessiner le tableau avec les nouvelles données
+    if (dataTable) {
+        dataTable.draw();
+        // Initialiser les tooltips après avoir dessiné le tableau
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+}
+
+// Fonction pour appliquer les filtres
+function applyFilters() {
+    const anneeFilter = $('#anneeFilter').val();
+    const niveauFilter = $('#niveauFilter').val();
+    const genreFilter = $('#genreFilter').val();
+    
+    // Filtrer les données
+    let filteredData = etudiants.filter(function(etudiant) {
+        let matchAnnee = true;
+        let matchNiveau = true;
+        let matchGenre = true;
+        
+        if (anneeFilter && etudiant.annee !== anneeFilter) {
+            matchAnnee = false;
+        }
+        
+        if (niveauFilter && etudiant.niveau !== niveauFilter) {
+            matchNiveau = false;
+        }
+        
+        if (genreFilter && etudiant.Genre !== genreFilter) {
+            matchGenre = false;
+        }
+        
+        return matchAnnee && matchNiveau && matchGenre;
+    });
+    
+    // Mettre à jour le tableau avec les données filtrées
+    loadTableData(filteredData);
+}
+// Fonction pour obtenir les années uniques des étudiants
+function getUniqueYears() {
+    const years = [];
+    etudiants.forEach(function(etudiant) {
+        if (etudiant.annee && !years.includes(etudiant.annee)) {
+            years.push(etudiant.annee);
+        }
+    });
+    return years.sort();
+}
+
+// Fonction pour obtenir les niveaux uniques des étudiants
+function getUniqueNiveaux() {
+    const niveaux = [];
+    etudiants.forEach(function(etudiant) {
+        if (etudiant.niveau && !niveaux.includes(etudiant.niveau)) {
+            niveaux.push(etudiant.niveau);
+        }
+    });
+    return niveaux.sort();
+}
+
+// Fonction pour obtenir les nationalités uniques des étudiants
+function getUniqueNationalites() {
+    const nationalites = [];
+    etudiants.forEach(function(etudiant) {
+        if (etudiant.Nationalité && !nationalites.includes(etudiant.Nationalité)) {
+            nationalites.push(etudiant.Nationalité);
+        }
+    });
+    return nationalites.sort();
+}
+
+// Fonction pour remplir les sélecteurs d'années
+function populateYearSelectors() {
+    const years = getUniqueYears();
+    
+    // Remplir tous les sélecteurs d'années
+    const selectors = [
+        $('#boursierAnneeSelect'),
+        $('#niveauAnneeSelect'),
+        $('#genreDonutAnneeSelect'),
+        $('#etrangersBarAnneeSelect')
+    ];
+    
+    selectors.forEach(selector => {
+        // Vider d'abord le sélecteur sauf l'option par défaut
+        selector.find('option:not(:first)').remove();
+        
+        // Ajouter les années dans l'ordre décroissant (plus récent en premier)
+        years.sort((a, b) => {
+            // Extraire les années de début pour le tri
+            const yearA = parseInt(a.split('-')[0]);
+            const yearB = parseInt(b.split('-')[0]);
+            return yearB - yearA;  // Tri décroissant
+        }).forEach(year => {
+            selector.append(`<option value="${year}">${year}</option>`);
+        });
+    });
+}
+
+// Fonction pour initialiser tous les graphiques
+function initializeCharts() {
+    initializeEvolutionChart();
+    initializeBoursiersPieChart();
+    initializeNiveauxBarChart();
+    initializeNationalitePieChart();
+    initializeGenreDonutChart();   
+    initializeEtrangersBarChart();
+}
+
+// Fonction pour initialiser le graphique d'évolution des effectifs
+function initializeEvolutionChart() {
+    // Obtenir les années et calculer le nombre total d'étudiants par année
+    const years = getUniqueYears();
+    const totalsByYear = {};
+    
+    // Initialiser les totaux à 0 pour chaque année
+    years.forEach(function(year) {
+        totalsByYear[year] = 0;
+    });
+    
+    // Calculer le nombre d'étudiants par année
+    etudiants.forEach(function(etudiant) {
+        if (etudiant.annee && totalsByYear.hasOwnProperty(etudiant.annee)) {
+            totalsByYear[etudiant.annee]++;
+        }
+    });
+    
+    // Créer les données pour le graphique
+    const labels = Object.keys(totalsByYear).sort();
+    const data = labels.map(year => totalsByYear[year]);
+    
+    // Créer le graphique
+    const ctx = document.getElementById('evolutionChart').getContext('2d');
+    charts.evolution = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: evolutionData.map(item => item.annee),
+            labels: labels,
             datasets: [{
-                label: 'FIE1',
-                data: evolutionData.map(item => item.nombre_fie1),
-                borderColor: '#2f0d73',
-                backgroundColor: 'rgba(47, 13, 115, 0.1)',
-                tension: 0.3
-            }, {
-                label: 'FIE2',
-                data: evolutionData.map(item => item.nombre_fie2),
-                borderColor: '#7c50de',
-                backgroundColor: 'rgba(124, 80, 222, 0.1)',
-                tension: 0.3
-            }, {
-                label: 'FIE3',
-                data: evolutionData.map(item => item.nombre_fie3),
-                borderColor: '#ac54c7',
-                backgroundColor: 'rgba(172, 84, 199, 0.1)',
-                tension: 0.3
+                label: 'Nombre total d\'étudiants',
+                data: data,
+                backgroundColor: chartColors.primary[0],
+                borderColor: chartColors.borders[0],
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: chartColors.borders[0],
+                pointRadius: 5,
+                pointHoverRadius: 7
             }]
         },
         options: {
@@ -659,188 +1260,270 @@ function loadCharts() {
             plugins: {
                 legend: {
                     position: 'top',
-                }
-            }
-        }
-    });
-
-    // 2. Camembert - Répartition par niveau (données par défaut: dernière année)
-    updatePieChart(evolutionData);
-
-    // 3. Graphique du total des étudiants par année
-    const ctxTotal = document.getElementById('totalStudentsChart').getContext('2d');
-    charts.totalStudents = new Chart(ctxTotal, {
-        type: 'bar',
-        data: {
-            labels: evolutionData.map(item => item.annee),
-            datasets: [{
-                label: 'Total Étudiants',
-                data: evolutionData.map(item => 
-                    (item.nombre_fie1 || 0) + (item.nombre_fie2 || 0) + (item.nombre_fie3 || 0)
-                ),
-                backgroundColor: 'rgba(47, 13, 115, 0.8)',
-                borderColor: '#2f0d73',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
+                },
+                title: {
+                    display: false,
+                    text: 'Évolution des effectifs par année'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
                 }
             },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-
-    // 4. Histogramme - Taux de boursiers
-    const ctxBar = document.getElementById('barChart').getContext('2d');
-    charts.bar = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: evolutionData.map(item => item.annee),
-            datasets: [{
-                label: 'Taux de boursiers (%)',
-                data: evolutionData.map(item => (item.taux_boursiers || 0) * 100),
-                backgroundColor: '#ffb43c'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100
+                    title: {
+                        display: true,
+                        text: 'Nombre d\'étudiants'
+                    },
+                    ticks: {
+                        precision: 0 // Afficher des nombres entiers uniquement
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Année académique'
+                    }
+                }
+            },
+        }
+    });
+}
+
+// Fonction pour initialiser le graphique camembert des boursiers
+function initializeBoursiersPieChart() {
+    // Compter les boursiers et non-boursiers (toutes années confondues initialement)
+    updateBoursiersPieChart('');
+}
+
+// Fonction pour mettre à jour le graphique des boursiers en fonction de l'année sélectionnée
+function updateBoursiersPieChart(selectedYear) {
+    // Filtrer les étudiants par année si nécessaire
+    let filteredData = etudiants;
+    if (selectedYear) {
+        filteredData = etudiants.filter(etudiant => etudiant.annee === selectedYear);
+    }
+    
+    // Compter les boursiers et non-boursiers
+    let boursiers = 0;
+    let nonBoursiers = 0;
+    
+    filteredData.forEach(function(etudiant) {
+        const boursierValue = etudiant['Boursier(ère)'] || etudiant.Boursier || 'Non';
+        if (boursierValue.toLowerCase() === 'oui') {
+            boursiers++;
+        } else {
+            nonBoursiers++;
+        }
+    });
+    
+    // Créer ou mettre à jour le graphique
+    const ctx = document.getElementById('boursiersPieChart').getContext('2d');
+    
+    if (charts.boursiers) {
+        charts.boursiers.data.datasets[0].data = [boursiers, nonBoursiers];
+        charts.boursiers.update();
+    } else {
+        charts.boursiers = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Boursiers', 'Non-boursiers'],
+                datasets: [{
+                    data: [boursiers, nonBoursiers],
+                    backgroundColor: [chartColors.primary[0], chartColors.primary[1]],
+                    borderColor: chartColors.borders.slice(0, 2),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: selectedYear ? `Boursiers ${selectedYear}` : 'Répartition des boursiers (toutes années)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
                 }
             }
-        }
-    });
-
-    // 5. Radar - Comparaison multicritères
-    const lastThreeYears = evolutionData.slice(-3);
-    const ctxRadar = document.getElementById('radarChart').getContext('2d');
-    charts.radar = new Chart(ctxRadar, {
-        type: 'radar',
-        data: {
-            labels: ['FIE1', 'FIE2', 'FIE3', 'Diplômés', 'Taux boursiers'],
-            datasets: lastThreeYears.map((year, index) => ({
-                label: year.annee.toString(),
-                data: [
-                    year.nombre_fie1,
-                    year.nombre_fie2,
-                    year.nombre_fie3,
-                    year.nombre_diplomes,
-                    (year.taux_boursiers || 0) * 100
-                ],
-                borderColor: ['#2f0d73', '#7c50de', '#ac54c7'][index],
-                backgroundColor: ['rgba(47, 13, 115, 0.2)', 'rgba(124, 80, 222, 0.2)', 'rgba(172, 84, 199, 0.2)'][index]
-            }))
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-    // 6. Graphique de répartition par genre
-    updateGenderChart(evolutionData);
-}
-
-// Peupler le sélecteur d'années
-function populateYearSelector(data) {
-    const yearSelector = document.getElementById('yearSelector');
-    
-    // Vider le sélecteur
-    yearSelector.innerHTML = '<option value="">Toutes les années</option>';
-    
-    // Ajouter les années disponibles
-    const years = data.map(item => item.annee).sort((a, b) => b - a); // Tri décroissant
-    years.forEach(year => {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        yearSelector.appendChild(option);
-    });
-    
-    // Sélectionner la dernière année par défaut
-    if (years.length > 0) {
-        yearSelector.value = years[0];
+        });
     }
 }
 
-// Peupler le sélecteur d'années pour le graphique genre
-function populateGenderYearSelector(data) {
-    const yearSelector = document.getElementById('genderYearSelector');
-    
-    // Vider le sélecteur
-    yearSelector.innerHTML = '<option value="">Toutes les années</option>';
-    
-    // Ajouter les années disponibles
-    const years = data.map(item => item.annee).sort((a, b) => b - a); // Tri décroissant
-    years.forEach(year => {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        yearSelector.appendChild(option);
-    });
-    
-    // Sélectionner la dernière année par défaut
-    if (years.length > 0) {
-        yearSelector.value = years[0];
-    }
+// Fonction pour initialiser le graphique à barres des niveaux
+function initializeNiveauxBarChart() {
+    // Initialiser avec toutes les années
+    updateNiveauxBarChart('');
 }
 
-// Mettre à jour le graphique pie en fonction de l'année sélectionnée
-function updatePieChart(allData) {
-    const yearSelector = document.getElementById('yearSelector');
-    const selectedYear = yearSelector.value;
+// Fonction pour mettre à jour le graphique des niveaux en fonction de l'année sélectionnée
+function updateNiveauxBarChart(selectedYear) {
+    // Filtrer les étudiants par année si nécessaire
+    let filteredData = etudiants;
+    if (selectedYear) {
+        filteredData = etudiants.filter(etudiant => etudiant.annee === selectedYear);
+    }
     
-    let dataToShow;
-    if (selectedYear === '') {
-        // Toutes les années: calculer la somme
-        const totals = allData.reduce((acc, item) => {
-            acc.fie1 += item.nombre_fie1 || 0;
-            acc.fie2 += item.nombre_fie2 || 0;
-            acc.fie3 += item.nombre_fie3 || 0;
-            return acc;
-        }, { fie1: 0, fie2: 0, fie3: 0 });
-        
-        dataToShow = {
-            labels: ['FIE1 (Total)', 'FIE2 (Total)', 'FIE3 (Total)'],
-            data: [totals.fie1, totals.fie2, totals.fie3]
-        };
+    // Compter les étudiants par niveau
+    const niveauxCounts = {};
+    const niveaux = getUniqueNiveaux();
+    
+    // Initialiser les compteurs à 0
+    niveaux.forEach(function(niveau) {
+        niveauxCounts[niveau] = 0;
+    });
+    
+    // Compter les étudiants par niveau
+    filteredData.forEach(function(etudiant) {
+        if (etudiant.niveau && niveauxCounts.hasOwnProperty(etudiant.niveau)) {
+            niveauxCounts[etudiant.niveau]++;
+        }
+    });
+    
+    // Créer les données pour le graphique
+    const labels = Object.keys(niveauxCounts).sort();
+    const data = labels.map(niveau => niveauxCounts[niveau]);
+    
+    // Créer ou mettre à jour le graphique
+    const ctx = document.getElementById('niveauxBarChart').getContext('2d');
+    
+    if (charts.niveaux) {
+        charts.niveaux.data.labels = labels;
+        charts.niveaux.data.datasets[0].data = data;
+        charts.niveaux.options.plugins.title.text = selectedYear ? 
+            `Effectifs par niveau - ${selectedYear}` : 
+            'Effectifs par niveau (toutes années)';
+        charts.niveaux.update();
     } else {
-        // Année spécifique
-        const yearData = allData.find(item => item.annee == selectedYear);
-        if (yearData) {
-            dataToShow = {
-                labels: [`FIE1 (${selectedYear})`, `FIE2 (${selectedYear})`, `FIE3 (${selectedYear})`],
-                data: [yearData.nombre_fie1 || 0, yearData.nombre_fie2 || 0, yearData.nombre_fie3 || 0]
-            };
+        charts.niveaux = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nombre d\'étudiants',
+                    data: data,
+                    backgroundColor: chartColors.primary,
+                    borderColor: chartColors.borders.slice(0, niveaux.length),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: selectedYear ? 
+                            `Effectifs par niveau - ${selectedYear}` : 
+                            'Effectifs par niveau (toutes années)'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre d\'étudiants'
+                        },
+                        ticks: {
+                            precision: 0
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Niveau d\'études'
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Fonction pour initialiser le graphique camembert des nationalités
+function initializeNationalitePieChart() {
+    // Compter les étudiants par nationalité
+    const nationalitesCounts = {};
+    const nationalites = getUniqueNationalites();
+    
+    // Initialiser les compteurs à 0
+    nationalites.forEach(function(nationalite) {
+        nationalitesCounts[nationalite] = 0;
+    });
+    
+    // Compter les étudiants par nationalité
+    etudiants.forEach(function(etudiant) {
+        if (etudiant.Nationalité && nationalitesCounts.hasOwnProperty(etudiant.Nationalité)) {
+            nationalitesCounts[etudiant.Nationalité]++;
         }
-    }
+    });
     
-    // Détruire le graphique existant s'il existe
-    if (charts.pie) {
-        charts.pie.destroy();
-    }
+    // Créer les données pour le graphique
+    const labels = Object.keys(nationalitesCounts).filter(n => nationalitesCounts[n] > 0).sort();
+    const data = labels.map(nationalite => nationalitesCounts[nationalite]);
     
-    // Créer le nouveau graphique pie
-    const ctxPie = document.getElementById('pieChart').getContext('2d');
-    charts.pie = new Chart(ctxPie, {
+    // Limite le nombre de nationalités affichées directement (regrouper les moins fréquentes)
+    const maxNationalitesToShow = 8;
+    if (labels.length > maxNationalitesToShow) {
+        // Trier par fréquence
+        const sortedData = labels.map((label, i) => ({ label, count: data[i] }))
+            .sort((a, b) => b.count - a.count);
+        
+        // Prendre les N premières nationalités les plus fréquentes
+        const topLabels = sortedData.slice(0, maxNationalitesToShow - 1).map(item => item.label);
+        const topData = sortedData.slice(0, maxNationalitesToShow - 1).map(item => item.count);
+        
+        // Regrouper les autres
+        const otherSum = sortedData.slice(maxNationalitesToShow - 1).reduce((sum, item) => sum + item.count, 0);
+        
+        // Créer les nouveaux tableaux de données
+        const finalLabels = [...topLabels, 'Autres'];
+        const finalData = [...topData, otherSum];
+        
+        // Créer le graphique
+        createNationalitePieChart(finalLabels, finalData);
+    } else {
+        // Si nous avons moins de nationalités que le maximum, afficher toutes
+        createNationalitePieChart(labels, data);
+    }
+}
+
+// Fonction pour créer le graphique camembert des nationalités
+function createNationalitePieChart(labels, data) {
+    const ctx = document.getElementById('nationalitePieChart').getContext('2d');
+    
+    // Générer des couleurs pour chaque nationalité
+    const backgroundColors = labels.map((_, i) => chartColors.primary[i % chartColors.primary.length]);
+    const borderColors = labels.map((_, i) => chartColors.borders[i % chartColors.borders.length]);
+    
+    charts.nationalites = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: dataToShow.labels,
+            labels: labels,
             datasets: [{
-                data: dataToShow.data,
-                backgroundColor: ['#2f0d73', '#7c50de', '#ac54c7']
+                data: data,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 1
             }]
         },
         options: {
@@ -849,77 +1532,25 @@ function updatePieChart(allData) {
             plugins: {
                 legend: {
                     position: 'right',
-                }
-            }
-        }
-    });
-}
-
-// Mettre à jour le graphique genre en fonction de l'année sélectionnée
-function updateGenderChart(allData) {
-    const yearSelector = document.getElementById('genderYearSelector');
-    const selectedYear = yearSelector.value;
-    
-    let dataToShow;
-    if (selectedYear === '') {
-        // Toutes les années: calculer la somme
-        const totals = allData.reduce((acc, item) => {
-            acc.femmes += item.nombre_femmes || 0;
-            acc.hommes += item.nombre_hommes || 0;
-            return acc;
-        }, { femmes: 0, hommes: 0 });
-        
-        dataToShow = {
-            labels: ['Femmes (Total)', 'Hommes (Total)'],
-            data: [totals.femmes, totals.hommes],
-            total: totals.femmes + totals.hommes
-        };
-    } else {
-        // Année spécifique
-        const yearData = allData.find(item => item.annee == selectedYear);
-        if (yearData) {
-            const femmes = yearData.nombre_femmes || 0;
-            const hommes = yearData.nombre_hommes || 0;
-            dataToShow = {
-                labels: [`Femmes (${selectedYear})`, `Hommes (${selectedYear})`],
-                data: [femmes, hommes],
-                total: femmes + hommes
-            };
-        }
-    }
-    
-    // Détruire le graphique existant s'il existe
-    if (charts.gender) {
-        charts.gender.destroy();
-    }
-    
-    // Créer le nouveau graphique genre
-    const ctxGender = document.getElementById('genderChart').getContext('2d');
-    charts.gender = new Chart(ctxGender, {
-        type: 'pie',
-        data: {
-            labels: dataToShow.labels,
-            datasets: [{
-                data: dataToShow.data,
-                backgroundColor: ['#ff6b94', '#4dabf7'], // Rose pour femmes, bleu pour hommes
-                borderWidth: 2,
-                borderColor: '#fff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
+                    labels: {
+                        boxWidth: 15,
+                        padding: 10,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition par nationalité'
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             const label = context.label || '';
-                            const value = context.parsed;
-                            const percentage = dataToShow.total > 0 ? 
-                                ((value / dataToShow.total) * 100).toFixed(1) : 0;
+                            const value = context.raw || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
                             return `${label}: ${value} (${percentage}%)`;
                         }
                     }
@@ -928,126 +1559,403 @@ function updateGenderChart(allData) {
         }
     });
 }
+// Fonction pour initialiser le graphique donut des genres (étudiants uniques)
+// Fonction pour initialiser le graphique donut des genres (étudiants uniques)
+function initializeGenreDonutChart() {
+    // Initialiser avec toutes les années
+    updateGenreDonutChart('');
+    
+    // Ajouter un gestionnaire d'événements pour le changement d'année
+    $('#genreDonutAnneeSelect').change(function() {
+        updateGenreDonutChart($(this).val());
+    });
+}
 
-// Fonction pour éditer les données
-function editData(data) {
-    // Si les données sont passées en string, les parser
-    if (typeof data === 'string') {
-        try {
-            data = JSON.parse(data);
-        } catch (e) {
-            console.error('Erreur parsing data:', e);
-            return;
-        }
+// Fonction pour mettre à jour le graphique des genres en fonction de l'année sélectionnée
+function updateGenreDonutChart(selectedYear) {
+    // Créer un ensemble (Set) pour suivre les étudiants uniques par un identifiant composite
+    const uniqueStudents = new Map();
+    
+    // Filtrer d'abord par année si nécessaire
+    let filteredData = etudiants;
+    if (selectedYear) {
+        filteredData = etudiants.filter(etudiant => etudiant.annee === selectedYear);
     }
     
-    $('#addDataModalTitle').text('Modifier les données - Année ' + data.annee);
-    $('#annee').val(data.annee).prop('readonly', true);
-    $('#nombre_fie1').val(data.nombre_fie1);
-    $('#nombre_fie2').val(data.nombre_fie2);
-    $('#nombre_fie3').val(data.nombre_fie3);
-    $('#taux_boursiers').val(data.taux_boursiers);
-    $('#nombre_diplomes').val(data.nombre_diplomes);
-    $('#nombre_handicapes').val(data.nombre_handicapes || 0);
-    $('#nombre_etrangers').val(data.nombre_etrangers || 0);
-    $('#nombre_demissionnes').val(data.nombre_demissionnes || 0);
-    $('#nombre_femmes').val(data.nombre_femmes || 0);
-    $('#nombre_hommes').val(data.nombre_hommes || 0);
+    // Parcourir les étudiants filtrés et conserver uniquement le plus récent pour chaque étudiant
+    filteredData.forEach(function(etudiant) {
+        // Créer une clé unique avec nom+prénom
+        const nomPrenom = `${etudiant.Nom || ''}-${etudiant.Prénom || ''}`.toLowerCase();
+        
+        // Si l'étudiant n'existe pas encore OU si cet enregistrement est plus récent (année supérieure)
+        if (!uniqueStudents.has(nomPrenom) || 
+            (etudiant.annee && uniqueStudents.get(nomPrenom).annee && 
+             etudiant.annee > uniqueStudents.get(nomPrenom).annee)) {
+            uniqueStudents.set(nomPrenom, etudiant);
+        }
+    });
     
+    // Compter les genres parmi les étudiants uniques
+    let masculin = 0;
+    let feminin = 0;
+    let totalComptés = 0;
+    
+    uniqueStudents.forEach(function(etudiant) {
+        const genre = etudiant.Genre ? etudiant.Genre.toLowerCase() : '';
+        if (genre === 'masculin') {
+            masculin++;
+            totalComptés++;
+        } else if (genre === 'féminin') {
+            feminin++;
+            totalComptés++;
+        }
+        // Les autres genres sont ignorés comme demandé
+    });
+    
+    // Préparer les données pour le graphique
+    const data = [masculin, feminin];
+    const labels = ['Masculin', 'Féminin'];
+    
+    // Créer ou mettre à jour le graphique
+    const ctx = document.getElementById('genreDonutChart').getContext('2d');
+    
+    if (charts.genreDonut) {
+        charts.genreDonut.data.datasets[0].data = data;
+        charts.genreDonut.options.plugins.title.text = 
+            `Répartition par genre (${totalComptés} étudiants uniques comptabilisés)${selectedYear ? ' - ' + selectedYear : ''}`;
+        charts.genreDonut.update();
+    } else {
+        charts.genreDonut = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        chartColors.primary[0], 
+                        chartColors.primary[2]
+                    ],
+                    borderColor: [
+                        chartColors.borders[0], 
+                        chartColors.borders[2]
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%', // Taille du trou central (pour le doughnut)
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: `Répartition par genre (${totalComptés} étudiants uniques comptabilisés)${selectedYear ? ' - ' + selectedYear : ''}`
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Fonction pour initialiser le graphique à barres des étudiants étrangers par niveau
+function initializeEtrangersBarChart() {
+    // Initialiser avec toutes les années
+    updateEtrangersBarChart('');
+    
+    // Ajouter un gestionnaire d'événements pour le changement d'année
+    $('#etrangersBarAnneeSelect').change(function() {
+        updateEtrangersBarChart($(this).val());
+    });
+}
+
+// Fonction pour mettre à jour le graphique des étudiants étrangers par niveau en fonction de l'année sélectionnée
+function updateEtrangersBarChart(selectedYear) {
+    // Obtenir les niveaux uniques
+    const niveaux = getUniqueNiveaux();
+    
+    // Filtrer d'abord par année si nécessaire
+    let filteredData = etudiants;
+    if (selectedYear) {
+        filteredData = etudiants.filter(etudiant => etudiant.annee === selectedYear);
+    }
+    
+    // Structure pour stocker les comptages par nationalité et niveau
+    const nationaliteCounts = {};
+    
+    // Parcourir les étudiants filtrés
+    filteredData.forEach(function(etudiant) {
+        const nationalite = etudiant.Nationalité || '';
+        const niveau = etudiant.niveau || '';
+        
+        // Ignorer les étudiants français et ceux sans nationalité ou niveau
+        if (!nationalite || !niveau || nationalite.toLowerCase() === 'française' || nationalite.toLowerCase() === 'francaise') {
+            return;
+        }
+        
+        // Initialiser le compteur pour cette nationalité si nécessaire
+        if (!nationaliteCounts[nationalite]) {
+            nationaliteCounts[nationalite] = {};
+            niveaux.forEach(n => nationaliteCounts[nationalite][n] = 0);
+        }
+        
+        // Incrémenter le compteur pour cette nationalité et ce niveau
+        nationaliteCounts[nationalite][niveau]++;
+    });
+    
+    // Limiter aux 6 nationalités les plus représentées (pour la lisibilité)
+    const nationaliteTotals = {};
+    Object.keys(nationaliteCounts).forEach(nat => {
+        nationaliteTotals[nat] = Object.values(nationaliteCounts[nat]).reduce((a, b) => a + b, 0);
+    });
+    
+    // Trier les nationalités par nombre total d'étudiants
+    const topNationalites = Object.keys(nationaliteTotals)
+        .sort((a, b) => nationaliteTotals[b] - nationaliteTotals[a])
+        .slice(0, 6); // Prendre les 6 premières
+    
+    // Préparer les données pour le graphique
+    const datasets = [];
+    
+    topNationalites.forEach((nationalite, index) => {
+        // Données pour cette nationalité par niveau
+        const data = niveaux.map(niveau => nationaliteCounts[nationalite][niveau]);
+        
+        // Couleur pour cette nationalité
+        const color = chartColors.primary[index % chartColors.primary.length];
+        const borderColor = chartColors.borders[index % chartColors.borders.length];
+        
+        datasets.push({
+            label: nationalite,
+            data: data,
+            backgroundColor: color,
+            borderColor: borderColor,
+            borderWidth: 1
+        });
+    });
+    
+    // Créer ou mettre à jour le graphique
+    const ctx = document.getElementById('etrangersBarChart').getContext('2d');
+    
+    if (charts.etrangersBar) {
+        charts.etrangersBar.data.datasets = datasets;
+        charts.etrangersBar.options.plugins.title.text = 
+            `Étudiants étrangers par niveau${selectedYear ? ' - ' + selectedYear : ''}`;
+        charts.etrangersBar.update();
+    } else {
+        charts.etrangersBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: niveaux,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: `Étudiants étrangers par niveau${selectedYear ? ' - ' + selectedYear : ''}`
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Niveau d\'études'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nombre d\'étudiants'
+                        },
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+function editEtudiant(id, nom, prenom) {
+    // Récupérer les données de l'étudiant
+    const etudiant = etudiants.find(e => e.id === id);
+    if (!etudiant) {
+        showNotification('error', 'Étudiant non trouvé');
+        return;
+    }
+    
+    // Remplir le formulaire avec les données de l'étudiant
+    $('#etudiantId').val(etudiant.id || '');
+    $('#nom').val(etudiant.Nom || '');
+    $('#prenom').val(etudiant.Prénom || '');
+    $('#genre').val(etudiant.Genre || '');
+    $('#niveau').val(etudiant.niveau || '');
+    $('#annee').val(etudiant.annee || '');
+    $('#nationalite').val(etudiant.Nationalité || '');
+    $('#boursier').val(etudiant['Boursier(ère)'] || etudiant.Boursier || 'Non');
+    $('#etranger').val(etudiant['Etranger(ère)'] || 'Non');
+    $('#pays').val(etudiant.Pays || '');
+    $('#tel').val(etudiant.tél || etudiant.tel || '');
+    $('#mail').val(etudiant.mail || etudiant.email || '');
+    $('#etablissement').val(etudiant.Etablissement || '');
+    
+    // Changer le titre du modal
+    $('#addDataModalTitle').text('Modifier un étudiant');
+    
+    // Afficher le modal
     $('#addDataModal').modal('show');
 }
 
-// Réinitialiser le formulaire quand on ferme la modal
-$('#addDataModal').on('hidden.bs.modal', function () {
-    $('#addDataModalTitle').text('Ajouter des données');
-    $('#annee').prop('readonly', false);
-    $('#dataForm')[0].reset();
-});
-
-// Confirmer la suppression
-function confirmDelete(annee) {
-    deleteYear = annee;
-    $('#deleteYear').text(annee);
+// Fonction pour supprimer un étudiant
+function deleteEtudiant(id, nom, prenom) {
+    if (!id) {
+        showNotification('error', 'ID étudiant manquant');
+        return;
+    }
+    
+    // Remplir le modal de confirmation
+    $('#deleteYear').text(`${nom} ${prenom}`);
+    $('#deleteId').val(id);
+    
+    // Afficher le modal de confirmation
     $('#deleteModal').modal('show');
 }
 
-// Supprimer les données
-function deleteData() {
-    if (!deleteYear) return;
+// Fonction pour confirmer la suppression
+function confirmDelete() {
+    const id = $('#deleteId').val();
     
-    // Obtenir le token JWT de la session
-    const token = getApiToken();
+    if (!id) {
+        showNotification('error', 'ID étudiant manquant');
+        return;
+    }
     
+    // Fermer le modal de confirmation
+    $('#deleteModal').modal('hide');
+    
+    // Envoyer la requête de suppression
     $.ajax({
-        url: `/api/data/delete/${deleteYear}`,
+        url: `/api/etudiants/delete/${id}/`,
         type: 'DELETE',
         headers: {
             'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
-            'Authorization': `Bearer ${token}`
+            'X-Requested-With': 'XMLHttpRequest'
         },
         success: function(response) {
-            $('#deleteModal').modal('hide');
-            showNotification('success', 'Données supprimées avec succès !');
-            
-            // Redirection vers la même page après un court délai
+            showNotification('success', 'Étudiant supprimé avec succès');
+            // Rafraîchir la page après un court délai
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
         },
-        error: function(xhr) {
-            showNotification('error', 'Erreur lors de la suppression des données.');
+        error: function(xhr, status, error) {
+            console.error("Erreur lors de la suppression:", xhr.responseText);
+            showNotification('error', 'Erreur lors de la suppression de l\'étudiant');
         }
     });
 }
-
-// Actualiser tous les graphiques
-function refreshAllCharts() {
-    // Détruire les graphiques existants
-    Object.values(charts).forEach(chart => {
-        if (chart && typeof chart.destroy === 'function') {
-            chart.destroy();
+function initializeAnimations() {
+    // Animation des cartes graphiques au survol
+    $('.card').hover(
+        function() {
+            $(this).find('canvas').css('transition', 'all 0.3s ease');
+            $(this).find('canvas').css('transform', 'scale(1.02)');
+        },
+        function() {
+            $(this).find('canvas').css('transform', 'scale(1)');
         }
-    });
-    // Vider l'objet charts
-    charts = {};
+    );
     
-    // Recharger les graphiques
-    {% if stats %}
-    loadCharts();
-    {% endif %}
-    showNotification('success', 'Graphiques actualisés !');
+    // Animation d'entrée pour le tableau
+    $('#etudiantsTable').css('opacity', '0');
+    $('#etudiantsTable').css('transform', 'translateY(20px)');
+    
+    setTimeout(function() {
+        $('#etudiantsTable').css({
+            'transition': 'all 0.5s ease',
+            'opacity': '1',
+            'transform': 'translateY(0)'
+        });
+    }, 300);
+    
+    // Animation pour les boutons
+    $('.btn').hover(
+        function() {
+            $(this).css('transition', 'all 0.3s ease');
+            $(this).css('transform', 'translateY(-2px)');
+            $(this).css('box-shadow', '0 4px 8px rgba(0,0,0,0.1)');
+        },
+        function() {
+            $(this).css('transform', 'translateY(0)');
+            $(this).css('box-shadow', 'none');
+        }
+    );
+    
+    // Animation pour l'ouverture des modals
+    $('.modal').on('show.bs.modal', function() {
+        $(this).find('.modal-content').css('opacity', '0');
+        $(this).find('.modal-content').css('transform', 'translateY(-20px)');
+        
+        setTimeout(() => {
+            $(this).find('.modal-content').css({
+                'transition': 'all 0.3s ease',
+                'opacity': '1',
+                'transform': 'translateY(0)'
+            });
+        }, 150);
+    });
 }
 
-// Afficher une notification
+// Fonction pour afficher les notifications
 function showNotification(type, message) {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-    const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
     
-    // Créer la notification
     const notification = `
         <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-            <i class="fas fa-${icon} mr-2"></i>
-            ${message}
+            <i class="fas ${icon} mr-2"></i> ${message}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    `
+    `;
     
-    // Ajouter à la page
-    const container = document.createElement('div');
-    container.style.position = 'fixed';
-    container.style.top = '20px';
-    container.style.right = '20px';
-    container.style.zIndex = '9999';
-    container.innerHTML = notification;
-    document.body.appendChild(container);
+    // Ajouter la notification en haut de la page
+    const alertContainer = $('.alert-container');
+    if (alertContainer.length) {
+        alertContainer.append(notification);
+    } else {
+        $('<div class="alert-container mb-4"></div>').insertAfter('.header-custom').append(notification);
+    }
     
-    // Supprimer après 3 secondes
+    // Faire disparaître la notification après 5 secondes
     setTimeout(() => {
-        container.querySelector('.alert').classList.remove('show');
-        setTimeout(() => container.remove(), 300);
-    }, 3000);
+        $('.alert').alert('close');
+    }, 5000);
 }
 </script>
 {% endblock %}

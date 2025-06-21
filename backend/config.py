@@ -13,6 +13,7 @@ MONGO_COLLECTION_ENSEIGNEMENT = 'donnees_enseignement'
 MONGO_COLLECTION_RSE = 'donnees_rse'  # Collection enseignement
 MONGO_COLLECTION_ARION = 'donnees_arion' # Collection pour les données ARION
 MONGO_COLLECTION_VACATAIRE = 'donnees_vacataire' 
+MONGO_COLLECTION_ETUDIANT = 'etudiants'
 # Configuration des uploads
 UPLOAD_FOLDER = '../data'
 ALLOWED_EXTENSIONS = {'csv'}

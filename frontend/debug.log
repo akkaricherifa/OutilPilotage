@@ -11127,3 +11127,664 @@ C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloa
 Watching for file changes with StatReloader
 C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\urls.py changed, reloading.
 Watching for file changes with StatReloader
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 148
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 148
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 148
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40510
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43143
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 148
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40735
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43143
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /effectifs/stats non disponible, utilisation de /statistics
+Endpoint /effectifs non disponible, utilisation de /data
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53433
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /upload-csv-etudiants/ HTTP/1.1" 200 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Endpoint /etudiants/stats non disponible, essai alternatif
+Endpoint /etudiants non disponible
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53434
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /etudiants/stats non disponible, essai alternatif
+Endpoint /etudiants non disponible
+"GET /effectifs-etudiants/ HTTP/1.1" 200 53434
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Endpoint /etudiants/stats non disponible, essai alternatif
+"GET /effectifs-etudiants/ HTTP/1.1" 200 52833
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 57832
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 57832
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 57832
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58636
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58584
+Erreur lors de la récupération des étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Aucun étudiant trouvé
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58584
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 59061
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58341
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 59182
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 59142
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58352
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 58345
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27939
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27939
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27939
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27944
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28689
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27757
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27779
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28155
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 40735
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43143
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28155
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28155
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28155
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28155
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28189
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 29513
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 29513
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 29513
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Appel à l'API: http://localhost:5000/api/api/etudiants
+Réponse de l'API: Status 404
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28813
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Appel à l'API: http://localhost:5000/api/api/etudiants
+Réponse de l'API: Status 404
+Erreur API étudiants: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+"GET /effectifs-etudiants/ HTTP/1.1" 200 28848
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /dashboard/ HTTP/1.1" 200 42697
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Données vacataires récupérées: 3070 enregistrements
+"GET /vacataire/ HTTP/1.1" 200 86903
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+"GET /api/vacataire/stats/ HTTP/1.1" 200 1879
+Données vacataires récupérées: 3070 enregistrements
+"GET /api/vacataire/data/ HTTP/1.1" 200 3303937
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Utilisation de données statiques
+"GET /effectifs-etudiants/ HTTP/1.1" 200 37838
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /effectifs-etudiants/ HTTP/1.1" 200 27986
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+C:\Users\cakkari\Desktop\outilISIS\frontend\projet\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\projet\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /effectifs-etudiants/ HTTP/1.1" 200 227392
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 200 227333
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567230
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1567097
+C:\Users\cakkari\Desktop\outilISIS\frontend\statistiques\views.py changed, reloading.
+Watching for file changes with StatReloader
