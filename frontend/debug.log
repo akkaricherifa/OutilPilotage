@@ -12018,3 +12018,42 @@ Données étudiants récupérées: 826 étudiants
 Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
 Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
 "GET /effectifs-etudiants/ HTTP/1.1" 200 1666733
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1667169
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1669416
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1669694
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 52129
+"GET /dashboard/ HTTP/1.1" 200 42697
+"GET / HTTP/1.1" 200 35409
+"GET /dashboard/ HTTP/1.1" 200 42697
+"GET /dashboard/ HTTP/1.1" 200 42673
+"GET /dashboard/ HTTP/1.1" 200 42703
+"GET /dashboard/ HTTP/1.1" 200 42703
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 16037
+"GET /dashboard/ HTTP/1.1" 200 42733
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 35535
+"GET / HTTP/1.1" 200 35012
+"GET / HTTP/1.1" 200 35012
+"GET / HTTP/1.1" 200 35012
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43179
+"GET /dashboard/ HTTP/1.1" 200 43419
+Watching for file changes with StatReloader

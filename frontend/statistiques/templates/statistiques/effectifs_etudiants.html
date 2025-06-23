@@ -179,89 +179,89 @@
      #etudiantsTable {
     border-collapse: separate;
     border-spacing: 0;
-}
+     }
 
-#etudiantsTable thead th {
+      #etudiantsTable thead th {
     background-color: #2f0d73;
     color: white;
     border: none;
     padding: 12px 15px;
     font-weight: 500;
-}
+      }
 
-#etudiantsTable thead th:first-child {
+     #etudiantsTable thead th:first-child {
     border-radius: 10px 0 0 0;
-}
+     }
 
-#etudiantsTable thead th:last-child {
+     #etudiantsTable thead th:last-child {
     border-radius: 0 10px 0 0;
-}
+     }
 
-#etudiantsTable tbody tr {
+     #etudiantsTable tbody tr {
     transition: all 0.2s ease;
-}
+     }
 
-#etudiantsTable tbody tr:hover {
+    #etudiantsTable tbody tr:hover {
     background-color: rgba(124, 80, 222, 0.1);
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+     }
 
-#etudiantsTable tbody td {
+     #etudiantsTable tbody td {
     padding: 12px 15px;
     vertical-align: middle;
-}
+     }
 
-/* Pagination améliorée */
-.dataTables_paginate {
+     /* Pagination améliorée */
+     .dataTables_paginate {
     margin-top: 15px !important;
-}
+     }
 
-.dataTables_paginate .paginate_button {
+     .dataTables_paginate .paginate_button {
     margin: 0 3px;
     border-radius: 4px;
     transition: all 0.2s ease;
-}
+     }
 
-.dataTables_paginate .paginate_button.current {
+     .dataTables_paginate .paginate_button.current {
     background: linear-gradient(135deg, #2f0d73 0%, #7c50de 100%) !important;
     border: none !important;
     color: white !important;
-}
+     }
 
-.dataTables_paginate .paginate_button:hover {
+     .dataTables_paginate .paginate_button:hover {
     background: rgba(124, 80, 222, 0.2) !important;
     border: 1px solid #7c50de !important;
-}
+     }
 
-/* Badge pour les statuts (boursiers, etc) */
-.badge-boursier {
+     /* Badge pour les statuts (boursiers, etc) */
+     .badge-boursier {
     background-color: #3cbebe;
     color: white;
     padding: 5px 8px;
     border-radius: 20px;
     font-weight: 500;
-}
+     }
 
-.badge-non-boursier {
+     .badge-non-boursier {
     background-color: #f5696d;
     color: white;
     padding: 5px 8px;
     border-radius: 20px;
     font-weight: 500;
-}
+     }
 
-/* Info-bulles améliorées */
-.tooltip-inner {
+     /* Info-bulles améliorées */
+     .tooltip-inner {
     background-color: #2f0d73;
     border-radius: 4px;
     padding: 8px 12px;
-}
+     }
 
-.tooltip.bs-tooltip-top .arrow::before {
+     .tooltip.bs-tooltip-top .arrow::before {
     border-top-color: #2f0d73;
-}
-.loading-overlay {
+     }
+     .loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -273,36 +273,36 @@
     align-items: center;
     z-index: 9999;
     transition: opacity 0.5s ease;
-}
+     }
 
-.loading-spinner {
+     .loading-spinner {
     width: 50px;
     height: 50px;
     border: 5px solid rgba(124, 80, 222, 0.2);
     border-radius: 50%;
     border-top: 5px solid #2f0d73;
     animation: spin 1s linear infinite;
-}
+     }
 
-@keyframes spin {
+     @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
+     }
 
-/* Animations d'entrée pour les graphiques */
-.chart-container {
+    /* Animations d'entrée pour les graphiques */
+     .chart-container {
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.5s ease;
-}
+     }
 
-.chart-container.visible {
+     .chart-container.visible {
     opacity: 1;
     transform: translateY(0);
-}
+     }
 
-/* Animation pour les notifications */
-@keyframes slideDown {
+     /* Animation pour les notifications */
+     @keyframes slideDown {
     from {
         transform: translateY(-50px);
         opacity: 0;
@@ -311,29 +311,29 @@
         transform: translateY(0);
         opacity: 1;
     }
-}
+     } 
 
-.alert {
+     .alert {
     animation: slideDown 0.3s ease forwards;
-}
-.card-header select.form-control-sm {
+     }
+     .card-header select.form-control-sm {
     background-color: rgba(255, 255, 255, 0.2);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s;
-}
+      }
 
-.card-header select.form-control-sm:hover, 
-.card-header select.form-control-sm:focus {
+     .card-header select.form-control-sm:hover, 
+     .card-header select.form-control-sm:focus {
     background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
-}
+     }
 
-.card-header select.form-control-sm option {
+     .card-header select.form-control-sm option {
     background-color: #2f0d73;
     color: white;
-}
+      }
 </style>
 {% endblock %}
 
@@ -1174,18 +1174,18 @@ function loadTableData(data) {
         }
         // Créer les boutons d'action
         const actionsHtml = `
-            <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-primary btn-sm" onclick="editEtudiant('${etudiant.id || ''}', '${nom}', '${prenom}')">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="deleteEtudiant('${etudiant.id || ''}', '${nom}', '${prenom}')">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
+    <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-primary btn-sm edit-btn" data-id="${etudiant.id || ''}" data-nom="${nom}" data-prenom="${prenom}">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${etudiant.id || ''}" data-nom="${nom}" data-prenom="${prenom}">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+`;
 
         // Ajouter la ligne au tableau avec des cellules améliorées
-        if (dataTable) {
+         {
             dataTable.row.add([
                 `<span class="font-weight-bold">${nom}</span>`, 
                 prenom, 

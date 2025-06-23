@@ -534,7 +534,7 @@
                 <i class="fas fa-file-upload sidebar-icon"></i>
                 <span>Importer CSV</span>
             </a>
-            <a href="{% url 'view_data' %}" class="sidebar-link" data-title="Consulter données">
+            <a href="{% url 'dashboard' %}" class="sidebar-link" data-title="Consulter données">
                 <i class="fas fa-table sidebar-icon"></i>
                 <span>Consulter données</span>
             </a>
@@ -582,24 +582,24 @@
         </h1>
 
         <!-- Section Statistiques -->
-        <div id="stats-section">
-            {% if statistics %}
-                <div class="quick-stats">
-                    <div class="stat-card">
-                        <span class="stat-number">{{ statistics.total_students.fie1 }}</span>
-                        <div class="stat-label">Étudiants Total</div>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, var(--isis-teal) 0%, var(--isis-purple-light) 100%);">
-                        <span class="stat-number">{% widthratio statistics.avg_taux_boursiers 1 100 %}%</span>
-                        <div class="stat-label">Taux Boursiers</div>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, var(--isis-coral-light) 0%, var(--isis-coral) 100%);">
-                        <span class="stat-number">{{ statistics.total_diplomes }}</span>
-                        <div class="stat-label">Diplômés</div>
-                    </div>
-                </div>
-            {% endif %}
+<!-- Section Statistiques -->
+<!-- Section Statistiques -->
+<div id="stats-section">
+    <div class="quick-stats">
+        <div class="stat-card">
+            <span class="stat-number">370</span>
+            <div class="stat-label">Étudiants Total</div>
         </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--isis-teal) 0%, var(--isis-purple-light) 100%);">
+            <span class="stat-number">30%</span>
+            <div class="stat-label">Taux Boursiers</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--isis-coral-light) 0%, var(--isis-coral) 100%);">
+            <span class="stat-number">37</span>
+            <div class="stat-label">Diplômés</div>
+        </div>
+    </div>
+</div>
 
         <!-- Section Catégories -->
         <div id="categories-section">
