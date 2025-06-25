@@ -678,7 +678,7 @@
     <div class="col-md-6 mb-4">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Répartition des diplômés par niveau</h5>
+                <h5 class="mb-0">Répartition des diplômés 2024 par niveau</h5>
             </div>
             <div class="card-body">
                 <canvas id="diplomesNiveauChart" height="300"></canvas>
@@ -1649,7 +1649,7 @@ function createNationalitePieChart(labels, data) {
                             const value = context.raw || 0;
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
                             const percentage = Math.round((value / total) * 100);
-                            return `${label}: ${value} (${percentage}%)`;
+                            return `${label}: (${percentage}%)`;
                         }
                     }
                 }

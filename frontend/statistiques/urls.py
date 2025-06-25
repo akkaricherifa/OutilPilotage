@@ -18,6 +18,7 @@ urlpatterns = [
     
     # Administration
     path('admin-users/', views.admin_users, name='admin_users'),
+    path('approve-user/<str:user_id>/', views.approve_user_proxy, name='approve_user_proxy'),
     
     # API Status (AJAX)
     path('api/status/', views.api_status, name='api_status'),
@@ -48,6 +49,7 @@ urlpatterns = [
     path('api/rse-activity-types/', views.get_rse_activity_types, name='get_rse_activity_types'),
     path('api/rse-format-cours/', views.get_rse_format_cours, name='get_rse_format_cours'),
     path('api/rse-hours-by-promotion/', views.get_rse_hours_by_promotion, name='get_rse_hours_by_promotion'),
+    path('api/rse/item/<str:id>', views.get_rse_item, name='get_rse_item'),
 
     #ARION
     path('arion/', views.arion, name='arion'),

@@ -449,9 +449,19 @@
                                     <td>{{ item.heures_tp }}</td>
                                     <td>{{ item.total_heures|default:0 }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary" onclick="editData('{{ item.id }}')">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary" 
+        onclick="editDataImmediate(this)" 
+        data-id="{{ item.id }}"
+        data-annee="{{ item.annee }}"
+        data-promotion="{{ item.promotion }}"
+        data-semestre="{{ item.semestre }}"
+        data-type_activite="{{ item.type_activite }}"
+        data-heures_cm="{{ item.heures_cm }}"
+        data-heures_td="{{ item.heures_td }}"
+        data-heures_tp="{{ item.heures_tp }}"
+        data-description="{{ item.description|default:'' }}">
+    <i class="fas fa-edit"></i>
+</button>
                                         <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('{{ item.id }}', '{{ item.type_activite }}')">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -619,6 +629,7 @@
                 <input type="hidden" name="destination" value="rse">
                 <div class="modal-body">
                     <div class="form-group">
+                        <i class="fas fa-file-csv" style="font-size: 20px; color: #2a7d2e;"></i>
                         <label>Fichier CSV <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="csvFile" name="file" accept=".csv" required>
@@ -634,10 +645,12 @@
 2023,FIE2,S3,Numérique responsable,12,10,8,Éthique informatique et environnement</pre>
                     </div>
                     <div class="form-group">
+                        <i class="fas fa-file-signature" style="color:rgb(111, 0, 255);"></i>
                         <label>Nom du fichier</label>
                         <input type="text" class="form-control" name="name" placeholder="Données RSE 2025" required>
                     </div>
                     <div class="form-group">
+                        <i class="fas fa-align-left" style="color: #6c757d;"></i>
                         <label>Description (optionnel)</label>
                         <textarea class="form-control" name="description" rows="3" 
                                   placeholder="Description du fichier importé..."></textarea>
@@ -672,15 +685,12 @@
                 <p id="deleteDetails" class="font-weight-bold"></p>
                 <small class="text-muted">Cette action est irréversible.</small>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <form id="deleteForm" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger" id="confirmDelete">
-                        <i class="fas fa-trash mr-1"></i>Supprimer
-                    </button>
-                </form>
-            </div>
+           <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+    <button type="button" class="btn btn-danger" id="confirmDelete" onclick="deleteData()">
+        <i class="fas fa-trash mr-1"></i>Supprimer
+    </button>
+</div>
         </div>
     </div>
 </div>
@@ -756,6 +766,21 @@ $(document).ready(function() {
             }
         });
     });
+    // Réinitialisation du formulaire lors de l'ouverture du modal d'ajout
+$('#addDataModal').on('show.bs.modal', function (e) {
+    // Si le modal a été déclenché par un bouton d'ajout (et non d'édition)
+    if ($(e.relatedTarget).hasClass('btn-add')) {
+        // Réinitialiser le formulaire
+        $('#dataForm')[0].reset();
+        $('#rse_id').val('');
+        
+        // Masquer le champ "autre type"
+        $('#autre_type_container').hide();
+        
+        // Modifier le titre du modal
+        $('#addDataModalTitle').html('<i class="fas fa-plus-circle mr-2"></i> Ajouter des heures et activités RSE');
+    }
+});
     $('.custom-file-input').on('change', function() {
     let fileName = $(this).val().split('\\').pop();
     $(this).siblings('.custom-file-label').addClass("selected").html(fileName || "Choisir un fichier...");
@@ -808,7 +833,48 @@ $(document).ready(function() {
         });
     });
 });
-
+// Fonction pour exécuter la suppression
+function deleteData() {
+    const form = $('#deleteForm');
+    const url = form.attr('action');
+    const submitBtn = $('#confirmDelete');
+    const originalText = submitBtn.html();
+    
+    // Afficher un indicateur de chargement
+    submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Suppression...').prop('disabled', true);
+    
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: form.serialize(),
+        headers: {
+            'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        success: function(response) {
+            $('#deleteModal').modal('hide');
+            showNotification('success', 'Données RSE supprimées avec succès !');
+            
+            // Redirection vers la même page après un court délai
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        },
+        error: function(xhr) {
+            console.error("Erreur AJAX:", xhr.responseText);
+            try {
+                const response = JSON.parse(xhr.responseText);
+                showNotification('error', response.message || response.error || 'Erreur lors de la suppression des données RSE.');
+            } catch (e) {
+                showNotification('error', 'Erreur lors de la suppression des données RSE.');
+            }
+        },
+        complete: function() {
+            // Restaurer le bouton
+            submitBtn.html(originalText).prop('disabled', false);
+        }
+    });
+}
 // Initialiser DataTable
 function initDataTable() {
     $('#rseTable').DataTable({
@@ -822,6 +888,60 @@ function initDataTable() {
         "pagingType": "full_numbers",
         "dom": '<"top"lf>rt<"bottom"ip><"clear">'
     });
+}
+function editDataImmediate(button) {
+    // Récupérer les données directement depuis les attributs du bouton
+    const data = {
+        id: button.getAttribute('data-id'),
+        annee: button.getAttribute('data-annee'),
+        promotion: button.getAttribute('data-promotion'),
+        semestre: button.getAttribute('data-semestre'),
+        type_activite: button.getAttribute('data-type_activite'),
+        heures_cm: button.getAttribute('data-heures_cm'),
+        heures_td: button.getAttribute('data-heures_td'),
+        heures_tp: button.getAttribute('data-heures_tp'),
+        description: button.getAttribute('data-description')
+    };
+    
+    // Remplir le formulaire avec les données
+    $('#rse_id').val(data.id);
+    $('#annee').val(data.annee);
+    $('#promotion').val(data.promotion);
+    $('#semestre').val(data.semestre);
+    
+    // Vérifier si le type d'activité existe dans la liste déroulante
+    const typeActiviteExists = $('#type_activite option[value="' + data.type_activite + '"]').length > 0;
+    
+    if (typeActiviteExists) {
+        $('#type_activite').val(data.type_activite);
+        $('#autre_type_container').hide();
+    } else {
+        $('#type_activite').val('Autre');
+        $('#autre_type').val(data.type_activite);
+        $('#autre_type_container').show();
+    }
+    
+    $('#heures_cm').val(data.heures_cm);
+    $('#heures_td').val(data.heures_td);
+    $('#heures_tp').val(data.heures_tp);
+    $('#description').val(data.description);
+    
+    // Modifier le titre du modal
+    $('#addDataModalTitle').html('<i class="fas fa-edit mr-2"></i> Modifier les données RSE');
+    
+    // Ouvrir le modal immédiatement
+    $('#addDataModal').modal('show');
+}
+// Fonction pour ouvrir le modal de confirmation de suppression
+function confirmDelete(id, typeActivite) {
+    // Mettre à jour le contenu du modal
+    $('#deleteDetails').text(`Type d'activité: ${typeActivite}`);
+    
+    // Configurer le formulaire de suppression
+    $('#deleteForm').attr('action', `/api/rse/delete/${id}`);
+    
+    // Ouvrir le modal
+    $('#deleteModal').modal('show');
 }
 
 // Initialiser des graphiques vides
@@ -1009,8 +1129,7 @@ function updatePromotionChart(data, selectedPromotion) {
     const allLabels = ['CM', 'TD', 'TP', ...additionalLabels];
     const allData = [totalCM, totalTD, totalTP, ...additionalData];
     const allColors = ['#2f0d73', '#ac54c7', '#ffb43c', ...additionalColors.slice(0, additionalLabels.length)];
-    
-    console.log("Données pour le graphique:", { CM: totalCM, TD: totalTD, TP: totalTP, additionalHours: additionalData });
+
     
     // Titre du graphique
     const title = selectedPromotion === 'all' ? 'Toutes les promotions' : selectedPromotion;
@@ -1055,8 +1174,7 @@ function updatePromotionChart(data, selectedPromotion) {
             }
         }
     });
-    
-    console.log("Graphique de promotions mis à jour avec succès");
+
 }
 
 // Fonction pour peupler le sélecteur de promotions
@@ -1187,7 +1305,7 @@ function updateEvolutionChart(evolutionData) {
         }
     });
     
-    console.log("Graphique d'évolution mis à jour avec succès");
+
 }
 
 // Fonction pour charger les données de types d'activités
@@ -1281,7 +1399,7 @@ charts.typeActivite = new Chart(ctx, {
     }
 });
 
-console.log("Graphique de types d'activités mis à jour avec succès");
+
 }
 
 // Fonction pour charger les données de format de cours
@@ -1326,7 +1444,6 @@ function loadAndPopulatePromotions() {
                     selector.append(`<option value="${promotion}">${promotion}</option>`);
                 });
                 
-                console.log(`Sélecteur de promotions rempli avec ${promotions.length} promotions`);
             }
         },
         error: function(xhr) {
@@ -1389,7 +1506,6 @@ charts.formatCours = new Chart(ctx, {
     }
 });
 
-console.log("Graphique de format de cours mis à jour avec succès");
 }
 
 // Fonction pour mettre à jour les statistiques affichées
@@ -1616,8 +1732,6 @@ function updatePromotionHoursChart(promotionsData) {
             }
         }
     });
-    
-    console.log("Graphique d'heures par promotion mis à jour avec succès");
 }
 // Filtrer le tableau selon les critères sélectionnés
 function filterTable() {

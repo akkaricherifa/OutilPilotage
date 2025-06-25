@@ -30,7 +30,7 @@ ROLES = {
 # CORRECTION: Permissions par rôle - utiliser les valeurs réelles des rôles
 PERMISSIONS = {
     'admin': ['upload', 'view', 'edit', 'delete', 'manage_users', 'all_stats'],
-    'responsable_recherche': ['view', 'research_stats', 'export'],
+    'responsable_recherche': ['upload','view', 'research_stats', 'export'],
     'responsable_admin': ['upload', 'view', 'edit', 'admin_stats'],
     'secretaire': ['view', 'basic_upload']
 }

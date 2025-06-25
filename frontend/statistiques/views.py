@@ -74,7 +74,7 @@ def register(request):
             response = requests.post(f"{settings.API_URL}/register", json=api_data, timeout=10)
             
             if response.status_code == 201:
-                messages.success(request, 'Compte créé avec succès! Vous pouvez maintenant vous connecter.')
+                messages.success(request, 'Compte créé avec succès! Votre compte est en attente d\'approbation par un administrateur.')
                 return redirect('login')
             else:
                 api_response = response.json()
@@ -115,9 +115,17 @@ def login_view(request):
                     
                     messages.success(request, f"Bienvenue {api_response['user']['username']} !")
                     return redirect('dashboard')
+                elif response.status_code == 403:
+                    api_response = response.json()
+                    error_message = api_response.get('error', 'Accès refusé')
+                    if "en attente d'approbation" in error_message:
+                        messages.warning(request, "Votre compte est en attente d'approbation par un administrateur.")
+                    else:
+                        messages.error(request, error_message)
                 else:
                     api_response = response.json()
                     messages.error(request, api_response.get('error', 'Identifiants incorrects'))
+                
                     
             except requests.exceptions.RequestException as e:
                 logger.error(f"Erreur de connexion à l'API: {e}")
@@ -186,18 +194,15 @@ def dashboard(request):
     """Vue pour le tableau de bord principal"""
     token = request.session.get('api_token')
     headers = {'Authorization': f'Bearer {token}'}
-    
     try:
         response = requests.get(f"{settings.API_URL}/statistics", headers=headers, timeout=10)
         if response.status_code == 200:
             statistics = response.json()
         else:
             statistics = None
-            messages.warning(request, f"Impossible de récupérer les statistiques (Code: {response.status_code})")
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur API dashboard: {e}")
         statistics = None
-        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques.")
     
     return render(request, 'statistiques/dashboard.html', {
         'statistics': statistics,
@@ -297,9 +302,6 @@ def view_data(request):
     return render(request, 'statistiques/view_data.html', {'data': data})
 
 
-
-
-
 @api_authenticated_required
 def update_data(request):
     """Vue pour mettre à jour les données - CORRIGÉE"""
@@ -392,6 +394,32 @@ def admin_users(request):
         response = requests.get(f"{settings.API_URL}/users", headers=headers, timeout=10)
         if response.status_code == 200:
             users_data = response.json()
+            
+            # Ajouter un ID spécial à chaque utilisateur
+            for i, user in enumerate(users_data, 1):
+                # Préférer l'ID existant s'il est présent, sinon créer un ID user-X
+                if not user.get('id'):
+                    user['id'] = f"user-{i}"
+                
+                # S'assurer que approval_status est défini
+                if 'approval_status' not in user:
+                    user['approval_status'] = 'approved' if user.get('is_active', False) else 'pending'
+                
+                # Formater les dates pour l'affichage si elles existent
+                if 'created_at' in user and user['created_at']:
+                    try:
+                        user['created_at'] = datetime.fromisoformat(user['created_at'].replace('Z', '+00:00'))
+                    except:
+                        pass
+                
+                if 'last_login' in user and user['last_login']:
+                    try:
+                        user['last_login'] = datetime.fromisoformat(user['last_login'].replace('Z', '+00:00'))
+                    except:
+                        pass
+                
+                # Log pour débogage
+                logger.info(f"Utilisateur {i}: id={user.get('id')}, approval_status={user.get('approval_status')}")
         else:
             users_data = []
             api_response = response.json()
@@ -401,8 +429,80 @@ def admin_users(request):
         users_data = []
         messages.error(request, "Erreur de connexion pour récupérer les utilisateurs.")
     
-    return render(request, 'statistiques/admin_users.html', {'users_data': users_data})
-###################cat etudiants ####################################
+    return render(request, 'statistiques/admin_users.html', {
+        'users_data': users_data,
+        'api_url': settings.API_URL
+    })
+
+@api_authenticated_required
+def approve_user_proxy(request, user_id):
+    """Proxy pour approuver/rejeter un utilisateur via l'API Flask"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    
+    token = request.session.get('api_token')
+    if not token:
+        return JsonResponse({"error": "Non authentifié"}, status=401)
+    
+    headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
+    
+    try:
+        # Analyser le corps de la requête JSON
+        import json
+        data = json.loads(request.body)
+        status = data.get('status')
+        username = data.get('username', '')  # Récupérer le nom d'utilisateur si fourni
+        
+        if not status or status not in ['approved', 'rejected']:
+            return JsonResponse({"error": "Statut invalide"}, status=400)
+        
+        # Log pour débogage
+        logger.info(f"Proxy approve_user: Tentative d'approbation de l'utilisateur {user_id} ({username}) avec statut {status}")
+        
+        # Construire la requête API
+        api_url = f"{settings.API_URL}/users/approve/{user_id}"
+        logger.info(f"URL API appelée: {api_url}")
+        
+        # Envoyer la requête avec toutes les données disponibles
+        response = requests.post(
+            api_url,
+            headers=headers,
+            json=data,  # Envoyer toutes les données, y compris username si disponible
+            timeout=15  # Augmenter le timeout
+        )
+        
+        # Log de débogage
+        logger.info(f"Proxy approve_user: Status={response.status_code}")
+        logger.info(f"Réponse: {response.text[:1000]}")  # Limiter la taille du log
+        
+        # Si la réponse est réussie
+        if response.status_code in [200, 201, 204]:
+            try:
+                json_response = response.json()
+                logger.info(f"Approbation réussie pour l'utilisateur {user_id} ({username})")
+                return JsonResponse(json_response, status=response.status_code)
+            except json.JSONDecodeError:
+                logger.warning(f"Réponse non-JSON reçue avec statut {response.status_code}")
+                return HttpResponse(response.text, status=response.status_code, content_type='text/plain')
+        else:
+            try:
+                json_response = response.json()
+                logger.error(f"Erreur API: {json_response}")
+                return JsonResponse(json_response, status=response.status_code)
+            except json.JSONDecodeError:
+                logger.error(f"Erreur API (texte brut): {response.text}")
+                return HttpResponse(response.text, status=response.status_code, content_type='text/plain')
+        
+    except json.JSONDecodeError:
+        logger.error("Format JSON invalide dans la requête")
+        return JsonResponse({"error": "Format JSON invalide"}, status=400)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erreur proxy approve_user: {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+    except Exception as e:
+        logger.error(f"Erreur inattendue dans approve_user_proxy: {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+##################################################################################################cat etudiants ###########################################################################
 @api_authenticated_required
 def effectifs_etudiants(request):
     """Vue pour afficher les étudiants existants"""
@@ -795,7 +895,6 @@ def categories_enseignement(request):
             }
             
             api_response = response.json()
-            messages.warning(request, f"Erreur API: {api_response.get('error', 'Impossible de récupérer les statistiques des catégories d\'enseignement')}")
             
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur API categories_enseignement: {e}")
@@ -816,7 +915,6 @@ def categories_enseignement(request):
             "innovations": 18
         }
         
-        messages.error(request, "Erreur de connexion à l'API pour récupérer les statistiques des catégories d'enseignement.")
     
     # Changement ici: catEnseug.html au lieu de catEnseig.html
     return render(request, 'statistiques/catEnseug.html', {
@@ -824,6 +922,7 @@ def categories_enseignement(request):
         'quick_stats': quick_stats,
         'user_info': request.session.get('user_info', {})
     })
+
 @api_authenticated_required
 def heures_enseignement_upload_csv(request):
     """Vue pour importer un fichier CSV/Excel des heures d'enseignement"""
@@ -939,7 +1038,7 @@ def get_heures_enseignement_graph_data(request):
     except requests.exceptions.RequestException as e:
         logger.error(f"Erreur API graph_data: {e}")
         return JsonResponse({'error': 'Erreur de connexion à l\'API'}, status=500)
-############################rse rse rse rse #################
+#############################################################rse rse rse rse #####################################################################
 @api_authenticated_required
 def rse_view(request):
     """Vue principale pour la Responsabilité Sociétale des Entreprises (RSE)"""
@@ -1609,6 +1708,34 @@ def get_rse_hours_by_promotion(request):
         
     except Exception as e:
         logger.error(f"Erreur dans get_rse_hours_by_promotion: {e}")
+        return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
+
+@api_authenticated_required
+def get_rse_item(request, id):
+    """API pour obtenir les détails d'un élément RSE spécifique"""
+    token = request.session.get('api_token')
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    try:
+        # Récupérer les données RSE complètes
+        response = requests.get(f"{settings.API_URL}/rse/data", headers=headers, timeout=10)
+        
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Erreur lors de la récupération des données RSE'}, status=response.status_code)
+        
+        # Traiter les données
+        rse_data = response.json()
+        
+        # Trouver l'élément avec l'ID spécifié
+        item = next((item for item in rse_data if item.get('id') == id), None)
+        
+        if not item:
+            return JsonResponse({'error': f'Aucun élément RSE trouvé avec l\'ID {id}'}, status=404)
+        
+        return JsonResponse(item)
+        
+    except Exception as e:
+        logger.error(f"Erreur dans get_rse_item: {e}")
         return JsonResponse({'error': f"Une erreur est survenue: {str(e)}"}, status=500)
 ################################################################################################### ARION #############################
 @api_authenticated_required

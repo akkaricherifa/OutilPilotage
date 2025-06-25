@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 import jwt
 import math
 from functools import wraps
+from bson.objectid import ObjectId
 
 # Configuration de l'application
 app = Flask(__name__)
@@ -109,7 +110,9 @@ def register():
         'email': email,
         'role': role,
         'created_at': datetime.utcnow(),
-        'is_active': True,
+        'is_active': False,  # Changer à False par défaut
+        'is_approved': False,  # Nouveau champ: non approuvé par défaut
+        'approval_status': 'pending',  # Nouveau champ: pending, approved, rejected
         'last_login': None
     }
     result = users_collection.insert_one(new_user)
@@ -133,10 +136,38 @@ def login():
     username = auth_data['username']
     password = auth_data['password']
     
-    user = users_collection.find_one({"username": username, "is_active": True})
+    user = users_collection.find_one({"username": username})
     
-    if not user or not check_password_hash(user['password'], password):
+    if not user:
+        print(f"Tentative de connexion: utilisateur {username} non trouvé")
         return jsonify({"error": "Identifiants incorrects"}), 401
+        
+    if not check_password_hash(user['password'], password):
+        print(f"Tentative de connexion: mot de passe incorrect pour {username}")
+        return jsonify({"error": "Identifiants incorrects"}), 401
+    
+    # Log détaillé de l'état du compte
+    print(f"Tentative de connexion pour {username}:")
+    print(f"  - Role: {user.get('role', 'non défini')}")
+    print(f"  - _id: {user.get('_id')}")
+    print(f"  - is_approved: {user.get('is_approved', False)}")
+    print(f"  - approval_status: {user.get('approval_status', 'non défini')}")
+    print(f"  - is_active: {user.get('is_active', False)}")
+    
+    # Vérifier si le compte est approuvé, sauf pour les administrateurs
+    if user.get('role') != 'admin':
+        if not user.get('is_approved', False):
+            print(f"Connexion refusée: compte {username} non approuvé (is_approved=False)")
+            return jsonify({"error": "Votre compte est en attente d'approbation par un administrateur"}), 403
+            
+        if user.get('approval_status') != 'approved':
+            print(f"Connexion refusée: compte {username} non approuvé (approval_status={user.get('approval_status')})")
+            return jsonify({"error": "Votre compte est en attente d'approbation par un administrateur"}), 403
+    
+    # Vérifier si le compte est actif
+    if not user.get('is_active', True):
+        print(f"Connexion refusée: compte {username} inactif")
+        return jsonify({"error": "Votre compte a été désactivé. Veuillez contacter un administrateur"}), 403
     
     # Mise à jour de la dernière connexion
     users_collection.update_one(
@@ -155,6 +186,8 @@ def login():
         'exp': exp_timestamp
     }, app.config['JWT_SECRET_KEY'], algorithm="HS256")
     
+    print(f"Connexion réussie pour {username}")
+    
     return jsonify({
         "message": "Connexion réussie",
         "token": token,
@@ -166,6 +199,112 @@ def login():
         }
     }), 200
 
+@app.route('/api/users/approve/<user_id>', methods=['POST'])
+@token_required
+def approve_user(current_user, user_id):
+    """Endpoint pour approuver ou rejeter un utilisateur (admin seulement)"""
+    # Vérifier si l'utilisateur est admin
+    if current_user['role'] != 'admin':
+        return jsonify({"error": "Accès interdit. Seuls les administrateurs peuvent approuver/rejeter des utilisateurs."}), 403
+    
+    # Récupérer les données de la requête
+    data = request.json
+    if not data or 'status' not in data:
+        return jsonify({"error": "Le paramètre 'status' est requis"}), 400
+    
+    status = data['status']
+    if status not in ['approved', 'rejected']:
+        return jsonify({"error": "Statut invalide. Doit être 'approved' ou 'rejected'"}), 400
+    
+    try:
+        # Pour le débogage
+        print(f"Approbation de l'utilisateur: ID={user_id}, Status={status}")
+        
+        # Si le username est fourni dans la requête, l'utiliser directement
+        username = data.get('username')
+        if username:
+            print(f"Recherche de l'utilisateur par username fourni: {username}")
+            user = users_collection.find_one({"username": username})
+            if user:
+                print(f"Utilisateur trouvé par username: {username}")
+            else:
+                print(f"Aucun utilisateur trouvé avec le username: {username}")
+                return jsonify({"error": f"Utilisateur avec le nom {username} introuvable"}), 404
+        
+        # Si aucun utilisateur n'est trouvé par username, essayer de trouver par l'ID format user-X
+        elif user_id and user_id.startswith('user-'):
+            try:
+                index = int(user_id.split('-')[1]) - 1
+                all_users = list(users_collection.find().sort('username', 1))
+                
+                if 0 <= index < len(all_users):
+                    user = all_users[index]
+                    print(f"Utilisateur trouvé par index: {user.get('username')}")
+                else:
+                    return jsonify({"error": f"Index utilisateur invalide: {index}"}), 404
+            except Exception as e:
+                print(f"Erreur lors de la recherche par index: {str(e)}")
+                return jsonify({"error": f"Format d'ID invalide: {user_id}"}), 400
+        else:
+            # Essayer de trouver par ObjectId ou autre
+            try:
+                user = users_collection.find_one({"id": user_id})
+                if not user:
+                    # Essayer ObjectId
+                    from bson.objectid import ObjectId
+                    if ObjectId.is_valid(user_id):
+                        user = users_collection.find_one({"_id": ObjectId(user_id)})
+            except Exception as e:
+                print(f"Erreur lors de la recherche par ID: {str(e)}")
+            
+            if not user:
+                return jsonify({"error": f"Utilisateur avec ID {user_id} introuvable"}), 404
+        
+        # Sauvegarder l'_id de l'utilisateur pour la mise à jour
+        user_id_for_update = user.get('_id')
+        
+        # Préparer les données de mise à jour
+        update_data = {
+            "approval_status": status,
+            "is_approved": status == 'approved',
+            "is_active": status == 'approved',
+            "updated_by": current_user['username'],
+            "updated_at": datetime.utcnow()
+        }
+        
+        print(f"Mise à jour pour l'utilisateur {user.get('username')} avec status {status}")
+        
+        # IMPORTANT: Utilisez correctement l'ID MongoDB pour la mise à jour
+        result = users_collection.update_one(
+            {"_id": user_id_for_update},  # Utiliser l'_id réel
+            {"$set": update_data}
+        )
+        
+        if result.modified_count == 0:
+            if result.matched_count > 0:
+                print(f"Aucune modification effectuée pour {user.get('username')} (déjà {status})")
+                return jsonify({
+                    "warning": "Aucune modification n'a été effectuée (l'utilisateur a peut-être déjà ce statut)",
+                    "status": status
+                }), 200
+            else:
+                print(f"Aucun document trouvé pour la mise à jour avec _id: {user_id_for_update}")
+                return jsonify({"error": "Erreur de mise à jour: document non trouvé"}), 500
+        
+        print(f"Mise à jour réussie: {result.modified_count} document(s) modifié(s)")
+        return jsonify({
+            "message": f"Utilisateur {status} avec succès",
+            "user_id": user_id,
+            "status": status,
+            "username": user.get('username')
+        }), 200
+        
+    except Exception as e:
+        import traceback
+        print("Erreur détaillée lors de l'approbation:")
+        print(traceback.format_exc())
+        return jsonify({"error": f"Erreur lors de l'approbation de l'utilisateur: {str(e)}"}), 500
+    
 @app.route('/api/check-auth', methods=['GET'])
 @token_required
 def check_auth(current_user):
