@@ -1294,6 +1294,7 @@ def get_heures_enseignement(current_user):
         annee_fin = request.args.get('annee_fin')
         niveau = request.args.get('niveau')
         semestre = request.args.get('semestre')
+        intervenant = request.args.get('intervenant')
         
         # Construire le filtre en fonction des paramètres fournis
         filter_query = {}
@@ -1308,7 +1309,10 @@ def get_heures_enseignement(current_user):
             
         if semestre:
             filter_query["semestre"] = semestre
-        
+
+        if intervenant:
+            # Cette partie est délicate car nous devons filtrer à l'intérieur d'un tableau
+            filter_query["unite_enseignement.matieres.intervenant"] = intervenant
         # Récupérer les données
         data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
         
@@ -1326,7 +1330,7 @@ def get_heures_enseignement_stats(current_user):
         annee_debut = request.args.get('annee_debut')
         annee_fin = request.args.get('annee_fin')
         niveau = request.args.get('niveau')
-        
+        intervenant = request.args.get('intervenant')
         # Construire le filtre en fonction des paramètres fournis
         filter_query = {}
         
@@ -1337,7 +1341,10 @@ def get_heures_enseignement_stats(current_user):
         
         if niveau:
             filter_query["niveau"] = niveau
-        
+
+        if intervenant:
+            # Cette partie est délicate car nous devons filtrer à l'intérieur d'un tableau
+            filter_query["unite_enseignement.matieres.intervenant"] = intervenant
         # Récupérer les données
         data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
         
@@ -1532,7 +1539,7 @@ def get_heures_enseignement_graph_data(current_user):
         annee_fin = request.args.get('annee_fin')
         niveau = request.args.get('niveau')
         semestre = request.args.get('semestre')
-        
+        intervenant = request.args.get('intervenant')
         # Construire le filtre en fonction des paramètres fournis
         filter_query = {}
         
@@ -1546,7 +1553,10 @@ def get_heures_enseignement_graph_data(current_user):
             
         if semestre:
             filter_query["semestre"] = semestre
-        
+            
+        if intervenant:
+            # Cette partie est délicate car nous devons filtrer à l'intérieur d'un tableau
+            filter_query["unite_enseignement.matieres.intervenant"] = intervenant
         # Récupérer les données
         data = list(heures_enseignement_collection.find(filter_query, {'_id': 0}))
         
@@ -1695,6 +1705,28 @@ def prepare_bar_chart_semestre_data(data):
             }
         ]
     }
+
+@app.route('/api/references/intervenants', methods=['GET'])
+@token_required
+def get_intervenants(current_user):
+    """Récupérer la liste des intervenants disponibles"""
+    try:
+        # Utiliser une agrégation MongoDB pour extraire tous les intervenants uniques
+        pipeline = [
+            {"$unwind": "$unite_enseignement.matieres"},  # Décomposer le tableau des matières
+            {"$group": {"_id": "$unite_enseignement.matieres.intervenant"}},  # Grouper par intervenant
+            {"$match": {"_id": {"$ne": ""}}},  # Exclure les valeurs vides
+            {"$sort": {"_id": 1}}  # Trier par ordre alphabétique
+        ]
+        
+        result = list(heures_enseignement_collection.aggregate(pipeline))
+        
+        intervenants = [item["_id"] for item in result if item["_id"]]
+        
+        return jsonify(intervenants), 200
+        
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la récupération des intervenants: {str(e)}"}), 500
 ###################################### routes RSE #########################
 @app.route('/api/rse/stats', methods=['GET'])
 @token_required

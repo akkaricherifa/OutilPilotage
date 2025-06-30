@@ -12961,3 +12961,49 @@ Utilisateur 6: id=user-6, approval_status=approved
 Utilisateur 7: id=user-7, approval_status=pending
 "GET /admin-users/ HTTP/1.1" 200 65485
 Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35001
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 200 40523
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43377
+Utilisateur 1: id=user-1, approval_status=approved
+Utilisateur 2: id=user-2, approval_status=approved
+Utilisateur 3: id=user-3, approval_status=approved
+Utilisateur 4: id=user-4, approval_status=approved
+Utilisateur 5: id=user-5, approval_status=approved
+Utilisateur 6: id=user-6, approval_status=approved
+Utilisateur 7: id=user-7, approval_status=pending
+"GET /admin-users/ HTTP/1.1" 200 65485
+"GET /dashboard/ HTTP/1.1" 200 42874
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1669637
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1669628
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 35001
+"GET /login/ HTTP/1.1" 200 39963
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 43377
+Appel à l'API: http://localhost:5000/api/etudiants
+Réponse de l'API: Status 200
+Données étudiants récupérées: 826 étudiants
+Années récupérées: ['2021-2022', '2022-2023', '2023-2024', '2024-2025']
+Niveaux récupérés: ['FIA3', 'FIA4', 'FIA5', 'FIE1', 'FIE2', 'FIE3', 'FIE4', 'FIE5', 'FIE5 ']
+"GET /effectifs-etudiants/ HTTP/1.1" 200 1669628
+"GET /dashboard/ HTTP/1.1" 200 42874
+Erreur API categories_enseignement: Expecting value: line 1 column 1 (char 0)
+"GET /catEnseug/ HTTP/1.1" 200 51533
+"GET /heures-enseignement/ HTTP/1.1" 200 95128
+Not Found: /api/heures-enseignement/graph-data/
+"GET /api/heures-enseignement/graph-data/?annee_debut=2024&annee_fin=2025 HTTP/1.1" 404 81
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+"GET /api/heures-enseignement/graph-data/?annee_debut=2020&annee_fin=2021 HTTP/1.1" 200 954
+Watching for file changes with StatReloader

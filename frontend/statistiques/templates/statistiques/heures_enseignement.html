@@ -425,6 +425,13 @@
                 <option value="S10">S10</option>
             </select>
         </div>
+         <div class="form-group col-md-3">
+            <label for="intervenantFilter">Intervenant</label>
+            <select class="form-control" id="intervenantFilter">
+                <option value="">Tous les intervenants</option>
+                <!-- Sera rempli dynamiquement par JavaScript -->
+            </select>
+        </div>
         <div class="form-group col-md-3 d-flex align-items-end">
             <button type="button" class="btn btn-primary-custom w-100" id="applyFilters">
                 <i class="fas fa-search mr-2"></i>Appliquer les filtres
@@ -520,7 +527,69 @@
         </table>
     </div>
 </div>
-
+<!-- Récapitulatif de l'intervenant -->
+<div id="intervenantRecap" class="chart-container" style="display: none; height: auto;">
+    <h5><i class="fas fa-user-clock mr-2"></i>Récapitulatif des heures de l'intervenant</h5>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card stat-card stat-card-intervenants mb-3">
+                <div class="card-body">
+                    <h4 class="text-center" id="intervenantName">-</h4>
+                    <p class="text-center mb-0">Intervenant</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card stat-card stat-card-cm mb-3">
+                        <div class="card-body text-center">
+                            <h3 id="intervenantCM">0</h3>
+                            <p class="mb-0">Total CM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card stat-card-td mb-3">
+                        <div class="card-body text-center">
+                            <h3 id="intervenantTD">0</h3>
+                            <p class="mb-0">Total TD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card stat-card-tp mb-3">
+                        <div class="card-body text-center">
+                            <h3 id="intervenantTP">0</h3>
+                            <p class="mb-0">Total TP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-hover" id="intervenantTable">
+            <thead>
+                <tr>
+                    <th>Année</th>
+                    <th>Niveau</th>
+                    <th>Semestre</th>
+                    <th>UE</th>
+                    <th>Matière</th>
+                    <th>CM</th>
+                    <th>TD</th>
+                    <th>TP</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="intervenantTableBody">
+                <!-- Les données seront chargées dynamiquement -->
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- Modal Ajouter des données -->
 <div class="modal fade" id="addDataModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -786,16 +855,9 @@ let deleteData = {
     code_ue: null
 };
 const chartColors = {
-    // Bleu principal (violet foncé dans la charte)
     cm: 'rgba(47, 13, 115, 0.8)',      // RVB: 47-13-115, Hex: #2f0d73
-    
-    // Dégradé principal (violet dans la charte)
     td: 'rgba(124, 80, 222, 0.8)',      // RVB: 124-80-222, Hex: #7c50de
-    
-    // Dégradé principal (violet clair dans la charte)
     tp: 'rgba(172, 84, 199, 0.8)',      // RVB: 172-84-199, Hex: #ac54c7
-    
-    // Couleurs de bordure plus foncées pour améliorer le contraste
     border: {
         cm: 'rgba(47, 13, 115, 1)',     // RVB: 47-13-115
         td: 'rgba(124, 80, 222, 1)',    // RVB: 124-80-222
@@ -854,6 +916,19 @@ $(document).ready(function() {
         loadChartData(); // Ajout: charger les données des graphiques
     });
     
+    // Ajouter les événements aux sélecteurs pour le chargement automatique des graphiques
+    $('#intervenantFilter').on('change', function() {
+    const selectedIntervenant = $(this).val();
+    if (selectedIntervenant) {
+        // Si un intervenant est sélectionné, charger les données et montrer le récapitulatif
+        loadHeuresEnseignement();
+        loadChartData();
+    } else {
+        // Sinon, cacher le récapitulatif
+        $('#intervenantRecap').hide();
+    }
+    });
+    
     // Soumission du formulaire d'ajout de données
     $('#heuresForm').on('submit', function(e) {
         e.preventDefault();
@@ -892,6 +967,30 @@ $(document).ready(function() {
         loadChartData();
     });
 });
+// Charger la liste des intervenants pour le filtre
+function loadIntervenantsList() {
+    $.ajax({
+        url: `${API_BASE_URL}/references/intervenants`,
+        type: 'GET',
+        headers: {
+            'Authorization': `Bearer ${getApiToken()}`
+        },
+        success: function(intervenants) {
+            const selectElement = $('#intervenantFilter');
+            selectElement.find('option:not(:first)').remove(); // Conserver l'option "Tous les intervenants"
+            
+            intervenants.forEach(intervenant => {
+                selectElement.append(`<option value="${intervenant}">${intervenant}</option>`);
+            });
+        },
+        error: function(xhr) {
+            console.error('Erreur lors du chargement des intervenants:', xhr.responseText);
+        }
+    });
+}
+
+// Appeler cette fonction au chargement de la page
+loadIntervenantsList();
 
 // Charger les statistiques des heures d'enseignement
 function loadHeuresEnseignementStats() {
@@ -899,6 +998,7 @@ function loadHeuresEnseignementStats() {
     const anneeFilter = $('#anneesFilter').val();
     const niveauFilter = $('#niveauFilter').val();
     const semestreFilter = $('#semestreFilter').val();
+    const intervenantFilter = $('#intervenantFilter').val();
     
     let urlParams = new URLSearchParams();
     
@@ -910,6 +1010,14 @@ function loadHeuresEnseignementStats() {
     
     if (niveauFilter) {
         urlParams.append('niveau', niveauFilter);
+    }
+
+    if (semestreFilter) {
+        urlParams.append('semestre', semestreFilter);
+    }
+    
+    if (intervenantFilter) {
+        urlParams.append('intervenant', intervenantFilter);
     }
     
     // Appel à l'API
@@ -926,6 +1034,11 @@ function loadHeuresEnseignementStats() {
             heuresDataTable.clear();
             heuresDataTable.rows.add(tableData);
             heuresDataTable.draw();
+             if ($('#intervenantFilter').val()) {
+        updateIntervenantRecap(response);
+    } else {
+        $('#intervenantRecap').hide();
+    }
             populateNiveauFilter();
             // Charger les graphiques
             prepareAndUpdateCharts(response);
@@ -964,6 +1077,7 @@ function loadChartData() {
     const anneeFilter = $('#anneesFilter').val();
     const niveau = $('#niveauFilter').val();
     const semestre = $('#semestreFilter').val();
+    const intervenant = $('#intervenantFilter').val();
     
     let anneeDebut = '';
     let anneeFin = '';
@@ -987,6 +1101,9 @@ function loadChartData() {
     
     if (semestre) {
         params.push(`semestre=${semestre}`);
+    }
+     if (intervenant) {
+        params.push(`intervenant=${intervenant}`);
     }
     
     url += params.join('&');
@@ -1189,6 +1306,7 @@ function loadHeuresEnseignement() {
     const anneeFilter = $('#anneesFilter').val();
     const niveauFilter = $('#niveauFilter').val();
     const semestreFilter = $('#semestreFilter').val();
+    const intervenantFilter = $('#intervenantFilter').val();
     
     let urlParams = new URLSearchParams();
     
@@ -1204,6 +1322,10 @@ function loadHeuresEnseignement() {
     
     if (semestreFilter) {
         urlParams.append('semestre', semestreFilter);
+    }
+
+    if (intervenantFilter) {
+        urlParams.append('intervenant', intervenantFilter);
     }
     
     // Appel à l'API
@@ -1283,7 +1405,85 @@ function transformDataForTable(data) {
     
     return tableData;
 }
-
+// Mettre à jour le récapitulatif de l'intervenant
+function updateIntervenantRecap(data) {
+    const intervenant = $('#intervenantFilter').val();
+    
+    if (!intervenant) {
+        $('#intervenantRecap').hide();
+        return;
+    }
+    
+    // Filtrer les données pour ne garder que celles de l'intervenant sélectionné
+    let totalCM = 0;
+    let totalTD = 0;
+    let totalTP = 0;
+    let tableRows = [];
+    
+    data.forEach(record => {
+        const anneeAcademique = record.annee_academique;
+        const niveau = record.niveau;
+        const semestre = record.semestre;
+        const ue = record.unite_enseignement;
+        
+        // Filtrer les matières par intervenant
+        ue.matieres.forEach(matiere => {
+            if (matiere.intervenant === intervenant) {
+                // Calculer les totaux
+                const cm = matiere.heures_cm.hm || 0;
+                const td = matiere.heures_td.hm || 0;
+                const tp = matiere.heures_tp.hm || 0;
+                const total = cm + td + tp;
+                
+                totalCM += cm;
+                totalTD += td;
+                totalTP += tp;
+                
+                // Ajouter une ligne au tableau
+                tableRows.push(`
+                    <tr>
+                        <td>${anneeAcademique}</td>
+                        <td>${niveau}</td>
+                        <td>${semestre}</td>
+                        <td>${ue.code} - ${ue.nom}</td>
+                        <td>${matiere.nom}</td>
+                        <td>${cm}</td>
+                        <td>${td}</td>
+                        <td>${tp}</td>
+                        <td>${total}</td>
+                    </tr>
+                `);
+            }
+        });
+    });
+    
+    // Mettre à jour l'interface
+    $('#intervenantName').text(intervenant);
+    $('#intervenantCM').text(totalCM);
+    $('#intervenantTD').text(totalTD);
+    $('#intervenantTP').text(totalTP);
+    
+    // Mettre à jour le tableau
+    const tableBody = $('#intervenantTableBody');
+    
+    if (tableRows.length > 0) {
+        tableBody.html(tableRows.join(''));
+    } else {
+        tableBody.html(`
+            <tr>
+                <td colspan="9" class="text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Aucune donnée disponible pour cet intervenant avec les filtres actuels.
+                    </div>
+                </td>
+            </tr>
+        `);
+    }
+    
+    // Afficher la section
+    $('#intervenantRecap').show();
+}
 // Fonction d'initialisation des graphiques
 function initCharts() {
     // Graphique 1: Répartition des heures par type (Camembert)
